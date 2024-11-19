@@ -1,0 +1,24 @@
+BROKER SCHEMA schema2
+
+
+
+CREATE FUNCTION add(IN a INTEGER, In b INTEGER) RETURNS INTEGER
+BEGIN
+    RETURN a+b; -- Simple addition
+END;
+
+
+
+CREATE PROCEDURE  substract(in a INTEGER, In b INTEGER) RETURNS INTEGER
+BEGIN
+	RETURN a-b; --Simple Substraction
+END;
+
+
+
+
+CREATE PROCEDURE  div(in a INTEGER, In b INTEGER, out c DECIMAL) 
+BEGIN
+	set c = a/b; --Simple Division
+	
+END;

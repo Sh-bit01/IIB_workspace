@@ -1,0 +1,4 @@
+CREATE FUNCTION CalculateTax(DECIMAL amount) RETURNS DECIMAL
+BEGIN
+    RETURN amount * 0.1; -- Simple tax calculation
+END;

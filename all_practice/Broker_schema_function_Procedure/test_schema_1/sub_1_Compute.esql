@@ -1,0 +1,29 @@
+BROKER SCHEMA test_schema_1
+PATH schema2, lib_schema ;
+
+
+CREATE COMPUTE MODULE sub_1_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot.JSON.Data.Broker_schema = InputBody;
+		SET OutputRoot.JSON.Data.add = add(12, 45);   --addition
+		SET OutputRoot.JSON.Data.mul = mul(12, 45);   --Multiplaction
+		
+		DECLARE a INTEGER 12;
+		DECLARE b INTEGER 4;
+		DECLARE c DECIMAL;
+		--call substract(a, b);
+		SET OutputRoot.JSON.Data.sub = substract(a, b);    --Substraction
+		call div(a,b,c);
+		SET OutputRoot.JSON.Data.div = c;       --Division
+
+		
+	END;
+END MODULE;

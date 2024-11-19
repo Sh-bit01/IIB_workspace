@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.ibm.etools.mft.junit.launchConfigurationType">
+    <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit5"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="postStringMal_Compute"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="restAPI"/>
+</launchConfiguration>

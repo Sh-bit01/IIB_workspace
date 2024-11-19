@@ -1,0 +1,20 @@
+CREATE COMPUTE MODULE Log4J_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL initLog4j(external_var) INTO var1;
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		DECLARE in_data,out_data CHARACTER;
+		SET OutputRoot.JSON.Data = InputRoot.XMLNSC;
+		SET in_data = CAST(ASBITSTREAM(InputRoot.XMLNSC CCSID InputRoot.Properties.CodedCharSetId) AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+		SET out_data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID InputRoot.Properties.CodedCharSetId) AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+		CALL WriteLogFile(MessageFlowLabel, 'AdeshLogger1', 'INFO','Input_Data:' || in_data) INTO var1;
+        CALL WriteLogFile(MessageFlowLabel, 'AdeshLogger1', 'INFO', 'Output_Data' || out_data) INTO var1;
+	END;
+END MODULE;

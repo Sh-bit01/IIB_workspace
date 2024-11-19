@@ -1,0 +1,13 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		
+		SET Environment.data[] = SELECT * from Database.system.employees;
+		SET Root.Data[] =  Environment.data[];
+		
+		DECLARE I INTEGER 1;
+		
+		
+		RETURN TRUE;
+	END;
+

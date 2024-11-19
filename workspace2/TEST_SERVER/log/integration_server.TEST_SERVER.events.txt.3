@@ -1,0 +1,73 @@
+2024-09-05 15:47:28.547054Z: [Thread 4484] (Msg 1/1) BIP1990I: Integration server 'TEST_SERVER' starting initialization; version '12.0.12.0' (64-bit) 
+2024-09-05 15:47:28.570122Z: [Thread 4484] (Msg 1/1) BIP9905I: Initializing resource managers. 
+2024-09-05 15:47:33.937836Z: [Thread 4484] (Msg 1/1) BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2024-09-05 15:47:34.762232Z: [Thread 4484] (Msg 1/1) BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2024-09-05 15:47:41.444980Z: [Thread 4484] (Msg 1/1) BIP9906I: Reading deployed resources. 
+2024-09-05 15:47:41.464040Z: [Thread 4484] (Msg 1/1) BIP9907I: Initializing deployed resources. 
+2024-09-05 15:47:41.465388Z: [Thread 4484] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:47:48.454076Z: [Thread 4484] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:47:48.475100Z: [Thread 4484] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-05 15:47:48.475172Z: [Thread 4484] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-09-05 15:47:48.475412Z: [Thread 4484] (Msg 1/1) BIP2269I: Deployed resource 'error_handle' (uuid='error_handle',type='MessageFlow') started successfully. 
+2024-09-05 15:47:48.475480Z: [Thread 4484] (Msg 1/1) BIP9332I: Application 'Error_handling' has been reloaded successfully. 
+2024-09-05 15:47:51.559540Z: [Thread 2744] (Msg 1/1) BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2024-09-05 15:47:51.572824Z: [Thread 2744] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2024-09-05 15:47:51.573760Z: [Thread 4484] (Msg 1/1) BIP1991I: Integration server has finished initialization. 
+2024-09-05 15:51:07.043483Z: [Thread 13416] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-05 15:51:07.062202Z: [Thread 13416] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:51:08.830077Z: [Thread 13416] (Msg 1/1) BIP2271I: Deployed resource 'error_handle' (uuid='error_handle',type='MessageFlow') successfully stopped. 
+2024-09-05 15:51:08.830180Z: [Thread 13416] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:51:08.844915Z: [Thread 13416] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7800' for 'http' connections. 
+2024-09-05 15:51:08.879475Z: [Thread 13416] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:51:08.920405Z: [Thread 13416] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:51:08.936937Z: [Thread 13416] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-05 15:51:08.937030Z: [Thread 13416] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-09-05 15:51:08.937223Z: [Thread 13416] (Msg 1/1) BIP2269I: Deployed resource 'error_handle' (uuid='error_handle',type='MessageFlow') started successfully. 
+2024-09-05 15:51:08.937317Z: [Thread 13416] (Msg 1/1) BIP9332I: Application 'Error_handling' has been changed successfully. 
+2024-09-05 15:51:08.937357Z: [Thread 13416] (Msg 1/1) BIP9326I: The source 'Error_handlingproject.generated.bar' has been successfully deployed. 
+2024-09-05 15:51:08.937583Z: [Thread 13416] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-05 15:52:36.095976Z: [Thread 8828] (Msg 1/6) BIP2232E: Error detected whilst handling a previous error in node 'error_handle.Throw1'. 
+2024-09-05 15:52:36.096080Z: [Thread 8828] (Msg 2/6) BIP2230E: Error detected whilst processing a message in node 'error_handle.Compute1'. 
+2024-09-05 15:52:36.096128Z: [Thread 8828] (Msg 3/6) BIP2488E:  (.error_handle_Compute1.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-09-05 15:52:36.096160Z: [Thread 8828] (Msg 4/6) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-09-05 15:52:36.096184Z: [Thread 8828] (Msg 5/6) BIP2488E:  (.error_handle_Compute1.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'THROW EXCEPTION CATALOG 'MyCatalog' MESSAGE 1234 VALUES('ID is Not matched.....');'. 
+2024-09-05 15:52:36.096328Z: [Thread 8828] (Msg 6/6) BIP2176S: Could not find message '1234' in catalog 'MyCatalog', inserts are 'ID is Not matched.....' 'error_handle.Compute1' '{2}' '{3}' '{4}' '{5}' '{6}'
+2024-09-05 15:54:59.495872Z: [Thread 8828] (Msg 1/6) BIP2232E: Error detected whilst handling a previous error in node 'error_handle.Throw1'. 
+2024-09-05 15:54:59.495928Z: [Thread 8828] (Msg 2/6) BIP2230E: Error detected whilst processing a message in node 'error_handle.Compute1'. 
+2024-09-05 15:54:59.495948Z: [Thread 8828] (Msg 3/6) BIP2488E:  (.error_handle_Compute1.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-09-05 15:54:59.495968Z: [Thread 8828] (Msg 4/6) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-09-05 15:54:59.495984Z: [Thread 8828] (Msg 5/6) BIP2488E:  (.error_handle_Compute1.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'THROW EXCEPTION CATALOG 'MyCatalog' MESSAGE 1234 VALUES('ID is Not matched.....');'. 
+2024-09-05 15:54:59.496132Z: [Thread 8828] (Msg 6/6) BIP2176S: Could not find message '1234' in catalog 'MyCatalog', inserts are 'ID is Not matched.....' 'error_handle.Compute1' '{2}' '{3}' '{4}' '{5}' '{6}'
+2024-09-05 15:57:29.311042Z: [Thread 8828] (Msg 1/6) BIP2232E: Error detected whilst handling a previous error in node 'error_handle.Throw1'. 
+2024-09-05 15:57:29.311102Z: [Thread 8828] (Msg 2/6) BIP2230E: Error detected whilst processing a message in node 'error_handle.Compute1'. 
+2024-09-05 15:57:29.311120Z: [Thread 8828] (Msg 3/6) BIP2488E:  (.error_handle_Compute1.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-09-05 15:57:29.311138Z: [Thread 8828] (Msg 4/6) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-09-05 15:57:29.311156Z: [Thread 8828] (Msg 5/6) BIP2488E:  (.error_handle_Compute1.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'THROW EXCEPTION CATALOG 'MyCatalog' MESSAGE 1234 VALUES('ID is Not matched.....');'. 
+2024-09-05 15:57:29.311402Z: [Thread 8828] (Msg 6/6) BIP2176S: Could not find message '1234' in catalog 'MyCatalog', inserts are 'ID is Not matched.....' 'error_handle.Compute1' '{2}' '{3}' '{4}' '{5}' '{6}'
+2024-09-05 15:58:06.504271Z: [Thread 13280] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-05 15:58:06.602091Z: [Thread 13280] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:58:10.810056Z: [Thread 13280] (Msg 1/1) BIP2271I: Deployed resource 'error_handle' (uuid='error_handle',type='MessageFlow') successfully stopped. 
+2024-09-05 15:58:10.810154Z: [Thread 13280] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:58:10.840698Z: [Thread 13280] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7800' for 'http' connections. 
+2024-09-05 15:58:10.877047Z: [Thread 13280] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:58:10.912169Z: [Thread 13280] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:58:10.933157Z: [Thread 13280] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-05 15:58:10.933260Z: [Thread 13280] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-09-05 15:58:10.933447Z: [Thread 13280] (Msg 1/1) BIP2269I: Deployed resource 'error_handle' (uuid='error_handle',type='MessageFlow') started successfully. 
+2024-09-05 15:58:10.933505Z: [Thread 13280] (Msg 1/1) BIP9332I: Application 'Error_handling' has been changed successfully. 
+2024-09-05 15:58:10.933544Z: [Thread 13280] (Msg 1/1) BIP9326I: The source 'Error_handlingproject.generated.bar' has been successfully deployed. 
+2024-09-05 15:58:10.933802Z: [Thread 13280] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-05 15:58:23.256654Z: [Thread 11744] (Msg 1/1) BIP2111E: IBM App Connect Enterprise internal error: diagnostic information 'Designer context destructed while iInputs JS object still allocated'. 
+2024-09-05 15:58:23.257740Z: [Thread 11744] (Msg 1/4) BIP2121E: The thread bootstrap code caught an unhandled exception on thread number '11744' with name 'error_handle'. 
+2024-09-05 15:58:23.257778Z: [Thread 11744] (Msg 2/4) BIP5705E: JSON parsing errors have occurred. 
+2024-09-05 15:58:23.257796Z: [Thread 11744] (Msg 3/4) BIP5393E: One or more Message Validation failures have occurred. 
+2024-09-05 15:58:23.257816Z: [Thread 11744] (Msg 4/4) BIP5751E: The JSON parser signalled that a validation error occurred when validating a JSON message against a JSON schema.  The error from the JSON parser is: 'Object is missing the following members required by the schema: 'employees'.'.  The location of the error in the JSON message is '#'.  The matching location in the JSON schema is 'jsonvaler1.schema.json#'.  The error context is ''. 
+2024-09-05 15:58:23.258956Z: [Thread 4484] (Msg 1/4) BIP9344E: The integration server is shutting down due to an unhandled exception. 
+2024-09-05 15:58:23.258996Z: [Thread 4484] (Msg 2/4) BIP5705E: JSON parsing errors have occurred. 
+2024-09-05 15:58:23.259012Z: [Thread 4484] (Msg 3/4) BIP5393E: One or more Message Validation failures have occurred. 
+2024-09-05 15:58:23.259032Z: [Thread 4484] (Msg 4/4) BIP5751E: The JSON parser signalled that a validation error occurred when validating a JSON message against a JSON schema.  The error from the JSON parser is: 'Object is missing the following members required by the schema: 'employees'.'.  The location of the error in the JSON message is '#'.  The matching location in the JSON schema is 'jsonvaler1.schema.json#'.  The error context is ''. 
+2024-09-05 15:58:23.260538Z: [Thread 4484] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:58:23.673002Z: [Thread 4484] (Msg 1/1) BIP2271I: Deployed resource 'error_handle' (uuid='error_handle',type='MessageFlow') successfully stopped. 
+2024-09-05 15:58:23.734586Z: [Thread 4484] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 15:58:23.749960Z: [Thread 4484] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7800' for 'http' connections. 
+2024-09-05 15:58:25.676576Z: [Thread 4484] (Msg 1/1) BIP1992I: Integration server 'TEST_SERVER' stopped. 

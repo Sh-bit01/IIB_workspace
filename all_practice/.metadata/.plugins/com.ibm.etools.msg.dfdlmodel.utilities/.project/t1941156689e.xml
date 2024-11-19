@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MessageBroker name="Task_Dfdl_Json_Data">
+  <XSDCollection href="platform:/resource/Task_Dfdl_Json_Data/JSON_DFDL.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+    <element href="platform:/resource/Task_Dfdl_Json_Data/JSON_DFDL.xsd#//JSON_DFDL;XSDElementDeclaration" name="JSON_DFDL"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/Task_Dfdl_Json_Data/IBMdefined/RecordSeparatedFieldFormat.xsd" prefix="tns" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+</MessageBroker>

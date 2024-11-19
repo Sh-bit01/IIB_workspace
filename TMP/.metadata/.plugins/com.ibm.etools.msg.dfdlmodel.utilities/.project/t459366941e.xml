@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MessageBroker name="EmployeeService_interface_and_maps">
+  <XSDCollection href="platform:/resource/EmployeeService_interface_and_maps/hrdb/iibadmin/HRDB.xsd" prefix="hrdbiibadmin" targetNamespace="http://hrdb/iibadmin">
+    <import name="DBResp.xsd" targetNamespace=""/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/hrdb/iibadmin/HRDB.xsd#//DEPARTMENT;XSDElementDeclaration" name="DEPARTMENT" type="mlib://EmployeeService_interface_and_maps#/-/complexType{http://hrdb/iibadmin}DEPARTMENTType"/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/hrdb/iibadmin/HRDB.xsd#//EMPLOYEE;XSDElementDeclaration=1" name="EMPLOYEE" type="mlib://EmployeeService_interface_and_maps#/-/complexType{http://hrdb/iibadmin}EMPLOYEEType"/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/hrdb/iibadmin/HRDB.xsd#//EmployeeResponse;XSDElementDeclaration=2" name="EmployeeResponse" type="mlib://EmployeeService_interface_and_maps#/-/complexType{http://hrdb/iibadmin}EmployeeResponseType"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/hrdb/iibadmin/HRDB.xsd#//DEPARTMENTType;XSDComplexTypeDefinition" name="DEPARTMENTType"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/hrdb/iibadmin/HRDB.xsd#//EMPLOYEEType;XSDComplexTypeDefinition=1" name="EMPLOYEEType"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/hrdb/iibadmin/HRDB.xsd#//EmployeeResponseType;XSDComplexTypeDefinition=2" name="EmployeeResponseType"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/soap.xsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/soap.xsd#//SOAP_Domain_Msg;XSDElementDeclaration" name="SOAP_Domain_Msg" type="mlib://EmployeeService_interface_and_maps#/-/complexType{}SOAP_Msg_type"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/soap.xsd#//MIME_Headers_type;XSDComplexTypeDefinition" name="MIME_Headers_type"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/soap.xsd#//Attachment_type;XSDComplexTypeDefinition=1" name="Attachment_type"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/soap.xsd#//SOAP_Msg_type;XSDComplexTypeDefinition=2" name="SOAP_Msg_type"/>
+    <group href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/soap.xsd#//MIME_header_fields;XSDModelGroupDefinition" name="MIME_header_fields"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/EmployeeService_interface_and_maps/EmployeeService.xsd" prefix="" targetNamespace="http://EmployeeService">
+    <include name="/EmployeeService_interface_and_maps/EmployeeService_InlineSchema1.xsd" targetNamespace="http://EmployeeService"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/EmployeeService_interface_and_maps/employeeNumber.xsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/EmployeeService_interface_and_maps/employeeNumber.xsd#//employeeNumber;XSDElementDeclaration" name="employeeNumber" type="mlib://EmployeeService_interface_and_maps#/-/simpleType{}employeeNumberType"/>
+    <simpleType href="platform:/resource/EmployeeService_interface_and_maps/employeeNumber.xsd#//employeeNumberType;XSDSimpleTypeDefinition" name="employeeNumberType" variety="atomic"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd" prefix="tns" targetNamespace="http://schemas.xmlsoap.org/soap/envelope/">
+    <import name="IBMdefined/org/w3/www/xml/_1998/namespace/xml.xsd" targetNamespace="http://www.w3.org/XML/1998/namespace"/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//Envelope;XSDElementDeclaration" name="Envelope" type="mlib://EmployeeService_interface_and_maps#/-/complexType{http://schemas.xmlsoap.org/soap/envelope/}Envelope"/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//Header;XSDElementDeclaration=1" name="Header" type="mlib://EmployeeService_interface_and_maps#/-/complexType{http://schemas.xmlsoap.org/soap/envelope/}Header"/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//Body;XSDElementDeclaration=2" name="Body" type="mlib://EmployeeService_interface_and_maps#/-/complexType{http://schemas.xmlsoap.org/soap/envelope/}Body"/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//Fault;XSDElementDeclaration=3" name="Fault" type="mlib://EmployeeService_interface_and_maps#/-/complexType{http://schemas.xmlsoap.org/soap/envelope/}Fault"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//Envelope;XSDComplexTypeDefinition" name="Envelope"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//Header;XSDComplexTypeDefinition=1" name="Header"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//Body;XSDComplexTypeDefinition=2" name="Body"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//Fault;XSDComplexTypeDefinition=3" name="Fault"/>
+    <complexType href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//FaultString;XSDComplexTypeDefinition=4" name="FaultString"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//detail;XSDComplexTypeDefinition=5" name="detail"/>
+    <simpleType href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//encodingStyle;XSDSimpleTypeDefinition" name="encodingStyle" variety="list"/>
+    <attribute href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//mustUnderstand;XSDAttributeDeclaration" name="mustUnderstand"/>
+    <attribute href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//actor;XSDAttributeDeclaration=1" name="actor"/>
+    <attribute href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//encodingStyle;XSDAttributeDeclaration=2" name="encodingStyle"/>
+    <attributeGroup href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd#//encodingStyle;XSDAttributeGroupDefinition" name="encodingStyle"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/EmployeeService_interface_and_maps/DBResp.xsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/EmployeeService_interface_and_maps/DBResp.xsd#//DBResp;XSDElementDeclaration" name="DBResp" type="mlib://EmployeeService_interface_and_maps#/-/complexType{}DBRespType"/>
+    <complexType baseType="mlib://EmployeeService_interface_and_maps#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/EmployeeService_interface_and_maps/DBResp.xsd#//DBRespType;XSDComplexTypeDefinition" name="DBRespType"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/EmployeeService_interface_and_maps/EmployeeService_InlineSchema1.xsd" prefix="tns" targetNamespace="http://EmployeeService">
+    <import name="hrdb/iibadmin/HRDB.xsd" targetNamespace="http://hrdb/iibadmin"/>
+    <import name="employeeNumber.xsd" targetNamespace=""/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/EmployeeService_InlineSchema1.xsd#//getEmployee;XSDElementDeclaration" name="getEmployee"/>
+    <element href="platform:/resource/EmployeeService_interface_and_maps/EmployeeService_InlineSchema1.xsd#//getEmployeeResponse;XSDElementDeclaration=1" name="getEmployeeResponse"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/w3/www/xml/_1998/namespace/xml.xsd" prefix="xml" targetNamespace="http://www.w3.org/XML/1998/namespace">
+    <attribute href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/w3/www/xml/_1998/namespace/xml.xsd#//lang;XSDAttributeDeclaration" name="lang"/>
+    <attribute href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/w3/www/xml/_1998/namespace/xml.xsd#//space;XSDAttributeDeclaration=1" name="space"/>
+    <attribute href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/w3/www/xml/_1998/namespace/xml.xsd#//base;XSDAttributeDeclaration=2" name="base"/>
+    <attributeGroup href="platform:/resource/EmployeeService_interface_and_maps/IBMdefined/org/w3/www/xml/_1998/namespace/xml.xsd#//specialAttrs;XSDAttributeGroupDefinition" name="specialAttrs"/>
+  </XSDCollection>
+</MessageBroker>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Broker deployBarfile="C:\Users\Sreenivas Bandaru\IBM\ACET12\all_practice\GeneratedBarFiles\rest_api_proproject.generated.bar" deployTimestamp="2024-09-11 20:55:01">
+  <CompiledApplication>
+    <ConfigurableProperty uri="startMode">
+    </ConfigurableProperty>
+  </CompiledApplication>
+  <CompiledMessageFlow name="postP1" type="subflow" deployBarfile="C:\Users\Sreenivas Bandaru\IBM\ACET12\all_practice\GeneratedBarFiles\rest_api_proproject.generated.bar" deployTimestamp="2024-09-11 20:55:01">
+    <ConfigurableProperty uri="postP1#Compute.connectDatasourceBeforeFlowStarts">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="postP1#Compute.dataSource">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="postP1#Compute.validateMaster">
+    </ConfigurableProperty>
+  </CompiledMessageFlow>
+  <CompiledMessageFlow name="gen.rest_api_pro" deployBarfile="C:\Users\Sreenivas Bandaru\IBM\ACET12\all_practice\GeneratedBarFiles\rest_api_proproject.generated.bar" deployTimestamp="2024-09-11 20:55:01">
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Input.URLSpecifier" override="/rest_api_pro/v1*">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Input.decompressInputMessage">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Input.faultFormat" override="JSON">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Input.securityProfileName">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Input.timeoutForClient">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Input.useHTTPS">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Input.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Reply.compressionType">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#HTTP Reply.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#additionalInstances" override="3">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#commitCount">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#commitInterval">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#consumerPolicySet">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#consumerPolicySetBindings">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#coordinatedTransaction">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#maximumRateMsgsPerSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#monitoringProfile">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#notificationThresholdMsgsPerSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#processingTimeoutAction">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#processingTimeoutSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#providerPolicySet">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#providerPolicySetBindings">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#securityProfileName">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#startInstancesWhenFlowStarts">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#startMode">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="gen.rest_api_pro#wlmPolicy">
+    </ConfigurableProperty>
+  </CompiledMessageFlow>
+</Broker>

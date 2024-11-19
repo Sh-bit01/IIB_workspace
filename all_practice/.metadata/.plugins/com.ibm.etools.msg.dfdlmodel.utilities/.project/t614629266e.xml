@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MessageBroker name="Mapping_node_globleCache">
+  <XSDCollection href="platform:/resource/Mapping_node_globleCache/new 3.xsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/Mapping_node_globleCache/new 3.xsd#//Id;XSDElementDeclaration" name="Id" type="mlib://Mapping_node_globleCache#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_node_globleCache/new 3.xsd#//Student;XSDElementDeclaration=1" name="Student"/>
+    <element href="platform:/resource/Mapping_node_globleCache/new 3.xsd#//Name;XSDElementDeclaration=2" name="Name" type="mlib://Mapping_node_globleCache#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+  </XSDCollection>
+</MessageBroker>

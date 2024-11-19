@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    
+  <xsd:complexType name="complexType">
+        
+    <xsd:sequence>
+            
+      <xsd:element name="id" type="xsd:int"/>
+              
+    </xsd:sequence>
+        
+  </xsd:complexType>
+    
+  <xsd:element name="root" type="complexType">
+        
+    <xsd:annotation>
+            
+      <xsd:appinfo source="WMQI_APPINFO">
+        <MRMessage messageDefinition="/0/root;XSDElementDeclaration$MRObject"/>
+      </xsd:appinfo>
+          
+    </xsd:annotation>
+      
+  </xsd:element>
+      
+  <xsd:complexType name="complexType1">
+    <xsd:sequence/>
+  </xsd:complexType>
+      
+  <xsd:element name="message1" type="complexType1"/>
+  
+</xsd:schema>

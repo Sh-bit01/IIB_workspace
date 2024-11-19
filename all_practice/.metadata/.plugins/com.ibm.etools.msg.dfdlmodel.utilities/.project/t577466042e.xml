@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MessageBroker name="12ewuydgweb231">
+  <XSDCollection href="platform:/resource/12ewuydgweb231/Sample.xsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/12ewuydgweb231/Sample.xsd#//price;XSDElementDeclaration" name="price" type="mlib://12ewuydgweb231#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/12ewuydgweb231/Sample.xsd#//name;XSDElementDeclaration=1" name="name" type="mlib://12ewuydgweb231#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/12ewuydgweb231/Sample.xsd#//description;XSDElementDeclaration=2" name="description" type="mlib://12ewuydgweb231#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/12ewuydgweb231/Sample.xsd#//calories;XSDElementDeclaration=3" name="calories" type="mlib://12ewuydgweb231#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/12ewuydgweb231/Sample.xsd#//food;XSDElementDeclaration=4" name="food"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/12ewuydgweb231/IBMdefined/soap.xsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/12ewuydgweb231/IBMdefined/soap.xsd#//SOAP_Domain_Msg;XSDElementDeclaration" name="SOAP_Domain_Msg" type="mlib://12ewuydgweb231#/-/complexType{}SOAP_Msg_type"/>
+    <complexType baseType="mlib://12ewuydgweb231#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/12ewuydgweb231/IBMdefined/soap.xsd#//MIME_Headers_type;XSDComplexTypeDefinition" name="MIME_Headers_type"/>
+    <complexType baseType="mlib://12ewuydgweb231#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/12ewuydgweb231/IBMdefined/soap.xsd#//Attachment_type;XSDComplexTypeDefinition=1" name="Attachment_type"/>
+    <complexType baseType="mlib://12ewuydgweb231#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/12ewuydgweb231/IBMdefined/soap.xsd#//SOAP_Msg_type;XSDComplexTypeDefinition=2" name="SOAP_Msg_type"/>
+    <group href="platform:/resource/12ewuydgweb231/IBMdefined/soap.xsd#//MIME_header_fields;XSDModelGroupDefinition" name="MIME_header_fields"/>
+  </XSDCollection>
+</MessageBroker>

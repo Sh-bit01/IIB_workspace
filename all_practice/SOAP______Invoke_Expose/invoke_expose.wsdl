@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/invoke_expose/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="invoke_expose" targetNamespace="http://www.example.org/invoke_expose/">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <generatedXSD location="invoke_expose_InlineSchema1.xsd"/>
+        <binding hasEncoding="false" imported="true" name="invoke_exposeSOAP" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+    
+  <wsdl:types>
+        
+          
+    <xsd:schema xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" targetNamespace="http://www.example.org/invoke_expose/">
+      
+      <xsd:include schemaLocation="invoke_expose_InlineSchema1.xsd"/>
+    </xsd:schema>
+        
+  </wsdl:types>
+    
+  <wsdl:message name="NewOperationRequest">
+        
+    <wsdl:part element="tns:add" name="parameters"/>
+      
+  </wsdl:message>
+    
+  <wsdl:message name="NewOperationResponse">
+        
+    <wsdl:part element="tns:result" name="parameters"/>
+      
+  </wsdl:message>
+    
+  <wsdl:portType name="invoke_expose">
+        
+    <wsdl:operation name="NewOperation">
+            
+      <wsdl:input message="tns:NewOperationRequest"/>
+            
+      <wsdl:output message="tns:NewOperationResponse"/>
+          
+    </wsdl:operation>
+      
+  </wsdl:portType>
+    
+  <wsdl:binding name="invoke_exposeSOAP" type="tns:invoke_expose">
+        
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        
+    <wsdl:operation name="NewOperation">
+            
+      <soap:operation soapAction="http://www.example.org/invoke_expose/NewOperation"/>
+            
+      <wsdl:input>
+                
+        <soap:body use="literal"/>
+              
+      </wsdl:input>
+            
+      <wsdl:output>
+                
+        <soap:body use="literal"/>
+              
+      </wsdl:output>
+          
+    </wsdl:operation>
+      
+  </wsdl:binding>
+    
+  <wsdl:service name="invoke_expose">
+        
+    <wsdl:port binding="tns:invoke_exposeSOAP" name="invoke_exposeSOAP">
+            
+      <soap:address location="http://localhost:7800/"/>
+          
+    </wsdl:port>
+      
+  </wsdl:service>
+  
+</wsdl:definitions>

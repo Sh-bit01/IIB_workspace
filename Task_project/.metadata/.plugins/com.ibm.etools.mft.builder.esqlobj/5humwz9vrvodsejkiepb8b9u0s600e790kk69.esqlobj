@@ -1,0 +1,4 @@
+CREATE PROCEDURE decrypt (IN originaltxt INTEGER,IN key INTEGER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME"encryption.Encryption.sum";

@@ -1,0 +1,4 @@
+CREATE PROCEDURE  substract(in a INTEGER, In b INTEGER) RETURNS INTEGER
+BEGIN
+	SET c = a - b; 
+END;

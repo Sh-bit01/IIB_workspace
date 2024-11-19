@@ -1,0 +1,40 @@
+
+
+CREATE COMPUTE MODULE Fild_function_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot.JSON.Data = InputRoot;
+		DECLARE sourceCursor REFERENCE TO InputRoot.JSON.Data.root[1];
+DECLARE targetCursor REFERENCE TO OutputRoot.JSON.Data.root[1];
+
+WHILE LASTMOVE(sourceCursor) DO
+  SET targetCursor.ItemNumber  = sourceCursor.item;
+  SET targetCursor.Description = sourceCursor.name;
+  SET targetCursor.Price       = sourceCursor.prc;
+  SET targetCursor.Tax         = sourceCursor.prc * 0.175;
+  SET targetCursor.quantity    = 1;
+  
+  CREATE NEXTSIBLING OF targetCursor AS targetCursor REPEAT;
+
+  MOVE sourceCursor NEXTSIBLING REPEAT TYPE NAME;
+END WHILE;
+		
+		
+	END;
+END MODULE;

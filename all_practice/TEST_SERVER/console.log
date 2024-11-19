@@ -1,0 +1,88 @@
+2024-09-11 05:02:14.792738: BIP1990I: Integration server 'TEST_SERVER' starting initialization; version '12.0.12.0' (64-bit) 
+2024-09-11 05:02:14.811643: BIP9905I: Initializing resource managers. 
+Listening for transport dt_socket at address: 9997
+2024-09-11 05:02:16.965834: BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2024-09-11 05:02:17.353140: BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2024-09-11 05:02:19.790234: BIP9906I: Reading deployed resources. 
+2024-09-11 05:02:20.292372: BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2024-09-11 05:02:20.303580: BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2024-09-11 05:02:20.992126: BIP1991I: Integration server has finished initialization. 
+2024-09-11 05:02:34.913412: BIP2152I: Configuration message received. 
+2024-09-11 05:02:34.923344: BIP9332I: PolicyProject 'orcl' has been created successfully. 
+2024-09-11 05:02:34.923436: BIP9326I: The source 'orclproject.generated.bar' has been successfully deployed. 
+2024-09-11 05:02:34.923652: BIP2154I: Integration server finished with Configuration message. 
+2024-09-11 05:02:47.204832: BIP2152I: Configuration message received. 
+2024-09-11 05:02:47.240240: BIP2155I: About to 'Initialize' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-11 05:02:50.648624: BIP2155I: About to 'Start' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-11 05:02:50.686276: BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-11 05:02:50.686332: BIP1996I: Listening on HTTP URL '/m1'. 
+Started native listener for HTTP input node on port 7800 for URL /m1
+2024-09-11 05:02:50.686480: BIP2269I: Deployed resource 'db_map' (uuid='db_map',type='MessageFlow') started successfully. 
+2024-09-11 05:02:50.686532: BIP9332I: Application 'Database_using_mappaing' has been created successfully. 
+2024-09-11 05:02:50.686564: BIP9326I: The source 'Database_using_mappaingproject.generated.bar' has been successfully deployed. 
+2024-09-11 05:02:50.686848: BIP2154I: Integration server finished with Configuration message. 
+2024-09-11 05:03:04.572961: BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-11 05:03:04.586625: BIP3120E: Exception condition detected on input node 'db_map.HTTP Input'. 
+2024-09-11 05:03:04.586681: BIP2230E: Error detected whilst processing a message in node 'db_map.Mapping'. 
+2024-09-11 05:03:04.586704: BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-11 05:03:53.385872: BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-11 05:04:20.264746: BIP3120E: Exception condition detected on input node 'db_map.HTTP Input'. 
+2024-09-11 05:04:20.264838: BIP2230E: Error detected whilst processing a message in node 'db_map.Mapping'. 
+2024-09-11 05:04:20.265022: BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-12 02:25:01.613001: BIP2152I: Configuration message received. 
+2024-09-12 02:25:01.717278: BIP2155I: About to 'Initialize' the deployed resource 'rest_api_pro' of type 'RestAPI'. 
+2024-09-12 02:25:02.261097: BIP2155I: About to 'Start' the deployed resource 'rest_api_pro' of type 'RestAPI'. 
+2024-09-12 02:25:02.261644: BIP1996I: Listening on HTTP URL '/rest_api_pro/v1*'. 
+Started native listener for HTTP input node on port 7800 for URL /rest_api_pro/v1*
+2024-09-12 02:25:02.262598: BIP2269I: Deployed resource 'gen.rest_api_pro' (uuid='gen.rest_api_pro',type='MessageFlow') started successfully. 
+2024-09-12 02:25:02.262660: BIP9332I: RestAPI 'rest_api_pro' has been created successfully. 
+2024-09-12 02:25:02.262697: BIP9326I: The source 'rest_api_proproject.generated.bar' has been successfully deployed. 
+2024-09-12 02:25:02.263003: BIP2154I: Integration server finished with Configuration message. 
+2024-09-12 02:25:17.195220: BIP2152I: Configuration message received. 
+2024-09-12 02:25:17.223236: BIP2155I: About to 'Initialize' the deployed resource 'rest_api' of type 'Application'. 
+2024-09-12 02:25:17.290460: BIP2155I: About to 'Start' the deployed resource 'rest_api' of type 'Application'. 
+2024-09-12 02:25:17.290868: BIP1996I: Listening on HTTP URL '/rest'. 
+Started native listener for HTTP input node on port 7800 for URL /rest
+2024-09-12 02:25:17.290996: BIP2269I: Deployed resource 'rest1_mf' (uuid='rest1_mf',type='MessageFlow') started successfully. 
+2024-09-12 02:25:17.291044: BIP9332I: Application 'rest_api' has been created successfully. 
+2024-09-12 02:25:17.291080: BIP9326I: The source 'rest_apiproject.generated.bar' has been successfully deployed. 
+2024-09-12 02:25:17.291450: BIP2154I: Integration server finished with Configuration message. 
+2024-09-12 02:25:40.215256: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:25:40.215564: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:25:40.215600: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:25:40.215620: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:25:40.215640: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:26:22.631622: BIP2155I: About to 'Stop' the deployed resource 'rest_api' of type 'Application'. 
+2024-09-12 02:26:25.313766: BIP2271I: Deployed resource 'rest1_mf' (uuid='rest1_mf',type='MessageFlow') successfully stopped. 
+2024-09-12 02:26:25.313950: BIP2155I: About to 'TearDown' the deployed resource 'rest_api' of type 'Application'. 
+2024-09-12 02:26:25.373808: BIP9521I: Application 'rest_api' has been deleted. 
+2024-09-12 02:26:44.779492: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:26:44.779556: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:26:44.779576: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:26:44.779596: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:26:44.779608: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:17.851392: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:17.851494: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:17.851574: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:17.851594: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:17.851610: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:32.691062: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:32.691158: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:32.691184: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:32.691204: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:33:32.691224: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:55:30.653520: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:55:30.653860: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:55:30.653890: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:55:30.653908: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:55:30.653924: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:56:34.260532: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:56:34.260596: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:56:34.260644: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:56:34.260668: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 02:56:34.260692: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 21:37:35.891044: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 21:37:35.891240: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 21:37:35.891268: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 21:37:35.891288: BIP4350S: An error has occurred in the debugger. 
+2024-09-12 21:37:35.891304: BIP4350S: An error has occurred in the debugger. 

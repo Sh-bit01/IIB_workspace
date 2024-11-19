@@ -1,0 +1,4 @@
+CREATE FUNCTION add (in a INTEGER,in c INTEGER, out b INTEGER ) 
+BEGIN
+	set b = a+c;
+END;

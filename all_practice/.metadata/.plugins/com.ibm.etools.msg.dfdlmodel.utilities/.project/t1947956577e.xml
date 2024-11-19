@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MessageBroker name="mapping_practice">
+  <XSDCollection href="platform:/resource/mapping_practice/data2.xsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/mapping_practice/data2.xsd#//data;XSDElementDeclaration" name="data"/>
+    <element href="platform:/resource/mapping_practice/data2.xsd#//id;XSDElementDeclaration=1" name="id" type="mlib://mapping_practice#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+  </XSDCollection>
+</MessageBroker>

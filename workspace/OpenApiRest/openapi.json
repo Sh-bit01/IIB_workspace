@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "OpenApiRest",
+    "version": "1.0.0",
+    "description": "OpenApiRest"
+  },
+  "servers": [
+    {
+      "url": "/openapirest/v1"
+    }
+  ],
+  "components": {
+    "schemas": {}
+  },
+  "paths": {
+    "/select": {
+      "parameters": [],
+      "post": {
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    },
+    "/update": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\all_practice\SOAP______Invoke_Expose\invoke_expose.wsdl
+
+The WSDL import will proceed with bindings invoke_exposeSOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/all_practice/SOAP______Invoke_Expose/invoke_expose.wsdl.
+Parsing wsdl binding {http://www.example.org/invoke_expose/}invoke_exposeSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema invoke_expose.xsd.
+Creating file invoke_expose.xsd in the workspace.
+Creating file invoke_expose_InlineSchema1.xsd in the workspace.
+Copying source WSDL invoke_expose.wsdl to invoke_expose.wsdl.
+
+Elapsed time processing this message definition file: 0.093 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

@@ -1,0 +1,117 @@
+
+
+CREATE COMPUTE MODULE xml_to_json
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		/*   **INPUT**
+		
+		<breakfast_menu>
+    <food>
+        <name>Belgian Waffles</name>
+        <price>$5.95</price>
+        <description>
+   Two of our famous Belgian Waffles with plenty of real maple syrup
+   </description>
+        <calories>650</calories>
+    </food>
+    <food>
+        <name>Strawberry Belgian Waffles</name>
+        <price>$7.95</price>
+        <description>
+    Light Belgian waffles covered with strawberries and whipped cream
+    </description>
+        <calories>900</calories>
+    </food>
+    <food>
+        <name>Berry-Berry Belgian Waffles</name>
+        <price>$8.95</price>
+        <description>
+    Belgian waffles covered with assorted fresh berries and whipped cream
+    </description>
+        <calories>900</calories>
+    </food>
+    <food>
+        <name>French Toast</name>
+        <price>$4.50</price>
+        <description>
+    Thick slices made from our homemade sourdough bread
+    </description>
+        <calories>600</calories>
+    </food>
+    <food>
+        <name>Homestyle Breakfast</name>
+        <price>$6.95</price>
+        <description>
+    Two eggs, bacon or sausage, toast, and our ever-popular hash browns
+    </description>
+        <calories>950</calories>
+    </food>
+</breakfast_menu>
+
+		*/
+		
+		
+		
+		
+		
+		DECLARE ref REFERENCE TO InputRoot.XMLNSC.breakfast_menu;
+		DECLARE ref2 REFERENCE TO InputRoot.XMLNSC.breakfast_menu.food;
+		--DECLARE outRef REFERENCE TO OutputRoot.XMLNSC.breakfast_menu;
+		DECLARE i INTEGER 1;
+		
+		--CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+		
+		CREATE FIELD OutputRoot.JSON.Data.breakfast_menu.food IDENTITY(JSON.Array)food;
+				
+		WHILE LASTMOVE(ref2) DO
+			CREATE LASTCHILD OF OutputRoot.JSON.Data.breakfast_menu.food.Item[i] NAME 'name' VALUE ref.food[i].name;
+			CREATE LASTCHILD OF OutputRoot.JSON.Data.breakfast_menu.food.Item[i] NAME'price' VALUE ref.food[i].price;
+			CREATE LASTCHILD OF OutputRoot.JSON.Data.breakfast_menu.food.Item[i] NAME 'description' VALUE ref.food[i].description;
+			CREATE LASTCHILD OF OutputRoot.JSON.Data.breakfast_menu.food.Item[i] NAME 'calories' VALUE ref.food[i].calories;
+			
+			SET i = i+1;
+			MOVE ref2 NEXTSIBLING;
+		END WHILE;		
+		
+		
+		
+		
+		
+	END;
+END MODULE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+CREATE COMPUTE MODULE HTTPEcho CallOracleDatabase
+
+CREATE FUNCTION Main() RETURNS BOOLEAN
+
+BEGIN
+
+CALL CopyMessageHeaders();
+
+SET OutputRoot.JSON.Data.EmployeesList.COMPANY[] = (SELECT P.* FROM Database.system.COMPANY AS P);
+
+RETURN TRUE;

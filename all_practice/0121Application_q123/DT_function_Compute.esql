@@ -1,0 +1,48 @@
+
+
+CREATE COMPUTE MODULE DT_function_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		
+		SET OutputRoot.JSON.Data.Root.date = EXTRACT(DAY from CURRENT_DATE);
+		SET OutputRoot.JSON.Data.Root.month = EXTRACT(month from CURRENT_DATE);
+		SET OutputRoot.JSON.Data.Root.year = EXTRACT(year from CURRENT_DATE);
+		
+		SET OutputRoot.JSON.Data.Root.time.hour = EXTRACT(Hour from CURRENT_TIME);
+		SET OutputRoot.JSON.Data.Root.time.min = EXTRACT(minute from CURRENT_TIME);
+		SET OutputRoot.JSON.Data.Root.time.sec = EXTRACT(second from CURRENT_TIME);
+		SET OutputRoot.JSON.Data.Root.time.hour = EXTRACT(Hour from CURRENT_TIME);
+		
+		SET OutputRoot.JSON.Data.Root.Days = EXTRACT(DAYS FROM CURRENT_TIME);
+		
+		SET OutputRoot.JSON.Data.Root.DayOfYear_date = EXTRACT(DAYOFYEAR FROM CURRENT_DATE);
+		SET OutputRoot.JSON.Data.Root.DayOfYear_time = EXTRACT(DAYOFYEAR FROM CURRENT_TIME);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	END;
+END MODULE;

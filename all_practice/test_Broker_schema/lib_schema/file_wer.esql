@@ -1,0 +1,6 @@
+BROKER SCHEMA lib_schema
+
+CREATE FUNCTION mul(IN a INTEGER, In b INTEGER) RETURNS INTEGER
+BEGIN
+    RETURN a*b; -- Simple addition
+END;

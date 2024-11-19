@@ -1,0 +1,3 @@
+CREATE PROCEDURE sm (IN originaltxt CHARACTER,IN key CHARACTER, OUT k CHARACTER )
+LANGUAGE JAVA
+EXTERNAL NAME"encryption.Encryption.sum";

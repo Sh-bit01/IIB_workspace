@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" xmlns:map="default" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0">
+    <inlinedXMLSchema>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?> 
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
+    
+     
+      
+          
+     
+    
+       
+  <xsd:element name="message" nillable="true" type="xsd:string"/> 
+       
+  <xsd:element name="Employees" nillable="true"> 
+      
+       
+        
+       
+      
+     
+    <xsd:complexType> 
+        
+         
+          
+         
+        
+       
+      <xsd:sequence> 
+          
+           
+            
+           
+          
+         
+        <xsd:element name="EID" nillable="true" type="xsd:string"/> 
+          
+           
+            
+           
+          
+         
+        <xsd:element name="ENAME" nillable="true" type="xsd:string"/> 
+          
+           
+            
+           
+          
+         
+        <xsd:element name="DESIGNATION" nillable="true" type="xsd:string"/> 
+          
+           
+            
+           
+          
+         
+        <xsd:element name="ADDRESS" nillable="true" type="xsd:string"/> 
+          
+           
+            
+         
+        
+       
+      </xsd:sequence> 
+        
+         
+          
+       
+      
+     
+    </xsd:complexType> 
+      
+       
+        
+     
+    
+   
+  </xsd:element> 
+    
+     
+      
+      
+   
+  
+ 
+</xsd:schema> 
+]]>
+    </inlinedXMLSchema>
+    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/JsonDomainMsg.xsd" var="var"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var1"/>
+    <input path="jar:file://!com/ibm/msl/mapping/rdb/xsds/dbreturn.xsd" var="var3"/>
+    <output path="db:table(/xe.dbm,xe,SYSTEM,EMPLOYEES)" var="EMPLOYEES"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/JsonDomainMsg.xsd" var="var2"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="http://www.ibm.com/iib/msl/json"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="db_map_Mapping">
+        <input namespace="http://www.ibm.com/iib/msl/json" path="$var/mb:msg(JSON,assembly,JSON,Properties)" var="MessageAssembly">
+            <cast castType="userDefined" path="$MessageAssembly/JSON/Data/type('anyType')" qualifier="{http://www.ibm.com/iib/msl/json}JSONObject" ref="var" var="anyType"/>
+            <cast castType="userDefined" path="$MessageAssembly/JSON/spath('Data',2)/any" qualifier="Employees" ref="var1" var="any"/>
+        </input>
+        <output path="$EMPLOYEES/db:insert(fn:false(),EID,ENAME,DESIGNATION,ADDRESS)" var="dbinsert"/>
+        <output namespace="http://www.ibm.com/iib/msl/json" path="$var2/mb:msg(JSON,assembly,JSON,Properties)" var="MessageAssembly1">
+            <cast castType="userDefined" path="$MessageAssembly1/JSON/Data/type('anyType')" qualifier="{http://www.ibm.com/iib/msl/json}JSONObject" ref="var2" var="anyType1"/>
+            <cast castType="userDefined" path="$MessageAssembly1/JSON/spath('Data',2)/any" qualifier="message" ref="var1" var="any1"/>
+        </output>
+        <transaction>
+            <insert ref="dbinsert">
+                <input path="$MessageAssembly/JSON/spath('Data',2)/Employees/EID" var="EID"/>
+                <input path="$MessageAssembly/JSON/spath('Data',2)/Employees/ENAME" var="ENAME"/>
+                <input path="$MessageAssembly/JSON/spath('Data',2)/Employees/DESIGNATION" var="DESIGNATION"/>
+                <input path="$MessageAssembly/JSON/spath('Data',2)/Employees/ADDRESS" var="ADDRESS"/>
+                <output path="$dbinsert/."/>
+                <move>
+                    <input path="$EID/."/>
+                    <output path="EID"/>
+                </move>
+                <move>
+                    <input path="$ENAME/."/>
+                    <output path="ENAME"/>
+                </move>
+                <move>
+                    <input path="$DESIGNATION/."/>
+                    <output path="DESIGNATION"/>
+                </move>
+                <move>
+                    <input path="$ADDRESS/."/>
+                    <output path="ADDRESS"/>
+                </move>
+            </insert>
+            <return>
+                <input path="$var3/DBInsertReturn"/>
+                <output path="$MessageAssembly1/JSON/spath('Data',2)/message"/>
+                <move>
+                    <input path="NumberOfRowsInserted"/>
+                    <output path="."/>
+                </move>
+            </return>
+        </transaction>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly1/Properties"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

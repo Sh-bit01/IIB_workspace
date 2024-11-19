@@ -1,0 +1,16 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		DECLARE var REFERENCE TO InputRoot.XMLNSC;
+		
+		IF var.id = 10 THEN
+			RETURN TRUE;
+			
+		ELSEIF var.id = 20 THEN
+			RETURN FALSE;
+			
+		ELSE
+			RETURN UNKNOWN;
+		END IF;
+	END;
+

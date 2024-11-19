@@ -1,0 +1,15 @@
+
+
+CREATE DATABASE MODULE route_Database
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+		SET Environment.data[] = SELECT * from Database.ODBC1.system.employees;
+		
+		
+		
+		RETURN TRUE;
+	END;
+
+END MODULE;

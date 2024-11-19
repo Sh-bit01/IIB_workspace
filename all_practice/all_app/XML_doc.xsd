@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="Order">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="OrderID"/>
+        <xsd:element ref="Customer"/>
+        <xsd:element ref="Items"/>
+        <xsd:element ref="TotalAmount"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Email" type="xsd:string"/>
+  <xsd:element name="Description" type="xsd:string"/>
+  <xsd:element name="Customer">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="CustomerID"/>
+        <xsd:element ref="Name"/>
+        <xsd:element ref="Email"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Quantity" type="xsd:string"/>
+  <xsd:element name="CustomerID" type="xsd:string"/>
+  <xsd:element name="TotalAmount" type="xsd:string"/>
+  <xsd:element name="OrderID" type="xsd:string"/>
+  <xsd:element name="ItemID" type="xsd:string"/>
+  <xsd:element name="Name" type="xsd:string"/>
+  <xsd:element name="Item">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="ItemID"/>
+        <xsd:element ref="Description"/>
+        <xsd:element ref="Quantity"/>
+        <xsd:element ref="Price"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Price" type="xsd:string"/>
+  <xsd:element name="Items">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" ref="Item"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

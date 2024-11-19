@@ -1,0 +1,46 @@
+
+
+
+
+CREATE COMPUTE MODULE STring_Manuplation_Fun_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;		
+		
+
+
+		SET OutputRoot.JSON.Data.COALESCE = COALESCE(InputRoot.JSON.Data.id,InputRoot.JSON.Data.name, InputRoot.JSON.Data.loc);
+		SET OutputRoot.JSON.Data.replace = replace (InputRoot.JSON.Data.string , 'a' , '123');
+
+		SET OutputRoot.JSON.Data.OVERLAY = OVERLAY (InputRoot.JSON.Data.string PLACING '1234' FROM 16 );
+		--to Create a Blank spaces
+		SET OutputRoot.JSON.Data.space = SPACE (2 );
+
+		SET OutputRoot.JSON.Data.SUBSTRING = SUBSTRING(InputRoot.JSON.Data.string FROM 5);
+		SET OutputRoot.JSON.Data.SUBSTRING1 = SUBSTRING(InputRoot.JSON.Data.string BEFORE 'is');
+		SET OutputRoot.JSON.Data.SUBSTRING2 = SUBSTRING(InputRoot.JSON.Data.string AFTER 'am');		
+		
+		
+		
+		SET OutputRoot.JSON.Data.TRANSLATE = TRANSLATE(InputRoot.JSON.Data.string, 'abc', '123');
+		
+
+
+	END;
+END MODULE;

@@ -1,0 +1,5 @@
+***************************************************
+*  Run the following command to create the queues *
+*  runmqsc <queue manager name> <over1_over1.tst *
+***************************************************
+DEFINE QL('q2')

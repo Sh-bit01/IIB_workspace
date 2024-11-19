@@ -1,0 +1,21 @@
+CREATE DATABASE MODULE MF_InsertUsingFor_Database
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE InRef REFERENCE TO Root.XMLNSC.Student.root;
+
+		FOR InRef  AS Root.XMLNSC.Student.root[] DO
+		DECLARE Name,Place CHARACTER;
+		DECLARE Id INTEGER;
+			SET Name = InRef.NAME;
+			SET Id = InRef.ID;
+			SET Place = InRef.PLACE;
+			
+			INSERT INTO Database.STUDENT (NAME,ID,PLACE ) VALUES (Name,Id,Place);
+			
+		END FOR;
+		
+		
+		RETURN TRUE;
+	END;
+
+END MODULE;

@@ -1,0 +1,4 @@
+CREATE FUNCTION add(IN a INTEGER, In b INTEGER) RETURNS DECIMAL
+BEGIN
+    RETURN a+b; -- Simple addition
+END;

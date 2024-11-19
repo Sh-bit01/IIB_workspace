@@ -1,0 +1,52 @@
+2024-09-10 23:10:20.708912Z: [Thread 6048] (Msg 1/1) BIP1990I: Integration server 'TEST_SERVER' starting initialization; version '12.0.12.0' (64-bit) 
+2024-09-10 23:10:20.728868Z: [Thread 6048] (Msg 1/1) BIP9905I: Initializing resource managers. 
+2024-09-10 23:10:22.974260Z: [Thread 6048] (Msg 1/1) BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2024-09-10 23:10:23.431342Z: [Thread 6048] (Msg 1/1) BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2024-09-10 23:10:25.862944Z: [Thread 6048] (Msg 1/1) BIP9906I: Reading deployed resources. 
+2024-09-10 23:10:26.384356Z: [Thread 9408] (Msg 1/1) BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2024-09-10 23:10:26.396352Z: [Thread 9408] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2024-09-10 23:10:26.397176Z: [Thread 6048] (Msg 1/1) BIP1991I: Integration server has finished initialization. 
+2024-09-10 23:10:37.795068Z: [Thread 5540] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-10 23:10:37.896324Z: [Thread 5540] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:10:41.325032Z: [Thread 5540] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:10:41.344128Z: [Thread 5540] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-10 23:10:41.344184Z: [Thread 5540] (Msg 1/1) BIP1996I: Listening on HTTP URL '/m1'. 
+2024-09-10 23:10:41.344344Z: [Thread 5540] (Msg 1/1) BIP2269I: Deployed resource 'db_map' (uuid='db_map',type='MessageFlow') started successfully. 
+2024-09-10 23:10:41.344396Z: [Thread 5540] (Msg 1/1) BIP9332I: Application 'Database_using_mappaing' has been created successfully. 
+2024-09-10 23:10:41.344432Z: [Thread 5540] (Msg 1/1) BIP9326I: The source 'Database_using_mappaingproject.generated.bar' has been successfully deployed. 
+2024-09-10 23:10:41.344664Z: [Thread 5540] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-10 23:11:03.553733Z: [Thread 7332] (Msg 1/1) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:11:03.568853Z: [Thread 7332] (Msg 1/3) BIP3120E: Exception condition detected on input node 'db_map.HTTP Input'. 
+2024-09-10 23:11:03.568895Z: [Thread 7332] (Msg 2/3) BIP2230E: Error detected whilst processing a message in node 'db_map.Mapping'. 
+2024-09-10 23:11:03.568913Z: [Thread 7332] (Msg 3/3) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:11:41.605036Z: [Thread 4084] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-10 23:11:41.639336Z: [Thread 4084] (Msg 1/1) BIP9332I: PolicyProject 'jdbc' has been created successfully. 
+2024-09-10 23:11:41.639424Z: [Thread 4084] (Msg 1/1) BIP9326I: The source 'jdbcproject.generated.bar' has been successfully deployed. 
+2024-09-10 23:11:41.639604Z: [Thread 4084] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-10 23:12:02.040039Z: [Thread 8832] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-10 23:12:02.064408Z: [Thread 8832] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:12:05.229212Z: [Thread 8832] (Msg 1/1) BIP2271I: Deployed resource 'db_map' (uuid='db_map',type='MessageFlow') successfully stopped. 
+2024-09-10 23:12:05.229363Z: [Thread 8832] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:12:05.243380Z: [Thread 8832] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7800' for 'http' connections. 
+2024-09-10 23:12:05.312713Z: [Thread 8832] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:12:05.595330Z: [Thread 8832] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:12:05.615250Z: [Thread 8832] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-10 23:12:05.615381Z: [Thread 8832] (Msg 1/1) BIP1996I: Listening on HTTP URL '/m1'. 
+2024-09-10 23:12:05.615574Z: [Thread 8832] (Msg 1/1) BIP2269I: Deployed resource 'db_map' (uuid='db_map',type='MessageFlow') started successfully. 
+2024-09-10 23:12:05.615622Z: [Thread 8832] (Msg 1/1) BIP9332I: Application 'Database_using_mappaing' has been changed successfully. 
+2024-09-10 23:12:05.615658Z: [Thread 8832] (Msg 1/1) BIP9326I: The source 'Database_using_mappaingproject.generated.bar' has been successfully deployed. 
+2024-09-10 23:12:05.615942Z: [Thread 8832] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-10 23:12:11.476940Z: [Thread 9844] (Msg 1/1) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:12:11.479511Z: [Thread 9844] (Msg 1/3) BIP3120E: Exception condition detected on input node 'db_map.HTTP Input'. 
+2024-09-10 23:12:11.479548Z: [Thread 9844] (Msg 2/3) BIP2230E: Error detected whilst processing a message in node 'db_map.Mapping'. 
+2024-09-10 23:12:11.479567Z: [Thread 9844] (Msg 3/3) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:12:34.640464Z: [Thread 9844] (Msg 1/1) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:13:47.121548Z: [Thread 9844] (Msg 1/3) BIP3120E: Exception condition detected on input node 'db_map.HTTP Input'. 
+2024-09-10 23:13:47.121912Z: [Thread 9844] (Msg 2/3) BIP2230E: Error detected whilst processing a message in node 'db_map.Mapping'. 
+2024-09-10 23:13:47.121948Z: [Thread 9844] (Msg 3/3) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:16:46.058424Z: [Thread 6048] (Msg 1/1) BIP1989I: Integration server is terminating due to a shutdown event. 
+2024-09-10 23:16:46.061648Z: [Thread 6048] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:16:48.980620Z: [Thread 6048] (Msg 1/1) BIP2271I: Deployed resource 'db_map' (uuid='db_map',type='MessageFlow') successfully stopped. 
+2024-09-10 23:16:49.534988Z: [Thread 6048] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:16:49.549668Z: [Thread 6048] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7800' for 'http' connections. 
+2024-09-10 23:16:57.402460Z: [Thread 6048] (Msg 1/1) BIP1992I: Integration server 'TEST_SERVER' stopped. 

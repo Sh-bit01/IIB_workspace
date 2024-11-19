@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MessageBroker name="Mapping_transforamation">
+  <XSDCollection href="platform:/resource/Mapping_transforamation/XML_doc.xsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Order;XSDElementDeclaration" name="Order"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Email;XSDElementDeclaration=1" name="Email" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Description;XSDElementDeclaration=2" name="Description" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Customer;XSDElementDeclaration=3" name="Customer"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Quantity;XSDElementDeclaration=4" name="Quantity" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//CustomerID;XSDElementDeclaration=5" name="CustomerID" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//TotalAmount;XSDElementDeclaration=6" name="TotalAmount" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//OrderID;XSDElementDeclaration=7" name="OrderID" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//ItemID;XSDElementDeclaration=8" name="ItemID" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Name;XSDElementDeclaration=9" name="Name" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Item;XSDElementDeclaration=10" name="Item"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Price;XSDElementDeclaration=11" name="Price" type="mlib://Mapping_transforamation#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+    <element href="platform:/resource/Mapping_transforamation/XML_doc.xsd#//Items;XSDElementDeclaration=12" name="Items"/>
+  </XSDCollection>
+</MessageBroker>

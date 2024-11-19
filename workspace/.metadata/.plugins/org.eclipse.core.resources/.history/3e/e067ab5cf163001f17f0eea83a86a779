@@ -1,0 +1,12 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\workspace\SoapExplore1\explore1.wsdl
+
+The WSDL import will proceed with bindings explore1SOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/workspace/SoapExplore1/explore1.wsdl.
+Parsing wsdl binding {http://www.example.org/explore1/}explore1SOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema explore1.xsd.
+Creating file explore1.xsd in the workspace.

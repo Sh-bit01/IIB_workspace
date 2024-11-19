@@ -1,0 +1,50 @@
+
+
+
+
+CREATE COMPUTE MODULE urL_encod_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		-- SET OutputRoot = InputRoot;
+
+		
+--		DECLARE encode REFERENCE TO InputRoot.JSON.Data.encode;
+--		CREATE LASTCHILD OF OutputRoot.JSON.Data NAME 'Encode' VALUE URLENCODE(encode);	
+--		
+--		--"Encode": "https%3A%2F%2Fwww.ibm.com%2Fdocs%2Fen%2Fintegration-bus%2F9.0.0%3Ftopic%3Dmessages-working-namespaces",	
+--		
+--		DECLARE Decode REFERENCE TO InputRoot.JSON.Data.Decode;
+--		CREATE LASTCHILD OF OutputRoot.JSON.Data NAME 'Decode' VALUE URLDECODE(Decode);
+		
+		
+		SET OutputRoot.JSON.Data.root.h = COALESCE(InputRoot.JSON.Data.hi, 'gotya');
+		SET OutputRoot.JSON.Data.root.b = COALESCE(InputRoot.JSON.Data.b, 0);
+
+		set shr = shr+1;
+		
+		
+		SET OutputRoot.JSON.Data.Root.url.shr = shr;
+		
+				SET OutputRoot.JSON.Data.Root.url.ext = ext;
+						SET OutputRoot.JSON.Data.Root.url.sh = sh;
+				
+
+
+	END;
+END MODULE;

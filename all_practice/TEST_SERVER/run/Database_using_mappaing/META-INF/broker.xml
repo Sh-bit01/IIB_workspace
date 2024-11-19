@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Broker deployBarfile="C:\Users\Sreenivas Bandaru\IBM\ACET12\all_practice\GeneratedBarFiles\Database_using_mappaingproject.generated.bar" deployTimestamp="2024-09-10 23:32:47">
+  <CompiledApplication>
+    <ConfigurableProperty uri="startMode">
+    </ConfigurableProperty>
+  </CompiledApplication>
+  <CompiledMessageFlow name="db_map" deployBarfile="C:\Users\Sreenivas Bandaru\IBM\ACET12\all_practice\GeneratedBarFiles\Database_using_mappaingproject.generated.bar" deployTimestamp="2024-09-10 23:32:47">
+    <ConfigurableProperty uri="db_map#HTTP Input.URLSpecifier" override="/m1">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#HTTP Input.decompressInputMessage">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#HTTP Input.faultFormat">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#HTTP Input.securityProfileName">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#HTTP Input.timeoutForClient">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#HTTP Input.useHTTPS">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#HTTP Input.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#HTTP Reply.compressionType">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#HTTP Reply.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#additionalInstances">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#commitCount">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#commitInterval">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#consumerPolicySet">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#consumerPolicySetBindings">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#coordinatedTransaction">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#maximumRateMsgsPerSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#monitoringProfile">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#notificationThresholdMsgsPerSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#processingTimeoutAction">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#processingTimeoutSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#providerPolicySet">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#providerPolicySetBindings">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#securityProfileName">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#startInstancesWhenFlowStarts">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#startMode">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="db_map#wlmPolicy">
+    </ConfigurableProperty>
+  </CompiledMessageFlow>
+</Broker>

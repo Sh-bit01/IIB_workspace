@@ -1,0 +1,49 @@
+
+
+CREATE COMPUTE MODULE db_conn_mf_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		DECLARE refEmployees REFERENCE TO InputRoot.XMLNSC.data.Employee;
+--		CALL INSERTION(refEmployees.ID, refEmployees.Name, refEmployees.Salary, refEmployees.Age);
+
+--        CALL update(refEmployees.ID, refEmployees.Age);
+		  CALL del(refEmployees.Age);
+		
+		
+	END;
+END MODULE;
+
+
+
+--CREATE PROCEDURE INSERTION (In ID CHARACTER, IN NAME CHARACTER, IN SALARY CHARACTER, In AGE CHARACTER)
+--LANGUAGE DATABASE
+--EXTERNAL NAME "INSERTION"; 
+
+--CREATE PROCEDURE update (In ID CHARACTER,  In AGE CHARACTER)
+--LANGUAGE DATABASE
+--EXTERNAL NAME "UP_DATA"; 
+
+CREATE PROCEDURE del ( In AGE CHARACTER)
+LANGUAGE DATABASE
+EXTERNAL NAME "del_data"; 
+
+
+

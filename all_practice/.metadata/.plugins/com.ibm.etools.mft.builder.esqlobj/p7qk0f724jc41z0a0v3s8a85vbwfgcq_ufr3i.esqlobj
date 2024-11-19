@@ -1,0 +1,3 @@
+CREATE PROCEDURE encrypt(IN a BLOB, IN b string )
+LANGUAGE JAVA
+EXTERNAL NAME "Cipher.base64.Encrept.encrypt" ;

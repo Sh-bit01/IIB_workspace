@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy:Deploy xmlns:deploy="http://www.ibm.com/xmlns/prod/wmb/deploy/6.0.0" overrideConfigurableProperties="false" includeESQL="false">
+  <deployables>
+    <deployable deployed="true" barResourceTimeStamp="1726000497958" workspaceResource="/Database_using_mappaing/application.descriptor">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file Database_using_mappaing\application.descriptor.&#xA;Successfully added file Database_using_mappaing\application.descriptor to BAR file.&#xA;Elapsed time: 0.002 second(s).&#xA;&#xA;Successfully added file Database_using_mappaing\application.descriptor to BAR file.&#xA;" severity="0"/>
+      <barEntry name="application.descriptor"/>
+    </deployable>
+    <deployable deployed="true" barResourceTimeStamp="1726004779591" workspaceResource="/Database_using_mappaing/db_map.msgflow">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file Database_using_mappaing\db_map.msgflow.&#xA;Successfully added file Database_using_mappaing\db_map.msgflow to BAR file.&#xA;" severity="0"/>
+      <barEntry name="db_map.msgflow"/>
+    </deployable>
+    <deployable deployed="true" barResourceTimeStamp="1726008890209" workspaceResource="/Database_using_mappaing/db_map_Mapping.map">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file Database_using_mappaing\db_map_Mapping.map.&#xA;Successfully added file Database_using_mappaing\db_map_Mapping.map to BAR file.&#xA;" severity="0"/>
+      <barEntry name="db_map_Mapping.map"/>
+    </deployable>
+  </deployables>
+</deploy:Deploy>

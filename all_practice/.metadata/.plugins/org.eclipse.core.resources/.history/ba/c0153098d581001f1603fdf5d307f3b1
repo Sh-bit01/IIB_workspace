@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmAppConnectRESTRequest.msgnode="ComIbmAppConnectRESTRequest.msgnode" xmlns:ComIbmChangeDataCapture.msgnode="ComIbmChangeDataCapture.msgnode" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmDatabase.msgnode="ComIbmDatabase.msgnode" xmlns:ComIbmDatabaseInput.msgnode="ComIbmDatabaseInput.msgnode" xmlns:ComIbmDatabaseRetrieve.msgnode="ComIbmDatabaseRetrieve.msgnode" xmlns:ComIbmDatabaseRoute.msgnode="ComIbmDatabaseRoute.msgnode"
+    xmlns:ComIbmEmailInput.msgnode="ComIbmEmailInput.msgnode" xmlns:ComIbmEmailOutput.msgnode="ComIbmEmailOutput.msgnode" xmlns:ComIbmFileExists.msgnode="ComIbmFileExists.msgnode" xmlns:ComIbmFileInput.msgnode="ComIbmFileInput.msgnode" xmlns:ComIbmFileIterator.msgnode="ComIbmFileIterator.msgnode" xmlns:ComIbmFileOutput.msgnode="ComIbmFileOutput.msgnode" xmlns:ComIbmFileRead.msgnode="ComIbmFileRead.msgnode" xmlns:ComIbmFilter.msgnode="ComIbmFilter.msgnode" xmlns:ComIbmHTTPAsyncRequest.msgnode="ComIbmHTTPAsyncRequest.msgnode"
+    xmlns:ComIbmHTTPAsyncResponse.msgnode="ComIbmHTTPAsyncResponse.msgnode" xmlns:ComIbmHTTPHeader.msgnode="ComIbmHTTPHeader.msgnode" xmlns:ComIbmJMSClientInput.msgnode="ComIbmJMSClientInput.msgnode" xmlns:ComIbmJMSClientOutput.msgnode="ComIbmJMSClientOutput.msgnode" xmlns:ComIbmJMSClientReceive.msgnode="ComIbmJMSClientReceive.msgnode" xmlns:ComIbmJMSClientReply.msgnode="ComIbmJMSClientReply.msgnode" xmlns:ComIbmJMSHeader.msgnode="ComIbmJMSHeader.msgnode" xmlns:ComIbmJMSMQTransform.msgnode="ComIbmJMSMQTransform.msgnode"
+    xmlns:ComIbmJavaCompute.msgnode="ComIbmJavaCompute.msgnode" xmlns:ComIbmMQGet.msgnode="ComIbmMQGet.msgnode" xmlns:ComIbmMQHeader.msgnode="ComIbmMQHeader.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQJMSTransform.msgnode="ComIbmMQJMSTransform.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ComIbmMQReply.msgnode="ComIbmMQReply.msgnode" xmlns:ComIbmMSLMapping.msgnode="ComIbmMSLMapping.msgnode" xmlns:ComIbmPublication.msgnode="ComIbmPublication.msgnode"
+    xmlns:ComIbmRESTAsyncRequest.msgnode="ComIbmRESTAsyncRequest.msgnode" xmlns:ComIbmRESTAsyncResponse.msgnode="ComIbmRESTAsyncResponse.msgnode" xmlns:ComIbmRESTRequest.msgnode="ComIbmRESTRequest.msgnode" xmlns:ComIbmSOAPInput.msgnode="ComIbmSOAPInput.msgnode" xmlns:ComIbmScheduler.msgnode="ComIbmScheduler.msgnode" xmlns:ComIbmTimeoutControl.msgnode="ComIbmTimeoutControl.msgnode" xmlns:ComIbmTimeoutNotification.msgnode="ComIbmTimeoutNotification.msgnode" xmlns:ComIbmTrace.msgnode="ComIbmTrace.msgnode"
+    xmlns:ComIbmValidate.msgnode="ComIbmValidate.msgnode" xmlns:ComIbmWSInput.msgnode="ComIbmWSInput.msgnode" xmlns:ComIbmWSReply.msgnode="ComIbmWSReply.msgnode" xmlns:ComIbmWSRequest.msgnode="ComIbmWSRequest.msgnode" xmlns:SRRetrieveEntity.msgnode="SRRetrieveEntity.msgnode" xmlns:SRRetrieveITService.msgnode="SRRetrieveITService.msgnode" xmlns:com_ibm_connector_kafka_ComIbmEventInput.msgnode="com/ibm/connector/kafka/ComIbmEventInput.msgnode" xmlns:com_ibm_connector_kafka_ComIbmOutput.msgnode="com/ibm/connector/kafka/ComIbmOutput.msgnode"
+    xmlns:com_ibm_connector_kafka_ComIbmRequest.msgnode="com/ibm/connector/kafka/ComIbmRequest.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="Test.msgflow" nsPrefix="Test.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="Test" bundleName="Test" pluginId="000Test"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/000Test/icons/full/obj16/Test.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/000Test/icons/full/obj30/Test.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmTrace.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="254,276" destination="file">
+        <translation xmi:type="utility:ConstantString" string="Trace"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="242,155" mappingExpression="msl://{default}#Test_Mapping">
+        <translation xmi:type="utility:ConstantString" string="Mapping"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFilter.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="244,217" filterExpression="esql://routine/#Test_Filter.Main">
+        <translation xmi:type="utility:ConstantString" string="Filter"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="240,91" computeExpression="esql://routine/#Test_Compute.Main">
+        <translation xmi:type="utility:ConstantString" string="Compute"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJavaCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="242,43" javaClass="Test_JavaCompute">
+        <translation xmi:type="utility:ConstantString" string="Java Compute"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="63,33" connection="CCDT">
+        <translation xmi:type="utility:ConstantString" string="MQ Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="52,87">
+        <translation xmi:type="utility:ConstantString" string="MQ Output"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_11" location="54,135">
+        <translation xmi:type="utility:ConstantString" string="MQ Reply"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQGet.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_12" location="56,185" messageDomainProperty="XMLNSC" validateTiming="complete" transactionMode="automatic" generateMode="none" copyLocalEnv="none">
+        <translation xmi:type="utility:ConstantString" string="MQ Get"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_13" location="59,235" mqmdAAAOptions="Carry forward header" mqmdCodedCharSetId="Inherit" mqmdFormat="Inherit" mqmdVersion="Inherit" mqmdMsgType="Inherit" mqmdExpiry="Inherit" mqmdFeedback="Inherit" mqmdPriority="Inherit" mqmdPersistence="Inherit" mqmdMsgId="Inherit" mqmdCorrelId="Inherit" mqmdReplyToQ="Inherit" mqmdReplyToQMgr="Inherit" mqmdReport="false">
+        <translation xmi:type="utility:ConstantString" string="MQ Header"/>
+      </nodes>
+      <nodes xmi:type="ComIbmPublication.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_14" location="61,291">
+        <translation xmi:type="utility:ConstantString" string="Publication"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_15" location="467,46">
+        <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_16" location="461,99">
+        <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_17" location="463,149" httpVersion="1.1" protocol="TLS">
+        <translation xmi:type="utility:ConstantString" string="HTTP Request"/>
+      </nodes>
+      <nodes xmi:type="ComIbmHTTPHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_18" location="467,200" httpInputHeader="CarryForward" httpRequestHeader="Modify" httpRequestClearIncoming="true">
+        <translation xmi:type="utility:ConstantString" string="HTTP Header"/>
+        <nsMappingTable nsPrefix="tns" namespace="http://schemas.xmlsoap.org/soap/envelope/"/>
+      </nodes>
+      <nodes xmi:type="ComIbmHTTPAsyncRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_19" location="468,251">
+        <translation xmi:type="utility:ConstantString" string="HTTP Async Request"/>
+      </nodes>
+      <nodes xmi:type="ComIbmHTTPAsyncResponse.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_20" location="480,301">
+        <translation xmi:type="utility:ConstantString" string="HTTP Async Response"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_21" location="681,28" processedFileAction="moveToArchiveWithTimestamp" failedFileAction="moveToBackoutWithTimestamp" recordDetection="delimited" componentLevel="node">
+        <translation xmi:type="utility:ConstantString" string="File Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_22" location="672,82">
+        <translation xmi:type="utility:ConstantString" string="File Output"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileRead.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_23" location="675,134">
+        <translation xmi:type="utility:ConstantString" string="File Read"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileExists.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_24" location="689,182">
+        <translation xmi:type="utility:ConstantString" string="File Exists"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileIterator.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_25" location="680,237">
+        <translation xmi:type="utility:ConstantString" string="File Iterator"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_26" location="911,37" useHTTPTransport="true">
+        <translation xmi:type="utility:ConstantString" string="SOAP Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_27" location="901,94" definitionType="" acceptCompressedResponses="true">
+        <translation xmi:type="utility:ConstantString" string="REST Request"/>
+      </nodes>
+      <nodes xmi:type="ComIbmValidate.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_28" location="905,152">
+        <translation xmi:type="utility:ConstantString" string="Validate"/>
+      </nodes>
+      <nodes xmi:type="ComIbmDatabaseInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_29" location="84,-339" databaseInputExpression="esql://routine/#Test_Database_Input">
+        <translation xmi:type="utility:ConstantString" string="Database Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmDatabase.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_30" location="74,-180" statement="esql://routine/#Test_Database.Main">
+        <translation xmi:type="utility:ConstantString" string="Database"/>
+      </nodes>
+      <nodes xmi:type="ComIbmDatabaseRetrieve.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_31" location="72,-232" sqlQuery="">
+        <translation xmi:type="utility:ConstantString" string="Database Retrieve"/>
+      </nodes>
+      <nodes xmi:type="ComIbmDatabaseRoute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_32" location="71,-287" sqlQuery="">
+        <outTerminals terminalNodeID="Match" dynamic="true" label="Match"/>
+        <translation xmi:type="utility:ConstantString" string="Database Route"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJMSClientInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="311,-338">
+        <translation xmi:type="utility:ConstantString" string="JMS Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="302,-284">
+        <translation xmi:type="utility:ConstantString" string="JMS Output"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJMSClientReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_33" location="303,-237">
+        <translation xmi:type="utility:ConstantString" string="JMS Reply"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJMSClientReceive.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_34" location="305,-185">
+        <translation xmi:type="utility:ConstantString" string="JMS Receive"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJMSHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_35" location="302,-135">
+        <translation xmi:type="utility:ConstantString" string="JMS Header"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJMSMQTransform.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_36" location="491,-335">
+        <translation xmi:type="utility:ConstantString" string="JMS MQ Transform"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQJMSTransform.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_37" location="495,-278">
+        <translation xmi:type="utility:ConstantString" string="MQ JMS Transform"/>
+      </nodes>
+      <nodes xmi:type="com_ibm_connector_kafka_ComIbmEventInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_38" location="507,-228" connectorName="Kafka" initialOffset="latest" enableAutoCommit="true" useSyncCommit="true" useClientIdSuffix="true" connectionTimeout="15" sessionTimeout="10" receiveBatchSize="1" securityProtocol="PLAINTEXT" sslProtocol="TLSv1.2" validateTiming="deferred" parserXmlnscBuildTreeUsingXMLSchema="false" parserXmlnscUseForXmlnsDomain="false" parserXmlnscMixedContentRetainMode="none"
+          parserXmlnscCommentsRetainMode="none" parserXmlnscProcessingInstructionsRetainMode="none" validateMaster="none" validateFailureAction="exception" componentLevel="flow" additionalInstances="0">
+        <translation xmi:type="utility:ConstantString" string="KafkaConsumer"/>
+      </nodes>
+      <nodes xmi:type="com_ibm_connector_kafka_ComIbmOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_39" location="496,-174" connectorName="Kafka" useClientIdSuffix="true" acks="0" timeout="60" securityProtocol="PLAINTEXT" sslProtocol="TLSv1.2" validateMaster="inherit" validateFailureAction="exception">
+        <translation xmi:type="utility:ConstantString" string="KafkaProducer"/>
+      </nodes>
+      <nodes xmi:type="com_ibm_connector_kafka_ComIbmRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_40" location="496,-123" connectorName="Kafka" partitionNumber="0" offset="0" notFoundAction="no match" useClientIdSuffix="true" connectionTimeout="5" outputDataLocation="$OutputRoot" resultDataLocation="$ResultRoot" copyLocalEnvironment="true" securityProtocol="PLAINTEXT" sslProtocol="TLSv1.2" validateTiming="deferred" parserXmlnscBuildTreeUsingXMLSchema="false" parserXmlnscUseForXmlnsDomain="false"
+          parserXmlnscMixedContentRetainMode="none" parserXmlnscCommentsRetainMode="none" parserXmlnscProcessingInstructionsRetainMode="none" validateMaster="none" validateFailureAction="exception">
+        <translation xmi:type="utility:ConstantString" string="Kafka Read"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_41" location="696,-337" definitionType="" acceptCompressedResponses="true">
+        <translation xmi:type="utility:ConstantString" string="REST Request1"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRESTAsyncRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_42" location="697,-288" asyncResponseCorrelator="d5dddfb8-cfcc-4f43-a1ba-ee30462d6beb" definitionType="" acceptCompressedResponses="true">
+        <translation xmi:type="utility:ConstantString" string="REST Async Request"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRESTAsyncResponse.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_43" location="707,-233" asyncRequestCorrelator="d5dddfb8-cfcc-4f43-a1ba-ee30462d6beb">
+        <translation xmi:type="utility:ConstantString" string="REST Async Response"/>
+      </nodes>
+      <nodes xmi:type="ComIbmAppConnectRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_44" location="698,-183">
+        <translation xmi:type="utility:ConstantString" string="App Connect REST Request"/>
+      </nodes>
+      <nodes xmi:type="SRRetrieveEntity.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_45" location="707,-78" depthPolicy="MatchOnly">
+        <translation xmi:type="utility:ConstantString" string="Registry Lookup"/>
+      </nodes>
+      <nodes xmi:type="SRRetrieveITService.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_46" location="703,-131">
+        <translation xmi:type="utility:ConstantString" string="Endpoint Lookup"/>
+      </nodes>
+      <nodes xmi:type="ComIbmChangeDataCapture.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_47" location="89,-124">
+        <translation xmi:type="utility:ConstantString" string="Change Data Capture"/>
+      </nodes>
+      <nodes xmi:type="ComIbmEmailInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_48" location="909,-331">
+        <translation xmi:type="utility:ConstantString" string="Email Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmEmailOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_49" location="902,-275">
+        <translation xmi:type="utility:ConstantString" string="Email Output"/>
+      </nodes>
+      <nodes xmi:type="ComIbmTimeoutControl.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_50" location="905,-221">
+        <translation xmi:type="utility:ConstantString" string="Timeout Control"/>
+      </nodes>
+      <nodes xmi:type="ComIbmTimeoutNotification.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_51" location="920,-169">
+        <translation xmi:type="utility:ConstantString" string="Timeout Notification"/>
+      </nodes>
+      <nodes xmi:type="ComIbmScheduler.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_52" location="918,-115">
+        <translation xmi:type="utility:ConstantString" string="Scheduler"/>
+      </nodes>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

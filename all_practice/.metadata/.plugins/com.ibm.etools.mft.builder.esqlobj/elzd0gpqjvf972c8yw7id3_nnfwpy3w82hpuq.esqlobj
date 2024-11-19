@@ -1,0 +1,30 @@
+CREATE COMPUTE MODULE fanin_http_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 CALL CopyMessageHeaders();
+		 DECLARE flightRef REFERENCE TO InputRoot.ComIbmAggregateReplyBody.flight_details.JSON.Data.Flight_Details;
+		 DECLARE cabRef REFERENCE TO InputRoot.ComIbmAggregateReplyBody.cab_details.JSON.Data.Cab_details;
+		 
+		 SET OutputRoot.JSON.Data.Item[1].flight_name = flightRef.flight_name;
+		 SET OutputRoot.JSON.Data.Item[1].flight_id = flightRef.flight_id;
+		 SET OutputRoot.JSON.Data.Item[1].Date = flightRef.Date;
+		 SET OutputRoot.JSON.Data.Item[1].cab_name = cabRef.cab_name;
+		 SET OutputRoot.JSON.Data.Item[1].passenger_name = cabRef.passenger_name;
+		   
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

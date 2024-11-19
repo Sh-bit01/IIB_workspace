@@ -1,0 +1,55 @@
+2024-09-05 00:18:22.123380Z: [Thread 6020] (Msg 1/1) BIP1990I: Integration server 'TEST_SERVER' starting initialization; version '12.0.12.0' (64-bit) 
+2024-09-05 00:18:22.154336Z: [Thread 6020] (Msg 1/1) BIP9905I: Initializing resource managers. 
+2024-09-05 00:18:24.650420Z: [Thread 6020] (Msg 1/1) BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2024-09-05 00:18:25.066844Z: [Thread 6020] (Msg 1/1) BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2024-09-05 00:18:28.021974Z: [Thread 6020] (Msg 1/1) BIP9906I: Reading deployed resources. 
+2024-09-05 00:18:28.032786Z: [Thread 6020] (Msg 1/1) BIP9907I: Initializing deployed resources. 
+2024-09-05 00:18:28.034440Z: [Thread 6020] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'DB_log_task' of type 'Application'. 
+2024-09-05 00:18:28.057206Z: [Thread 6020] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:18:29.812314Z: [Thread 6020] (Msg 1/3) BIP9320E: Message Flow 'error_handle', 'error_handle' encountered a failure and could not start. 
+2024-09-05 00:18:29.812362Z: [Thread 6020] (Msg 2/3) BIP4001E: Syntax error in SQL statements in node 'error_handle.Trace'. 
+2024-09-05 00:18:29.812386Z: [Thread 6020] (Msg 3/3) BIP2432E: (, 1.3) : The correlation name 'root' is not valid. Those in scope are: Environment, LocalEnvironment, Root, Body, Properties, ExceptionList, DestinationList, Context. 
+2024-09-05 00:18:29.812520Z: [Thread 6020] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'DB_log_task' of type 'Application'. 
+2024-09-05 00:18:29.834616Z: [Thread 6020] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-05 00:18:29.834664Z: [Thread 6020] (Msg 1/1) BIP1996I: Listening on HTTP URL 'p2'. 
+2024-09-05 00:18:29.834818Z: [Thread 6020] (Msg 1/1) BIP2269I: Deployed resource 'BackendMF' (uuid='BackendMF',type='MessageFlow') started successfully. 
+2024-09-05 00:18:29.835076Z: [Thread 6020] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-09-05 00:18:29.835178Z: [Thread 6020] (Msg 1/1) BIP2269I: Deployed resource 'DB_mf' (uuid='DB_mf',type='MessageFlow') started successfully. 
+2024-09-05 00:18:29.835226Z: [Thread 6020] (Msg 1/1) BIP9332I: Application 'DB_log_task' has been reloaded successfully. 
+2024-09-05 00:18:29.835282Z: [Thread 6020] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:18:29.835452Z: [Thread 6020] (Msg 1/1) BIP9333W: Application 'Error_handling' has been reloaded but contains errors which has prevented some resources from starting. 
+2024-09-05 00:18:30.449960Z: [Thread 2588] (Msg 1/1) BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2024-09-05 00:18:30.460236Z: [Thread 2588] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2024-09-05 00:18:31.285000Z: [Thread 6020] (Msg 1/1) BIP1991I: Integration server has finished initialization. 
+2024-09-05 00:18:42.386568Z: [Thread 2476] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-05 00:18:42.386616Z: [Thread 2476] (Msg 1/1) BIP2153I: About to 'deleteAll' an integration server. 
+2024-09-05 00:18:42.387296Z: [Thread 2476] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'DB_log_task' of type 'Application'. 
+2024-09-05 00:18:44.783384Z: [Thread 2476] (Msg 1/1) BIP2271I: Deployed resource 'BackendMF' (uuid='BackendMF',type='MessageFlow') successfully stopped. 
+2024-09-05 00:18:44.783544Z: [Thread 2476] (Msg 1/1) BIP2271I: Deployed resource 'DB_mf' (uuid='DB_mf',type='MessageFlow') successfully stopped. 
+2024-09-05 00:18:44.783588Z: [Thread 2476] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'DB_log_task' of type 'Application'. 
+2024-09-05 00:18:44.937944Z: [Thread 2476] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7800' for 'http' connections. 
+2024-09-05 00:18:44.954036Z: [Thread 2476] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:18:44.954128Z: [Thread 2476] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:18:44.966524Z: [Thread 2476] (Msg 1/1) BIP9521I: Application 'DB_log_task' has been deleted. 
+2024-09-05 00:18:44.970500Z: [Thread 2476] (Msg 1/1) BIP9521I: Application 'Error_handling' has been deleted. 
+2024-09-05 00:18:44.973844Z: [Thread 2476] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-05 00:18:51.731808Z: [Thread 8304] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-05 00:18:51.759452Z: [Thread 8304] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:18:51.796976Z: [Thread 8304] (Msg 1/3) BIP9320E: Message Flow 'error_handle', 'error_handle' encountered a failure and could not start. 
+2024-09-05 00:18:51.797024Z: [Thread 8304] (Msg 2/3) BIP4001E: Syntax error in SQL statements in node 'error_handle.Trace'. 
+2024-09-05 00:18:51.797048Z: [Thread 8304] (Msg 3/3) BIP2432E: (, 1.3) : The correlation name 'root' is not valid. Those in scope are: Environment, LocalEnvironment, Root, Body, Properties, ExceptionList, DestinationList, Context. 
+2024-09-05 00:18:51.797136Z: [Thread 8304] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:18:51.797256Z: [Thread 8304] (Msg 1/1) BIP9333W: Application 'Error_handling' has been created but contains errors which has prevented some resources from starting. 
+2024-09-05 00:18:51.797300Z: [Thread 8304] (Msg 1/1) BIP1096E: The source 'Error_handlingproject.generated.bar' has been deployed but there were one or more failures which may mean the deployed resources will be unable to execute. 
+2024-09-05 00:18:51.797544Z: [Thread 8304] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-05 00:20:02.479270Z: [Thread 908] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-05 00:20:02.494500Z: [Thread 908] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:20:02.494627Z: [Thread 908] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:20:02.519633Z: [Thread 908] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:20:02.558899Z: [Thread 908] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Error_handling' of type 'Application'. 
+2024-09-05 00:20:02.569859Z: [Thread 908] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-05 00:20:02.569925Z: [Thread 908] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-09-05 00:20:02.570091Z: [Thread 908] (Msg 1/1) BIP2269I: Deployed resource 'error_handle' (uuid='error_handle',type='MessageFlow') started successfully. 
+2024-09-05 00:20:02.570139Z: [Thread 908] (Msg 1/1) BIP9332I: Application 'Error_handling' has been changed successfully. 
+2024-09-05 00:20:02.570175Z: [Thread 908] (Msg 1/1) BIP9326I: The source 'Error_handlingproject.generated.bar' has been successfully deployed. 
+2024-09-05 00:20:02.570627Z: [Thread 908] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 

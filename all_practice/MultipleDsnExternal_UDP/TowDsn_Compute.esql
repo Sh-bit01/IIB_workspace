@@ -1,0 +1,61 @@
+
+
+CREATE COMPUTE MODULE TowDsn_Compute
+	DECLARE DSN EXTERNAL CHARACTER;
+	DECLARE DSN1 EXTERNAL CHARACTER;
+	
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		
+		
+		
+		
+		
+		--DECLARE stat CHARACTER 'SELECT * FROM  Database.'||DSN||'.SYSTEM.Shreyash';
+		--DECLARE stat1 CHARACTER 'SELECT * FROM  Database.'||DSN1||'.SYSTEM.Shreyash';
+		--SET OutputRoot.JSON.Data.result[]= PASSTHRU(stat);
+		
+		--DECLARE d CHARACTER  'Database.'||DSN;
+		
+		DECLARE r  ROW ;
+		
+		--SET r.result[] = PASSTHRU('SELECT * FROM  shreyash' TO {d});
+	
+		--DECLARE system CHARACTER 'system';
+		--SET r.result[] = PASSTHRU('SELECT * FROM shreyash' TO Database.{DSN1});
+		--SET r.result2[] = SELECT * FROM Database.{DSN}.system.shreyash ;
+		
+		--INSERT INTO Database.{DSN}.system.shreyash (ID, NAME, LOC) VALUES ('1149', 'yash', 'hello');
+		SET r.result2[] = SELECT * FROM Database.{DSN}.system.shreyash ;
+		
+		
+		
+		--SET r.result[] = SELECT * FROM system.shreyash;
+		
+		
+		SET OutputRoot.JSON.Data.result[] = r.result2[];
+		
+		
+		
+		
+		
+	END;
+END MODULE;

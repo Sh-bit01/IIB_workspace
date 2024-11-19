@@ -1,0 +1,2 @@
+
+{"name":"app","hostname":"Win10-Dev01","pid":1828,"level":50,"transaction-id":"missing","user-id":"missing","resource-id":"","log-level":"","time":"2024-10-03T22:15:12.548Z","environment":"app-connect","application":"app","app-instance":"0","src":{"file":"C:\\Program Files\\IBM\\ACE\\12.0.12.0\\tools\\tkelectronapp\\resources\\app\\electron\\js\\routes.js","line":1,"func":null},"msg":"Error loading discovery page:  (-3) loading 'file:///C:/Program%20Files/IBM/ACE/12.0.12.0/tools/tkelectronapp/resources/app/build/loading.html'","v":0}

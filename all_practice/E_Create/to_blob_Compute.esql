@@ -1,0 +1,61 @@
+
+
+CREATE COMPUTE MODULE to_blob_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+--		DECLARE str CHARACTER 'hii i am shreyash';
+--		DECLARE var1 BLOB cast(str as BLOB CCSID 1208);
+--		--SET var = cast(str as BLOB CCSID 1208);
+--		
+--		--DECLARE str CHARACTER 'hii i am shreyash';
+--		SET Environment.data = str;
+--		DECLARE var2 BLOB ASBITSTREAM(Environment CCSID 1208);
+--		
+--		SET OutputRoot.JSON.Data.cas = var1;
+--		SET OutputRoot.JSON.Data.asbitstrem = var2;
+
+
+
+
+		DECLARE inref REFERENCE TO InputRoot.JSON.Data.data.Emp.EmpInfo;
+		--CREATE FIELD OutputRoot.JSON.Data.data.Emp.EmpInfo;
+		--DECLARE Outref REFERENCE TO OutputRoot.JSON.Data.data.Emp.EmpInfo;
+		
+		CREATE FIELD OutputRoot.JSON.Data.data.Emp.EmpInfo IDENTITY (JSON.Array) EmpInfo;
+		
+		SET OutputRoot.JSON.Data.data.Emp.EmpInfo.Item[1] = inref;
+		
+		--CREATE LASTCHILD OF OutputRoot.JSON.Data.data.Emp NAME 'EmpInfo' ;
+		CREATE LASTCHILD OF OutputRoot.JSON.Data.data.Emp.EmpInfo.Item[2] NAME 'EmpfirstName' VALUE 'Ram';
+		CREATE LASTCHILD OF OutputRoot.JSON.Data.data.Emp.EmpInfo.Item[2] NAME 'EmplastName' VALUE 'Rama';
+		
+		
+		CREATE FIRSTCHILD OF OutputRoot.JSON.Data.data.Emp.EmpInfo.Item[1] NAME 'EmplastName' VALUE 'Kayre';
+		CREATE FIRSTCHILD OF OutputRoot.JSON.Data.data.Emp.EmpInfo.Item[1] NAME 'EmpfirstName' VALUE 'Kay';
+		
+		--SET Outref.EmpfirstName = inref.firstName;
+		--SET Outref.EmplastName = inref.lastName;
+		--SET OutputRoot = InputRoot;
+		
+		
+				
+	END;
+END MODULE;

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:recSepFieldsFmt="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                
+  
+  
+  
+  
+  
+  <xsd:import namespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat" schemaLocation="IBMdefined/RecordSeparatedFieldFormat.xsd"/>
+                
+  
+  
+  
+  
+  
+  <xsd:annotation>
+                        		
+    
+    
+    
+    
+    
+    <xsd:appinfo source="http://www.ogf.org/dfdl/">
+                                    			
+      
+      
+      
+      
+      
+      <dfdl:format encoding="{$dfdl:encoding}" escapeSchemeRef="recSepFieldsFmt:RecordEscapeScheme" occursCountKind="implicit" ref="recSepFieldsFmt:RecordSeparatedFieldsFormat"/>
+                                    		
+    
+    
+    
+    
+    
+    </xsd:appinfo>
+                        	
+  
+  
+  
+  
+  
+  </xsd:annotation>
+            	
+  
+  
+  
+  
+  
+  <xsd:element dfdl:ignoreCase="no" dfdl:initiator="%#123;" dfdl:terminator="%#125;" ibmSchExtn:docRoot="true" name="JSON_DFDL">
+                        		
+    
+    
+    
+    
+    
+    <xsd:complexType>
+                                    			
+      
+      
+      
+      
+      
+      <xsd:sequence dfdl:separator="%#44;">
+                                                				
+        			
+                
+        
+        
+        
+        
+        <xsd:element dfdl:initiator="%WSP*;id:%WSP*;" dfdl:lengthKind="delimited" dfdl:textNumberPattern="0" name="id" type="xsd:integer"/>
+                                                        
+        
+        
+        
+        
+        <xsd:element dfdl:initiator="%WSP*;name:%WSP*;" name="name" type="xsd:string"/>
+                                                        
+        
+        
+        
+        
+        <xsd:element dfdl:initiator="%WSP*;loc:%WSP*;" name="loc" type="xsd:string"/>
+                                                        
+                
+        
+        
+        
+        <xsd:element default="" dfdl:initiator="%WSP*;data:%WSP*;" dfdl:nilKind="logicalValue" dfdl:nilValue="%NUL;" dfdl:useNilForDefault="yes" minOccurs="0" name="data" nillable="true" type="xsd:string"/>
+                                                    
+      
+      
+      
+                      
+        <xsd:element dfdl:ignoreCase="no" dfdl:initiator="%WSP*;no:%WSP*;" dfdl:lengthKind="delimited" dfdl:textNumberCheckPolicy="strict" dfdl:textNumberPattern="0" name="number" type="xsd:int"/>
+                    
+      </xsd:sequence>
+                                    		
+    
+    
+    
+    
+    
+    </xsd:complexType>
+                        	
+  
+  
+  
+  
+  
+  </xsd:element>
+            
+
+
+
+
+
+</xsd:schema>

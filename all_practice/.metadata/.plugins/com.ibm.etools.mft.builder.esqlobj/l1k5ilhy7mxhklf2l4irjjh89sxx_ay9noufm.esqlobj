@@ -1,0 +1,69 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+	
+--		  {
+--  "Data": {
+--    "ResultData": {
+--      "MessageArrayTest": [
+--        {
+--          "Folder": {
+--            "FieldA": "Field11Value\\1",
+--            "FieldB": "Field12Value\\1"
+--          }
+--        },
+--        {
+--          "Folder": {
+--            "FieldA": "Field21Value\\2",
+--            "FieldB": "Field22Value\\2"
+--          }
+--        }
+--      ]
+--    }
+--  }
+--}
+
+
+	
+DECLARE var REFERENCE TO InputRoot.JSON.Data.Data.ResultData.MessageArrayTest[];
+DECLARE outp REFERENCE TO OutputRoot.JSON.Data.Data.ResultData.MessageArrayTest[];
+
+
+FOR i AS var.Folder[]  DO
+	
+	SET 
+	
+	
+END FOR;
+
+
+
+
+
+
+
+
+
+
+
+
+			
+		--SET OutputRoot = InputRoot;
+	
+	
+	END;

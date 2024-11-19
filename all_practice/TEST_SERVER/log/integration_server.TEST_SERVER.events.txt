@@ -1,0 +1,84 @@
+2024-09-10 23:32:14.792738Z: [Thread 9264] (Msg 1/1) BIP1990I: Integration server 'TEST_SERVER' starting initialization; version '12.0.12.0' (64-bit) 
+2024-09-10 23:32:14.811643Z: [Thread 9264] (Msg 1/1) BIP9905I: Initializing resource managers. 
+2024-09-10 23:32:16.965834Z: [Thread 9264] (Msg 1/1) BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2024-09-10 23:32:17.353140Z: [Thread 9264] (Msg 1/1) BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2024-09-10 23:32:19.790234Z: [Thread 9264] (Msg 1/1) BIP9906I: Reading deployed resources. 
+2024-09-10 23:32:20.292372Z: [Thread 9916] (Msg 1/1) BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2024-09-10 23:32:20.303580Z: [Thread 9916] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2024-09-10 23:32:20.992126Z: [Thread 9264] (Msg 1/1) BIP1991I: Integration server has finished initialization. 
+2024-09-10 23:32:34.913412Z: [Thread 9344] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-10 23:32:34.923344Z: [Thread 9344] (Msg 1/1) BIP9332I: PolicyProject 'orcl' has been created successfully. 
+2024-09-10 23:32:34.923436Z: [Thread 9344] (Msg 1/1) BIP9326I: The source 'orclproject.generated.bar' has been successfully deployed. 
+2024-09-10 23:32:34.923652Z: [Thread 9344] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-10 23:32:47.204832Z: [Thread 548] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-10 23:32:47.240240Z: [Thread 548] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:32:50.648624Z: [Thread 548] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'Database_using_mappaing' of type 'Application'. 
+2024-09-10 23:32:50.686276Z: [Thread 548] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7800' for 'http' connections. 
+2024-09-10 23:32:50.686332Z: [Thread 548] (Msg 1/1) BIP1996I: Listening on HTTP URL '/m1'. 
+2024-09-10 23:32:50.686480Z: [Thread 548] (Msg 1/1) BIP2269I: Deployed resource 'db_map' (uuid='db_map',type='MessageFlow') started successfully. 
+2024-09-10 23:32:50.686532Z: [Thread 548] (Msg 1/1) BIP9332I: Application 'Database_using_mappaing' has been created successfully. 
+2024-09-10 23:32:50.686564Z: [Thread 548] (Msg 1/1) BIP9326I: The source 'Database_using_mappaingproject.generated.bar' has been successfully deployed. 
+2024-09-10 23:32:50.686848Z: [Thread 548] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-10 23:33:04.572961Z: [Thread 10116] (Msg 1/1) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:33:04.586625Z: [Thread 10116] (Msg 1/3) BIP3120E: Exception condition detected on input node 'db_map.HTTP Input'. 
+2024-09-10 23:33:04.586681Z: [Thread 10116] (Msg 2/3) BIP2230E: Error detected whilst processing a message in node 'db_map.Mapping'. 
+2024-09-10 23:33:04.586704Z: [Thread 10116] (Msg 3/3) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:33:53.385872Z: [Thread 10116] (Msg 1/1) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-10 23:34:20.264746Z: [Thread 10116] (Msg 1/3) BIP3120E: Exception condition detected on input node 'db_map.HTTP Input'. 
+2024-09-10 23:34:20.264838Z: [Thread 10116] (Msg 2/3) BIP2230E: Error detected whilst processing a message in node 'db_map.Mapping'. 
+2024-09-10 23:34:20.265022Z: [Thread 10116] (Msg 3/3) BIP6253E: Error in node: Mapping. Could not locate JDBC Provider policy 'orcl', in the specified or default policy project, for the data source name property on this node. 
+2024-09-11 20:55:01.613001Z: [Thread 1800] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-11 20:55:01.717278Z: [Thread 1800] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'rest_api_pro' of type 'RestAPI'. 
+2024-09-11 20:55:02.261097Z: [Thread 1800] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'rest_api_pro' of type 'RestAPI'. 
+2024-09-11 20:55:02.261644Z: [Thread 1800] (Msg 1/1) BIP1996I: Listening on HTTP URL '/rest_api_pro/v1*'. 
+2024-09-11 20:55:02.262598Z: [Thread 1800] (Msg 1/1) BIP2269I: Deployed resource 'gen.rest_api_pro' (uuid='gen.rest_api_pro',type='MessageFlow') started successfully. 
+2024-09-11 20:55:02.262660Z: [Thread 1800] (Msg 1/1) BIP9332I: RestAPI 'rest_api_pro' has been created successfully. 
+2024-09-11 20:55:02.262697Z: [Thread 1800] (Msg 1/1) BIP9326I: The source 'rest_api_proproject.generated.bar' has been successfully deployed. 
+2024-09-11 20:55:02.263003Z: [Thread 1800] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-11 20:55:17.195220Z: [Thread 10188] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-09-11 20:55:17.223236Z: [Thread 10188] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'rest_api' of type 'Application'. 
+2024-09-11 20:55:17.290460Z: [Thread 10188] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'rest_api' of type 'Application'. 
+2024-09-11 20:55:17.290868Z: [Thread 10188] (Msg 1/1) BIP1996I: Listening on HTTP URL '/rest'. 
+2024-09-11 20:55:17.290996Z: [Thread 10188] (Msg 1/1) BIP2269I: Deployed resource 'rest1_mf' (uuid='rest1_mf',type='MessageFlow') started successfully. 
+2024-09-11 20:55:17.291044Z: [Thread 10188] (Msg 1/1) BIP9332I: Application 'rest_api' has been created successfully. 
+2024-09-11 20:55:17.291080Z: [Thread 10188] (Msg 1/1) BIP9326I: The source 'rest_apiproject.generated.bar' has been successfully deployed. 
+2024-09-11 20:55:17.291450Z: [Thread 10188] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-09-11 20:55:40.215256Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:55:40.215564Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:55:40.215600Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:55:40.215620Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:55:40.215640Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:56:22.631622Z: [Thread 6756] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'rest_api' of type 'Application'. 
+2024-09-11 20:56:25.313766Z: [Thread 6756] (Msg 1/1) BIP2271I: Deployed resource 'rest1_mf' (uuid='rest1_mf',type='MessageFlow') successfully stopped. 
+2024-09-11 20:56:25.313950Z: [Thread 6756] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'rest_api' of type 'Application'. 
+2024-09-11 20:56:25.373808Z: [Thread 6756] (Msg 1/1) BIP9521I: Application 'rest_api' has been deleted. 
+2024-09-11 20:56:44.779492Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:56:44.779556Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:56:44.779576Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:56:44.779596Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 20:56:44.779608Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:17.851392Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:17.851494Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:17.851574Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:17.851594Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:17.851610Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:32.691062Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:32.691158Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:32.691184Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:32.691204Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:03:32.691224Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:25:30.653520Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:25:30.653860Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:25:30.653890Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:25:30.653908Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:25:30.653924Z: [Thread 4884] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:26:34.260532Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:26:34.260596Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:26:34.260644Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:26:34.260668Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-11 21:26:34.260692Z: [Thread 10504] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-12 16:07:35.891044Z: [Thread 7440] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-12 16:07:35.891240Z: [Thread 7440] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-12 16:07:35.891268Z: [Thread 7440] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-12 16:07:35.891288Z: [Thread 7440] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 
+2024-09-12 16:07:35.891304Z: [Thread 7440] (Msg 1/1) BIP4350S: An error has occurred in the debugger. 

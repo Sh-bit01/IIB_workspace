@@ -1,0 +1,89 @@
+
+
+CREATE COMPUTE MODULE Hard_code_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		
+		SET OutputRoot.JSON.Data.statusCode = '200';
+		SET OutputRoot.JSON.Data.Message = 'Operation performed successfully';
+		
+		SET OutputRoot.JSON.Data.data.customerId = '0';
+		SET OutputRoot.JSON.Data.data.name = 'aadit';
+		SET OutputRoot.JSON.Data.data.shortName = 'adi';
+		SET OutputRoot.JSON.Data.data.gender = 'Male';
+		SET OutputRoot.JSON.Data.data.segment = 0;
+		SET OutputRoot.JSON.Data.data.langwage = 'marthi';
+		SET OutputRoot.JSON.Data.data.nationality = 'indian';
+		SET OutputRoot.JSON.Data.data.nuit = '';
+		SET OutputRoot.JSON.Data.data.branchCode = '0012';
+		SET OutputRoot.JSON.Data.data.status = '';
+		
+		SET OutputRoot.JSON.Data.data.id.type = 0;
+		SET OutputRoot.JSON.Data.data.id.number = 78219822485;
+		
+		SET OutputRoot.JSON.Data.data.officer.code = 0;
+		SET OutputRoot.JSON.Data.data.officer.name = 'shreyash';
+		SET OutputRoot.JSON.Data.data.officer.Modile = 7758424698;
+		SET OutputRoot.JSON.Data.data.officer.email = 'asdbg@eidiko.com';
+				
+		SET OutputRoot.JSON.Data.data.contact.email = 'fdshfsdn@eidiko.com';
+		SET OutputRoot.JSON.Data.data.contact.phone = 7845451541;
+		SET OutputRoot.JSON.Data.data.contact.altPhone = '';
+		SET OutputRoot.JSON.Data.data.contact.Notification = 'i am notifying you';
+		SET OutputRoot.JSON.Data.data.contact.fax = '000754485';
+		
+		SET OutputRoot.JSON.Data.data.residence.address = 'Lorem Ipsum, 404 street 62';
+		SET OutputRoot.JSON.Data.data.residence.provibnce = 'Maputo';
+		SET OutputRoot.JSON.Data.data.residence.country = 'MZ';
+		
+		
+		
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	END;
+END MODULE;

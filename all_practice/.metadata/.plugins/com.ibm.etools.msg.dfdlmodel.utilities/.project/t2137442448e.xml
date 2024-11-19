@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MessageBroker name="010101">
+  <XSDCollection href="platform:/resource/010101/Json_dfdl2.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/010101/IBMdefined/RecordSeparatedFieldFormat.xsd" prefix="tns" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+  <XSDCollection href="platform:/resource/010101/JSON_DFDL.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+    <element href="platform:/resource/010101/JSON_DFDL.xsd#//JSON_DFDL;XSDElementDeclaration" name="JSON_DFDL"/>
+  </XSDCollection>
+</MessageBroker>

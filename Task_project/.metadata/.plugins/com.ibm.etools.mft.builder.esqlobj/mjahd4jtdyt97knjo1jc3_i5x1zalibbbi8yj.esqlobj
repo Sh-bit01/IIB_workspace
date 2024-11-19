@@ -1,0 +1,53 @@
+CREATE COMPUTE MODULE Router_Flow_Mf_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		--CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+
+
+		DECLARE Service_Url CHARACTER;
+		DECLARE Service_Code INTEGER;
+
+		SET Service_Code = InputRoot.HTTPInputHeader.Service_code; ----Service_Code in http Header
+
+		DECLARE r ROW;
+		DECLARE query CHARACTER;
+		SET query = 'select SERVICE_URL from SERVICES_TABLE where SERVICE_CODE=?';
+		set r.res[] = PASSTHRU(query, Service_Code);
+
+
+
+		IF r.res.SERVICE_URL IS NOT NULL THEN
+			SET Service_Url = r.res.SERVICE_URL;
+		ELSE
+
+			SET OutputRoot.JSON.Data.Error = 'Service_Code is Invalid';
+		END IF;
+
+		-- SET OutputRoot = InputRoot;
+
+		DECLARE idParam CHAR;
+		SET idParam = InputRoot.HTTPInputHeader."X-Query-String";
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL = 'http://localhost:7800/p2?' || idParam;
+
+
+
+
+
+	END;
+END MODULE;

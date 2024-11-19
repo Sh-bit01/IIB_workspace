@@ -1,0 +1,58 @@
+
+
+CREATE COMPUTE MODULE DB_mf_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		--CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN	
+		
+		--Data is changed to the json to xml
+		SET OutputRoot.JSON.Data = InputRoot.XMLNSC;
+		
+		DECLARE myBlob1 BLOB;
+ 		DECLARE data1 REFERENCE TO OutputRoot.JSON.Data;
+ 		
+ 		
+		-- Channel responce
+		SET myBlob1 = ASBITSTREAM(data1
+		                  		CCSID InputRoot.Properties.CodedCharSetId
+		                        Encoding InputRoot.Properties.Encoding
+		                         );
+		                         
+        DECLARE msg CHARACTER CAST(myBlob1 AS CHAR CCSID InputRoot.Properties.CodedCharSetId Encoding InputRoot.Properties.Encoding);
+		
+		DECLARE appName CHARACTER ;
+		SET appName = ApplicationLabel;
+		
+		DECLARE msgName CHARACTER ;
+		SET msgName = MessageFlowLabel;
+		
+		DECLARE LogType CHARACTER;
+		SET LogType ='Channel Response';
+		
+		CALL incerting1 (appName, msgName, LogType, msg);
+		
+		
+		
+	END;
+END MODULE;
+
+
+CREATE PROCEDURE incerting1 (In APP_NAME CHARACTER, In MSG_FLOW CHARACTER, IN LOG_TYPE CHARACTER, IN msg CHARACTER)
+LANGUAGE DATABASE
+EXTERNAL NAME "INSERTION";
+

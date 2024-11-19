@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:restapiDescriptor xmlns="http://com.ibm.etools.mft.descriptor.base" xmlns:ns2="http://com.ibm.etools.mft.descriptor.restapi" definitionType="swagger_20" definitionFile="swagger.json" implementation="gen/restAPI.msgflow" https="false" definitionWithExtRef="false" faultFormat="JSON">
+    <ns2:operations>
+        <ns2:operation name="getGetByparm" implementation="getGetByparm.subflow"/>
+        <ns2:operation name="getGetBypath/" implementation="getGetBypath_.subflow"/>
+        <ns2:operation name="postInsert" implementation="postInsert.subflow"/>
+        <ns2:operation name="postPost" implementation="postPost.subflow"/>
+        <ns2:operation name="postStringMal" implementation="postStringMal.subflow"/>
+    </ns2:operations>
+    <ns2:errorHandlers/>
+</ns2:restapiDescriptor>

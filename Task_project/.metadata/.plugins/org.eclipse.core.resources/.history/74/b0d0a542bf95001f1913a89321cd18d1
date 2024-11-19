@@ -1,0 +1,11 @@
+BROKER SCHEMA Security_data
+
+CREATE PROCEDURE encrypt (IN originaltxt CHARACTER,IN key CHARACTER ) 
+    RETURNS CHARACTER
+	LANGUAGE JAVA
+	EXTERNAL NAME"encryption.Encryption.encrypt";
+	
+	CREATE PROCEDURE decrypt (IN originaltxt CHARACTER,IN key CHARACTER ) 
+    RETURNS CHARACTER
+	LANGUAGE JAVA
+	EXTERNAL NAME"decryption.Decryption.decrypt";

@@ -1,0 +1,3 @@
+CREATE PROCEDURE InsertLogs(IN app_name CHARACTER, IN MsgFlowName CHARACTER, IN LogType CHARACTER, IN Service_id INTEGER, IN service_Url, IN InputData CHARACTER)
+LANGUAGE DATABASE
+EXTERNAL NAME "InsertServiceLog";

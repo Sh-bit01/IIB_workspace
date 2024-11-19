@@ -1,0 +1,69 @@
+
+
+
+
+DECLARE data EXTERNAL CHARACTER;
+
+
+CREATE COMPUTE MODULE shakti_man_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+--
+--		DECLARE ref REFERENCE TO InputRoot.XMLNSC.Root.*[1];
+--
+--		WHILE LASTMOVE(ref) DO
+--
+--			IF FIELDVALUE(ref) IS NOT NULL THEN
+--				CREATE LASTCHILD OF OutputRoot.XMLNSC NAME FIELDNAME(ref) VALUE FIELDVALUE(ref) ;
+--
+--
+--			ELSE
+				--CREATE LASTCHILD OF OutputRoot.XMLNSC as kref NAME FIELDNAME(ref);
+				--DECLARE sref REFERENCE TO ref.*[1];
+				--WHILE LASTMOVE(sref) DO
+					
+					
+
+
+--					MOVE sref NEXTSIBLING;
+--				END WHILE;
+
+--
+--			END IF;
+--
+--			MOVE ref NEXTSIBLING;
+--		END WHILE;		
+--		
+
+--DECLARE i INTEGER;
+--SET i = 1;
+--X : LOOP 
+--
+--  IF i>= 4 THEN
+--    LEAVE X;
+--  END IF;
+--  SET i = i + 1;
+--END LOOP X;
+
+
+
+
+	END;
+END MODULE;

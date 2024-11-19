@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\all_practice\10101010211231TASK\wsdl_Data.wsdl
+
+The WSDL import will proceed with bindings wsdl_DataSOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/all_practice/10101010211231TASK/wsdl_Data.wsdl.
+Parsing wsdl binding {http://www.example.org/wsdl_Data/}wsdl_DataSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema wsdl_Data.xsd.
+Creating file wsdl_Data.xsd in the workspace.
+Creating file wsdl_Data_InlineSchema1.xsd in the workspace.
+Copying source WSDL wsdl_Data.wsdl to wsdl_Data.wsdl.
+
+Elapsed time processing this message definition file: 0.113 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

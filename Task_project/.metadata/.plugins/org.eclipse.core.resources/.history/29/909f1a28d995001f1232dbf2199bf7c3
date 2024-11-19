@@ -1,0 +1,29 @@
+
+
+BROKER SCHEMA Security_data
+
+CREATE PROCEDURE encrypt (IN originaltxt CHARACTER,IN key CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME"encryption.Encryption.encrypt";
+
+CREATE PROCEDURE decrypt (IN originaltxt CHARACTER,IN key CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME"decryption.Decryption.decrypt";
+
+
+CREATE PROCEDURE sm (IN originaltxt CHARACTER,IN key CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME"encryption.Encryption.sum";
+
+
+
+
+
+
+--		SET privetkey ='sreekanth ';
+--		DECLARE enc,dec CHARACTER ;
+--		CALL encrypt(Request,privetkey) INTO enc;
+--		CALL decrypt(enc,privetkey) INTO dec;

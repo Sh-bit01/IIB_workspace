@@ -1,0 +1,219 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE COMPUTE MODULE Fild_name_function_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		/*
+		<Root>
+		<Order>
+		<OrderID>12345</OrderID>
+		<Customer>
+		<CustomerID>54321</CustomerID>
+		<Name>John Doe</Name>
+		<Address>
+		<Street>Main St</Street>
+		<City>Anytown</City>
+		<State>CA</State>
+		<Zip>12345</Zip>
+		</Address>
+		</Customer>
+		<Items>
+		<Item>
+		<ProductID>001</ProductID>
+		<ProductName>Widget</ProductName>
+		<Quantity>10</Quantity>
+		<Price>19.99</Price>
+		</Item>
+		<Item>
+		<ProductID>002</ProductID>
+		<ProductName>Gadget</ProductName>
+		<Quantity>5</Quantity>
+		<Price>29.99</Price>
+		</Item>
+		</Items>
+		</Order>
+		<Payment>
+		<Method>Credit Card</Method>
+		<Amount>299.85</Amount>
+		</Payment>
+		</Root> */
+		--
+		--
+		-- DECLARE ref REFERENCE TO InputRoot.XMLNSC.Root[1];
+		-- IF FIELDNAME(ref) IS NOT NULL THEN
+		-- IF FIELDNAME(ref.Order) IS NOT NULL THEN
+		-- IF FIELDNAME(ref.Order.OrderID) IS NOT NULL THEN
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME FIELDNAME(ref.Order.OrderID) VALUE FIELDVALUE(ref.Order.OrderID);
+		-- ELSE
+		-- call eror();
+		-- END IF;
+		--
+		-- IF FIELDNAME(ref.Order.Customer) IS NOT NULL THEN
+		-- IF FIELDNAME(ref.Order.Customer.CustomerID) IS NOT NULL THEN
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME FIELDNAME(ref.Order.Customer.CustomerID) VALUE FIELDVALUE(ref.Order.Customer.CustomerID);
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME FIELDNAME(ref.Order.Customer.Name) VALUE FIELDVALUE(ref.Order.Customer.Name);
+		-- ELSE
+		-- call eror();
+		-- END IF;
+		-- ELSE
+		-- call eror();
+		-- END IF;
+		--
+		-- IF FIELDNAME(ref.Order.Address) IS NOT NULL THEN
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME FIELDNAME(ref.Order.Customer.Address.Street) VALUE FIELDVALUE(ref.Order.Customer.Address.Street);
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME FIELDNAME(ref.Order.Customer.Address.City) VALUE FIELDVALUE(ref.Order.Customer.Address.City);
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME FIELDNAME(ref.Order.Customer.Address.State) VALUE FIELDVALUE(ref.Order.Customer.Address.State);
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME FIELDNAME(ref.Order.Customer.Address.Zip) VALUE FIELDVALUE(ref.Order.Customer.Address.Zip);
+		-- ELSE
+		-- call eror();
+		-- END IF;
+		--
+		-- DECLARE itm REFERENCE TO ref.Order.Items[1];
+		-- WHILE LASTMOVE(ref) DO
+		--
+		-- DECLARE elementName CHARACTER FIELDNAME(itm);
+		-- DECLARE elementContent CHARACTER FIELDVALUE(itm);
+		--
+		-- IF elementContent IS NULL THEN
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data.Root.Order.Items NAME elementName;
+		--
+		-- ELSE
+		-- CREATE LASTCHILD OF OutputRoot.JSON.Data.Root.Order.Items NAME elementName VALUE elementContent;
+		-- END IF;
+		--
+		-- MOVE ref NEXTSIBLING;
+		-- END WHILE;
+		--
+		--
+		--
+		--
+		--
+		--
+		-- ELSE
+		-- call eror();
+		-- END IF;
+		-- ELSE
+		-- call eror();
+		-- END IF;
+		-- --------- trying by using loop
+		--
+		-- WHILE LASTMOVE(ref) DO
+		--
+		-- DECLARE elementName CHARACTER FIELDNAME(ref);
+		-- DECLARE elementContent CHARACTER FIELDVALUE(ref);
+		--
+		-- IF elementContent IS NULL THEN
+		-- --CREATE LASTCHILD OF OutputRoot.JSON.Data NAME elementName;
+		-- DECLARE sref REFERENCE TO ref.*[<];
+		-- -- WHILE LASTMOVE(sref) DO
+		-- --
+		-- -- DECLARE elementName1 CHARACTER FIELDNAME(sref);
+		-- -- DECLARE elementContent1 CHARACTER FIELDVALUE(sref);
+		-- --
+		-- -- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME elementName1 VALUE elementContent1;
+		-- --
+		-- -- MOVE sref NEXTSIBLING;
+		-- -- END WHILE;
+		-- --
+		-- -- ELSE
+		-- -- CREATE LASTCHILD OF OutputRoot.JSON.Data NAME elementName VALUE elementContent;
+		-- -- END IF;
+		-- --
+		-- -- set i = i+1;
+		-- -- MOVE ref NEXTSIBLING;
+		-- -- END WHILE;
+		-- SET OutputRoot.JSON.Data.type = FIELDTYPE(InputRoot.XMLNSC.Root.Order.OrderID);
+		--
+		-- IF FIELDTYPE(InputRoot.XMLNSC.Root.Order.OrderID) IS NOT NULL THEN
+		-- SET OutputRoot.JSON.Data.notNULL = 'not null';
+		-- ELSE
+		-- SET OutputRoot.JSON.Data.NULL = 'null';
+		--
+		-- END IF;
+---------------------------------------------------------------------------------------------------------------------------------
+
+--<ns1:Invoice xmlns:ns1="http://example.com/ns1" xmlns:ns2="http://example.com/ns2" xmlns:ns3="http://example.com/ns3">
+--    <ns1:InvoiceID>INV-1001</ns1:InvoiceID>
+--    <ns2:Date>2024-04-27</ns2:Date>
+--    <ns3:Currency code="USD">United States Dollar</ns3:Currency>
+--</ns1:Invoice>
+
+		----FEALD-NAME SPACE
+		DECLARE ns1 NAMESPACE 'http://example.com/ns1';
+		DECLARE ns2 NAMESPACE 'http://example.com/ns2';
+		DECLARE ns3 NAMESPACE 'http://example.com/ns3';
+
+		DECLARE v CHARACTER FIELDNAMESPACE(InputRoot.XMLNSC.ns1:root);
+
+		SET OutputRoot.JSON.Data.zero = FIELDNAMESPACE(InputRoot.XMLNSC.ns1:Invoice.ns1:Header);
+		SET OutputRoot.JSON.Data.fir = FIELDNAMESPACE(InputRoot.XMLNSC.ns1:Invoice.ns1:Header.ns1:InvoiceID);
+		SET OutputRoot.JSON.Data.sec = FIELDNAMESPACE(InputRoot.XMLNSC.ns1:Invoice.ns1:Header.ns2:Date);
+		SET OutputRoot.JSON.Data.thi = FIELDNAMESPACE(InputRoot.XMLNSC.ns1:Invoice.ns1:Header.ns3:Currency);
+		SET OutputRoot.JSON.Data.root = v;
+		
+---------------------------------------------------------------------------------------------------------		
+
+		
+--		
+--<root xmlns="namespace1">
+--    <example>ABCDE</example>
+--</root>		
+--		
+		---NON prefix INPUT ^^
+		DECLARE ns4 NAMESPACE 'namespace1';
+		SET OutputRoot.JSON.Data.noPrefix = FIELDNAMESPACE(InputRoot.XMLNSC.ns4:root.ns4:example);
+		
+		
+		
+
+
+
+--
+--	SET OutputRoot.JSON.Data.fir = FIELDNAMESPACE(InputRoot.XMLNSC.ns1:Invoice.ns1:InvoiceID);
+--		SET OutputRoot.JSON.Data.sec = FIELDNAMESPACE(InputRoot.XMLNSC.ns2:Invoice.ns2:Date);
+--		SET OutputRoot.JSON.Data.thi = FIELDNAMESPACE(InputRoot.XMLNSC.ns3:Invoice.ns3:Currency);
+
+
+	END;
+
+	CREATE PROCEDURE eror( )
+	BEGIN
+		SET OutputRoot.JSON.Data.error= 'Missing';
+	END;
+
+
+
+END MODULE;

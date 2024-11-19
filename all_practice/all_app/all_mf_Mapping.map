@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" xmlns:map="default" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0">
+    <input path="/XML_doc.xsd"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/JsonDomainMsg.xsd" var="var1"/>
+    <output derivedFrom="MB:JSON_schema_in_json_file" path="/jsonDATA.schema.json" var="var"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="out" uri="http://www.ibm.com/iib/msl/json"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="all_mf_Mapping">
+        <input path="mb:msg(Order,assembly,XMLNSC,Properties)" var="MessageAssembly"/>
+        <output namespace="http://www.ibm.com/iib/msl/json" path="$var1/mb:msg(JSON,assembly,JSON,Properties)" var="MessageAssembly1">
+            <cast derivedFrom="MB:JSON_TYPE" path="$MessageAssembly1/JSON/Data/type('anyType')" qualifier="{http://www.ibm.com/iib/msl/json}jsonDATA.schema_JsonType" ref="var"/>
+        </output>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly1/Properties"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/OrderID"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/OrderID"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/Customer/CustomerID"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/Customer/CustomerID"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/Customer/Name"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/Customer/Name"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/Customer/Email"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/Customer/Email"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/Items/Item/ItemID"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/Items/Item/Item/ItemID"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/Items/Item/Description"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/Items/Item/Item/Description"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/Items/Item/Quantity"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/Items/Item/Item/Quantity"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/Items/Item/Price"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/Items/Item/Item/Price"/>
+        </move>
+        <move automap="true">
+            <input path="$MessageAssembly/Order/TotalAmount"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/Order/TotalAmount"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

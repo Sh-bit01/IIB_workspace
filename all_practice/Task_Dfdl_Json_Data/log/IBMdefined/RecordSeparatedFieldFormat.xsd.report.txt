@@ -1,0 +1,12 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\AppData\Local\IBM\ACET12-config\12.0.12.0\configuration\org.eclipse.osgi\200\0\.cp\formats\ibm\RecordSeparatedFieldFormat.xsd
+
+
+Elapsed time processing this message definition file: 0.044 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

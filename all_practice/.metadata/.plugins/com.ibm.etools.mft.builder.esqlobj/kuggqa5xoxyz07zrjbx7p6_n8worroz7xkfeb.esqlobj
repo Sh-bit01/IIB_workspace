@@ -1,0 +1,40 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		
+		DECLARE ref REFERENCE TO InputRoot.XMLNSC.breakfast_menu.food[];
+		--DECLARE outRef REFERENCE TO OutputRoot.InputRoot.XMLNSC.breakfast_menu;
+		DECLARE i INTEGER 1;
+		
+		WHILE LASTMOVE(ref) DO
+			CREATE LASTCHILD OF OutputRoot.InputRoot.XMLNSC.breakfast_menu.food[i].name VALUE ref.name;
+			CREATE LASTCHILD OF OutputRoot.InputRoot.XMLNSC.breakfast_menu.food[i].price VALUE ref.price;
+			CREATE LASTCHILD OF OutputRoot.InputRoot.XMLNSC.breakfast_menu.food[i].description VALUE ref.description;
+			CREATE LASTCHILD OF OutputRoot.InputRoot.XMLNSC.breakfast_menu.food[i].calories VALUE ref.calories;
+			
+			SET i = i+1;
+			MOVE ref NEXTSIBLING;
+		END WHILE;		
+		
+		
+		
+		
+		
+	END;

@@ -1,0 +1,28 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		DECLARE refEmployees REFERENCE TO InputRoot.XMLNSC.data.Employee;
+--		CALL INSERTION(refEmployees.ID, refEmployees.Name, refEmployees.Salary, refEmployees.Age);
+
+--        CALL update(refEmployees.ID, refEmployees.Age);
+		  CALL del(refEmployees.Age);
+		
+		
+	END;

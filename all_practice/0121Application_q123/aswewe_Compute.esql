@@ -1,0 +1,90 @@
+
+
+CREATE COMPUTE MODULE aswewe_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+--		DECLARE m NAMESPACE 'hi';
+--		DECLARE data NAMESPACE 'broker id done';
+--		SET OutputRoot.XMLNSC.root.data:child1.(XMLNSC.NamespaceDecl)xmlns:n1 = data;
+--		SET OutputRoot.XMLNSC.root.data:child1.data:example = 'ABCDE';		
+--		
+--		DECLARE sec NAMESPACE 'NameSpace is done';
+--		SET OutputRoot.XMLNSC.root.sec:child2.(XMLNSC.NamespaceDecl)xmlns:n1 = sec;
+--		SET OutputRoot.XMLNSC.root.sec:child2.sec:example = 'QWERT';
+		
+		
+		--DECLARE FieldRef CHARACTER 'In';
+		--DECLARE Namespace CHARACTER FIELDNAMESPACE(InputBody.*[<]);
+		
+		DECLARE X CHARACTER;
+		SET X=FIELDNAME(InputRoot.XMLNSC.root.*[<]);
+		SET OutputRoot.JSON.Data.root = X;
+		
+		
+		
+/*		
+		<Root>
+    <Order>
+        <OrderID>12345</OrderID>
+        <Customer>
+            <CustomerID>54321</CustomerID>
+            <Name>John Doe</Name>
+            <Address>
+                <Street>Main St</Street>
+                <City>Anytown</City>
+                <State>CA</State>
+                <Zip>12345</Zip>
+            </Address>
+        </Customer>
+        <Items>
+            <Item>
+                <ProductID>001</ProductID>
+                <ProductName>Widget</ProductName>
+                <Quantity>10</Quantity>
+                <Price>19.99</Price>
+            </Item>
+            <Item>
+                <ProductID>002</ProductID>
+                <ProductName>Gadget</ProductName>
+                <Quantity>5</Quantity>
+                <Price>29.99</Price>
+            </Item>
+        </Items>
+    </Order>
+    <Payment>
+        <Method>Credit Card</Method>
+        <Amount>299.85</Amount>
+    </Payment>
+</Root>
+
+*/
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	END;
+END MODULE;
+	
+--CREATE FUNCTION add (in a INTEGER,in c INTEGER, out b INTEGER ) 
+--BEGIN
+--	set b = a+c;
+--END;
+
+
+

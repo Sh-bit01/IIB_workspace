@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="Salary" type="xsd:string"/>
+  <xsd:element name="Employee">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="ID"/>
+        <xsd:element ref="Name"/>
+        <xsd:element ref="Salary"/>
+        <xsd:element ref="Age"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="data">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="Employee"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ID" type="xsd:string"/>
+  <xsd:element name="Age" type="xsd:string"/>
+  <xsd:element name="Name" type="xsd:string"/>
+</xsd:schema>

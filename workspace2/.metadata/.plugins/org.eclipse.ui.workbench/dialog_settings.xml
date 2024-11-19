@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ImportExportAction">
+		<item key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID" value="com.ibm.bpm.common.ui.project.interchange.ProjectInterchangeImport"/>
+		<item key="ImportExportPage.STORE_SELECTED_EXPORT_WIZARD_ID" value="com.ibm.bpm.common.ui.project.interchange.ProjectInterchangeExport"/>
+		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">
+			<item value="com.ibm.bpm.common.ui.project.interchange"/>
+		</list>
+		<list key="ImportExportPage.STORE_EXPANDED_EXPORT_CATEGORIES">
+			<item value="com.ibm.bpm.common.ui.project.interchange"/>
+		</list>
+	</section>
+	<section name="NewWizardAction">
+		<item key="NewWizardSelectionPage.STORE_SELECTED_ID" value="org.eclipse.wst.wsdl.ui"/>
+		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="com.ibm.etools.mft.wizards.mbappdevcat"/>
+			<item value="org.eclipse.jst.ws.ui.new"/>
+		</list>
+	</section>
+</section>

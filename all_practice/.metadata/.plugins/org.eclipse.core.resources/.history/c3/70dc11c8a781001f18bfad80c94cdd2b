@@ -1,0 +1,47 @@
+
+
+CREATE COMPUTE MODULE askfjasjkff_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		DECLARE res INTEGER;
+		set res = sum(10 , 15);
+		set OutputRoot.JSON.Data.result = res;
+	END;
+END MODULE;
+
+
+CREATE PROCEDURE sum ( IN a INTEGER, In b INTEGER ) RETURNS INTEGER
+LANGUAGE JAVA
+EXTERNAL NAME "com.java_rout.sum.Addition.add";
+
+CREATE PROCEDURE sum ( IN a INTEGER, In b INTEGER ) RETURNS INTEGER
+LANGUAGE JAVA
+EXTERNAL NAME "sum.Berij.add";
+
+
+
+
+--CREATE PROCEDURE addd (IN a INTEGER, In b INTEGER) RETURNS INTEGER
+--LANGUAGE JAVA
+--EXTERNAL NAME "pak.addition.add";
+
+
+
+

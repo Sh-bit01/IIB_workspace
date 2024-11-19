@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><?ibm-bip policySet="Policy_2"?>
+<securitybinding:securityBindings xmlns:securitybinding="http://www.ibm.com/xmlns/prod/websphere/200608/ws-securitybinding">
+  <securitybinding:securityBinding name="application">
+    <securitybinding:securityOutboundBindingConfig>
+      <securitybinding:encryptionInfo name="gen_encreption" order="1">
+        <securitybinding:keyEncryptionKeyInfo reference="gen_token_encencreption_keyinfo"/>
+        <securitybinding:encryptionPartReference reference="request:encreption">
+          <securitybinding:nonce/>
+          <securitybinding:timestamp/>
+        </securitybinding:encryptionPartReference>
+      </securitybinding:encryptionInfo>
+      <securitybinding:keyInfo classname="com.ibm.ws.wssecurity.wssapi.CommonContentGenerator" name="gen_auth_keyinfo" type="STRREF">
+        <securitybinding:tokenReference reference="gen_auth"/>
+      </securitybinding:keyInfo>
+      <securitybinding:keyInfo classname="com.ibm.ws.wssecurity.wssapi.CommonContentGenerator" name="gen_token_encencreption_keyinfo" type="KEYID">
+        <securitybinding:tokenReference reference="gen_requestencreption"/>
+      </securitybinding:keyInfo>
+      <securitybinding:tokenGenerator classname="com.ibm.ws.wssecurity.wssapi.token.impl.CommonTokenGenerator" name="gen_auth">
+        <securitybinding:valueType localName="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"/>
+        <securitybinding:securityTokenReference reference="request:WS_token"/>
+        <securitybinding:jAASConfig configName="system.wss.generate.x509"/>
+        <securitybinding:callbackHandler classname="com.ibm.websphere.wssecurity.callbackhandler.X509GenerateCallbackHandler">
+          <securitybinding:keyStore path="*MQSIBROKERSTOREPATHMQSI*" storepass="*MQSIBROKERSTOREPWDMQSI*" type="JKS"/>
+          <securitybinding:key alias="iibdev" keypass="*MQSIBROKERSTOREKEYPASSiibdevMQSI*" name="CN=192.168.3.43, C=US&#xD;&#xA;"/>
+        </securitybinding:callbackHandler>
+      </securitybinding:tokenGenerator>
+      <securitybinding:tokenGenerator classname="com.ibm.ws.wssecurity.wssapi.token.impl.CommonTokenGenerator" name="gen_requestencreption">
+        <securitybinding:valueType localName="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"/>
+        <securitybinding:jAASConfig configName="system.wss.generate.x509"/>
+        <securitybinding:callbackHandler classname="com.ibm.websphere.wssecurity.callbackhandler.X509GenerateCallbackHandler">
+          <securitybinding:keyStore path="*MQSIBROKERSTOREPATHMQSI*" storepass="*MQSIBROKERSTOREPWDMQSI*" type="JKS"/>
+          <securitybinding:key alias="iibdev" name="CN=192.168.3.43, C=US"/>
+        </securitybinding:callbackHandler>
+      </securitybinding:tokenGenerator>
+      <securitybinding:properties name="com.ibm.wsspi.wssecurity.nonce.includeEncodingType" value="true"/>
+    </securitybinding:securityOutboundBindingConfig>
+    <securitybinding:securityInboundBindingConfig/>
+  </securitybinding:securityBinding>
+</securitybinding:securityBindings>

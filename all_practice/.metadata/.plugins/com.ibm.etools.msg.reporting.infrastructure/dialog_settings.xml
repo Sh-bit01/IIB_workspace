@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ReportPageSettings">
+		<item key="AuthorName" value=""/>
+		<item key="ReportTitle" value="reportFile"/>
+		<item key="NumberOfReportHistory" value="2"/>
+		<item key="HistoryReport_0" value="C:\Users\Sreenivas Bandaru\Desktop\asdsadas.pdf"/>
+		<item key="HistoryReport_1" value="C:\Users\Sreenivas Bandaru\IBM\ACET12\all_practice\reportFile.pdf"/>
+	</section>
+	<section name="LayoutPageSettings">
+		<item key="pageSizeIndex" value="0"/>
+		<item key="orientation" value="1"/>
+		<item key="TOCLevelIndex" value="7"/>
+		<item key="LayoutSettingsActive" value="0"/>
+		<item key="plainTextFontIndex" value="0"/>
+		<item key="plainTextFontSizeIndex" value="2"/>
+		<item key="plainTextFontStyleIndex" value="0"/>
+		<item key="chapterTitleFontIndex" value="0"/>
+		<item key="chapterTitleFontSizeIndex" value="5"/>
+		<item key="chapterTitleFontStyleIndex" value="2"/>
+		<item key="sourceCodeTextFontIndex" value="1"/>
+		<item key="sourceCodeTextFontSizeIndex" value="2"/>
+		<item key="sourceCodeTextFontStyleIndex" value="0"/>
+		<item key="captionTextFontIndex" value="0"/>
+		<item key="captionTextFontSizeIndex" value="2"/>
+		<item key="captionTextFontStyleIndex" value="2"/>
+		<item key="definitionTextFontIndex" value="0"/>
+		<item key="definitionTextFontSizeIndex" value="2"/>
+		<item key="definitionTextFontStyleIndex" value="0"/>
+		<item key="headerTextFontIndex" value="0"/>
+		<item key="headerTextFontSizeIndex" value="3"/>
+		<item key="headerTextFontStyleIndex" value="2"/>
+		<item key="tocTextFontIndex" value="0"/>
+		<item key="tocTextFontSizeIndex" value="1"/>
+		<item key="tocTextFontStyleIndex" value="0"/>
+	</section>
+</section>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MRMessageSet id="OHA2SFK002001" name="valiuf" parser="XMLNSC">
+    
+
+  <MRMsgCollection href="platform:/resource/valiuf/valiuf/efdsdaf.mxsd" prefix="" targetNamespace="">
+    <element href="platform:/resource/valiuf/valiuf/efdsdaf.mxsd#/0/root;XSDElementDeclaration" name="root" type="mset://valiuf#/-/complexType{}complexType"/>
+    <complexType baseType="mset://valiuf#/-/complexType{http://www.w3.org/2001/XMLSchema}anyType" href="platform:/resource/valiuf/valiuf/efdsdaf.mxsd#/0/complexType;XSDComplexTypeDefinition" name="complexType"/>
+  </MRMsgCollection>
+</MRMessageSet>

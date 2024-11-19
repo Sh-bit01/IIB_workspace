@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MessageBroker name="fixed_length">
+  <XSDCollection href="platform:/resource/fixed_length/IBMdefined/RecordFixLengthFieldFormat.xsd" prefix="tns" targetNamespace="http://www.ibm.com/dfdl/RecordFixLengthFieldFormat"/>
+  <XSDCollection href="platform:/resource/fixed_length/random.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordFixLengthFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordFixLengthFieldFormat"/>
+    <element href="platform:/resource/fixed_length/random.xsd#//random;XSDElementDeclaration" name="random"/>
+  </XSDCollection>
+</MessageBroker>

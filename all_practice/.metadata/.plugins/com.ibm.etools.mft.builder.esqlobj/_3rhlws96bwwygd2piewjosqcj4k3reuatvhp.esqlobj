@@ -1,0 +1,11 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		
+		SET Environment.data[] = SELECT * from Database.ODBC1.system.employees;
+		
+		
+		
+		RETURN TRUE;
+	END;
+

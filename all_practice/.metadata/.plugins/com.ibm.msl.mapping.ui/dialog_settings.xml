@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="com.ibm.msl.mapping.internal.ui.transform.TransformTypeControlDIALOG_WIDTH" value="240"/>
+	<item key="com.ibm.msl.mapping.internal.ui.transform.TransformTypeControlDIALOG_HEIGHT" value="330"/>
+	<item key="com.ibm.msl.mapping.internal.ui.transform.TransformTypeControlDIALOG_USE_PERSISTED_SIZE" value="true"/>
+	<item key="com.ibm.msl.mapping.internal.ui.transform.TransformTypeControlDIALOG_USE_PERSISTED_LOCATION" value="false"/>
+</section>

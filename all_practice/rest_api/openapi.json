@@ -1,0 +1,26 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "rest_api_pro",
+    "description" : "rest_api_pro",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:7800/rest_api_pro/v1"
+  } ],
+  "paths" : {
+    "/p1" : {
+      "post" : {
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "success"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : { }
+  }
+}

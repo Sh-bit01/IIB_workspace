@@ -1,0 +1,3 @@
+BROKER SCHEMA Logging
+DECLARE external_var EXTERNAL CHARACTER 'C:\Inlog\Log4jConfigurationFile.xml';
+

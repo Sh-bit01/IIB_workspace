@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "Order": {
+      "type": "object",
+      "properties": {
+        "OrderID": {
+          "type": "string"
+        },
+        "Customer": {
+          "type": "object",
+          "properties": {
+            "CustomerID": {
+              "type": "string"
+            },
+            "Name": {
+              "type": "string"
+            },
+            "Email": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "CustomerID",
+            "Name",
+            "Email"
+          ]
+        },
+        "Items": {
+          "type": "object",
+          "properties": {
+            "Item": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ItemID": {
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Quantity": {
+                    "type": "string"
+                  },
+                  "Price": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "ItemID",
+                  "Description",
+                  "Quantity",
+                  "Price"
+                ]
+              }
+            }
+          },
+          "required": [
+            "Item"
+          ]
+        },
+        "TotalAmount": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "OrderID",
+        "Customer",
+        "Items",
+        "TotalAmount"
+      ]
+    }
+  },
+  "required": [
+    "Order"
+  ]
+}

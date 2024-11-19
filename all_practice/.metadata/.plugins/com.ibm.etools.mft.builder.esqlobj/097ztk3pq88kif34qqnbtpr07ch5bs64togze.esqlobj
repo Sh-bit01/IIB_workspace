@@ -1,0 +1,5 @@
+CREATE PROCEDURE  div(in a INTEGER, In b INTEGER, out c DECIMAL) 
+BEGIN
+	set c = a/b; --Simple Division
+	
+END;

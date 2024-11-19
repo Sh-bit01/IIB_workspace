@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policies>
+  <policy policyType="MQEndpoint" policyName="remote" policyTemplate="MQEndpoint">
+    <connection>CLIENT</connection>
+    <destinationQueueManagerName>r1</destinationQueueManagerName>
+    <queueManagerHostname>192.168.2.74</queueManagerHostname>
+    <listenerPortNumber>3000</listenerPortNumber>
+    <channelName>aa</channelName>
+    <CCDTUrl></CCDTUrl>
+    <securityIdentity></securityIdentity>
+    <useSSL>false</useSSL>
+    <SSLPeerName></SSLPeerName>
+    <SSLCipherSpec></SSLCipherSpec>
+    <SSLCertificateLabel></SSLCertificateLabel>
+    <MQApplName></MQApplName>
+    <reconnectOption>default</reconnectOption>
+  </policy>
+</policies>

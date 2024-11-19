@@ -1,0 +1,81 @@
+
+
+CREATE COMPUTE MODULE New_as_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+	CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		---SET OutputRoot = InputRoot;
+		
+		
+		/*    **INPUT**
+		
+		{
+  "EmployeeData": {
+    "Details": [
+      {
+        "FirstName": "Abhijt",
+        "Address": "Maharastra"
+      },
+      {
+        "FirstName": "Pawan",
+        "Address": "Hyderabad"
+      },
+      {
+        "FirstName": "Ravi",
+        "Address": "Mumbai"
+      },
+      {
+        "FirstName": "Sneha",
+        "Address": "Pune"
+      },
+      {
+        "FirstName": "Vikram",
+        "Address": "Delhi"
+      },
+      {
+        "FirstName": "Anjali",
+        "Address": "Bangalore"
+      }
+    ]
+  }
+}
+	
+	*/	
+		
+		
+		
+		
+	DECLARE ref REFERENCE TO InputRoot.JSON.Data.EmployeeData.Details.Item[1];
+	DECLARE i INTEGER 1;
+	
+		WHILE  LASTMOVE(ref)=TRUE DO
+			
+			CREATE LASTCHILD OF OutputRoot.XMLNSC.EmployeeData.Details[i].FirstName VALUE ref.FirstName;
+			CREATE LASTCHILD OF OutputRoot.XMLNSC.EmployeeData.Details[i].Address VALUE ref.Address;
+			
+			SET i = i+1;
+			MOVE ref NEXTSIBLING;
+		END WHILE;
+		
+		
+		
+		
+		
+		
+	END;
+END MODULE;

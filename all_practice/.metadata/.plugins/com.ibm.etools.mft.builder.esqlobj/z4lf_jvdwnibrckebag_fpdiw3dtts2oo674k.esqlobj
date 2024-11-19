@@ -1,0 +1,34 @@
+CREATE COMPUTE MODULE Task_RCT_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		
+		SET OutputRoot.JSON.Data.msg = 'exception is occure';
+		
+		
+		DECLARE b INTEGER add(2,3);
+		
+		
+		
+	END;
+	
+	CREATE FUNCTION add (in a INTEGER, in b INTEGER ) RETURNS INTEGER
+	BEGIN
+		RETURN a+b;
+	END;
+END MODULE;
