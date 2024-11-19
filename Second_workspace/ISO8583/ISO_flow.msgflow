@@ -9,7 +9,7 @@
       <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="70,59" URLSpecifier="/p1" messageDomainProperty="DFDL" messageSetProperty="{ISO-8583}" messageTypeProperty="{}:ISO8583_1987">
         <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="837,136">
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="834,50">
         <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
       </nodes>
       <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="392,53" computeExpression="esql://routine/#ISO_flow_Compute.Main">
