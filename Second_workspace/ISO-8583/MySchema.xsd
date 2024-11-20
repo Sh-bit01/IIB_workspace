@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:ref="http://www.ibm.com/dfdl/ISO8583Types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import namespace="http://www.ibm.com/dfdl/ISO8583Types" schemaLocation="Common/ISO8583Types.xsd"/>
+  <xsd:import namespace="http://www.ibm.com/dfdl/ISO8583Types" schemaLocation="Common/ISO8583Types.xsd"/>
+  <xsd:element ibmSchExtn:docRoot="true" name="ISO8583_sg">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="field1" type="xsd:string"/>
+        <xsd:element name="field2" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
