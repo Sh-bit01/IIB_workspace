@@ -28,7 +28,8 @@
 	 *
 	 ******************************************************************* -->
 
-<xs:schema xmlns:isofmt="http://www.ibm.com/dfdl/ISO8583Format"
+<xs:schema 
+	xmlns:isofmt="http://www.ibm.com/dfdl/ISO8583Format"
 	xmlns:isotyp="http://www.ibm.com/dfdl/ISO8583Types" 
 	xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/"
 	xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions"

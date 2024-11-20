@@ -1,0 +1,43 @@
+
+
+CREATE COMPUTE MODULE MF_log_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+
+		DECLARE str CHARACTER 'INSERT INTO EMP (EMPNO, ENAME, SAL) VALUES (12, ?, 528)';
+		DECLARE str1 CHARACTER 'INSERT INTO EMP (EMPNO, ENAME, SAL) VALUES (?,?, 857)';
+		DECLARE str2 CHARACTER 'INSERT INTO EMP (EMPNO, ENAME, SAL) VALUES (78, ?, 8954)';
+
+		DECLARE data CHARACTER 'hii';
+		DECLARE data2 CHARACTER 'byy';
+		PASSTHRU(str, data);
+		PASSTHRU(str1, data, data2);
+		PASSTHRU(str2, data2);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	END;
+END MODULE;
