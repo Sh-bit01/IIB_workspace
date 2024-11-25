@@ -1,6 +1,0 @@
-CREATE FUNCTION myCustomConcatTransform (IN firstName CHARACTER, IN lastName CHARACTER) RETURNS CHARACTER
-BEGIN
-    DECLARE fullName CHARACTER;
-    SET fullName = firstName || ' ' || lastName;
-    RETURN fullName;
-    end;

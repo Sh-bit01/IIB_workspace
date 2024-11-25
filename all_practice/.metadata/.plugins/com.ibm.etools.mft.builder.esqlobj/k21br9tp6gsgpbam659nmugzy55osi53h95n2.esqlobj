@@ -1,3 +1,0 @@
-CREATE PROCEDURE CopyEntireMessage() BEGIN
-		SET OutputRoot.JSON.Data.Broker_schema = InputBody;
-	END;

@@ -1,4 +1,0 @@
-CREATE PROCEDURE  substract(in a INTEGER, In b INTEGER, out b INTEGER) 
-BEGIN
-	RETURN a-b;
-END;

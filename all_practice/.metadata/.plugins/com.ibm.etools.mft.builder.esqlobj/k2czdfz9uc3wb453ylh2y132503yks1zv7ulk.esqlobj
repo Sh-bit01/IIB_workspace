@@ -1,4 +1,0 @@
-CREATE PROCEDURE  substract(in a INTEGER, In b INTEGER, out c INTEGER) 
-BEGIN
-	set c = a-b;
-END;

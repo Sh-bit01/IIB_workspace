@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<MessageBroker name="0000123012eRotinsdv">
-  <XSDCollection href="platform:/resource/0000123012eRotinsdv/data2.xsd" prefix="" targetNamespace="">
-    <element href="platform:/resource/0000123012eRotinsdv/data2.xsd#//data;XSDElementDeclaration" name="data"/>
-    <element href="platform:/resource/0000123012eRotinsdv/data2.xsd#//id;XSDElementDeclaration=1" name="id" type="mlib://0000123012eRotinsdv#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
-  </XSDCollection>
-</MessageBroker>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<JSON_DFDL xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <id xsi:type="xs:integer">1</id>
-  <name xsi:type="xs:string">a</name>
-  <loc xsi:type="xs:string">a</loc>
-  <data xsi:type="xs:string">a</data>
-</JSON_DFDL>

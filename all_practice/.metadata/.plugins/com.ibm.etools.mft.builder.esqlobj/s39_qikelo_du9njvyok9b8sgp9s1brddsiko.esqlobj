@@ -1,4 +1,0 @@
-CREATE FUNCTION add (in a INTEGER, out b INTEGER ) 
-BEGIN
-	set b = a+a;
-END;
