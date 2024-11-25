@@ -10,4 +10,6 @@
 			<item value="com.ibm.bpm.common.ui.project.interchange"/>
 		</list>
 	</section>
+	<section name="NewWizardAction">
+	</section>
 </section>

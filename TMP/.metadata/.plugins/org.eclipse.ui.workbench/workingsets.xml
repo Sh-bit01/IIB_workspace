@@ -14,10 +14,6 @@
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/EmployeeService_interface_and_maps" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/HRDB" type="4"/>
 </workingSet>
-<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1732204662639_6" label="[TCPIP]" name="[TCPIP]">
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/TCPIP" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/TCPIPJava" type="4"/>
-</workingSet>
 <workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1732221026903_7" label="[CallableTimestamp]" name="[CallableTimestamp]">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CallableTimestamp" type="4"/>
 </workingSet>
@@ -26,6 +22,10 @@
 </workingSet>
 <workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1732221026909_9" label="[CallingParentApplication]" name="[CallingParentApplication]">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CallingParentApplication" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1732551289529_10" label="[Soap_attachement]" name="[Soap_attachement]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Soap_attachement" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/TCPIPJava" type="4"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1731527320428_5" label="Window Working Set" name="Aggregate for window 1731527320428"/>
 </workingSetManager>

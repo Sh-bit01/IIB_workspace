@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/attach/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="attach" targetNamespace="http://www.example.org/attach/">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <generatedXSD location="attach_InlineSchema1.xsd"/>
+        <binding hasEncoding="false" imported="true" name="attachSOAP" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+    
+  
+  <wsdl:types>
+        
+          
+    <xsd:schema xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" targetNamespace="http://www.example.org/attach/">
+      
+      <xsd:include schemaLocation="attach_InlineSchema1.xsd"/>
+    </xsd:schema>
+        
+  </wsdl:types>
+    
+  
+  <wsdl:message name="NewOperationRequest">
+        
+    <wsdl:part element="tns:NewOperation" name="parameters"/>
+        
+    <wsdl:part name="attachment" type="xsd:base64Binary"/>
+      
+  </wsdl:message>
+    
+  
+  <wsdl:message name="NewOperationResponse">
+        
+    <wsdl:part element="tns:NewOperationResponse" name="parameters"/>
+      
+  </wsdl:message>
+    
+  
+  <wsdl:portType name="attach">
+        
+    <wsdl:operation name="NewOperation">
+            
+      <wsdl:input message="tns:NewOperationRequest"/>
+            
+      <wsdl:output message="tns:NewOperationResponse"/>
+          
+    </wsdl:operation>
+      
+  </wsdl:portType>
+    
+  
+  <wsdl:binding name="attachSOAP" type="tns:attach">
+        
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        
+    <wsdl:operation name="NewOperation">
+            
+      <soap:operation soapAction="http://www.example.org/attach/NewOperation"/>
+            
+      <wsdl:input>
+                
+        <mime:multipartRelated>
+                    
+          <!-- SOAP Body Part -->
+                    
+          <mime:part>
+                        
+            <soap:body use="literal"/>
+                      
+          </mime:part>
+                    
+          <!-- Attachment Part -->
+                    
+          <mime:part>
+                        
+            <mime:content part="attachment" type="application/octet-stream"/>
+                      
+          </mime:part>
+                  
+        </mime:multipartRelated>
+              
+      </wsdl:input>
+            
+      <wsdl:output>
+                
+        <soap:body use="literal"/>
+              
+      </wsdl:output>
+          
+    </wsdl:operation>
+      
+  </wsdl:binding>
+    
+  
+  <wsdl:service name="attach">
+        
+    <wsdl:port binding="tns:attachSOAP" name="attachSOAP">
+            
+      <soap:address location="http://www.example.org/"/>
+          
+    </wsdl:port>
+      
+  </wsdl:service>
+  
+</wsdl:definitions>

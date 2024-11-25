@@ -1,0 +1,27 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\TMP\TCPIP\attachement.wsdl
+
+
+The following is a list of WS-I warning messages found when importing:
+WS-I BP 1.1: (BP2012) The attachementSOAP document-literal binding references an incompatible port type. The attachement port type references the NewOperationRequest message which does not define a valid "element" attribute for the data part., Line: 34, Column: 4
+
+
+The WSDL import will proceed with bindings attachementSOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/TMP/TCPIP/attachement.wsdl.
+Parsing wsdl binding {http://www.example.org/attachement/}attachementSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema attachement.xsd.
+Creating file attachement.xsd in the workspace.
+Creating file attachement_InlineSchema1.xsd in the workspace.
+Copying source WSDL attachement.wsdl to attachement.wsdl.
+
+Elapsed time processing this message definition file: 0.166 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

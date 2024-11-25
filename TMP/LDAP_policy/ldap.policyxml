@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policies>
+  <policy policyType="ldap" policyName="ldap" policyTemplate="online_v1_basic">
+    <credentialName></credentialName>
+    <applicationVersion>v1</applicationVersion>
+    <applicationType>online</applicationType>
+    <authenticationMethod>BASIC</authenticationMethod>
+    <endpointUrl></endpointUrl>
+  </policy>
+</policies>

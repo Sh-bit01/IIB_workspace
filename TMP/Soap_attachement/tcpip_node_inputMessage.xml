@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MessagePool xmlns="http://wwww.ibm.com/iib/test/1.0.0">
+    <SOAPInputMessage WSDL_URI="platform:/resource/TCPIP/attach.wsdl" WSDL_OPERATION_NAME="NewOperation" timestamp="1732546919448" nodeId="FCMComposite_1_3" name="new message 1" id="1732546919448-6">
+        <plainText>%3Csoapenv%3AEnvelope+xmlns%3Asoapenv%3D%22http%3A%2F%2Fschemas.xmlsoap.org%2Fsoap%2Fenvelope%2F%22+xmlns%3Aatt%3D%22http%3A%2F%2Fwww.example.org%2Fattach%2F%22%3E%0D%0A+++%3Csoapenv%3AHeader%2F%3E%0D%0A+++%3Csoapenv%3ABody%3E%0D%0A++++++%3Catt%3ANewOperation%3E%0D%0A+++++++++%3Cin%3Ehii%3C%2Fin%3E%0D%0A++++++%3C%2Fatt%3ANewOperation%3E%0D%0A+++%3C%2Fsoapenv%3ABody%3E%0D%0A%3C%2Fsoapenv%3AEnvelope%3E</plainText>
+    </SOAPInputMessage>
+</MessagePool>

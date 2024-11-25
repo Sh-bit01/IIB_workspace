@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\TMP\TCPIP\Attachemt.wsdl
+
+The WSDL import will proceed with bindings BoundSoapBinding.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/TMP/TCPIP/Attachemt.wsdl.
+Parsing wsdl binding {http://example.com/bound}BoundSoapBinding.
+Parsing wsdl binding input bound.
+Parsing wsdl binding output bound.
+Processing rpc style for operation bound.
+Populating WSDL schema Attachemt.xsd.
+Creating file Attachemt.xsd in the workspace.
+Creating file Attachemt_InlineSchema1.xsd in the workspace.
+Copying source WSDL Attachemt.wsdl to Attachemt.wsdl.
+
+Elapsed time processing this message definition file: 0.175 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

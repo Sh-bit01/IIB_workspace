@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\TMP\TCPIP\attach.wsdl
+
+The WSDL import will proceed with bindings attachSOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/TMP/TCPIP/attach.wsdl.
+Parsing wsdl binding {http://www.example.org/attach/}attachSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema attach.xsd.
+Creating file attach.xsd in the workspace.
+Creating file attach_InlineSchema1.xsd in the workspace.
+Copying source WSDL attach.wsdl to attach.wsdl.
+
+Elapsed time processing this message definition file: 0.183 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+
