@@ -23,7 +23,7 @@ CREATE COMPUTE MODULE tcpip_node_Compute
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		DECLARE atach BLOB;
-		SET atach = InputRoot.SOAP.Attachment.*.BLOB.BLOB; 
+		SET atach = InputRoot.SOAP.Attachment.*.BLOB.BLOB;
 
 
 		DECLARE string CHARACTER;
