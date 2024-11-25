@@ -3,7 +3,7 @@
   <wsdl:documentation>
     <wsdl:appinfo source="WMQI_APPINFO">
       <MRWSDLAppInfo imported="true">
-        <generatedXSD location="attach_InlineSchema1.xsd"/>
+        <generatedXSD location="attach1_InlineSchema1.xsd"/>
         <binding hasEncoding="false" imported="true" name="attachSOAP" originalBindingStyle="document"/>
       </MRWSDLAppInfo>
     </wsdl:appinfo>
@@ -15,7 +15,7 @@
           
     <xsd:schema xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" targetNamespace="http://www.example.org/attach/">
       
-      <xsd:include schemaLocation="attach_InlineSchema1.xsd"/>
+      <xsd:include schemaLocation="attach1_InlineSchema1.xsd"/>
     </xsd:schema>
         
   </wsdl:types>
