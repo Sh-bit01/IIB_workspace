@@ -8,6 +8,13 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element ibmSchExtn:docRoot="true" name="attachment2">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:base64Binary"/>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
   
   <!-- BEGIN Global group petaining to all wsdl:message definitions -->
   

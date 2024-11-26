@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <policies>
   <policy policyType="SecurityProfiles" policyName="secprofil" policyTemplate="SecurityProfiles">
-    <authentication>NONE</authentication>
-    <authenticationConfig></authenticationConfig>
+    <authentication>LDAP</authentication>
+    <authenticationConfig>ldap://192.168.2.21:389/ou=people,dc=example,dc=com?uid?sub</authenticationConfig>
     <mapping>NONE</mapping>
     <mappingConfig></mappingConfig>
     <authorization>NONE</authorization>
@@ -13,7 +13,7 @@
     <keyStore>Reserved for future use</keyStore>
     <trustStore>Reserved for future use</trustStore>
     <passwordValue>PLAIN</passwordValue>
-    <rejectBlankpassword>false</rejectBlankpassword>
+    <rejectBlankpassword>true</rejectBlankpassword>
     <alternateServers></alternateServers>
   </policy>
 </policies>
