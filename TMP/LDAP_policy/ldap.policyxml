@@ -5,6 +5,6 @@
     <applicationVersion>v1</applicationVersion>
     <applicationType>online</applicationType>
     <authenticationMethod>BASIC</authenticationMethod>
-    <endpointUrl>dvfsdfvsdf</endpointUrl>
+    <endpointUrl>ldap://192.168.2.21:389/ou=people,dc=example,dc=com</endpointUrl>
   </policy>
 </policies>
