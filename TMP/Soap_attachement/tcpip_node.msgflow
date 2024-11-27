@@ -6,7 +6,7 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Soap_attachement/icons/full/obj16/tcpip_node.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Soap_attachement/icons/full/obj30/tcpip_node.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmSOAPInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="148,80" wsdlFileName="attach1.wsdl" selectedPortType="attach" selectedBinding="attachSOAP" selectedPort="attachSOAP" targetNamespace="http://www.example.org/attach/" useHTTPTransport="true" urlSelector="/" parserXmlnscBuildTreeUsingXMLSchema="false" validateMaster="none">
+      <nodes xmi:type="ComIbmSOAPInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="164,117" wsdlFileName="attach1.wsdl" selectedPortType="attach" selectedBinding="attachSOAP" selectedPort="attachSOAP" targetNamespace="http://www.example.org/attach/" useHTTPTransport="true" urlSelector="/" parserXmlnscBuildTreeUsingXMLSchema="false" validateMaster="none">
         <translation xmi:type="utility:ConstantString" string="SOAP Input"/>
       </nodes>
       <nodes xmi:type="ComIbmSOAPReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="719,80">
