@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <policies>
-  <policy policyType="SecurityProfiles" policyName="secprofil" policyTemplate="SecurityProfiles">
+  <policy policyType="SecurityProfiles" policyName="Sec_Profile" policyTemplate="SecurityProfiles">
     <authentication>LDAP</authentication>
     <authenticationConfig>ldap://192.168.2.21:389/ou=people,dc=example,dc=com?uid?sub</authenticationConfig>
     <mapping>NONE</mapping>
