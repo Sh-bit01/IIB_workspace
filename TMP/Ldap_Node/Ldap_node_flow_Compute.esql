@@ -1,0 +1,60 @@
+
+
+
+
+
+
+
+
+
+
+CREATE COMPUTE MODULE Ldap_node_flow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		--CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+
+
+		
+		
+		
+		
+		
+
+
+
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+
+
+		SET OutputRoot.MQMD.Format = 'MQFMT_RF_HEADER_2';
+		--SET OutputRoot.MQRFH2.(MQRFH2.Field)version = 2;
+		--SET OutputRoot.MQRFH2.(MQRFH2.Field)Format = 'MQSTR';
+		--SET OutputRoot.MQRFH2.(MQRFH2.Field)NameValuCCSID=1208;
+		--SET OutputRoot.MQRFH2.psc.Command='Publish';
+		SET OutputRoot.MQRFH2.psc.Topic = 'str1';
+		--Declare PTR REFERENCE to OutputRoot.MQRFH2;
+		--DETACH PTR;
+		--ATTACH PTR TO OutputRoot.MQMD AS NEXTSIBLING ;
+		--SET OutputRoot.XMLNSC.data.info = InputRoot.XMLNSC.publish.info;
+		--SET OutputRoot.XMLNSC.Msg = InputRoot.XMLNSC.a;
+	
+		SET OutputRoot.XMLNSC.a = 'data';
+
+
+
+
+	END;
+END MODULE;
