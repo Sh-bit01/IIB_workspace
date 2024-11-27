@@ -16,7 +16,7 @@
       <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="303,49" computeExpression="esql://routine/#Json_transform_Compute.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
-      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="474,80" wsdlFileName="soap_provider.wsdl" selectedPortType="soap_provider" selectedBinding="soap_providerSOAP" selectedOperation="NewOperation" selectedPort="soap_providerSOAP" targetNamespace="http://www.example.org/soap_provider/" useHTTPTransport="true" webServiceURL="http://localhost:7802/p2" sslProtocol="TLS" hostnameChecking="true" usingWsAddressing="true" parserXmlnscBuildTreeUsingXMLSchema="false"
+      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="474,80" wsdlOperationMode="gateway" wsdlFileName="soap_provider.wsdl" selectedPortType="soap_provider" selectedBinding="soap_providerSOAP" selectedOperation="NewOperation" selectedPort="soap_providerSOAP" targetNamespace="http://www.example.org/soap_provider/" useHTTPTransport="true" webServiceURL="http://localhost:7800/p2" sslProtocol="TLS" hostnameChecking="true" parserXmlnscBuildTreeUsingXMLSchema="false"
           validateMaster="none">
         <translation xmi:type="utility:ConstantString" string="SOAP Request"/>
         <nsMappingTable nsPrefix="tns" namespace="http://schemas.xmlsoap.org/soap/envelope/"/>
