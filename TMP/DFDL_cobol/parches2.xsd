@@ -3,12 +3,12 @@
   <xsd:import namespace="http://www.ibm.com/dfdl/CobolDataDefinitionFormat" schemaLocation="IBMdefined/CobolDataDefinitionFormat.xsd"/>
   <xsd:complexType name="PurchaseData">
     <xsd:sequence>
-      <xsd:element default="0" ibmDfdlExtn:sampleValue="1" name="ItemCount">
+      <xsd:element default="0" dfdl:decimalSigned="no" dfdl:length="2" dfdl:textNumberPattern="00+" ibmDfdlExtn:sampleValue="1" name="ItemCount">
         <xsd:annotation>
-          <xsd:documentation>PIC 9(2) binary</xsd:documentation>
+          <xsd:documentation>PIC 9(2) display</xsd:documentation>
         </xsd:annotation>
         <xsd:simpleType>
-          <xsd:restriction base="dfdlCobolFmt:PIC9-Comp__short">
+          <xsd:restriction base="dfdlCobolFmt:PIC9-Display-Zoned__short">
             <xsd:minInclusive value="0"/>
             <xsd:maxInclusive value="99"/>
           </xsd:restriction>
@@ -43,7 +43,7 @@
       <xsd:element dfdl:lengthKind="implicit" name="Invoice">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element dfdl:lengthKind="implicit" dfdl:occursCount="{../../ItemCount}" dfdl:occursCountKind="expression" maxOccurs="50" minOccurs="1" name="Item">
+            <xsd:element dfdl:lengthKind="implicit" dfdl:occursCount="{../../ItemCount}" dfdl:occursCountKind="expression" maxOccurs="99" minOccurs="1" name="Item">
               <xsd:annotation>
                 <xsd:appinfo source="http://www.wsadie.com/appinfo">
                   <dependingOn>//PurchaseData;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle/ItemCount;XSDElementDeclaration</dependingOn>
@@ -208,7 +208,7 @@
     <xsd:documentation>
 	This XSD was created by importing COBOL copybook.
 
-	Source file:	PurchaseData.cpy
+	Source file:	parches2.cpy
 
 	Import options:
 		CODEPAGE=ISO-8859-1
