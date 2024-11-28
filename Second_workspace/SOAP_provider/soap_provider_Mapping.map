@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" xmlns:map="default" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0">
+    <inlinedXMLSchema>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?> 
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
+       
+  <xsd:element name="out" type="xsd:string"/> 
+       
+  <xsd:element name="in" type="xsd:string"/> 
+   
+</xsd:schema> 
+]]>
+    </inlinedXMLSchema>
+    <input path="/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/IBMdefined/org/xmlsoap/schemas/soap/envelope/soapenv11.xsd"/>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="soap_provider_Mapping">
+        <input namespace="http://schemas.xmlsoap.org/soap/envelope/" path="$var1/mb:msg(Body,assembly,XMLNSC,Properties)" var="MessageAssembly">
+            <cast castType="userDefined" path="$MessageAssembly/Body/any" qualifier="in" ref="var"/>
+        </input>
+        <output namespace="http://schemas.xmlsoap.org/soap/envelope/" path="mb:msg(Body,assembly,XMLNSC,Properties)" var="MessageAssembly3">
+            <cast castType="userDefined" path="$MessageAssembly3/Body/any" qualifier="out" ref="var"/>
+        </output>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly3/Properties"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/Body/in"/>
+            <output path="$MessageAssembly3/Body/out"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>
