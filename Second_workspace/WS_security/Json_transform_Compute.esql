@@ -1,5 +1,7 @@
 
 
+
+
 CREATE COMPUTE MODULE Json_transform_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -21,5 +23,8 @@ CREATE COMPUTE MODULE Json_transform_Compute
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		--SET OutputRoot.JSON.Data = InputRoot.XMLNSC;
 		SET OutputRoot = InputRoot;
+		SET OutputRoot.Properties.IdentitySourceType = 'usernameAndPassword';
+		SET OutputRoot.Properties.IdentitySourceToken = 'ubuntu/admin';
+		SET OutputRoot.Properties.IdentitySourcePassword = 'sarasu10';
 	END;
 END MODULE;

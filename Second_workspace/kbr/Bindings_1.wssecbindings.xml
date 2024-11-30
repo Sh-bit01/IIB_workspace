@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><?ibm-bip policySet="Policy_1"?>
+<securitybinding:securityBindings xmlns:securitybinding="http://www.ibm.com/xmlns/prod/websphere/200710/ws-securitybinding">
+  <securitybinding:securityBinding name="application">
+    <securitybinding:securityOutboundBindingConfig/>
+    <securitybinding:securityInboundBindingConfig/>
+  </securitybinding:securityBinding>
+</securitybinding:securityBindings>
