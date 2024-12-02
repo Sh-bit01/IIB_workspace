@@ -1,0 +1,88 @@
+
+
+
+
+
+
+CREATE COMPUTE MODULE xml_1_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+
+
+		DECLARE inref REFERENCE TO InputRoot.XMLNSC;
+
+		IF inref.Root.Header.channelId = 'TPH' THEN
+			SET OutputLocalEnvironment.Destination.MQ.DestinationData.queueName = 'TPH';
+
+		ELSEIF inref.Root.Header.channelId = 'FCH' THEN
+			SET OutputLocalEnvironment.Destination.MQ.DestinationData.queueName = 'FCH';
+
+		ELSE
+			--Throw USER EXCEPTION VALUES('channelId Data is Invalid');
+			THROW USER EXCEPTION VALUES('Failure','ESB-APPC-401', '5841', 'com.sbm.eidiko.HTTPGatewayReq_FramingAPICallReq.Main, Account Not Found - The provided channelId is not valid or does not exist ');
+		END if;
+
+
+		SET OutputRoot.XMLNSC.Root.Header = InputRoot.XMLNSC.Root.Header;
+
+		DECLARE da CHARACTER FIELDNAME(InputRoot.XMLNSC.Root.Body.Data.*[<]);
+
+		DECLARE ref REFERENCE TO InputRoot.XMLNSC.Root.Body.Data.{da}.book[1];
+		DECLARE i INTEGER 1;
+		DECLARE check BOOLEAN FALSE;
+
+		WHILE LASTMOVE(ref) DO
+
+			if CONTAINS(ref.author, 'Corets') THEN
+				SET OutputRoot.XMLNSC.Root.Body.Data.{da}.book[i].id = ref.id;
+				SET OutputRoot.XMLNSC.Root.Body.Data.{da}.book[i].author = ref.author;
+				SET OutputRoot.XMLNSC.Root.Body.Data.{da}.book[i].title = ref.title;
+				SET OutputRoot.XMLNSC.Root.Body.Data.{da}.book[i].genre = ref.genre;
+				SET OutputRoot.XMLNSC.Root.Body.Data.{da}.book[i].price = ref.price;
+				SET OutputRoot.XMLNSC.Root.Body.Data.{da}.book[i].publish_date = ref.publish_date;
+				SET OutputRoot.XMLNSC.Root.Body.Data.{da}.book[i].description = ref.description;
+				SET i = i+1;
+			END if;
+
+			Move ref NEXTSIBLING;
+		END WHILE;		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
+	END;
+END MODULE;

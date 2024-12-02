@@ -1,7 +1,6 @@
-BROKER SCHEMA Exception_handling
 
 
-CREATE COMPUTE MODULE Exception_Handling_Compute
+CREATE COMPUTE MODULE xml_1_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
@@ -20,6 +19,8 @@ CREATE COMPUTE MODULE Exception_Handling_Compute
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
 		DECLARE ref REFERENCE TO InputExceptionList.*[>];
 		DECLARE Text CHARACTER;
 		DECLARE Itm ROW;
@@ -41,7 +42,13 @@ CREATE COMPUTE MODULE Exception_Handling_Compute
 		SET OutputRoot.JSON.Data.error.additionalData.Error.esb_error_code = Itm.item[v-1].Text;
 		SET OutputRoot.JSON.Data.error.additionalData.Error.esb_error_desc = Itm.item[v].Text;
 
-
+		
+		
+		
+		
+		
+		
+		
+		
 	END;
 END MODULE;
-

@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <policy:Policy xmlns:_0="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:_200512="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200512" xmlns:ext="http://www.ibm.com/xmlns/prod/websphere/200605/ws-securitypolicy-ext" xmlns:policy="http://schemas.xmlsoap.org/ws/2004/09/policy">
-
+  <_200512:AsymmetricBinding>
+    <policy:Policy>
+      <_200512:InitiatorToken>
+        <policy:Policy>
+          <_200512:X509Token _200512:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200512/IncludeToken/AlwaysToInitiator">
+            <policy:Policy Name="man">
+              <_200512:WssX509V3Token10/>
+            </policy:Policy>
+          </_200512:X509Token>
+        </policy:Policy>
+      </_200512:InitiatorToken>
+      <_200512:AlgorithmSuite>
+        <policy:Policy>
+          <_200512:Basic256/>
+        </policy:Policy>
+      </_200512:AlgorithmSuite>
+      <_200512:IncludeTimestamp/>
+      <_200512:Layout>
+        <policy:Policy>
+          <_200512:Lax/>
+        </policy:Policy>
+      </_200512:Layout>
+    </policy:Policy>
+  </_200512:AsymmetricBinding>
   <_200512:SymmetricBinding>
     <policy:Policy>
       <_200512:ProtectionToken>

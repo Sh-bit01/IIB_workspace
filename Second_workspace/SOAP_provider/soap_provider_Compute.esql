@@ -21,6 +21,8 @@ CREATE COMPUTE MODULE soap_provider_Compute
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		--SET OutputRoot.SOAP.Body.ns:NewOperationResponse.out = InputRoot.SOAP.Body.ns:NewOperation.in;
+		SET OutputRoot = InputRoot;
+		SET OutputRoot.SOAP.Body = null;
 		SET OutputRoot.SOAP.Body.ns:NewOperationResponse.out = InputRoot.SOAP.Body.in;
 	END;
 END MODULE;
