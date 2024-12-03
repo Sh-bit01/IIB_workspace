@@ -6,7 +6,7 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/APP_XMLvalidation/icons/full/obj16/xml_1.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/APP_XMLvalidation/icons/full/obj30/xml_1.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="105,86" URLSpecifier="/q" messageDomainProperty="XMLNSC" messageSetProperty="APP_XMLvalidationMessageSet" validateTiming="complete" validateMaster="contentAndValue" validateFailureAction="exceptionList">
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="105,86" URLSpecifier="/q" messageDomainProperty="XMLNSC" messageSetProperty="APP_XMLvalidationMessageSet" validateMaster="contentAndValue" validateFailureAction="exceptionList">
         <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
       </nodes>
       <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="874,87">
