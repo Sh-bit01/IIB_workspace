@@ -30,7 +30,7 @@
         <policy:Policy _0:Id="kaka">
           <ext:CustomToken _200512:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200512/IncludeToken/Always">
             <policy:Policy>
-              <ext:WssCustomToken localname="http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1#GSS_Kerberosv5_AP_REQ"/>
+              <ext:WssCustomToken localname="http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1#Kerberosv5_AP_REQ"/>
             </policy:Policy>
           </ext:CustomToken>
         </policy:Policy>
@@ -49,8 +49,8 @@
     </policy:Policy>
   </_200512:SymmetricBinding>
   <policy:Policy _0:Id="request:sdvfv">
-    <_200512:SignedParts>
+    <_200512:EncryptedParts>
       <_200512:Body/>
-    </_200512:SignedParts>
+    </_200512:EncryptedParts>
   </policy:Policy>
 </policy:Policy>

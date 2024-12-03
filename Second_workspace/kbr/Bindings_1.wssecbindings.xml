@@ -2,13 +2,13 @@
 <securitybinding:securityBindings xmlns:securitybinding="http://www.ibm.com/xmlns/prod/websphere/200710/ws-securitybinding">
   <securitybinding:securityBinding name="application">
     <securitybinding:securityOutboundBindingConfig>
-      <securitybinding:signingInfo name="gen_sdvfv" order="1">
-        <securitybinding:signingKeyInfo reference="gen_kaka_signsdvfv_keyinfo"/>
-        <securitybinding:signingPartReference reference="request:sdvfv">
-          <securitybinding:transform algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
-        </securitybinding:signingPartReference>
-      </securitybinding:signingInfo>
-      <securitybinding:keyInfo classname="com.ibm.ws.wssecurity.wssapi.CommonContentGenerator" name="gen_kaka_signsdvfv_keyinfo" type="STRREF">
+      <securitybinding:encryptionInfo name="gen_sdvfv" order="1">
+        <securitybinding:encryptionPartReference reference="request:sdvfv">
+          <securitybinding:dataEncryptionKeyInfo reference="gen_kaka_encsdvfv_keyinfo"/>
+          <securitybinding:timestamp/>
+        </securitybinding:encryptionPartReference>
+      </securitybinding:encryptionInfo>
+      <securitybinding:keyInfo classname="com.ibm.ws.wssecurity.wssapi.CommonContentGenerator" name="gen_kaka_encsdvfv_keyinfo" type="STRREF">
         <securitybinding:tokenReference reference="gen_kaka"/>
         <securitybinding:derivedKeyInfo keyLength="16">
           <securitybinding:requireDerivedKeys/>
