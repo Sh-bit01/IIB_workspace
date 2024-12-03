@@ -1,10 +1,10 @@
 
 
-Importing file: C:\Users\Sreenivas Bandaru\Documents\XML_schema.xsd
+Importing file: C:\Users\Sreenivas Bandaru\Documents\New_schema.Xsd
 
 BIP0224W The message set has no XML Wire Format layer defined. Only the logical information will appear in the model.
 
-Elapsed time processing this message definition file: 0.063 seconds
+Elapsed time processing this message definition file: 6.706 seconds
 Number of warnings for this message definition file: 1
 
 
