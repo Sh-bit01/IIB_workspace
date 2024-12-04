@@ -6,13 +6,13 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/CallableTimestampAlternate/icons/full/obj16/AlternateTimestamp.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/CallableTimestampAlternate/icons/full/obj30/AlternateTimestamp.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmCallableFlowInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="10,20" callableInputEndpoint="timestamp">
+      <nodes xmi:type="ComIbmCallableFlowInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="86,71" callableInputEndpoint="timestamp">
         <translation xmi:type="utility:ConstantString" string="CF input: timestamp"/>
       </nodes>
-      <nodes xmi:type="ComIbmCallableFlowReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="450,24">
+      <nodes xmi:type="ComIbmCallableFlowReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="519,75">
         <translation xmi:type="utility:ConstantString" string="CallableReply"/>
       </nodes>
-      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="220,20" mappingExpression="msl://{default}#timestampJustTime_Mapping">
+      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="296,71" mappingExpression="msl://{default}#timestampJustTime_Mapping">
         <translation xmi:type="utility:ConstantString" string="Update JSON body with alternate timestamp"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>

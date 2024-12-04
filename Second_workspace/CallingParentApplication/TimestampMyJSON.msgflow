@@ -6,16 +6,16 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/CallingParentApplication/icons/full/obj16/TimestampMyJSON.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/CallingParentApplication/icons/full/obj30/TimestampMyJSON.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="31,124" URLSpecifier="/tutorials/callableflows/eventsin" messageDomainProperty="JSON">
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="93,109" URLSpecifier="/tutorials/callableflows/eventsin" messageDomainProperty="JSON">
         <translation xmi:type="utility:ConstantString" string="Handle JSON eventsin"/>
       </nodes>
-      <nodes xmi:type="ComIbmCallableFlowInvoke.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="451,124" targetApplication="CallableTimestamp" targetEndpointName="timestamp">
+      <nodes xmi:type="ComIbmCallableFlowInvoke.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="513,109" targetApplication="CallableTimestamp" targetEndpointName="timestamp">
         <translation xmi:type="utility:ConstantString" string="Call Timestamp flow, updates body"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="660,123">
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="722,108">
         <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
       </nodes>
-      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="223,119" mappingExpression="msl://{default}#TimestampMyJSON_Apply_any_LE_overrides">
+      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="285,104" mappingExpression="msl://{default}#TimestampMyJSON_Apply_any_LE_overrides">
         <translation xmi:type="utility:ConstantString" string="Apply any LE overrides"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
