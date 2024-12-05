@@ -19,6 +19,15 @@ CREATE COMPUTE MODULE SOAP_jms_Compute
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		SET OutputRoot = InputRoot;
+		SET OutputRoot.DFDL.csv_Data.record.name = InputRoot.DFDL.fixlength_data.body.name;
+		SET OutputRoot.DFDL.csv_Data.record.age =  InputRoot.DFDL.fixlength_data.body.age;
+		SET OutputRoot.DFDL.csv_Data.record.place =  InputRoot.DFDL.fixlength_data.body.place;
+		
+		
+		
+		
+		
+		---
+		--SET OutputRoot.XMLNSC.Data = OutputRoot.DFDL.csv_Data;
 	END;
 END MODULE;
