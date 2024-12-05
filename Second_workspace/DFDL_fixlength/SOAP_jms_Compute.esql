@@ -1,5 +1,6 @@
 
-CREATE COMPUTE MODULE loop_callable_Compute1
+
+CREATE COMPUTE MODULE SOAP_jms_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
@@ -19,19 +20,5 @@ CREATE COMPUTE MODULE loop_callable_Compute1
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		SET OutputRoot = InputRoot;
-		--SET OutputRoot.JSON.Data.shd = Environment.shd;
-		--SET OutputRoot.JSON.Data.data.a = udp ; 
-		--SET OutputRoot.JSON.Data.data.b = shd ; 
-			
-		IF udp = shd THEN
-			SET OutputRoot = null ; 
-			SET OutputRoot.JSON.Data.data = 'data has been sended ' || CAST(shd as CHARACTER)  ||'  time....' ; 
-			
-			SET shd = 1;
-			propagate TO TERMINAL 'out1'; 
-		END IF;
-		
-		
-		
 	END;
 END MODULE;

@@ -1,4 +1,4 @@
-DECLARE shd SHARED INTEGER 1;
+DECLARE shd  SHARED INTEGER 1;
 DECLARE udp EXTERNAL INTEGER;
  
 CREATE COMPUTE MODULE loop_callable_Compute
@@ -21,12 +21,14 @@ CREATE COMPUTE MODULE loop_callable_Compute
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN	
 		
-		DECLARE i , shd INTEGER 1;
+		DECLARE i INTEGER 1;
+		---SET Environment.shd = 1;
+		--DECLARE shd REFERENCE TO Environment.shd;
 		
 		WHILE i < udp DO
 			SET OutputRoot = InputRoot;
 			SET i = i+1;
-			SET shd = shd +1;
+			SET  shd = shd +1;
 			propagate to TERMINAL 'out';
 		END WHILE;
 		

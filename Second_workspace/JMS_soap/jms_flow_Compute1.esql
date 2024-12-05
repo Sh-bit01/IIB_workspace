@@ -1,0 +1,94 @@
+
+
+CREATE COMPUTE MODULE jms_flow_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot.Properties = InputRoot.Properties;
+		SET OutputRoot.Properties.Transactional = true;
+		SET OutputRoot.Properties.Persistence = true;
+		SET OutputRoot.Properties.ReplyProtocol = 'MQ';
+		SET OutputRoot.Properties.Priority = 4;
+		SET OutputRoot.Properties.ContentType = '';
+
+		SET OutputRoot.MQMD = InputRoot.MQMD;
+		-- Declare and set the MQMD header
+		SET OutputRoot.MQMD.SourceQueue = 'jms_temp';
+		SET OutputRoot.MQMD.Transactional = TRUE;
+		SET OutputRoot.MQMD.Encoding = 273;
+		SET OutputRoot.MQMD.CodedCharSetId = 1208;
+		SET OutputRoot.MQMD.Format = 'MQHRF2'; -- Format
+		SET OutputRoot.MQMD.Version = 2;
+		SET OutputRoot.MQMD.Report = 0;
+		SET OutputRoot.MQMD.MsgType = 1;
+		SET OutputRoot.MQMD.Expiry = -1;
+		SET OutputRoot.MQMD.Feedback = 0;
+		SET OutputRoot.MQMD.Priority = 4;
+		SET OutputRoot.MQMD.Persistence = 1;
+		-- Set MsgId and CorrelId as BLOBs
+		--SET OutputRoot.MQMD.MsgId = X'1F909004'; -- Replace with actual binary data
+		--SET OutputRoot.MQMD.CorrelId = X'4F68AEDF'; -- Replace with actual binary data
+
+		SET OutputRoot.MQMD.BackoutCount = 0;
+		SET OutputRoot.MQMD.ReplyToQ = 'jms_out';
+		SET OutputRoot.MQMD.ReplyToQMgr = 'override';
+		SET OutputRoot.MQMD.UserIdentifier = 'SYSTEM';
+		--SET OutputRoot.MQMD.AccountingToken = X'648F93E'; -- Replace with actual binary data
+		SET OutputRoot.MQMD.ApplIdentityData = '';
+		SET OutputRoot.MQMD.PutApplType = 11;
+		SET OutputRoot.MQMD.PutApplName = 'erver\bin\DataFlowEngine.exe';
+		-- Set PutDate and PutTime as DATE and TIME
+		--SET OutputRoot.MQMD.PutDate = DATE '2024-12-05'; -- Adjust as necessary
+		--SET OutputRoot.MQMD.PutTime = TIME '16:24:03'; -- Adjust as necessary
+
+		SET OutputRoot.MQMD.ApplOriginData = '';
+		--SET OutputRoot.MQMD.GroupId = X'CDDB9C35'; -- Replace with actual binary data
+		SET OutputRoot.MQMD.MsgSeqNumber = 1;
+		SET OutputRoot.MQMD.Offset = 0;
+		SET OutputRoot.MQMD.MsgFlags = 0;
+		SET OutputRoot.MQMD.OriginalLength = -1;		
+		
+		
+		-- Declare and set the MQRFH2 header
+		SET OutputRoot.MQRFH2.Version = 2;
+		SET OutputRoot.MQRFH2.Format = ''; -- Empty format
+		SET OutputRoot.MQRFH2.Encoding = 273; -- Encoding
+		SET OutputRoot.MQRFH2.CodedCharSetId = 1208; -- CCSID
+		SET OutputRoot.MQRFH2.Flags = 0; -- Flags
+		SET OutputRoot.MQRFH2.NameValueCCSID = 1208; -- NameValueCCSID
+		-- Set the 'mcd' folder and its child
+		SET OutputRoot.MQRFH2.mcd.Msd = 'jms_bytes';
+		-- Set the 'jms' folder and its children
+		SET OutputRoot.MQRFH2.jms.Dst = 'queue://override/jms_temp';
+		SET OutputRoot.MQRFH2.jms.Rto = 'queue://override/jms_out';
+		SET OutputRoot.MQRFH2.jms.Tms = '1733413388320';
+		SET OutputRoot.MQRFH2.jms.Dlv = '2';
+		-- Set the 'usr' folder and its children
+		SET OutputRoot.MQRFH2.usr.SOAPJMS_bindingVersion = '1.0';
+		SET OutputRoot.MQRFH2.usr.SOAPJMS_soapAction = '';
+		SET OutputRoot.MQRFH2.usr.SOAPJMS_requestURI = 'jms:jndi:d3';
+		SET OutputRoot.MQRFH2.usr.SOAPJMS_contentType = 'text/xml;charset=utf-8';
+		SET OutputRoot.MQRFH2.usr.SOAPJMS_targetService = '';
+
+		SET OutputRoot.BLOB.BLOB = ASBITSTREAM (InputRoot.XMLNSC);
+
+
+
+
+	END;
+END MODULE;
