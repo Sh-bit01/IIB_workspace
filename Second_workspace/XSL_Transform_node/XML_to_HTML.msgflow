@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmWSInput.msgnode="ComIbmWSInput.msgnode" xmlns:ComIbmWSReply.msgnode="ComIbmWSReply.msgnode" xmlns:ComIbmXslMqsi.msgnode="ComIbmXslMqsi.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="XML_to_HTML.msgflow" nsPrefix="XML_to_HTML.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="XML_to_HTML" bundleName="XML_to_HTML" pluginId="XSL_Transform_node"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/XSL_Transform_node/icons/full/obj16/XML_to_HTML.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/XSL_Transform_node/icons/full/obj30/XML_to_HTML.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="87,83" URLSpecifier="/html" messageDomainProperty="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="642,78">
+        <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
+      </nodes>
+      <nodes xmi:type="ComIbmXslMqsi.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="353,81" stylesheetName="XML_to_HTML.xsl">
+        <translation xmi:type="utility:ConstantString" string="XSL Transform"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard>
+      <stickyNote location="94,170" association="FCMComposite_1_6">
+        <body xmi:type="utility:ConstantString" string="&lt;books>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>The Catcher in the Rye&lt;/title>&#xD;&#xA;    &lt;author>Adesh NImse&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>To Kill a Mockingbird&lt;/title>&#xD;&#xA;    &lt;author>Harper Lee&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>1984&lt;/title>&#xD;&#xA;    &lt;author>George Orwell&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>Pride and Prejudice&lt;/title>&#xD;&#xA;    &lt;author>Jane Austen&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>The Great Gatsby&lt;/title>&#xD;&#xA;    &lt;author>F. Scott Fitzgerald&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>Brave New World&lt;/title>&#xD;&#xA;    &lt;author>Aldous Huxley&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>Moby-Dick&lt;/title>&#xD;&#xA;    &lt;author>Herman Melville&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>Crime and Punishment&lt;/title>&#xD;&#xA;    &lt;author>Fyodor Dostoevsky&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>The Hobbit&lt;/title>&#xD;&#xA;    &lt;author>J.R.R. Tolkien&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;  &lt;book>&#xD;&#xA;    &lt;title>Frankenstein&lt;/title>&#xD;&#xA;    &lt;author>Mary Shelley&lt;/author>&#xD;&#xA;  &lt;/book>&#xD;&#xA;&lt;/books>&#xD;&#xA;"/>
+      </stickyNote>
+    </stickyBoard>
+  </eClassifiers>
+</ecore:EPackage>
