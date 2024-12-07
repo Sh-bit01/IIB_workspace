@@ -21,11 +21,6 @@ CREATE COMPUTE MODULE gudhscjcjkadc_Compute
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		SET OutputRoot.JSON.Data.user = 'bob';
 		SET OutputRoot.JSON.Data.pass = 'sarasu10';
-		
-		
-		
-	
-		
-		
+			
 	END;
 END MODULE;
