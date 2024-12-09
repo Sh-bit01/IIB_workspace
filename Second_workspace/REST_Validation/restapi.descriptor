@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:restapiDescriptor xmlns="http://com.ibm.etools.mft.descriptor.base" xmlns:ns2="http://com.ibm.etools.mft.descriptor.restapi" definitionType="openapi_3" definitionFile="openapi.json" implementation="gen/REST_Validation.msgflow" https="false" definitionWithExtRef="false" faultFormat="JSON">
+    <ns2:operations>
+        <ns2:operation name="getP1" implementation="getP1.subflow"/>
+        <ns2:operation name="postP1" implementation="postP1.subflow"/>
+        <ns2:operation name="postP2" implementation="postP2.subflow"/>
+    </ns2:operations>
+    <ns2:errorHandlers>
+        <ns2:errorHandler type="CATCH" implementation="REST_ValidationInputCatchHandler.subflow"/>
+    </ns2:errorHandlers>
+    <ns2:validations>
+        <ns2:validation type="INPUT" allowUnexpectedBody="false" onlyValidate2xx="false"/>
+    </ns2:validations>
+</ns2:restapiDescriptor>

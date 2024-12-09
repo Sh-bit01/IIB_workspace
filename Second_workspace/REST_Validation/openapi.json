@@ -1,0 +1,109 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "REST_Over_Soap",
+    "version": "1.0.0",
+    "description": "REST_Over_Soap"
+  },
+  "servers": [
+    {
+      "url": "/v1"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "PostRequestBody": {
+        "type": "object",
+        "properties": {
+          "exampleKey": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50,
+            "pattern": "^[a-zA-Z0-9_]+$"
+          },
+          "anotherKey": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "exampleKey",
+          "anotherKey"
+        ]
+      },
+      "APP_p2": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/p1": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "query",
+          "allowEmptyValue": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    },
+    "/p2": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APP_p2"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    }
+  }
+}
