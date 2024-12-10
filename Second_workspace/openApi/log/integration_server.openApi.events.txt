@@ -1,0 +1,11 @@
+2024-12-09 22:02:13.451658Z: [Thread 4952] (Msg 1/1) BIP1990I: Integration server 'openApi' starting initialization; version '12.0.12.0' (64-bit) 
+2024-12-09 22:02:13.476550Z: [Thread 4952] (Msg 1/1) BIP9905I: Initializing resource managers. 
+2024-12-09 22:02:20.231774Z: [Thread 4952] (Msg 1/1) BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2024-12-09 22:02:21.105498Z: [Thread 4952] (Msg 1/1) BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2024-12-09 22:02:29.102970Z: [Thread 4952] (Msg 1/1) BIP9906I: Reading deployed resources. 
+2024-12-09 22:02:32.685878Z: [Thread 6696] (Msg 1/1) BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2024-12-09 22:02:32.698764Z: [Thread 6696] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2024-12-09 22:02:32.705674Z: [Thread 4952] (Msg 1/1) BIP1991I: Integration server has finished initialization. 
+2024-12-09 22:12:27.481930Z: [Thread 11452] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-09 22:12:27.494544Z: [Thread 11452] (Msg 1/1) BIP2153I: About to 'deleteAll' an integration server. 
+2024-12-09 22:12:27.500260Z: [Thread 11452] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 

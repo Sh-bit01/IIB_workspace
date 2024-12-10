@@ -4,6 +4,7 @@
         <ns2:operation name="getP1" implementation="getP1.subflow"/>
         <ns2:operation name="postP1" implementation="postP1.subflow"/>
         <ns2:operation name="postP2" implementation="postP2.subflow"/>
+        <ns2:operation name="submitData" implementation="submitData.subflow"/>
     </ns2:operations>
     <ns2:errorHandlers>
         <ns2:errorHandler type="CATCH" implementation="REST_ValidationInputCatchHandler.subflow"/>
