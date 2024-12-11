@@ -1,0 +1,64 @@
+
+
+CREATE COMPUTE MODULE sfhefgj_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot.XMLNSC.Res = InputRoot.JSON.Data;
+		DECLARE partData BLOB ASBITSTREAM(OutputRoot.XMLNSC CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+
+		SET OutputRoot = NULL;
+		SET OutputRoot.Properties.ContentType = 'text/xml';
+		CREATE FIELD OutputRoot.MIME TYPE Name;
+		DECLARE M REFERENCE TO OutputRoot.MIME;
+		CREATE LASTCHILD OF M TYPE Name NAME 'Data';
+		CREATE FIELD OutputRoot.MIME.Data."Content-Type" TYPE NameValue VALUE 'text/xml';
+		CREATE LASTCHILD OF M.Data DOMAIN('BLOB') PARSE(partData);
+
+
+
+--		-- Set Content-Type for multipart MIME message
+--		SET OutputRoot.Properties.ContentType = 'multipart/related; boundary=myBoundary';
+--		-- Create the MIME structure
+--		CREATE FIELD OutputRoot.MIME TYPE Name;
+--		DECLARE M REFERENCE TO OutputRoot.MIME;
+--		-- Create Parts container
+--		CREATE LASTCHILD OF M TYPE Name NAME 'Parts';
+--		
+--		
+--		-- Add Part 1 (XML Content)
+--		CREATE LASTCHILD OF M.Parts TYPE Name NAME 'Part';
+--		DECLARE P1 REFERENCE TO M.Parts.Part[1];
+--		--DECLARE part1Data BLOB ASBITSTREAM(InputRoot.XMLNSC, InputProperties.Encoding, InputProperties.CodedCharSetId);
+--		CREATE FIELD P1."Content-Type" TYPE NameValue VALUE 'application/xml';
+--		CREATE LASTCHILD OF P1 TYPE Name NAME 'Data';
+--		CREATE LASTCHILD OF P1.Data DOMAIN('BLOB') PARSE(partData);
+--		
+--		
+--		-- Add Part 2 (JSON Content)
+--		CREATE LASTCHILD OF M.Parts TYPE Name NAME 'Part';
+--		DECLARE P2 REFERENCE TO M.Parts.Part[2];
+--		DECLARE part2Data BLOB ASBITSTREAM(InputRoot.JSON.Data, InputProperties.Encoding, InputProperties.CodedCharSetId);
+--		CREATE FIELD P2."Content-Type" TYPE NameValue VALUE 'application/json';
+--		CREATE LASTCHILD OF P2 TYPE Name NAME 'Data';
+--		CREATE LASTCHILD OF P2.Data DOMAIN('BLOB') PARSE(part2Data);
+
+
+
+	END;
+END MODULE;

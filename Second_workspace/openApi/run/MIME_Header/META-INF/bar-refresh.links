@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy:Deploy xmlns:deploy="http://www.ibm.com/xmlns/prod/wmb/deploy/6.0.0" overrideConfigurableProperties="false" includeESQL="false">
+  <deployables>
+    <deployable deployed="true" barResourceTimeStamp="1733789344171" workspaceResource="/MIME_Header/Swagger-Petstore---OpenAPI-3_0.json">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file MIME_Header\Swagger-Petstore---OpenAPI-3_0.json.&#xA;Successfully added file MIME_Header\Swagger-Petstore---OpenAPI-3_0.json to BAR file.&#xA;Elapsed time: 0 second(s).&#xA;&#xA;Successfully added file MIME_Header\Swagger-Petstore---OpenAPI-3_0.json to BAR file.&#xA;" severity="0"/>
+      <barEntry name="Swagger-Petstore---OpenAPI-3_0.json"/>
+    </deployable>
+    <deployable deployed="true" barResourceTimeStamp="1733528459097" workspaceResource="/MIME_Header/application.descriptor">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file MIME_Header\application.descriptor.&#xA;Successfully added file MIME_Header\application.descriptor to BAR file.&#xA;Elapsed time: 0 second(s).&#xA;&#xA;Successfully added file MIME_Header\application.descriptor to BAR file.&#xA;" severity="0"/>
+      <barEntry name="application.descriptor"/>
+    </deployable>
+    <deployable deployed="true" barResourceTimeStamp="1733789344171" workspaceResource="/MIME_Header/openapi.json">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file MIME_Header\openapi.json.&#xA;Successfully added file MIME_Header\openapi.json to BAR file.&#xA;Elapsed time: 0 second(s).&#xA;&#xA;Successfully added file MIME_Header\openapi.json to BAR file.&#xA;" severity="0"/>
+      <barEntry name="openapi.json"/>
+    </deployable>
+    <deployable deployed="true" barResourceTimeStamp="1733875461819" workspaceResource="/MIME_Header/sfhefgj.msgflow">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file MIME_Header\sfhefgj.msgflow.&#xA;Successfully added file MIME_Header\sfhefgj.msgflow to BAR file.&#xA;" severity="0"/>
+      <barEntry name="sfhefgj.msgflow"/>
+    </deployable>
+    <deployable deployed="true" barResourceTimeStamp="1733874012414" workspaceResource="/MIME_Header/sfhefgj_Compute.esql">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file MIME_Header\sfhefgj_Compute.esql.&#xA;Successfully added file MIME_Header\sfhefgj_Compute.esql to BAR file.&#xA;" severity="0"/>
+      <barEntry name="sfhefgj_Compute.esql"/>
+    </deployable>
+    <deployable deployed="true" barResourceTimeStamp="1733874067951" workspaceResource="/MIME_Header/sfhefgj_Compute1.esql">
+      <deployableStatus code="0" key="DEPLOYABLE_LAST_COMPILE_STATUS" message="&#xA;Processing file MIME_Header\sfhefgj_Compute1.esql.&#xA;Successfully added file MIME_Header\sfhefgj_Compute1.esql to BAR file.&#xA;" severity="0"/>
+      <barEntry name="sfhefgj_Compute1.esql"/>
+    </deployable>
+  </deployables>
+</deploy:Deploy>

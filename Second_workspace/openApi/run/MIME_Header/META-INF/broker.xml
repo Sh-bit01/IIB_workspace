@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Broker deployBarfile="C:\Users\Sreenivas Bandaru\IBM\ACET12\Second_workspace\GeneratedBarFiles\MIME_Headerproject.generated.bar" deployTimestamp="2024-12-11 00:04:25">
+  <CompiledApplication>
+    <ConfigurableProperty uri="startMode">
+    </ConfigurableProperty>
+  </CompiledApplication>
+  <CompiledMessageFlow name="sfhefgj" deployBarfile="C:\Users\Sreenivas Bandaru\IBM\ACET12\Second_workspace\GeneratedBarFiles\MIME_Headerproject.generated.bar" deployTimestamp="2024-12-11 00:04:25">
+    <ConfigurableProperty uri="sfhefgj#Compute.connectDatasourceBeforeFlowStarts">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#Compute.dataSource">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#Compute.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#Compute1.connectDatasourceBeforeFlowStarts">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#Compute1.dataSource">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#Compute1.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input.URLSpecifier" override="/p1">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input.decompressInputMessage" override="yes">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input.faultFormat">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input.securityProfileName">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input.timeoutForClient">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input.useHTTPS">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input1.URLSpecifier" override="/p2">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input1.decompressInputMessage" override="yes">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input1.faultFormat">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input1.securityProfileName">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input1.timeoutForClient">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input1.useHTTPS">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Input1.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Reply.compressionType" override="allMimeTypes">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Reply.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Reply1.compressionType" override="allMimeTypes">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Reply1.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.URLSpecifier" override="http://localhost:7800/p2">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.acceptCompressedResponses" override="yes">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.allowedCiphers">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.enableCRLCheck">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.enableKeepAlive">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.hostnameChecking">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.httpProxyLocation">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.httpVersion" override="1.1">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.keyAlias">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.policyUrl">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.protocol" override="TLS">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.requestCompressionType" override="gzip">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.securityProfileName">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.timeoutForServer">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#HTTP Request.validateMaster">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#additionalInstances">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#commitCount">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#commitInterval">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#consumerPolicySet">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#consumerPolicySetBindings">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#coordinatedTransaction">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#maximumRateMsgsPerSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#monitoringProfile">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#notificationThresholdMsgsPerSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#processingTimeoutAction">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#processingTimeoutSec">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#providerPolicySet">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#providerPolicySetBindings">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#securityProfileName">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#startInstancesWhenFlowStarts">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#startMode">
+    </ConfigurableProperty>
+    <ConfigurableProperty uri="sfhefgj#wlmPolicy">
+    </ConfigurableProperty>
+  </CompiledMessageFlow>
+</Broker>

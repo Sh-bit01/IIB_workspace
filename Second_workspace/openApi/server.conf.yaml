@@ -53,8 +53,9 @@ serverConfVersion: 1
 # We have a set of mime types that are considered compressible,
 # if this list needs to be modified the following lines can be uncommented
 # and comma-separated types listed in them
-#additionalCompressibleMimeTypes: ''
-#removeCompressibleMimeTypes: ''
+#additionalCompressibleMimeTypes: 'application/msgflow+xml' 
+#sremoveCompressibleMimeTypes: 'text/xml,text/plain'
+
 
 RestAdminListener:
   #port: 7600                # Set the Admin REST API Port for ACE Web UI and Toolkit or -1 to disable. Defaults to 7600.
@@ -190,7 +191,7 @@ Defaults:
     # Set default policy names, optionally qualified with a policy project as {policy project}:name
     #monitoringProfile: ''                  # Default Monitoring profile
 
-    #HTTPReply: 'HTTPReplyWithCompression'  # Default HTTPReply node policy. Uncomment to compress messages with the following
+    HTTPReply: 'HTTPReplyWithCompression'  # Default HTTPReply node policy. Uncomment to compress messages with the following
                                             # properties on all HTTPReply nodes:
                                             #   - Compress all messages that have a compressible Content-Type
                                             #   - Compress messages that are no smaller than 1024 bytes

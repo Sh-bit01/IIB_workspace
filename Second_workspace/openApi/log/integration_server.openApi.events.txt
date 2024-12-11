@@ -1,11 +1,219 @@
-2024-12-09 22:02:13.451658Z: [Thread 4952] (Msg 1/1) BIP1990I: Integration server 'openApi' starting initialization; version '12.0.12.0' (64-bit) 
-2024-12-09 22:02:13.476550Z: [Thread 4952] (Msg 1/1) BIP9905I: Initializing resource managers. 
-2024-12-09 22:02:20.231774Z: [Thread 4952] (Msg 1/1) BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
-2024-12-09 22:02:21.105498Z: [Thread 4952] (Msg 1/1) BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
-2024-12-09 22:02:29.102970Z: [Thread 4952] (Msg 1/1) BIP9906I: Reading deployed resources. 
-2024-12-09 22:02:32.685878Z: [Thread 6696] (Msg 1/1) BIP2866I: IBM App Connect Enterprise administration security is inactive. 
-2024-12-09 22:02:32.698764Z: [Thread 6696] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
-2024-12-09 22:02:32.705674Z: [Thread 4952] (Msg 1/1) BIP1991I: Integration server has finished initialization. 
-2024-12-09 22:12:27.481930Z: [Thread 11452] (Msg 1/1) BIP2152I: Configuration message received. 
-2024-12-09 22:12:27.494544Z: [Thread 11452] (Msg 1/1) BIP2153I: About to 'deleteAll' an integration server. 
-2024-12-09 22:12:27.500260Z: [Thread 11452] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:19:12.068930Z: [Thread 6652] (Msg 1/1) BIP1990I: Integration server 'openApi' starting initialization; version '12.0.12.0' (64-bit) 
+2024-12-10 23:19:12.087088Z: [Thread 6652] (Msg 1/1) BIP9905I: Initializing resource managers. 
+2024-12-10 23:19:13.795152Z: [Thread 6652] (Msg 1/1) BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2024-12-10 23:19:14.011666Z: [Thread 6652] (Msg 1/1) BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2024-12-10 23:19:16.040510Z: [Thread 6652] (Msg 1/1) BIP9906I: Reading deployed resources. 
+2024-12-10 23:19:16.045059Z: [Thread 6652] (Msg 1/1) BIP9907I: Initializing deployed resources. 
+2024-12-10 23:19:16.046307Z: [Thread 6652] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:19:16.215891Z: [Thread 6652] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:19:16.259611Z: [Thread 6652] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 23:19:16.259661Z: [Thread 6652] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:19:16.260056Z: [Thread 6652] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:19:16.260197Z: [Thread 6652] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:19:16.260254Z: [Thread 6652] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been reloaded successfully. 
+2024-12-10 23:19:16.694698Z: [Thread 9452] (Msg 1/1) BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2024-12-10 23:19:16.706497Z: [Thread 9452] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2024-12-10 23:19:17.204554Z: [Thread 6652] (Msg 1/1) BIP1991I: Integration server has finished initialization. 
+2024-12-10 23:24:49.789916Z: [Thread 6908] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:24:49.790152Z: [Thread 6908] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:24:49.790492Z: [Thread 6908] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:24:49.790648Z: [Thread 6908] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:27:47.517676Z: [Thread 4540] (Msg 1/1) BIP2111E: IBM App Connect Enterprise internal error: diagnostic information 'Error decompressing stream'. 
+2024-12-10 23:38:13.800084Z: [Thread 868] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:38:13.906540Z: [Thread 868] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:38:25.826842Z: [Thread 868] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:38:25.826968Z: [Thread 868] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:38:25.855730Z: [Thread 868] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:38:25.897582Z: [Thread 868] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:38:25.897944Z: [Thread 868] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:38:25.898150Z: [Thread 868] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:38:25.898332Z: [Thread 868] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:38:25.898498Z: [Thread 868] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:38:25.898566Z: [Thread 868] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:38:25.898918Z: [Thread 868] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:40:17.537092Z: [Thread 868] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:40:17.645160Z: [Thread 868] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:40:21.747528Z: [Thread 868] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:40:21.747670Z: [Thread 868] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:40:21.770738Z: [Thread 868] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:40:21.809572Z: [Thread 868] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:40:21.809886Z: [Thread 868] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:40:21.810046Z: [Thread 868] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:40:21.810200Z: [Thread 868] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:40:21.810270Z: [Thread 868] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:40:21.810332Z: [Thread 868] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:40:21.810742Z: [Thread 868] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:40:30.987096Z: [Thread 4572] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:40:31.075212Z: [Thread 4572] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:40:33.829024Z: [Thread 4572] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:40:33.829224Z: [Thread 4572] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:40:33.866044Z: [Thread 4572] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:40:33.908432Z: [Thread 4572] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:40:33.908816Z: [Thread 4572] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:40:33.908960Z: [Thread 4572] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:40:33.909056Z: [Thread 4572] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:40:33.909104Z: [Thread 4572] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:40:33.909156Z: [Thread 4572] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:40:33.909468Z: [Thread 4572] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:40:55.711084Z: [Thread 10944] (Msg 1/6) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input1'. 
+2024-12-10 23:40:55.711240Z: [Thread 10944] (Msg 2/6) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute1'. 
+2024-12-10 23:40:55.711328Z: [Thread 10944] (Msg 3/6) BIP2488E:  (.sfhefgj_Compute1.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 23:40:55.711392Z: [Thread 10944] (Msg 4/6) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 23:40:55.711416Z: [Thread 10944] (Msg 5/6) BIP2488E:  (.sfhefgj_Compute1.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'CREATE LASTCHILD OF P1 DOMAIN 'JSON' PARSE(b2);'. 
+2024-12-10 23:40:55.711504Z: [Thread 10944] (Msg 6/6) BIP2906E: (.sfhefgj_Compute1.CopyEntireMessage, 6.3) : The data type BLOB is not a valid data type for parameter BITSTREAM of the CREATE statement.  This parameter should be of data type CHARACTER, BIT, BLOB. The value passed was NULL. 
+2024-12-10 23:40:56.568960Z: [Thread 9092] (Msg 1/4) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 23:40:56.569032Z: [Thread 9092] (Msg 2/4) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.HTTP Request'. 
+2024-12-10 23:40:56.569136Z: [Thread 9092] (Msg 3/4) BIP3162E: An HTTP error occurred. The HTTP Request-Line was: 'POST /p2 HTTP/1.1
+'. 
+2024-12-10 23:40:56.569156Z: [Thread 9092] (Msg 4/4) BIP3100I: HTTP server returned non-success status code (500). 
+2024-12-10 23:41:11.956065Z: [Thread 8940] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:41:12.063707Z: [Thread 8940] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:41:16.752993Z: [Thread 8940] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:41:16.753141Z: [Thread 8940] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:41:16.778642Z: [Thread 8940] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:41:16.815778Z: [Thread 8940] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:41:16.816116Z: [Thread 8940] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:41:16.816242Z: [Thread 8940] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:41:16.816340Z: [Thread 8940] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:41:16.816386Z: [Thread 8940] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:41:16.816436Z: [Thread 8940] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:41:16.816750Z: [Thread 8940] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:43:35.909176Z: [Thread 8128] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:43:36.008820Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:43:39.221688Z: [Thread 8128] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:43:39.221952Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:43:39.248184Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:43:39.285564Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:43:39.285888Z: [Thread 8128] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:43:39.286020Z: [Thread 8128] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:43:39.286124Z: [Thread 8128] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:43:39.286184Z: [Thread 8128] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:43:39.286224Z: [Thread 8128] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:43:39.286548Z: [Thread 8128] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:52:40.507268Z: [Thread 6556] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:52:40.607036Z: [Thread 6556] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:52:43.712248Z: [Thread 6556] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:52:43.712416Z: [Thread 6556] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:52:43.734328Z: [Thread 6556] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:52:43.771780Z: [Thread 6556] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:52:43.772096Z: [Thread 6556] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:52:43.772260Z: [Thread 6556] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:52:43.772416Z: [Thread 6556] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:52:43.772484Z: [Thread 6556] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:52:43.772544Z: [Thread 6556] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:52:43.772968Z: [Thread 6556] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:53:21.782116Z: [Thread 2576] (Msg 1/5) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 23:53:21.782188Z: [Thread 2576] (Msg 2/5) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.HTTP Request'. 
+2024-12-10 23:53:21.782252Z: [Thread 2576] (Msg 3/5) BIP3162E: An HTTP error occurred. The HTTP Request-Line was: 'POST /p2 HTTP/1.1
+'. 
+2024-12-10 23:53:21.782268Z: [Thread 2576] (Msg 4/5) BIP3152E: Socket error detected whilst invoking Web service located at host localhost, port 7800, path /p2. 
+2024-12-10 23:53:21.782344Z: [Thread 2576] (Msg 5/5) BIP3150E: A socket error occurred. Operation: ::connect::select(). Error Code: 10061. Error Text: No connection could be made because the target machine actively refused it.
+. 
+2024-12-10 23:53:33.676192Z: [Thread 9380] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:53:33.780960Z: [Thread 9380] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:53:37.817412Z: [Thread 9380] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:53:37.817576Z: [Thread 9380] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:53:37.840552Z: [Thread 9380] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:53:37.882876Z: [Thread 9380] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:53:37.883208Z: [Thread 9380] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:53:37.883340Z: [Thread 9380] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:53:37.883440Z: [Thread 9380] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:53:37.883488Z: [Thread 9380] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:53:37.883524Z: [Thread 9380] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:53:37.883892Z: [Thread 9380] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:53:57.677120Z: [Thread 3204] (Msg 1/5) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 23:53:57.677188Z: [Thread 3204] (Msg 2/5) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.HTTP Request'. 
+2024-12-10 23:53:57.677248Z: [Thread 3204] (Msg 3/5) BIP3162E: An HTTP error occurred. The HTTP Request-Line was: 'POST /p2 HTTP/1.1
+'. 
+2024-12-10 23:53:57.677320Z: [Thread 3204] (Msg 4/5) BIP3152E: Socket error detected whilst invoking Web service located at host localhost, port 7800, path /p2. 
+2024-12-10 23:53:57.677344Z: [Thread 3204] (Msg 5/5) BIP3150E: A socket error occurred. Operation: ::connect::select(). Error Code: 10061. Error Text: No connection could be made because the target machine actively refused it.
+. 
+2024-12-10 23:54:22.478824Z: [Thread 8128] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:54:22.580208Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:54:24.963048Z: [Thread 8128] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:54:24.963166Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:54:24.984466Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:54:25.018286Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:54:25.018578Z: [Thread 8128] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:54:25.018700Z: [Thread 8128] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:54:25.018796Z: [Thread 8128] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:54:25.018846Z: [Thread 8128] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:54:25.018940Z: [Thread 8128] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:54:25.019250Z: [Thread 8128] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:55:11.179265Z: [Thread 9924] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:55:11.282603Z: [Thread 9924] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:55:16.115099Z: [Thread 9924] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:55:16.115225Z: [Thread 9924] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:55:16.138321Z: [Thread 9924] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:55:16.172792Z: [Thread 9924] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:55:16.173080Z: [Thread 9924] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:55:16.173210Z: [Thread 9924] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:55:16.173311Z: [Thread 9924] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:55:16.173359Z: [Thread 9924] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:55:16.173407Z: [Thread 9924] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:55:16.173723Z: [Thread 9924] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:57:03.484039Z: [Thread 8128] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:57:03.594759Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:57:06.831308Z: [Thread 8128] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:57:06.831437Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:57:06.854075Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:57:06.891410Z: [Thread 8128] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:57:06.891683Z: [Thread 8128] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:57:06.891812Z: [Thread 8128] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:57:06.891909Z: [Thread 8128] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:57:06.891960Z: [Thread 8128] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:57:06.892000Z: [Thread 8128] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:57:06.892315Z: [Thread 8128] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:59:15.991286Z: [Thread 8940] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:59:16.092386Z: [Thread 8940] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:59:19.847436Z: [Thread 8940] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:59:19.847590Z: [Thread 8940] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:59:19.869480Z: [Thread 8940] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:59:19.904516Z: [Thread 8940] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:59:19.904824Z: [Thread 8940] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:59:19.904954Z: [Thread 8940] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:59:19.905044Z: [Thread 8940] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:59:19.905088Z: [Thread 8940] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:59:19.905128Z: [Thread 8940] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:59:19.905470Z: [Thread 8940] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 23:59:52.504472Z: [Thread 428] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 23:59:52.597612Z: [Thread 428] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:59:56.957892Z: [Thread 428] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 23:59:56.958060Z: [Thread 428] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:59:56.980528Z: [Thread 428] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:59:57.017272Z: [Thread 428] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 23:59:57.017548Z: [Thread 428] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 23:59:57.017696Z: [Thread 428] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-10 23:59:57.017804Z: [Thread 428] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 23:59:57.017848Z: [Thread 428] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 23:59:57.017888Z: [Thread 428] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 23:59:57.018212Z: [Thread 428] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-11 00:02:29.887892Z: [Thread 6556] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-11 00:02:29.998222Z: [Thread 6556] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:02:34.362008Z: [Thread 6556] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-11 00:02:34.362136Z: [Thread 6556] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:02:34.384660Z: [Thread 6556] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:02:34.421984Z: [Thread 6556] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:02:34.422292Z: [Thread 6556] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-11 00:02:34.422428Z: [Thread 6556] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-11 00:02:34.422520Z: [Thread 6556] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-11 00:02:34.422564Z: [Thread 6556] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-11 00:02:34.422616Z: [Thread 6556] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-11 00:02:34.422928Z: [Thread 6556] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-11 00:04:25.501312Z: [Thread 7712] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-11 00:04:25.609282Z: [Thread 7712] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:04:30.612542Z: [Thread 7712] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-11 00:04:30.612662Z: [Thread 7712] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:04:30.633314Z: [Thread 7712] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:04:30.669058Z: [Thread 7712] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:04:30.669354Z: [Thread 7712] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-11 00:04:30.669510Z: [Thread 7712] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p2'. 
+2024-12-11 00:04:30.669614Z: [Thread 7712] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-11 00:04:30.669670Z: [Thread 7712] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-11 00:04:30.669712Z: [Thread 7712] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-11 00:04:30.670078Z: [Thread 7712] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-11 00:04:50.992948Z: [Thread 6652] (Msg 1/1) BIP1989I: Integration server is terminating due to a shutdown event. 
+2024-12-11 00:04:50.995064Z: [Thread 6652] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:04:52.706088Z: [Thread 6652] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-11 00:04:53.075716Z: [Thread 6652] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-11 00:05:01.998148Z: [Thread 6652] (Msg 1/1) BIP1992I: Integration server 'openApi' stopped. 

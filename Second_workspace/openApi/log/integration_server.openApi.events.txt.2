@@ -1,0 +1,280 @@
+2024-12-10 17:42:08.920772Z: [Thread 7952] (Msg 1/1) BIP1990I: Integration server 'openApi' starting initialization; version '12.0.12.0' (64-bit) 
+2024-12-10 17:42:08.945243Z: [Thread 7952] (Msg 1/1) BIP9905I: Initializing resource managers. 
+2024-12-10 17:42:15.311742Z: [Thread 7952] (Msg 1/1) BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2024-12-10 17:42:16.155212Z: [Thread 7952] (Msg 1/1) BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2024-12-10 17:42:23.716106Z: [Thread 7952] (Msg 1/1) BIP9906I: Reading deployed resources. 
+2024-12-10 17:42:23.719652Z: [Thread 7952] (Msg 1/1) BIP9907I: Initializing deployed resources. 
+2024-12-10 17:42:23.720914Z: [Thread 7952] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 17:42:23.987502Z: [Thread 7952] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 17:42:24.036726Z: [Thread 7952] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 17:42:24.036780Z: [Thread 7952] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 17:42:24.036924Z: [Thread 7952] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 17:42:24.036996Z: [Thread 7952] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been reloaded successfully. 
+2024-12-10 17:42:27.284452Z: [Thread 7504] (Msg 1/1) BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2024-12-10 17:42:27.298388Z: [Thread 7504] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2024-12-10 17:42:27.304988Z: [Thread 7952] (Msg 1/1) BIP1991I: Integration server has finished initialization. 
+2024-12-10 17:42:38.541024Z: [Thread 4748] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 17:42:38.627816Z: [Thread 4748] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 17:42:39.968764Z: [Thread 4748] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 17:42:39.968880Z: [Thread 4748] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 17:42:39.999416Z: [Thread 4748] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 17:42:40.028252Z: [Thread 4748] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 17:42:40.058012Z: [Thread 4748] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 17:42:40.121444Z: [Thread 4748] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 17:42:40.121528Z: [Thread 4748] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 17:42:40.121820Z: [Thread 4748] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 17:42:40.121920Z: [Thread 4748] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 17:42:40.121996Z: [Thread 4748] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 17:42:40.122476Z: [Thread 4748] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 17:52:53.004104Z: [Thread 8612] (Msg 1/7) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 17:52:53.004176Z: [Thread 8612] (Msg 2/7) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute'. 
+2024-12-10 17:52:53.004200Z: [Thread 8612] (Msg 3/7) BIP2488E:  (.sfhefgj_Compute.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 17:52:53.004220Z: [Thread 8612] (Msg 4/7) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 17:52:53.004284Z: [Thread 8612] (Msg 5/7) BIP2488E:  (.sfhefgj_Compute.CopyEntireMessage, 2.3) Error detected whilst executing the SQL statement 'SET OutputRoot.XMLNSC.Data = InputRoot.JSON.Data;'. 
+2024-12-10 17:52:53.004304Z: [Thread 8612] (Msg 6/7) BIP5705E: JSON parsing errors have occurred. 
+2024-12-10 17:52:53.004332Z: [Thread 8612] (Msg 7/7) BIP5701E: A JSON parsing error occurred on line 1 column 309. An invalid JSON character (UTF-8: 0x0000007B) was found in the input bit stream.  The JSON parser was expecting to find one of the following characters or types: "]", "}", ",", ",".  The internal error code is 0x0000018C. The path to the error is '#/1'. 
+2024-12-10 20:18:49.236576Z: [Thread 328] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:18:49.328648Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:18:50.780816Z: [Thread 328] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:18:50.780948Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:18:50.794856Z: [Thread 328] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:18:50.839132Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:18:50.874368Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:18:50.918812Z: [Thread 328] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:18:50.918908Z: [Thread 328] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:18:50.919176Z: [Thread 328] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:18:50.919276Z: [Thread 328] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:18:50.919356Z: [Thread 328] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:18:50.919656Z: [Thread 328] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:19:31.189172Z: [Thread 2548] (Msg 1/7) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:19:31.189254Z: [Thread 2548] (Msg 2/7) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute'. 
+2024-12-10 20:19:31.189296Z: [Thread 2548] (Msg 3/7) BIP2488E:  (.sfhefgj_Compute.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 20:19:31.189342Z: [Thread 2548] (Msg 4/7) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 20:19:31.189364Z: [Thread 2548] (Msg 5/7) BIP2488E:  (.sfhefgj_Compute.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'SET StringPart = CAST(ASBITSTREAM(OutputRoot.XMLNSC) AS CHARACTER);'. 
+2024-12-10 20:19:31.189494Z: [Thread 2548] (Msg 6/7) BIP5010E: XML Writing Errors have occurred. 
+2024-12-10 20:19:31.189594Z: [Thread 2548] (Msg 7/7) BIP5016E: The element with name 'Item' and field type 'folderType' is not valid as the child of Root.XML or Root.XMLNSC. 
+2024-12-10 20:19:55.160148Z: [Thread 5760] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:19:55.256824Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:19:57.247612Z: [Thread 5760] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:19:57.247784Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:19:57.277672Z: [Thread 5760] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:19:57.311508Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:19:57.338684Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:19:57.386004Z: [Thread 5760] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:19:57.386076Z: [Thread 5760] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:19:57.386264Z: [Thread 5760] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:19:57.386324Z: [Thread 5760] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:19:57.386360Z: [Thread 5760] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:19:57.386632Z: [Thread 5760] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:30:33.938532Z: [Thread 9400] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:30:34.017424Z: [Thread 9400] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:30:35.582216Z: [Thread 9400] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:30:35.582328Z: [Thread 9400] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:30:35.596096Z: [Thread 9400] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:30:35.621192Z: [Thread 9400] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:30:35.660392Z: [Thread 9400] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:30:35.703452Z: [Thread 9400] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:30:35.703516Z: [Thread 9400] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:30:35.703680Z: [Thread 9400] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:30:35.703744Z: [Thread 9400] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:30:35.703780Z: [Thread 9400] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:30:35.704040Z: [Thread 9400] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:31:03.184968Z: [Thread 8528] (Msg 1/7) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:31:03.185042Z: [Thread 8528] (Msg 2/7) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute'. 
+2024-12-10 20:31:03.185067Z: [Thread 8528] (Msg 3/7) BIP2488E:  (.sfhefgj_Compute.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 20:31:03.185088Z: [Thread 8528] (Msg 4/7) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 20:31:03.185104Z: [Thread 8528] (Msg 5/7) BIP2488E:  (.sfhefgj_Compute.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'DECLARE partData BLOB ASBITSTREAM(OutputRoot.XMLNSC);'. 
+2024-12-10 20:31:03.185124Z: [Thread 8528] (Msg 6/7) BIP5010E: XML Writing Errors have occurred. 
+2024-12-10 20:31:03.185141Z: [Thread 8528] (Msg 7/7) BIP5016E: The element with name 'Item' and field type 'folderType' is not valid as the child of Root.XML or Root.XMLNSC. 
+2024-12-10 20:31:23.747664Z: [Thread 328] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:31:23.827844Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:31:24.227588Z: [Thread 328] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:31:24.227706Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:31:24.257338Z: [Thread 328] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:31:24.277812Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:31:24.303460Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:31:24.350892Z: [Thread 328] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:31:24.350950Z: [Thread 328] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:31:24.351116Z: [Thread 328] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:31:24.351174Z: [Thread 328] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:31:24.351212Z: [Thread 328] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:31:24.351456Z: [Thread 328] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:32:20.950078Z: [Thread 4112] (Msg 1/6) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:32:20.950154Z: [Thread 4112] (Msg 2/6) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute'. 
+2024-12-10 20:32:20.950184Z: [Thread 4112] (Msg 3/6) BIP2488E:  (.sfhefgj_Compute.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 20:32:20.950204Z: [Thread 4112] (Msg 4/6) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 20:32:20.950220Z: [Thread 4112] (Msg 5/6) BIP2488E:  (.sfhefgj_Compute.CopyEntireMessage, 14.3) Error detected whilst executing the SQL statement 'CREATE LASTCHILD OF M.Data DOMAIN 'BLOB' PARSE(partData);'. 
+2024-12-10 20:32:20.950366Z: [Thread 4112] (Msg 6/6) BIP2906E: (.sfhefgj_Compute.CopyEntireMessage, 14.3) : The data type BLOB is not a valid data type for parameter BITSTREAM of the CREATE statement.  This parameter should be of data type CHARACTER, BIT, BLOB. The value passed was NULL. 
+2024-12-10 20:32:27.233974Z: [Thread 6620] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:32:27.317292Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:32:31.965352Z: [Thread 6620] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:32:31.965548Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:32:31.979484Z: [Thread 6620] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:32:32.000236Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:32:32.027398Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:32:32.072106Z: [Thread 6620] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:32:32.072170Z: [Thread 6620] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:32:32.072430Z: [Thread 6620] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:32:32.072506Z: [Thread 6620] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:32:32.072548Z: [Thread 6620] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:32:32.072812Z: [Thread 6620] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:32:45.994620Z: [Thread 4056] (Msg 1/7) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:32:45.994684Z: [Thread 4056] (Msg 2/7) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute'. 
+2024-12-10 20:32:45.994704Z: [Thread 4056] (Msg 3/7) BIP2488E:  (.sfhefgj_Compute.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 20:32:45.994720Z: [Thread 4056] (Msg 4/7) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 20:32:45.994740Z: [Thread 4056] (Msg 5/7) BIP2488E:  (.sfhefgj_Compute.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'DECLARE partData BLOB ASBITSTREAM(OutputRoot.XMLNSC.Res);'. 
+2024-12-10 20:32:45.994756Z: [Thread 4056] (Msg 6/7) BIP5010E: XML Writing Errors have occurred. 
+2024-12-10 20:32:45.994772Z: [Thread 4056] (Msg 7/7) BIP5016E: The element with name 'Item' and field type 'folderType' is not valid as the child of Root.XML or Root.XMLNSC. 
+2024-12-10 20:32:54.780104Z: [Thread 4056] (Msg 1/7) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:32:54.780180Z: [Thread 4056] (Msg 2/7) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute'. 
+2024-12-10 20:32:54.780196Z: [Thread 4056] (Msg 3/7) BIP2488E:  (.sfhefgj_Compute.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 20:32:54.780212Z: [Thread 4056] (Msg 4/7) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 20:32:54.780232Z: [Thread 4056] (Msg 5/7) BIP2488E:  (.sfhefgj_Compute.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'DECLARE partData BLOB ASBITSTREAM(OutputRoot.XMLNSC.Res);'. 
+2024-12-10 20:32:54.780248Z: [Thread 4056] (Msg 6/7) BIP5010E: XML Writing Errors have occurred. 
+2024-12-10 20:32:54.780260Z: [Thread 4056] (Msg 7/7) BIP5016E: The element with name 'Item' and field type 'folderType' is not valid as the child of Root.XML or Root.XMLNSC. 
+2024-12-10 20:33:21.774256Z: [Thread 4056] (Msg 1/7) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:33:21.774332Z: [Thread 4056] (Msg 2/7) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute'. 
+2024-12-10 20:33:21.774354Z: [Thread 4056] (Msg 3/7) BIP2488E:  (.sfhefgj_Compute.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 20:33:21.774372Z: [Thread 4056] (Msg 4/7) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 20:33:21.774394Z: [Thread 4056] (Msg 5/7) BIP2488E:  (.sfhefgj_Compute.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'DECLARE partData BLOB ASBITSTREAM(OutputRoot.XMLNSC.Res);'. 
+2024-12-10 20:33:21.774412Z: [Thread 4056] (Msg 6/7) BIP5010E: XML Writing Errors have occurred. 
+2024-12-10 20:33:21.774430Z: [Thread 4056] (Msg 7/7) BIP5016E: The element with name 'Item' and field type 'folderType' is not valid as the child of Root.XML or Root.XMLNSC. 
+2024-12-10 20:33:57.588468Z: [Thread 2352] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:33:57.684096Z: [Thread 2352] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:33:57.811596Z: [Thread 2352] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:33:57.811748Z: [Thread 2352] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:33:57.841440Z: [Thread 2352] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:33:57.864208Z: [Thread 2352] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:33:57.893656Z: [Thread 2352] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:33:57.933696Z: [Thread 2352] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:33:57.933760Z: [Thread 2352] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:33:57.933952Z: [Thread 2352] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:33:57.934016Z: [Thread 2352] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:33:57.934056Z: [Thread 2352] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:33:57.934300Z: [Thread 2352] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:34:18.192466Z: [Thread 4928] (Msg 1/7) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:34:18.192542Z: [Thread 4928] (Msg 2/7) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.Compute'. 
+2024-12-10 20:34:18.192564Z: [Thread 4928] (Msg 3/7) BIP2488E:  (.sfhefgj_Compute.Main, 4.3) Error detected whilst executing the SQL statement 'CALL CopyEntireMessage();'. 
+2024-12-10 20:34:18.192594Z: [Thread 4928] (Msg 4/7) BIP2934E: Error detected whilst executing the function or procedure 'CopyEntireMessage'. 
+2024-12-10 20:34:18.192614Z: [Thread 4928] (Msg 5/7) BIP2488E:  (.sfhefgj_Compute.CopyEntireMessage, 6.3) Error detected whilst executing the SQL statement 'DECLARE partData BLOB ASBITSTREAM(OutputRoot.XMLNSC.Res ENCODING InputRoot.Properties.Encoding CCSID InputRoot.Properties.CodedCharSetId);'. 
+2024-12-10 20:34:18.192640Z: [Thread 4928] (Msg 6/7) BIP5010E: XML Writing Errors have occurred. 
+2024-12-10 20:34:18.192660Z: [Thread 4928] (Msg 7/7) BIP5016E: The element with name 'Item' and field type 'folderType' is not valid as the child of Root.XML or Root.XMLNSC. 
+2024-12-10 20:34:43.959312Z: [Thread 5760] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:34:44.037624Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:34:44.245056Z: [Thread 5760] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:34:44.245288Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:34:44.259948Z: [Thread 5760] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:34:44.282352Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:34:44.309436Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:34:44.353796Z: [Thread 5760] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:34:44.353864Z: [Thread 5760] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:34:44.354044Z: [Thread 5760] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:34:44.354120Z: [Thread 5760] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:34:44.354164Z: [Thread 5760] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:34:44.354468Z: [Thread 5760] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:39:12.260853Z: [Thread 5760] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:39:12.348114Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:39:13.807347Z: [Thread 5760] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:39:13.807471Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:39:13.821757Z: [Thread 5760] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:39:13.842227Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:39:13.879266Z: [Thread 5760] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:39:13.930567Z: [Thread 5760] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:39:13.930635Z: [Thread 5760] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:39:13.930841Z: [Thread 5760] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:39:13.930913Z: [Thread 5760] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:39:13.930954Z: [Thread 5760] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:39:13.931280Z: [Thread 5760] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:40:02.889490Z: [Thread 10152] (Msg 1/3) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:40:02.889576Z: [Thread 10152] (Msg 2/3) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.HTTP Reply'. 
+2024-12-10 20:40:02.889733Z: [Thread 10152] (Msg 3/3) BIP5664E: A problem was encountered in the MIME logical tree at node: Data. 
+2024-12-10 20:45:12.498039Z: [Thread 10152] (Msg 1/3) BIP3120E: Exception condition detected on input node 'sfhefgj.HTTP Input'. 
+2024-12-10 20:45:12.498129Z: [Thread 10152] (Msg 2/3) BIP2230E: Error detected whilst processing a message in node 'sfhefgj.HTTP Reply'. 
+2024-12-10 20:45:12.498157Z: [Thread 10152] (Msg 3/3) BIP5664E: A problem was encountered in the MIME logical tree at node: Data. 
+2024-12-10 20:47:05.078007Z: [Thread 6620] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:47:05.156857Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:47:08.696015Z: [Thread 6620] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:47:08.696190Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:47:08.725923Z: [Thread 6620] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:47:08.749089Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:47:08.777353Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:47:08.818608Z: [Thread 6620] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:47:08.818667Z: [Thread 6620] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:47:08.818830Z: [Thread 6620] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:47:08.818887Z: [Thread 6620] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:47:08.818925Z: [Thread 6620] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:47:08.819183Z: [Thread 6620] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:49:06.195870Z: [Thread 6620] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:49:06.284940Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:49:07.062699Z: [Thread 6620] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:49:07.062840Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:49:07.093568Z: [Thread 6620] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:49:07.113456Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:49:07.139557Z: [Thread 6620] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:49:07.201922Z: [Thread 6620] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:49:07.201984Z: [Thread 6620] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:49:07.202156Z: [Thread 6620] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:49:07.202214Z: [Thread 6620] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:49:07.202290Z: [Thread 6620] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:49:07.202569Z: [Thread 6620] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:49:44.309564Z: [Thread 9140] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:49:44.395908Z: [Thread 9140] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:49:46.968292Z: [Thread 9140] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:49:46.968412Z: [Thread 9140] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:49:46.999184Z: [Thread 9140] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:49:47.020600Z: [Thread 9140] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:49:47.046340Z: [Thread 9140] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:49:47.092684Z: [Thread 9140] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:49:47.092744Z: [Thread 9140] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:49:47.092912Z: [Thread 9140] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:49:47.092968Z: [Thread 9140] (Msg 1/1) BIP9332I: Application '101001111111111111111111111111111' has been changed successfully. 
+2024-12-10 20:49:47.093008Z: [Thread 9140] (Msg 1/1) BIP9326I: The source '101001111111111111111111111111111project.generated.bar' has been successfully deployed. 
+2024-12-10 20:49:47.093268Z: [Thread 9140] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:52:58.478560Z: [Thread 4748] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:52:58.576840Z: [Thread 4748] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:52:58.609088Z: [Thread 4748] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:52:58.609556Z: [Thread 4748] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:52:58.609724Z: [Thread 4748] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:52:58.609780Z: [Thread 4748] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been created successfully. 
+2024-12-10 20:52:58.609812Z: [Thread 4748] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 20:52:58.610104Z: [Thread 4748] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:53:58.992044Z: [Thread 328] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:53:58.992100Z: [Thread 328] (Msg 1/1) BIP2153I: About to 'deleteAll' an integration server. 
+2024-12-10 20:53:58.992988Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:54:03.970809Z: [Thread 328] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:54:03.970927Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource '101001111111111111111111111111111' of type 'Application'. 
+2024-12-10 20:54:03.980503Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:54:03.983860Z: [Thread 328] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:54:03.983957Z: [Thread 328] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:54:04.001392Z: [Thread 328] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:54:04.014536Z: [Thread 328] (Msg 1/1) BIP9521I: Application '101001111111111111111111111111111' has been deleted. 
+2024-12-10 20:54:04.017690Z: [Thread 328] (Msg 1/1) BIP9521I: Application 'MIME_Header' has been deleted. 
+2024-12-10 20:54:04.023204Z: [Thread 328] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:54:17.956112Z: [Thread 2352] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:54:18.047658Z: [Thread 2352] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:54:18.079234Z: [Thread 2352] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:54:18.126596Z: [Thread 2352] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:54:18.126712Z: [Thread 2352] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:54:18.127044Z: [Thread 2352] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:54:18.127126Z: [Thread 2352] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been created successfully. 
+2024-12-10 20:54:18.127180Z: [Thread 2352] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 20:54:18.127610Z: [Thread 2352] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 20:59:37.472196Z: [Thread 7948] (Msg 1/1) BIP2152I: Configuration message received. 
+2024-12-10 20:59:37.561628Z: [Thread 7948] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:59:38.649448Z: [Thread 7948] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 20:59:38.649628Z: [Thread 7948] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:59:38.664236Z: [Thread 7948] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 20:59:38.685896Z: [Thread 7948] (Msg 1/1) BIP2155I: About to 'Initialize' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:59:38.716648Z: [Thread 7948] (Msg 1/1) BIP2155I: About to 'Start' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 20:59:38.756380Z: [Thread 7948] (Msg 1/1) BIP3132I: The HTTP Listener has started listening on port '7801' for 'http' connections. 
+2024-12-10 20:59:38.756452Z: [Thread 7948] (Msg 1/1) BIP1996I: Listening on HTTP URL '/p1'. 
+2024-12-10 20:59:38.756748Z: [Thread 7948] (Msg 1/1) BIP2269I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') started successfully. 
+2024-12-10 20:59:38.756828Z: [Thread 7948] (Msg 1/1) BIP9332I: Application 'MIME_Header' has been changed successfully. 
+2024-12-10 20:59:38.756876Z: [Thread 7948] (Msg 1/1) BIP9326I: The source 'MIME_Headerproject.generated.bar' has been successfully deployed. 
+2024-12-10 20:59:38.757200Z: [Thread 7948] (Msg 1/1) BIP2154I: Integration server finished with Configuration message. 
+2024-12-10 21:59:21.577668Z: [Thread 7952] (Msg 1/1) BIP1989I: Integration server is terminating due to a shutdown event. 
+2024-12-10 21:59:21.580378Z: [Thread 7952] (Msg 1/1) BIP2155I: About to 'Stop' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 21:59:25.616706Z: [Thread 7952] (Msg 1/1) BIP2271I: Deployed resource 'sfhefgj' (uuid='sfhefgj',type='MessageFlow') successfully stopped. 
+2024-12-10 21:59:26.515994Z: [Thread 7952] (Msg 1/1) BIP2155I: About to 'TearDown' the deployed resource 'MIME_Header' of type 'Application'. 
+2024-12-10 21:59:26.546618Z: [Thread 7952] (Msg 1/1) BIP3133I: The HTTP Listener has stopped listening on port '7801' for 'http' connections. 
+2024-12-10 21:59:32.157352Z: [Thread 7952] (Msg 1/1) BIP1992I: Integration server 'openApi' stopped. 
