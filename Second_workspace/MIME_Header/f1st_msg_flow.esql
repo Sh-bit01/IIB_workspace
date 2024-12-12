@@ -1,6 +1,4 @@
-
-
-CREATE COMPUTE MODULE sfhefgj_Compute
+CREATE COMPUTE MODULE f1st_msg_flow
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		CALL CopyMessageHeaders();
