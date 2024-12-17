@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>MIME_Header</name>
+	<name>Sequence_ReSequence_Flow</name>
 	<comment></comment>
 	<projects>
-		<project>MIME_HeaderJava</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -6,16 +6,16 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/MIME_Header/icons/full/obj16/Mime_header_single_multipart.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/MIME_Header/icons/full/obj30/Mime_header_single_multipart.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="130,90" URLSpecifier="/p1" decompressInputMessage="true" messageDomainProperty="JSON">
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="110,30" URLSpecifier="/p1" decompressInputMessage="true" messageDomainProperty="JSON">
         <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="690,70" compressionType="allMimeTypes">
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="810,30" compressionType="allMimeTypes">
         <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="310,70" computeExpression="esql://routine/#f1st_msg_flow.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="290,30" computeExpression="esql://routine/#f1st_msg_flow.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="490,70" URLSpecifier="http://localhost:7800/p2" httpVersion="1.1" protocol="TLS" messageDomainProperty="MIME" errorAction="throwException" acceptCompressedResponses="true">
+      <nodes xmi:type="ComIbmWSRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="470,30" URLSpecifier="http://localhost:7800/p2" httpVersion="1.1" protocol="TLS" messageDomainProperty="MIME" errorAction="throwException" acceptCompressedResponses="true">
         <translation xmi:type="utility:ConstantString" string="HTTP Request"/>
       </nodes>
       <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="150,190" URLSpecifier="/p2" decompressInputMessage="true" messageDomainProperty="MIME">
