@@ -25,37 +25,37 @@
       <nodes xmi:type="ComIbmSOAPEnvelope.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="304,23" createEnvelope="true">
         <translation xmi:type="utility:ConstantString" string="SOAP Envelope"/>
       </nodes>
-      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_14" location="389,126" destinationQueueName="d1" locationJndiBindings="file:/C:/Users/Sreenivas Bandaru/Desktop/TEST/JMS/" connectionFactoryName="in">
+      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_14" location="922,281" destinationQueueName="d1" locationJndiBindings="file:/C:/Users/Sreenivas Bandaru/Desktop/TEST/JMS/" connectionFactoryName="in">
         <translation xmi:type="utility:ConstantString" string="JMS Output"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_17" location="134,121" queueName="jms_temp">
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_17" location="667,276" queueName="jms_temp">
         <translation xmi:type="utility:ConstantString" string="MQ Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQJMSTransform.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_18" location="238,122">
+      <nodes xmi:type="ComIbmMQJMSTransform.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_18" location="771,277">
         <translation xmi:type="utility:ConstantString" string="MQ JMS Transform1"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_20" location="353,230" mqmdAAAOptions="Add header" mqmdCodedCharSetId="MQCCSI_Q_MGR" mqmdFormat="MQFMT_NONE" mqmdVersion="MQMD_VERSION_1" mqmdMsgType="MQMT_DATAGRAM" mqmdExpiry="MQEI_UNLIMITED" mqmdFeedback="MQFB_NONE" mqmdPriority="MQPRI_PRIORITY_MEDIUM" mqmdPersistence="MQPER_PERSISTENCE_AS_Q_DEF" mqmdMsgId="MQMI_NONE" mqmdCorrelId="MQCI_NONE" mqmdReplyToQ="jms_out   " mqmdReplyToQMgr="override">
+      <nodes xmi:type="ComIbmMQHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_20" location="886,385" mqmdAAAOptions="Add header" mqmdCodedCharSetId="MQCCSI_Q_MGR" mqmdFormat="MQFMT_NONE" mqmdVersion="MQMD_VERSION_1" mqmdMsgType="MQMT_DATAGRAM" mqmdExpiry="MQEI_UNLIMITED" mqmdFeedback="MQFB_NONE" mqmdPriority="MQPRI_PRIORITY_MEDIUM" mqmdPersistence="MQPER_PERSISTENCE_AS_Q_DEF" mqmdMsgId="MQMI_NONE" mqmdCorrelId="MQCI_NONE" mqmdReplyToQ="jms_out   " mqmdReplyToQMgr="override">
         <translation xmi:type="utility:ConstantString" string="MQ Header"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_21" location="129,227" URLSpecifier="/p2" messageDomainProperty="XMLNSC">
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_21" location="662,382" URLSpecifier="/p2" messageDomainProperty="XMLNSC">
         <translation xmi:type="utility:ConstantString" string="HTTP Input1"/>
       </nodes>
-      <nodes xmi:type="ComIbmSOAPEnvelope.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_22" location="219,224" createEnvelope="true">
+      <nodes xmi:type="ComIbmSOAPEnvelope.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_22" location="752,379" createEnvelope="true">
         <translation xmi:type="utility:ConstantString" string="SOAP Envelope1"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_23" location="457,232" computeExpression="esql://routine/#jms_flow_Compute1.Main" computeMode="all">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_23" location="990,387" computeExpression="esql://routine/#jms_flow_Compute1.Main" computeMode="all">
         <translation xmi:type="utility:ConstantString" string="Compute1"/>
       </nodes>
-      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_24" location="701,235" destinationQueueName="d1" locationJndiBindings="file:/C:/Users/Sreenivas Bandaru/Desktop/TEST/JMS/" connectionFactoryName="in">
+      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_24" location="1234,390" destinationQueueName="d1" locationJndiBindings="file:/C:/Users/Sreenivas Bandaru/Desktop/TEST/JMS/" connectionFactoryName="in">
         <translation xmi:type="utility:ConstantString" string="JMS Output1"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQJMSTransform.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_25" location="550,231">
+      <nodes xmi:type="ComIbmMQJMSTransform.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_25" location="1083,386">
         <translation xmi:type="utility:ConstantString" string="MQ JMS Transform"/>
       </nodes>
       <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_26" location="388,328" queueName="q1">
         <translation xmi:type="utility:ConstantString" string="MQ Output"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_28" location="705,143" queueName="q1">
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_28" location="584,142" queueName="q1">
         <translation xmi:type="utility:ConstantString" string="MQ Input1"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
