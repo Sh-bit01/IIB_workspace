@@ -6,21 +6,30 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Sequence_ReSequence_Flow/icons/full/obj16/Seq_Re_Mf.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Sequence_ReSequence_Flow/icons/full/obj30/Seq_Re_Mf.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmFileInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="90,70">
+      <nodes xmi:type="ComIbmFileInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="90,70" inputDirectory="C:\Users\Sreenivas Bandaru\Desktop\TEST\FILEzilla\data11" processedFileAction="moveToArchive" messageDomainProperty="DFDL" messageTypeProperty="{}:DFDL_sequence" recordDetection="delimited">
         <translation xmi:type="utility:ConstantString" string="File Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmFileOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="590,70">
+      <nodes xmi:type="ComIbmFileOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="590,70" outputDirectory="C:\Users\Sreenivas Bandaru\Desktop\TEST\FILEzilla\out22" outputFilename="data.txt" writeMode="writeInPlace" outputMode="append" recordDefinition="delimited" validateMaster="none">
         <translation xmi:type="utility:ConstantString" string="File Output"/>
       </nodes>
-      <nodes xmi:type="ComIbmSequence.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="350,30" startOfSequence="01">
+      <nodes xmi:type="ComIbmSequence.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="350,30" pathToStoreSequenceNo="$OutputRoot/DFDL/DFDL_sequence/record/seq" startOfSequence="01" endOfSequence="25">
         <translation xmi:type="utility:ConstantString" string="Sequence"/>
       </nodes>
-      <nodes xmi:type="ComIbmReSequence.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="355,213">
+      <nodes xmi:type="ComIbmReSequence.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="327,146" sequencePath="$InputRoot/DFDL/DFDL_sequence/record/seq" startOfSequence="01" endOfSequence="21" retryMechanism="failure" componentLevel="node" additionalInstances="10">
         <translation xmi:type="utility:ConstantString" string="Resequence"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="78,202" inputDirectory="C:\Users\Sreenivas Bandaru\Desktop\TEST\FILEzilla\in" processedFileAction="moveToArchive" messageDomainProperty="DFDL" messageTypeProperty="{}:DFDL_sequence" recordDetection="delimited">
+        <translation xmi:type="utility:ConstantString" string="File Input1"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="612,205" outputDirectory="C:\Users\Sreenivas Bandaru\Desktop\TEST\FILEzilla\out" writeMode="writeInPlace" outputMode="append" recordDefinition="delimited">
+        <translation xmi:type="utility:ConstantString" string="File Output1"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.EOD" targetTerminalName="InTerminal.EOD"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.EOD" targetTerminalName="InTerminal.EOD"/>
     </composition>
     <propertyOrganizer/>
     <stickyBoard/>
