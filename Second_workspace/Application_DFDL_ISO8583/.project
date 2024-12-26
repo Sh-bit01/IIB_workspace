@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Mini_bank_statement</name>
+	<name>Application_DFDL_ISO8583</name>
 	<comment></comment>
 	<projects>
-		<project>exception_handling</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
