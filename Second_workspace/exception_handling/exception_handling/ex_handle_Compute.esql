@@ -35,7 +35,7 @@ CREATE COMPUTE MODULE ex_handle_Compute
 		DECLARE v INTEGER CARDINALITY(Itm.item[]);
 		--SET OutputRoot.JSON.Data.error.message = Itm.item[v-3].Text;
 		--SET OutputRoot.JSON.Data.error.statusCode = Itm.item[v-2].Text;
-		 ddSET OutputRoot.JSON.Data.error.error_desc = Text;
+		 SET OutputRoot.JSON.Data.error.error_desc = Text;
 
 		SET OutputRoot.JSON.Data.error.messagId = 563214785965219762;
 		--SET OutputRoot.JSON.Data.error.additionalData.Error.esb_error_code = Itm.item[v-1].Text;
