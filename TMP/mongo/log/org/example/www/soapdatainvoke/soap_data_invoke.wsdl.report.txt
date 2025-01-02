@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\TMP\mongo\soap_data_invoke.wsdl
+
+The WSDL import will proceed with bindings soap_data_invokeSOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/TMP/mongo/soap_data_invoke.wsdl.
+Parsing wsdl binding {http://www.example.org/soap_data_invoke/}soap_data_invokeSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema soap_data_invoke.xsd.
+Creating file soap_data_invoke.xsd in the workspace.
+Creating file soap_data_invoke_InlineSchema1.xsd in the workspace.
+Copying source WSDL soap_data_invoke.wsdl to soap_data_invoke.wsdl.
+
+Elapsed time processing this message definition file: 0.119 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

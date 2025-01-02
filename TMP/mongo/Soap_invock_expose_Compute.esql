@@ -1,6 +1,6 @@
 
 
-CREATE COMPUTE MODULE mongo_Compute
+CREATE COMPUTE MODULE Soap_invock_expose_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
