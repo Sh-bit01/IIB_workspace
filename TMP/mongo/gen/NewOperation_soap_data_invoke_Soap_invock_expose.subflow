@@ -9,7 +9,7 @@
       <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.in" location="20,20">
         <translation xmi:type="utility:TranslatableString" key="InTerminal.in" bundleName="gen/NewOperation_soap_data_invoke_Soap_invock_expose" pluginId="mongo"/>
       </nodes>
-      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="170,20" wsdlFileName="soap_data_invoke.wsdl" selectedPortType="soap_data_invoke" selectedBinding="soap_data_invokeSOAP" selectedOperation="NewOperation" selectedPort="soap_data_invokeSOAP" targetNamespace="http://www.example.org/soap_data_invoke/" useHTTPTransport="true" webServiceURL="http://localhost:7800/s1" sslProtocol="TLS">
+      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="170,20" wsdlFileName="soap_data_invoke.wsdl" selectedPortType="soap_data_invoke" selectedBinding="soap_data_invokeSOAP" selectedOperation="NewOperation" selectedPort="soap_data_invokeSOAP" targetNamespace="http://www.example.org/soap_data_invoke/" useHTTPTransport="true" webServiceURL="http://localhost:7801/s1" sslProtocol="TLS">
         <translation xmi:type="utility:ConstantString" string="Request"/>
       </nodes>
       <nodes xmi:type="ComIbmSOAPExtract.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="320,80" envelopeDestination="$LocalEnvironment/SOAP/Envelope/OperResponse/soap_data_invokeSOAP/NewOperation" labelPrefix="">

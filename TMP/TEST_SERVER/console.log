@@ -1,0 +1,9 @@
+2025-01-02 10:47:57.287036: BIP1990I: Integration server 'TEST_SERVER' starting initialization; version '12.0.12.0' (64-bit) 
+2025-01-02 10:47:57.343396: BIP9905I: Initializing resource managers. 
+Listening for transport dt_socket at address: 9997
+2025-01-02 10:48:05.644743: BIP10112I: The resources from 'mqsicdc.par' have not been loaded because the runtime component 'ChangeDataCapture' has not been enabled. Reason: 'Restricted by Java Runtime selected'. Further detail: 'C:\Program Files\IBM\ACE\12.0.12.0\common\jdk\jre\embedded.java.yaml'. 
+2025-01-02 10:48:06.645077: BIP10112I: The resources from 'imbopentelemetry.lil' have not been loaded because the runtime component 'OpenTelemetry' has not been enabled. Reason: 'Integration Server Configuration'. Further detail: 'server.conf.yaml'. 
+2025-01-02 10:48:15.498535: BIP9906I: Reading deployed resources. 
+2025-01-02 10:48:19.403072: BIP2866I: IBM App Connect Enterprise administration security is inactive. 
+2025-01-02 10:48:19.423682: BIP3132I: The HTTP Listener has started listening on port '7600' for 'RestAdmin http' connections. 
+2025-01-02 10:48:19.434626: BIP1991I: Integration server has finished initialization. 
