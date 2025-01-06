@@ -1,0 +1,142 @@
+BROKER SCHEMA test
+
+
+CREATE COMPUTE MODULE miniStatementRes
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL Mnstmt__GenerateResToChannel();
+		RETURN FALSE;
+	END;
+	CREATE PROCEDURE Mnstmt__GenerateResToChannel() BEGIN
+		DECLARE rc BOOLEAN FALSE;
+
+		DECLARE bindingOperatingName CHARACTER'';
+		/*============= Based on the response code will propagate to channel===============*/
+		DECLARE ccsid INTEGER InputRoot.Properties.CodedCharSetId;
+		DECLARE encodeRef INTEGER InputRoot.Properties.Encoding;
+		DECLARE outRefer REFERENCE TO OutputRoot;
+		DECLARE responceCode CHARACTER InputRoot.HTTPResponseHeader."X-Original-HTTP-Status-Code";
+		DECLARE statusRef REFERENCE TO InputRoot.SOAP.Body.mmt:MMTSTMTResponse.Status ;
+		DECLARE inRefSoap REFERENCE TO InputRoot.SOAP;
+		DECLARE inRef REFERENCE TO InputRoot;
+		DECLARE successIndicator CHARACTER statusRef.successIndicator;
+
+
+		IF responceCode LIKE '200' AND successIndicator LIKE 'Success'THEN
+			IF statusRef.messages IS NOT NULL THEN
+				CREATE LASTCHILD OF OutputRoot DOMAIN ('JSON');
+				CREATE LASTCHILD OF OutputRoot.JSON NAME ('Data');
+				CREATE LASTCHILD OF OutputRoot.JSON.Data NAME ('MiniStatementResponse');
+				CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME ('ESBHeader');
+				CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME ('ESBStatus');
+				DECLARE headerRef REFERENCE TO OutputRoot.JSON.Data.*.ESBHeader;
+				DECLARE errorRef REFERENCE TO OutputRoot.JSON.Data.*.ESBStatus;
+				SET headerRef = Environment.MQRFH2.ESBHeader ;
+
+				SET errorRef.Status = 'Failure';
+				SET errorRef.responseCode = responceCode ;
+				SET errorRef.errorType = 'Functional Error' ;
+				DECLARE messageRef REFERENCE TO inRefSoap.Body.mmt:MMTSTMTResponse.Status.messages;
+				CREATE FIELD errorRef.errorDescription IDENTITY(JSON.Array)errorDescription;
+				DECLARE msgRef REFERENCE TO errorRef.errorDescription;
+
+				WHILE LASTMOVE(messageRef) DO
+					CREATE LASTCHILD OF errorRef.errorDescription AS msgRef NAME 'errorDescription' ;
+					SET msgRef = messageRef ;
+					MOVE messageRef NEXTSIBLING ;
+				END WHILE;
+
+
+
+			ELSE
+				CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+				CREATE LASTCHILD OF OutputRoot.JSON NAME 'Data';
+				CREATE LASTCHILD OF OutputRoot.JSON.Data NAME 'MiniStatementResponse';
+				CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME 'ESBHeader';
+				CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME 'Status';
+				CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME 'EMMTMINISTMTType';
+				CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME 'ESBStatus';
+
+				DECLARE inDataRef REFERENCE TO InputRoot.SOAP.Body.mmt:MMTSTMTResponse.EMMTMINISTMTType;
+				DECLARE outRef REFERENCE TO OutputRoot.JSON.Data.MiniStatementResponse;
+				DECLARE outStatusRef REFERENCE TO OutputRoot.JSON.Data.MiniStatementResponse.Status ;
+				DECLARE esbStatusRef REFERENCE TO OutputRoot.JSON.Data.MiniStatementResponse.ESBStatus ;
+				DECLARE inStatusRef REFERENCE TO InputRoot.SOAP.Body.mmt:MMTSTMTResponse.Status;
+				DECLARE inSoapRef REFERENCE TO InputRoot.SOAP.Body.*:MMTSTMTResponse.EMMTMINISTMTType.*:gEMMTMINISTMTDetailType.*:mEMMTMINISTMTDetailType[>];
+				SET outRef.ESBHeader = Environment.MQRFH2.ESBHeader ;
+				SET outStatusRef.transactionId = COALESCE(FIELDVALUE(inStatusRef.transactionId),'');
+				SET outStatusRef.messageId = COALESCE(FIELDVALUE(inStatusRef.messageId),'');
+				SET outStatusRef.successIndicator = COALESCE(FIELDVALUE(inStatusRef.successIndicator),'');
+				SET outStatusRef.application = COALESCE(FIELDVALUE(inStatusRef.application),'');
+				SET outStatusRef.messages = COALESCE(FIELDVALUE(inStatusRef.messages),'');
+				-- DECLARE outRefJson REFERENCE TO OutputRoot.JSON.Data.MiniStatementResponse.EMMTMINISTMTType;
+				-- DECLARE outSoapData REFERENCE TO serviseName.EMMTMINISTMTType;
+				CREATE FIELD OutputRoot.JSON.Data.*.EMMTMINISTMTType.gEMMTMINISTMTDetailType.mEMMTMINISTMTDetailType IDENTITY(JSON.Array)mEMMTMINISTMTDetailType;
+				DECLARE outRefJson REFERENCE TO OutputRoot.JSON.Data.*.EMMTMINISTMTType.gEMMTMINISTMTDetailType.mEMMTMINISTMTDetailType;
+				WHILE LASTMOVE(inSoapRef) DO
+					CREATE LASTCHILD OF OutputRoot.JSON.Data.*.EMMTMINISTMTType.gEMMTMINISTMTDetailType AS outRefJson NAME 'mEMMTMINISTMTDetailType' ;
+					SET outRefJson.selFldACCOUNT =COALESCE(FIELDVALUE(inSoapRef.ns2:selFldACCOUNT),'') ;
+					SET outRefJson.selFldNOOFRECS =COALESCE(FIELDVALUE(inSoapRef.ns2:selFldNOOFRECS),'') ;
+					SET outRefJson.TXNREF =COALESCE(FIELDVALUE(inSoapRef.ns2:TXNREF),'') ;
+					SET outRefJson.CRAMT =COALESCE(FIELDVALUE(inSoapRef.ns2:CRAMT),'') ;
+					SET outRefJson.DRAMT =COALESCE(FIELDVALUE(inSoapRef.ns2:DRAMT),'') ;
+					SET outRefJson.DATE =COALESCE(FIELDVALUE(inSoapRef.ns2:DATE),'') ;
+					SET outRefJson.DESC =COALESCE(FIELDVALUE(inSoapRef.ns2:DESC),'') ;
+					SET outRefJson.BALANCE =COALESCE(FIELDVALUE(inSoapRef.ns2:BALANCE),'') ;
+					MOVE inSoapRef NEXTSIBLING;
+				END WHILE;
+				SET esbStatusRef.Status = 'Success';
+				SET esbStatusRef.Status = '000';
+			END IF;
+
+		ELSEIF responceCode LIKE '200' AND successIndicator NOT LIKE 'Success' THEN
+			CREATE LASTCHILD OF OutputRoot DOMAIN ('JSON');
+			CREATE LASTCHILD OF OutputRoot.JSON NAME ('Data');
+			CREATE LASTCHILD OF OutputRoot.JSON.Data NAME ('MiniStatementResponse');
+			CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME ('ESBHeader');
+			CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME ('ESBStatus');
+			DECLARE headerRef REFERENCE TO OutputRoot.JSON.Data.*.ESBHeader;
+			--DECLARE outRef REFERENCE TO OutputRoot.JSON.Data.MiniStatementResponse;
+			DECLARE errorRef REFERENCE TO OutputRoot.JSON.Data.*.ESBStatus;
+			SET headerRef = Environment.MQRFH2.ESBHeader ;
+			SET errorRef.Status = 'Failure';
+			SET errorRef.responseCode = responceCode;
+			SET errorRef.errorType = statusRef.successIndicator ;
+			DECLARE messageRef REFERENCE TO InputRoot.SOAP.Body.mmt:MMTSTMTResponse.Status.messages;
+			CREATE FIELD errorRef.errorDescription IDENTITY(JSON.Array)errorDescription;
+			DECLARE msgRef REFERENCE TO errorRef.errorDescription;
+			WHILE LASTMOVE(messageRef) DO
+				CREATE LASTCHILD OF errorRef.errorDescription AS msgRef NAME 'errorDescription' ;
+				SET msgRef = messageRef ;
+				MOVE messageRef NEXTSIBLING ;
+			END WHILE;
+		ELSE
+			CREATE LASTCHILD OF OutputRoot DOMAIN ('JSON');
+			CREATE LASTCHILD OF OutputRoot.JSON NAME ('Data');
+			CREATE LASTCHILD OF OutputRoot.JSON.Data NAME ('MiniStatementResponse');
+			CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME ('ESBHeader');
+			CREATE LASTCHILD OF OutputRoot.JSON.Data.* NAME ('ESBStatus');
+			DECLARE headerRef REFERENCE TO OutputRoot.JSON.Data.*.ESBHeader;
+			DECLARE errorRef REFERENCE TO OutputRoot.JSON.Data.*.ESBStatus;
+			SET headerRef = Environment.MQRFH2.ESBHeader ;
+			SET errorRef.Status = 'Failure';
+			SET errorRef.responseCode = responceCode ;
+			SET errorRef.errorType = 'Failed' ;
+			SET errorRef.errorDescription = 'No Response from T24' ;
+
+		END IF;
+
+		DECLARE OutRefer REFERENCE TO OutputRoot.JSON;
+		DECLARE envref REFERENCE TO Environment.JSON;
+		CREATE LASTCHILD OF Environment AS envref DOMAIN 'JSON';
+		SET envref = OutRefer;
+		DECLARE reqMsgT24 CHARACTER'';
+		SET OutputRoot.JSON = NULL;
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		SET OutputRoot.MQRFH2 = Environment.MQRFH2;
+		SET OutputRoot.JSON.Data = envref.Data;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName = 'ALL_CBO_HTTP_RES';
+		PROPAGATE TO TERMINAL 'out';
+	END;
+END MODULE;

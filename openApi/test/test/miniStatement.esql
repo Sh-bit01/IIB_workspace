@@ -1,0 +1,75 @@
+
+
+BROKER SCHEMA test
+
+
+DECLARE MNSTMTBackendURL EXTERNAL CHARACTER'';
+DECLARE mmt NAMESPACE 'http://temenos.com/MMT';
+DECLARE ns2 NAMESPACE 'http://temenos.com/EMMTMINISTMT';
+DECLARE soapenv NAMESPACE'';
+DECLARE ns1 NAMESPACE'';
+
+CREATE COMPUTE MODULE miniStatement
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.Variables.Properties = InputRoot.Properties;
+		SET Environment.Variables.MQMD = InputRoot.MQMD;
+		CALL Mnstmt_GenerateReqToT24();
+		RETURN FALSE;
+	END;
+	CREATE PROCEDURE Mnstmt_GenerateReqToT24() BEGIN
+		SET Environment.MQRFH2= InputRoot.MQRFH2;
+		DECLARE reqMsg,bindingOperatingName CHARACTER '';
+		DECLARE rc BOOLEAN FALSE;
+		DECLARE ccsid INTEGER InputRoot.Properties.CodedCharSetId ;
+		DECLARE encodeRef INTEGER InputRoot.Properties.Encoding;
+		DECLARE inRef REFERENCE TO InputRoot.JSON.Data;
+		-- SET DBLogging Properties ==============
+		DECLARE outRefer REFERENCE TO OutputRoot;
+
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'SOAP';
+		DECLARE outRefSoap REFERENCE TO OutputRoot.SOAP;
+		DECLARE inrefData REFERENCE TO inRef.MiniStatementRequest.EMMTMINISTMTType;
+		SET outRefSoap.Context.Namespace.soapenv = 'http://schemas.xmlsoap.org/soap/envelope/';
+		SET outRefSoap.Context.Namespace.mmt = 'http://temenos.com/MMT';
+		SET outRefSoap.Context.XmlRoot.Envelope.Header = '';
+		SET outRefSoap.Context.XmlRoot.Envelope.Body = '';
+		SET outRefSoap.Header = '';
+		DECLARE arrayInRef REFERENCE TO InputRoot.JSON.Data.MiniStatementRequest.EMMTMINISTMTType.Item[>];
+		SET outRefSoap.Body.mmt:MMTSTMT.WebRequestCommon.company = inRef.MiniStatementRequest.WebRequestCommon.company;
+		SET outRefSoap.Body.mmt:MMTSTMT.WebRequestCommon.password = inRef.MiniStatementRequest.WebRequestCommon.password;
+		SET outRefSoap.Body.mmt:MMTSTMT.WebRequestCommon.userName = inRef.MiniStatementRequest.WebRequestCommon.userName;
+		WHILE LASTMOVE(arrayInRef) DO
+			CREATE LASTCHILD OF OutputRoot.SOAP.Body.mmt:MMTSTMT.EMMTMINISTMTType AS outRefSoap NAME 'enquiryInputCollection';
+			SET outRefSoap.columnName= inrefData.Item.columnName;
+			SET outRefSoap.criteriaValue= inrefData.Item.criteriaValue;
+			SET outRefSoap.operand= inrefData.Item.operand;
+			MOVE arrayInRef NEXTSIBLING;
+		END WHILE;
+		-- CALL MiniStatementSoapReqFieldToFieldMapping(inRef,outRefSoap);
+		DECLARE OutRefer REFERENCE TO OutputRoot.SOAP;
+		DECLARE envref REFERENCE TO Environment.SOAP;
+		CREATE LASTCHILD OF Environment AS envref DOMAIN 'SOAP';
+		SET envref = OutRefer;
+		--DECLARE reqMsgT24 CHARACTER'';
+		SET OutputRoot = NULL;
+
+		SET OutputRoot.SOAP = envref;
+		-- SET OutputLocalEnvironment.Destination.SOAP.Request.Operation = bindingOperatingName;
+		-- SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.Timeout = '';
+		-- SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.SSLProtocol = '';
+		SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.WebServiceURL = 'MNSTMTBackendURL';
+		PROPAGATE TO TERMINAL 'out';
+		
+		
+		
+		DECLARE hi CHARACTER;
+		SET hi = COALESCE(envref,'EIDIKO!',OutRefer,arrayInRef );
+	END;
+END MODULE;
+
+
+ 
+ 
+ 
+ 

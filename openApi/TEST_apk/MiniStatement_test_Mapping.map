@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" xmlns:map="default" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0">
+    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/SOAPDomainMsg.xsd" var="var1"/>
+    <input path="mbsharedlib://T24WSDL/services_1_2_3.xsd" var="var"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/SOAPDomainMsg.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="http://temenos.com/FUNDSTRANSFER"/>
+        <namespace kind="supplement" prefix="io" uri="http://temenos.com/EMMTMINISTMT"/>
+        <namespace kind="supplement" prefix="in2" uri="http://temenos.com/CARDISSUE"/>
+        <namespace kind="supplement" prefix="io2" uri="http://temenos.com/MMT"/>
+        <namespace kind="supplement" prefix="in4" uri="http://temenos.com/CHQPRESENTEDWS"/>
+        <namespace kind="supplement" prefix="in3" uri="http://temenos.com/PAYMENTSTOPINPUTWS"/>
+        <namespace kind="supplement" prefix="in6" uri="http://temenos.com/CHEQUEISSUE"/>
+        <namespace kind="supplement" prefix="in5" uri="http://temenos.com/CHEQUEISSUEINPUTCBOWS"/>
+        <namespace kind="supplement" prefix="in8" uri="http://temenos.com/PAYMENTSTOPREVOKECBOWS"/>
+        <namespace kind="supplement" prefix="in7" uri="http://temenos.com/EMMTTXNFT"/>
+        <namespace kind="supplement" prefix="in11" uri="http://temenos.com/EMMTMINISTMTDATE"/>
+        <namespace kind="supplement" prefix="in9" uri="http://temenos.com/ACCTBALCTS"/>
+        <namespace kind="supplement" prefix="in10" uri="http://temenos.com/CBOCARDREGDETINP2"/>
+        <namespace kind="supplement" prefix="in13" uri="http://temenos.com/CBOCARDREGDET"/>
+        <namespace kind="supplement" prefix="in12" uri="http://temenos.com/FUNDSTRANSFERACTRMMT"/>
+        <namespace kind="supplement" prefix="in15" uri="http://temenos.com/CURRENCYRATES"/>
+        <namespace kind="supplement" prefix="in14" uri="http://temenos.com/ACCTCOMPANYVIEW"/>
+        <namespace kind="supplement" prefix="in17" uri="http://temenos.com/CARDISSUEDELWS"/>
+        <namespace kind="supplement" prefix="in16" uri="http://temenos.com/PAYMENTSTOP"/>
+        <namespace kind="supplement" prefix="in18" uri="http://temenos.com/ACCTVIEW"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="MiniStatement_test_Mapping">
+        <input path="$var1/mb:msg(SOAP_Domain_Msg,assembly,SOAP,Properties)" var="MessageAssembly">
+            <cast path="$MessageAssembly/SOAP_Domain_Msg/Body/any" qualifier="{http://temenos.com/MMT}MMTSTMT" ref="var"/>
+        </input>
+        <output path="mb:msg(SOAP_Domain_Msg,assembly,SOAP,Properties)" var="MessageAssembly1">
+            <cast path="$MessageAssembly1/SOAP_Domain_Msg/Body/any" qualifier="{http://temenos.com/MMT}MMTSTMTResponse" ref="var"/>
+        </output>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly1/Properties"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/SOAP_Domain_Msg/Context"/>
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Context"/>
+        </move>
+        <assign value="23cdcsdf4r">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/Status/transactionId"/>
+        </assign>
+        <assign value="msg234csduif4">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/Status/messageId"/>
+        </assign>
+        <assign value="Success">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/Status/successIndicator"/>
+        </assign>
+        <assign value="IIB">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/Status/application"/>
+        </assign>
+        <assign value="thsi person is good">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/Status/messages"/>
+        </assign>
+        <assign value="987654321">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/selFldACCOUNT"/>
+        </assign>
+        <assign value="1">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/selFldNOOFRECS"/>
+        </assign>
+        <assign value="TNX002">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/TXNREF"/>
+        </assign>
+        <assign value="2000">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/CRAMT"/>
+        </assign>
+        <assign value="1500">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/DRAMT"/>
+        </assign>
+        <assign value="2025-01-01">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/DATE"/>
+        </assign>
+        <assign value="Purchase">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/DESC"/>
+        </assign>
+        <assign value="500">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/BALANCE"/>
+        </assign>
+        <assign value="1">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/@g"/>
+        </assign>
+        <assign value="1">
+            <output path="$MessageAssembly1/SOAP_Domain_Msg/Body/MMTSTMTResponse/EMMTMINISTMTType/gEMMTMINISTMTDetailType/mEMMTMINISTMTDetailType/@m"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

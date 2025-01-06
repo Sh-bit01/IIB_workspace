@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "MiniStatementRequest": {
+      "type": "object",
+      "properties": {
+        "ESBHeader": {
+          "type": "object",
+          "properties": {
+            "serviceCode": {
+              "type": "string"
+            },
+            "channel": {
+              "type": "string"
+            },
+            "Service_name": {
+              "type": "string"
+            },
+            "Message_Id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "serviceCode",
+            "channel",
+            "Service_name",
+            "Message_Id"
+          ]
+        },
+        "WebRequestCommon": {
+          "type": "object",
+          "properties": {
+            "company": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "userName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "company",
+            "password",
+            "userName"
+          ]
+        },
+        "EMMTMINISTMTType": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "columnName": {
+                  "type": "string"
+                },
+                "criteriaValue": {
+                  "type": "string"
+                },
+                "operand": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "columnName",
+                "criteriaValue",
+                "operand"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "ESBHeader",
+        "WebRequestCommon",
+        "EMMTMINISTMTType"
+      ]
+    }
+  },
+  "required": [
+    "MiniStatementRequest"
+  ]
+}

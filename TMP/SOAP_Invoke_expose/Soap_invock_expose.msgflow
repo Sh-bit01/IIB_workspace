@@ -3,9 +3,9 @@
     xmlns:gen_soap_data_invoke_Soap_invock_expose.subflow="gen/soap_data_invoke_Soap_invock_expose.subflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="Soap_invock_expose.msgflow" nsPrefix="Soap_invock_expose.msgflow">
   <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="SQUARE">
     <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
-    <translation xmi:type="utility:TranslatableString" key="Soap_invock_expose" bundleName="Soap_invock_expose" pluginId="mongo"/>
-    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/mongo/icons/full/obj16/Soap_invock_expose.gif"/>
-    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/mongo/icons/full/obj30/Soap_invock_expose.gif"/>
+    <translation xmi:type="utility:TranslatableString" key="Soap_invock_expose" bundleName="Soap_invock_expose" pluginId="SOAP_Invoke_expose"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/SOAP_Invoke_expose/icons/full/obj16/Soap_invock_expose.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/SOAP_Invoke_expose/icons/full/obj30/Soap_invock_expose.gif"/>
     <composition>
       <nodes xmi:type="ComIbmSOAPInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_13" location="153,73" wsdlFileName="soap_data_invoke.wsdl" selectedPortType="soap_data_invoke" selectedBinding="soap_data_invokeSOAP" selectedPort="soap_data_invokeSOAP" targetNamespace="http://www.example.org/soap_data_invoke/" useHTTPTransport="true" urlSelector="/s1">
         <translation xmi:type="utility:ConstantString" string="SOAP Input"/>
