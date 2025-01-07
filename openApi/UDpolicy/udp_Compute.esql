@@ -1,0 +1,36 @@
+
+
+
+
+
+
+CREATE COMPUTE MODULE udp_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		DECLARE Property2 CHARACTER;
+		SET Property2=getPolicyProperty('{udp}:policy_udp', 'var2');
+		SET OutputRoot.JSON.Data.var2 = Property2;
+
+	END;
+END MODULE;
+
+CREATE FUNCTION getPolicyProperty( IN policyName CHARACTER, IN propertyName CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "udp.Access.getPolicyProperty";
