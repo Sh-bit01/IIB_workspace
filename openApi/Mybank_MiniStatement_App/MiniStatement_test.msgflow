@@ -22,10 +22,10 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/TEST_apk/icons/full/obj16/MiniStatement_test.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/TEST_apk/icons/full/obj30/MiniStatement_test.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="147,74" queueName="QUEUE1" messageDomainProperty="JSON" messageSetProperty="Input_json.schema.json" validateTiming="immediate" validateMaster="contentAndValue">
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="147,74" queueName="QUEUE1" messageDomainProperty="JSON" messageSetProperty="Input_json.schema.json" validateTiming="immediate" transactionMode="automatic" validateMaster="contentAndValue">
         <translation xmi:type="utility:ConstantString" string="MQ Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="955,68" queueName="QUEUE2" transactionMode="no">
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="955,68" queueName="QUEUE2">
         <translation xmi:type="utility:ConstantString" string="MQ Output1"/>
       </nodes>
       <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="283,151" dataSource="myxe" transaction="commit" computeExpression="esql://routine/test#miniStatement.Main">

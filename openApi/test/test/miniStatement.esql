@@ -70,7 +70,7 @@ CREATE COMPUTE MODULE miniStatement
 		-- SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.SSLProtocol = '';
 		SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.WebServiceURL = 'MNSTMTBackendURL';
 		SET Environment.MQMD = InputRoot.MQMD;
-		---------------------Channal_req logging ----------------------------
+		---------------------Backend_req logging ----------------------------
 		--DECLARE msg_id REFERENCE TO InputLocalEnvironment.Destination.HTTP.RequestIdentifier;
 		DECLARE outgoing CHARACTER CAST(ASBITSTREAM(OutputRoot CCSID cssid ENCODING Encoding) as CHARACTER CCSID cssid ENCODING Encoding);
 		--MSG_ID, LOGGINGTIME, MESSAGE_DATA, MESSAGE_TYPE, APP_NAME, BROKER_NAME, RETRIEVAL_REFERENCE_NUMBER, LOG_POINT
@@ -84,5 +84,5 @@ END MODULE;
 
 CREATE PROCEDURE DbLogging1 (IN LOGGINGTIME TIMESTAMP, IN APP_NAME CHARACTER, IN BROKER_NAME CHARACTER, IN RETRIEVAL_REFERENCE_NUMBER CHARACTER, IN LOG_POINT CHARACTER, In payload CHARACTER)
 LANGUAGE DATABASE
-EXTERNAL NAME "SYSTEM.InsertAuditLog"; 
+EXTERNAL NAME "InsertAuditLog"; 
  

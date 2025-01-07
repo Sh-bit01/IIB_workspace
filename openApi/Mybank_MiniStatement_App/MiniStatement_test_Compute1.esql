@@ -19,7 +19,7 @@ CREATE COMPUTE MODULE MiniStatement_test_Compute1
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		---------------------Channal_req logging ----------------------------
+		---------------------Backend_res logging ----------------------------
 		DECLARE cssid REFERENCE TO InputRoot.Properties.CodedCharSetId;
 		DECLARE Encoding REFERENCE TO InputRoot.Properties.Encoding;
 		DECLARE incoming CHARACTER cast(ASBITSTREAM(InputRoot.XMLNSC CCSID cssid ENCODING Encoding) as CHARACTER CCSID cssid ENCODING Encoding);
@@ -33,7 +33,7 @@ CREATE COMPUTE MODULE MiniStatement_test_Compute1
 		SET OutputRoot.MQMD = Environment.Variables.MQMD;
 		SET OutputRoot.JSON.Data = InputRoot.XMLNSC;
 
-		---------------------Channal_req logging ----------------------------
+		---------------------Channal_res logging ----------------------------
 		--DECLARE msg_id REFERENCE TO InputLocalEnvironment.Destination.HTTP.RequestIdentifier;
 		DECLARE outgoing CHARACTER CAST(ASBITSTREAM(OutputRoot.JSON CCSID cssid ENCODING Encoding) as CHARACTER CCSID cssid ENCODING Encoding);
 		--MSG_ID, LOGGINGTIME, MESSAGE_DATA, MESSAGE_TYPE, APP_NAME, BROKER_NAME, RETRIEVAL_REFERENCE_NUMBER, LOG_POINT
@@ -45,4 +45,4 @@ END MODULE;
 
 CREATE PROCEDURE DbLogging (IN LOGGINGTIME TIMESTAMP, IN APP_NAME CHARACTER, IN BROKER_NAME CHARACTER, IN RETRIEVAL_REFERENCE_NUMBER CHARACTER, IN LOG_POINT CHARACTER, In payload CHARACTER)
 LANGUAGE DATABASE
-EXTERNAL NAME "SYSTEM.InsertAuditLog"; 
+EXTERNAL NAME "InsertAuditLog"; 

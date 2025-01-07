@@ -1,3 +1,7 @@
+
+
+
+
 BROKER SCHEMA test
 
 
@@ -27,8 +31,20 @@ CREATE COMPUTE MODULE Exception_Handling_Compute
 		CALL getLastExceptionDetail(InputExceptionList, messageNumber, messageText, messageInsert);
 		SET OutputRoot.JSON.Data.Message.messageNumber = messageNumber;
 		SET OutputRoot.JSON.Data.Message.messageText = messageText;
-		SET OutputRoot.JSON.Data.Message.messageInsert = messageInsert;
-	END;	
+		SET OutputRoot.JSON.Data.Message.messageInsert = messageInsert;		
+		
+
+
+		DECLARE cssid REFERENCE TO InputRoot.Properties.CodedCharSetId;
+		DECLARE Encoding REFERENCE TO InputRoot.Properties.Encoding;
+		---------------------Channal_req logging ----------------------------
+		DECLARE Exception_data CHARACTER cast(ASBITSTREAM(OutputRoot.JSON.Data.Message CCSID cssid ENCODING Encoding) as CHARACTER CCSID cssid ENCODING Encoding);
+		--MSG_ID, LOGGINGTIME, MESSAGE_DATA, MESSAGE_TYPE, APP_NAME, BROKER_NAME, RETRIEVAL_REFERENCE_NUMBER, LOG_POINT
+		DECLARE REFERENCE_NUMBER CHARACTER InputRoot.JSON.Data.MiniStatementRequest.ESBHeader.Message_Id;
+		SET Environment.log.REFERENCE_NUMBER = REFERENCE_NUMBER;
+		CALL DbLogging1(CURRENT_TIMESTAMP, ApplicationLabel ,BrokerName, REFERENCE_NUMBER, 'Error', Exception_data);
+		------------------------------END Log--------------------------------
+	END;
 
 
 	CREATE PROCEDURE getLastExceptionDetail(IN InputTree REFERENCE, OUT messageNumber INTEGER,
@@ -53,7 +69,9 @@ CREATE COMPUTE MODULE Exception_Handling_Compute
 				END IF;
 			END IF;
 			-- Now move to the last child which should be the next exceptionlist
-			MOVE ptrException LASTCHILD;
+			MOVE ptrException LASTCHILD;			
+
+
 		END WHILE;
 	END;
 END MODULE;
