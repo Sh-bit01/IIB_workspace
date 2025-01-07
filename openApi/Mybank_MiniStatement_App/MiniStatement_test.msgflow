@@ -18,9 +18,9 @@
     <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.dataSource1" name="dataSource1" defaultValueLiteral="myxe">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
-    <translation xmi:type="utility:TranslatableString" key="MiniStatement_test" bundleName="MiniStatement_test" pluginId="TEST_apk"/>
-    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/TEST_apk/icons/full/obj16/MiniStatement_test.gif"/>
-    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/TEST_apk/icons/full/obj30/MiniStatement_test.gif"/>
+    <translation xmi:type="utility:TranslatableString" key="MiniStatement_test" bundleName="MiniStatement_test" pluginId="Mybank_MiniStatement_App"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Mybank_MiniStatement_App/icons/full/obj16/MiniStatement_test.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Mybank_MiniStatement_App/icons/full/obj30/MiniStatement_test.gif"/>
     <composition>
       <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="147,74" queueName="QUEUE1" messageDomainProperty="JSON" messageSetProperty="Input_json.schema.json" validateTiming="immediate" transactionMode="automatic" validateMaster="contentAndValue">
         <translation xmi:type="utility:ConstantString" string="MQ Input"/>
@@ -28,7 +28,7 @@
       <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="955,68" queueName="QUEUE2">
         <translation xmi:type="utility:ConstantString" string="MQ Output1"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="283,151" dataSource="myxe" transaction="commit" computeExpression="esql://routine/test#miniStatement.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="283,151" dataSource="myxe" computeExpression="esql://routine/test#miniStatement.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
       <nodes xmi:type="gen_callOfs_services_1_MiniStatement_test.subflow:FCMComposite_1" xmi:id="FCMComposite_1_15" location="472,199">
@@ -39,7 +39,7 @@
       <nodes xmi:type="test_Exception_Handling.subflow:FCMComposite_1" xmi:id="FCMComposite_1_1" location="579,67">
         <translation xmi:type="utility:ConstantString" string="Exception_Handling"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="749,154" dataSource="myxe" transaction="commit" computeExpression="esql://routine/#MiniStatement_test_Compute1.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="749,154" dataSource="myxe" computeExpression="esql://routine/#MiniStatement_test_Compute1.Main">
         <translation xmi:type="utility:ConstantString" string="Compute1"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
@@ -56,11 +56,11 @@
     </composition>
     <propertyOrganizer>
       <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.soapenv">
-        <propertyName xmi:type="utility:TranslatableString" key="Property.soapenv" bundleName="MiniStatement_test" pluginId="TEST_apk"/>
+        <propertyName xmi:type="utility:TranslatableString" key="Property.soapenv" bundleName="MiniStatement_test" pluginId="Mybank_MiniStatement_App"/>
         <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.ns1">
-          <propertyName xmi:type="utility:TranslatableString" key="Property.ns1" bundleName="MiniStatement_test" pluginId="TEST_apk"/>
+          <propertyName xmi:type="utility:TranslatableString" key="Property.ns1" bundleName="MiniStatement_test" pluginId="Mybank_MiniStatement_App"/>
           <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.MNSTMTBackendURL">
-            <propertyName xmi:type="utility:TranslatableString" key="Property.MNSTMTBackendURL" bundleName="MiniStatement_test" pluginId="TEST_apk"/>
+            <propertyName xmi:type="utility:TranslatableString" key="Property.MNSTMTBackendURL" bundleName="MiniStatement_test" pluginId="Mybank_MiniStatement_App"/>
             <propertyDescriptor groupName="Group.Basic" configurable="true" describedAttribute="Property.dataSource">
               <propertyName xmi:type="utility:TranslatableString" key="Property.dataSource" bundleName="ComIbmCompute" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
               <propertyDescriptor groupName="Group.Group1" configurable="true" describedAttribute="Property.dataSource1">
