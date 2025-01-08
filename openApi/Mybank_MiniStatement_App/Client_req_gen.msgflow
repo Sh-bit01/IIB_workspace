@@ -3,9 +3,9 @@
     xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:test_Exception_Handling.subflow="test/Exception_Handling.subflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="Client_req_gen.msgflow" nsPrefix="Client_req_gen.msgflow">
   <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="SQUARE">
     <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
-    <translation xmi:type="utility:TranslatableString" key="Client_req_gen" bundleName="Client_req_gen" pluginId="TEST_apk"/>
-    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/TEST_apk/icons/full/obj16/Client_req_gen.gif"/>
-    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/TEST_apk/icons/full/obj30/Client_req_gen.gif"/>
+    <translation xmi:type="utility:TranslatableString" key="Client_req_gen" bundleName="Client_req_gen" pluginId="Mybank_MiniStatement_App"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Mybank_MiniStatement_App/icons/full/obj16/Client_req_gen.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Mybank_MiniStatement_App/icons/full/obj30/Client_req_gen.gif"/>
     <composition>
       <nodes xmi:type="ComIbmMQGet.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="601,195" queueName="QUEUE2" messageDomainProperty="JSON" transactionMode="no" generateMode="messageAndLocalEnvironment" copyMessage="copyEntireMessage" waitInterval="100000" getWithMessageID="true">
         <translation xmi:type="utility:ConstantString" string="MQ Get"/>
