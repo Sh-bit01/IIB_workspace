@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\openApi\Apk_soap_http\soap_http.wsdl
+
+The WSDL import will proceed with bindings soap_httpSOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/openApi/Apk_soap_http/soap_http.wsdl.
+Parsing wsdl binding {http://www.example.org/soap_http/}soap_httpSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema soap_http.xsd.
+Creating file soap_http.xsd in the workspace.
+Creating file soap_http_InlineSchema1.xsd in the workspace.
+Copying source WSDL soap_http.wsdl to soap_http.wsdl.
+
+Elapsed time processing this message definition file: 0.916 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

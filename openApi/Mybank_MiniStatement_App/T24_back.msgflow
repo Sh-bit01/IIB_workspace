@@ -2,9 +2,9 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmMSLMapping.msgnode="ComIbmMSLMapping.msgnode" xmlns:ComIbmSOAPInput.msgnode="ComIbmSOAPInput.msgnode" xmlns:ComIbmSOAPReply.msgnode="ComIbmSOAPReply.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:test_Exception_Handling.subflow="test/Exception_Handling.subflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="T24_back.msgflow" nsPrefix="T24_back.msgflow">
   <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="SQUARE">
     <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
-    <translation xmi:type="utility:TranslatableString" key="T24_back" bundleName="T24_back" pluginId="TEST_apk"/>
-    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/TEST_apk/icons/full/obj16/T24_back.gif"/>
-    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/TEST_apk/icons/full/obj30/T24_back.gif"/>
+    <translation xmi:type="utility:TranslatableString" key="T24_back" bundleName="T24_back" pluginId="Mybank_MiniStatement_App"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Mybank_MiniStatement_App/icons/full/obj16/T24_back.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Mybank_MiniStatement_App/icons/full/obj30/T24_back.gif"/>
     <composition>
       <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="330,170" mappingExpression="msl://{default}#MiniStatement_test_Mapping">
         <translation xmi:type="utility:ConstantString" string="Mapping"/>

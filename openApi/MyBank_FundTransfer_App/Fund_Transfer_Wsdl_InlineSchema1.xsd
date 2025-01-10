@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/Fund_Transfer_Wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Fund_Transfer_Wsdl/">
+        
+  <xsd:element ibmSchExtn:docRoot="true" name="FundTransferRequest">
+            
+    <xsd:complexType>
+                
+      <xsd:sequence>
+                  	
+        <xsd:element name="WebRequestCommon" type="tns:WebRequestCommon"/>
+                  	
+        <xsd:element name="FundTransferTransctionType" type="tns:FundTransferTransctionTypeType"/>
+                  
+      </xsd:sequence>
+              
+    </xsd:complexType>
+          
+  </xsd:element>
+        
+  <xsd:element ibmSchExtn:docRoot="true" name="FundTransferResponse">
+            
+    <xsd:complexType>
+                
+      <xsd:sequence>
+                  	
+        <xsd:element name="TRXID" type="xsd:string"/>
+                  	
+        <xsd:element name="MSGID" type="xsd:string"/>
+                  	
+        <xsd:element name="successIndicator">
+                    		
+          <xsd:simpleType>
+                      			
+            <xsd:restriction base="xsd:string">
+                        				
+              <xsd:enumeration value="Success"/>
+                        				
+              <xsd:enumeration value="T24Error"/>
+                        				
+              <xsd:enumeration value="DataBaseError"/>
+                        				
+              <xsd:enumeration value="Failure"/>
+                        			
+            </xsd:restriction>
+                      		
+          </xsd:simpleType>
+                    	
+        </xsd:element>
+                  	
+        <xsd:element name="Application" type="xsd:string"/>
+                  	
+        <xsd:element name="Service" type="xsd:string"/>
+                  	
+        <xsd:element minOccurs="0" name="Message" type="xsd:string"/>
+                  	
+        <xsd:element minOccurs="0" name="FUNDSTRANSFERType" type="tns:FUNDSTRANSFERTypeType">
+          	</xsd:element>
+                  
+      </xsd:sequence>
+              
+    </xsd:complexType>
+          
+  </xsd:element>
+      
+      
+  <xsd:complexType name="WebRequestCommon">
+          	
+    <xsd:sequence>
+            		
+      <xsd:element minOccurs="0" name="company" type="xsd:string"/>
+            		
+      <xsd:element name="password" type="xsd:string"/>
+            		
+      <xsd:element name="userName" type="xsd:string"/>
+            	
+    </xsd:sequence>
+          
+  </xsd:complexType>
+      
+      
+  <xsd:complexType name="FundTransferTransctionTypeType">
+          	
+    <xsd:sequence>
+            		
+      <xsd:element name="TRXID" type="xsd:string"/>
+            		
+      <xsd:element name="DebitAccount" type="tns:AccountDetails">
+      		</xsd:element>
+            		
+      <xsd:element name="CreditAccount" type="tns:AccountDetails">
+      		</xsd:element>
+            		
+      <xsd:element name="Amount" type="xsd:double"/>
+            		
+      <xsd:element name="TransactionDate" type="xsd:date"/>
+            		
+      <xsd:element minOccurs="0" name="TransactionDescription" type="xsd:string"/>
+            	
+    </xsd:sequence>
+          
+  </xsd:complexType>
+      
+      
+  <xsd:complexType name="AccountDetails">
+          	
+    <xsd:sequence>
+            		
+      <xsd:element name="AccountNumber" type="xsd:string"/>
+            		
+      <xsd:element minOccurs="0" name="AccountType" type="xsd:string"/>
+            		
+      <xsd:element minOccurs="0" name="AccountHolderName" type="xsd:string"/>
+            	
+    </xsd:sequence>
+          
+  </xsd:complexType>
+      
+    
+            
+  <xsd:complexType name="TransactionDescriptionType"/>
+          
+            
+  <xsd:complexType name="FUNDSTRANSFERTypeType">
+                	
+    <xsd:sequence>
+                  		
+      <xsd:element name="TransactionStatus">
+                    			
+        <xsd:simpleType>
+                      				
+          <xsd:restriction base="xsd:string">
+                        					
+            <xsd:enumeration value="Failure"/>
+                        					
+            <xsd:enumeration value="Success"/>
+                        				
+          </xsd:restriction>
+                      			
+        </xsd:simpleType>
+                    		
+      </xsd:element>
+                  		
+      <xsd:element name="TransactionId" type="xsd:string">
+            		</xsd:element>
+                  		
+      <xsd:element name="TransactionDate" type="xsd:date">
+            		</xsd:element>
+                  		
+      <xsd:element name="TransactionTime" type="xsd:time">
+            		</xsd:element>
+                  		
+      <xsd:element name="TransactionDescription" type="xsd:string">
+            		</xsd:element>
+                  		
+      <xsd:element name="Message" type="xsd:string"/>
+                  	
+    </xsd:sequence>
+                
+  </xsd:complexType>
+      
+</xsd:schema>

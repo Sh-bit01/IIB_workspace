@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\openApi\MyBank_FundTransfer_App\Fund_Transfer_Wsdl.wsdl
+
+The WSDL import will proceed with bindings Fund_Transfer_WsdlSOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/openApi/MyBank_FundTransfer_App/Fund_Transfer_Wsdl.wsdl.
+Parsing wsdl binding {http://www.example.org/Fund_Transfer_Wsdl/}Fund_Transfer_WsdlSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema Fund_Transfer_Wsdl.xsd.
+Creating file Fund_Transfer_Wsdl.xsd in the workspace.
+Creating file Fund_Transfer_Wsdl_InlineSchema1.xsd in the workspace.
+Copying source WSDL Fund_Transfer_Wsdl.wsdl to Fund_Transfer_Wsdl.wsdl.
+
+Elapsed time processing this message definition file: 0.153 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+
