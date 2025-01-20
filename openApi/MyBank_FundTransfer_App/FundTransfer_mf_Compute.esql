@@ -1,15 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
 CREATE COMPUTE MODULE FundTransfer_mf_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -43,7 +31,7 @@ CREATE COMPUTE MODULE FundTransfer_mf_Compute
 
 		CREATE LASTCHILD OF OutputRoot DOMAIN 'SOAP';
 		DECLARE outRefSoap REFERENCE TO OutputRoot.SOAP;
-		DECLARE inrefData REFERENCE TO inRef.;
+		DECLARE inrefData REFERENCE TO inRef;
 
 
 
