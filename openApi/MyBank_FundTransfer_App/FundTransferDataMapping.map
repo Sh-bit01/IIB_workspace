@@ -1,14 +1,71 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" xmlns:map="default" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0">
-    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/SOAPDomainMsg.xsd"/>
-    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/SOAPDomainMsg.xsd"/>
+    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/SOAPDomainMsg.xsd" var="var1"/>
+    <input path="/Fund_Transfer_Wsdl_InlineSchema1.xsd" var="var"/>
+    <input path="db:routine(/xe.dbm,xe,SYSTEM,TRANSFERBALANCE,P_FROMCUSTOMERID,P_TOCUSTOMERID,P_AMOUNT)" var="TRANSFERBALANCE"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/SOAPDomainMsg.xsd" var="var2"/>
+    <output path="db:routine(/xe.dbm,xe,SYSTEM,TRANSFERBALANCE,P_FROMCUSTOMERID,P_TOCUSTOMERID,P_AMOUNT)" var="TRANSFERBALANCE1"/>
+    <namespaces>
+        <namespace kind="extension" prefix="xs" uri="http://www.w3.org/2001/XMLSchema"/>
+    </namespaces>
     <generation engine="xquery"/>
     <mappingDeclaration name="FundTransferDataMapping">
-        <input path="mb:msg(SOAP_Domain_Msg,assembly,SOAP,Properties)" var="MessageAssembly"/>
-        <output path="mb:msg(SOAP_Domain_Msg,assembly,SOAP,Properties)" var="MessageAssembly1"/>
+        <input path="$var1/mb:msg(SOAP_Domain_Msg,assembly,SOAP,Properties)" var="MessageAssembly">
+            <cast path="$MessageAssembly/SOAP_Domain_Msg/Body/any" qualifier="{http://www.example.org/Fund_Transfer_Wsdl/}FundTransferRequest" ref="var"/>
+        </input>
+        <output path="$var2/mb:msg(SOAP_Domain_Msg,assembly,SOAP,Properties)" var="MessageAssembly2">
+            <cast path="$MessageAssembly2/SOAP_Domain_Msg/Body/any" qualifier="{http://www.example.org/Fund_Transfer_Wsdl/}FundTransferResponse" ref="var"/>
+        </output>
         <move>
             <input path="$MessageAssembly/Properties"/>
-            <output path="$MessageAssembly1/Properties"/>
+            <output path="$MessageAssembly2/Properties"/>
         </move>
+        <move>
+            <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/TRXID"/>
+            <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/TRXID"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/TRXID"/>
+            <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/MSGID"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/TRXID"/>
+            <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/FUNDSTRANSFERType/TransactionId"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/SOAP_Domain_Msg/Header"/>
+            <output path="$MessageAssembly2/SOAP_Domain_Msg/Header"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/SOAP_Domain_Msg/Context"/>
+            <output path="$MessageAssembly2/SOAP_Domain_Msg/Context"/>
+        </move>
+        <task type="todo"/>
+        <transaction>
+            <rdbcall>
+                <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/CreditAccount/AccountNumber" var="AccountNumber2"/>
+                <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/DebitAccount/AccountNumber" var="AccountNumber3"/>
+                <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/Amount" var="Amount1"/>
+                <output path="$TRANSFERBALANCE1/db:routine-call(0,1,2)"/>
+                <function ref="xs:integer">
+                    <input path="$AccountNumber2/." var="AccountNumber"/>
+                    <output path="P_TOCUSTOMERID"/>
+                    <param name="primitive" value="$AccountNumber"/>
+                </function>
+                <function ref="xs:integer">
+                    <input path="$AccountNumber3/." var="AccountNumber1"/>
+                    <output path="P_FROMCUSTOMERID"/>
+                    <param name="primitive" value="$AccountNumber1"/>
+                </function>
+                <function ref="xs:decimal">
+                    <input path="$Amount1/." var="Amount"/>
+                    <output path="P_AMOUNT"/>
+                    <param name="primitive" value="$Amount"/>
+                </function>
+            </rdbcall>
+            <rdbreturn>
+                <input path="$TRANSFERBALANCE/db:routine-return(fn:false(),fn:nilled())"/>
+            </rdbreturn>
+        </transaction>
     </mappingDeclaration>
 </mappingRoot>

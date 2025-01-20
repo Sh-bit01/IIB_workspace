@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ComIbmSOAPReply.msgnode="ComIbmSOAPReply.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:gen_MMTSTMT_services_1_MiniStatement_test.subflow="gen/MMTSTMT_services_1_MiniStatement_test.subflow" xmlns:test_Exception_Handling.subflow="test/Exception_Handling.subflow"
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:gen_MMTSTMT_services_1_MiniStatement_test.subflow="gen/MMTSTMT_services_1_MiniStatement_test.subflow" xmlns:test_Exception_Handling.subflow="test/Exception_Handling.subflow"
     xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="MiniStatement_test.msgflow" nsPrefix="MiniStatement_test.msgflow">
   <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="SQUARE">
     <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
@@ -22,25 +22,22 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Mybank_MiniStatement_App/icons/full/obj16/MiniStatement_test.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Mybank_MiniStatement_App/icons/full/obj30/MiniStatement_test.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="147,74" queueName="QUEUE1" messageDomainProperty="JSON" messageSetProperty="Input_json.schema.json" validateTiming="immediate" transactionMode="automatic" validateMaster="contentAndValue">
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="50,87" queueName="QUEUE1" messageDomainProperty="JSON" messageSetProperty="Input_json.schema.json" validateTiming="immediate" transactionMode="automatic" validateMaster="contentAndValue">
         <translation xmi:type="utility:ConstantString" string="MQ Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="955,68" queueName="QUEUE2">
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="766,79" queueName="QUEUE2">
         <translation xmi:type="utility:ConstantString" string="MQ Output1"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="283,151" dataSource="myxe" computeExpression="esql://routine/test#miniStatement.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="186,164" dataSource="myxe" computeExpression="esql://routine/test#miniStatement.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
-      <nodes xmi:type="test_Exception_Handling.subflow:FCMComposite_1" xmi:id="FCMComposite_1_1" location="579,67">
+      <nodes xmi:type="test_Exception_Handling.subflow:FCMComposite_1" xmi:id="FCMComposite_1_1" location="390,78">
         <translation xmi:type="utility:ConstantString" string="Exception_Handling"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="749,154" dataSource="myxe" computeExpression="esql://routine/#MiniStatement_test_Compute1.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="591,174" dataSource="myxe" computeExpression="esql://routine/#MiniStatement_test_Compute1.Main">
         <translation xmi:type="utility:ConstantString" string="Compute1"/>
       </nodes>
-      <nodes xmi:type="ComIbmSOAPReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="772,285">
-        <translation xmi:type="utility:ConstantString" string="SOAP Reply"/>
-      </nodes>
-      <nodes xmi:type="gen_MMTSTMT_services_1_MiniStatement_test.subflow:FCMComposite_1" xmi:id="FCMComposite_1_10" location="478,195">
+      <nodes xmi:type="gen_MMTSTMT_services_1_MiniStatement_test.subflow:FCMComposite_1" xmi:id="FCMComposite_1_10" location="376,198">
         <translation xmi:type="utility:ConstantString" string="MMTSTMT_services_1"/>
         <shortDescription xmi:type="utility:ConstantString" string="Invokes WSDL operation and extracts the response from SOAP message."/>
         <longDescription xmi:type="utility:ConstantString" string="This subflow invokes the WSDL operation and extracts message body from the response message."/>
