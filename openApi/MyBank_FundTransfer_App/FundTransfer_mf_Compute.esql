@@ -2,11 +2,11 @@
 
 
 
-DECLARE MNSTMTBackendURL EXTERNAL CHARACTER'';
-DECLARE ft NAMESPACE 'http://www.example.org/Fund_Transfer_Wsdl/';
---DECLARE ns NAMESPACE 'http://www.example.org/Fund_Transfer_Wsdl/';
-DECLARE soapenv NAMESPACE'';
-DECLARE ns1 NAMESPACE'';
+DECLARE FTBackendURL EXTERNAL CHARACTER'';
+DECLARE fund NAMESPACE 'http://www.example.org/Fund_Transfer_Wsdl/';
+DECLARE soapenv NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+--DECLARE soapenv NAMESPACE'';
+--DECLARE ns1 NAMESPACE'';
 
 CREATE COMPUTE MODULE FundTransfer_mf_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
@@ -43,35 +43,35 @@ CREATE COMPUTE MODULE FundTransfer_mf_Compute
 		DECLARE outRefSoap REFERENCE TO OutputRoot.SOAP;
 		DECLARE inrefData REFERENCE TO inRef.FundTransferRequest.FundTransferTransactionType;
 		SET outRefSoap.Context.Namespace.soapenv = 'http://schemas.xmlsoap.org/soap/envelope/';
-		SET outRefSoap.Context.Namespace.ft = 'http://www.example.org/Fund_Transfer_Wsdl/';
+		SET outRefSoap.Context.Namespace.fund = 'http://www.example.org/Fund_Transfer_Wsdl/';
 		SET outRefSoap.Context.XmlRoot.Envelope.Header = '';
 		SET outRefSoap.Context.XmlRoot.Envelope.Body = '';
 		SET outRefSoap.Header = '';
 		
 		--data Add Heder
-		SET outRefer.Body.ft:FundTransferRequest.WebRequestCommon.company = inRef.FundTransferRequest.WebRequestCommon.company;
-		SET outRefer.Body.ft:FundTransferRequest.WebRequestCommon.password = inRef.FundTransferRequest.WebRequestCommon.password;
-		SET outRefer.Body.ft:FundTransferRequest.WebRequestCommon.userName = inRef.FundTransferRequest.WebRequestCommon.userName;
+		SET outRefSoap.Body.fund:FundTransferRequest.WebRequestCommon.company = inRef.FundTransferRequest.WebRequestCommon.company;
+		SET outRefSoap.Body.fund:FundTransferRequest.WebRequestCommon.password = inRef.FundTransferRequest.WebRequestCommon.password;
+		SET outRefSoap.Body.fund:FundTransferRequest.WebRequestCommon.userName = inRef.FundTransferRequest.WebRequestCommon.userName;
 		
 		--Data add Transfer
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.TRXID = inRef.FundTransferRequest.FundTransferTransactionType.TRXID;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.TRXID = inRef.FundTransferRequest.FundTransferTransactionType.TRXID;
 		
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.DebitAccount.AccountNumber = inRef.FundTransferRequest.FundTransferTransactionType.DebitAccount.AccountNumber;
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.DebitAccount.AccountType = inRef.FundTransferRequest.FundTransferTransactionType.DebitAccount.AccountType;
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.DebitAccount.AccountHolderName = inRef.FundTransferRequest.FundTransferTransactionType.DebitAccount.AccountHolderName;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.DebitAccount.AccountNumber = inRef.FundTransferRequest.FundTransferTransactionType.DebitAccount.AccountNumber;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.DebitAccount.AccountType = inRef.FundTransferRequest.FundTransferTransactionType.DebitAccount.AccountType;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.DebitAccount.AccountHolderName = inRef.FundTransferRequest.FundTransferTransactionType.DebitAccount.AccountHolderName;
 		
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.CreditAccount.AccountNumber = inRef.FundTransferRequest.FundTransferTransactionType.CreditAccount.AccountNumber;
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.CreditAccount.AccountType = inRef.FundTransferRequest.FundTransferTransactionType.CreditAccount.AccountType;
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.CreditAccount.AccountHolderName = inRef.FundTransferRequest.FundTransferTransactionType.CreditAccount.AccountHolderName;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.CreditAccount.AccountNumber = inRef.FundTransferRequest.FundTransferTransactionType.CreditAccount.AccountNumber;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.CreditAccount.AccountType = inRef.FundTransferRequest.FundTransferTransactionType.CreditAccount.AccountType;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.CreditAccount.AccountHolderName = inRef.FundTransferRequest.FundTransferTransactionType.CreditAccount.AccountHolderName;
 		
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.Amount = inRef.FundTransferRequest.Amount;
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.TransactionDate = inRef.FundTransferRequest.TransactionDate;
-		SET outRefer.Body.ft:FundTransferRequest.FundTransferTransctionType.TransactionDescription = inRef.FundTransferRequest.TransactionDescription;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.Amount = inRef.FundTransferRequest.FundTransferTransactionType.Amount;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.TransactionDate = inRef.FundTransferRequest.FundTransferTransactionType.TransactionDate;
+		SET outRefSoap.Body.fund:FundTransferRequest.FundTransferTransctionType.TransactionDescription = inRef.FundTransferRequest.FundTransferTransactionType.TransactionDescription;
 		
 
 
 
-		SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.WebServiceURL = 'MNSTMTBackendURL';
+		SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.WebServiceURL = FTBackendURL;
 		SET Environment.MQMD = InputRoot.MQMD;
 
 		PROPAGATE TO TERMINAL 'out';

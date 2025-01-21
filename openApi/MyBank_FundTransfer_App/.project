@@ -3,8 +3,9 @@
 	<name>MyBank_FundTransfer_App</name>
 	<comment></comment>
 	<projects>
-		<project>test</project>
+		<project>DefaultPolicies</project>
 		<project>FundTransferProject_DB</project>
+		<project>test</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

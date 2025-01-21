@@ -18,7 +18,7 @@ CREATE COMPUTE MODULE Client_req_gen_Compute
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		SET OutputRoot = InputRoot;
-		SET OutputRoot.JSON.Data.MiniStatementRequest.ESBHeader.Message_Id = REPLACE(UUIDASCHAR, '-', '');
+		--SET OutputRoot.JSON.Data.MiniStatementRequest.ESBHeader.Message_Id = REPLACE(UUIDASCHAR, '-', '');
 
 		CREATE NEXTSIBLING OF OutputRoot.Properties DOMAIN('MQMD');
 		SET OutputRoot.MQMD.SourceQueue = 'q1';

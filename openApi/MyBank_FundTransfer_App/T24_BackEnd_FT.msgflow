@@ -6,16 +6,16 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/MyBank_FundTransfer_App/icons/full/obj16/T24_BackEnd_FT.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/MyBank_FundTransfer_App/icons/full/obj30/T24_BackEnd_FT.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="385,170" mappingExpression="msl://{default}#FundTransferDataMapping">
+      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="383,172" mappingExpression="msl://{default}#FundTransferDataMapping">
         <translation xmi:type="utility:ConstantString" string="Mapping"/>
       </nodes>
-      <nodes xmi:type="ComIbmSOAPReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="605,90">
+      <nodes xmi:type="ComIbmSOAPReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="695,87">
         <translation xmi:type="utility:ConstantString" string="SOAP Reply"/>
       </nodes>
       <nodes xmi:type="test_Exception_Handling.subflow:FCMComposite_1" xmi:id="FCMComposite_1_3" location="365,50">
         <translation xmi:type="utility:ConstantString" string="Exception_Handling"/>
       </nodes>
-      <nodes xmi:type="ComIbmSOAPInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="165,90" wsdlFileName="Fund_Transfer_Wsdl.wsdl" selectedPortType="Fund_Transfer_Wsdl" selectedBinding="Fund_Transfer_WsdlSOAP" selectedPort="Fund_Transfer_WsdlSOAP" targetNamespace="http://www.example.org/Fund_Transfer_Wsdl/" useHTTPTransport="true" urlSelector="/" parserXmlnscBuildTreeUsingXMLSchema="false">
+      <nodes xmi:type="ComIbmSOAPInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="165,90" wsdlFileName="Fund_Transfer_Wsdl.wsdl" selectedPortType="Fund_Transfer_Wsdl" selectedBinding="Fund_Transfer_WsdlSOAP" selectedPort="Fund_Transfer_WsdlSOAP" targetNamespace="http://www.example.org/Fund_Transfer_Wsdl/" useHTTPTransport="true" urlSelector="/FTBackend" allowQueryWSDL="true" parserXmlnscBuildTreeUsingXMLSchema="false">
         <translation xmi:type="utility:ConstantString" string="SOAP Input"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.Input"/>
