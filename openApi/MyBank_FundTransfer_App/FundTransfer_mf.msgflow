@@ -19,7 +19,7 @@
       <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="202,74" queueName="FT_IN_QUEUE" messageDomainProperty="JSON" validateTiming="immediate" transactionMode="automatic">
         <translation xmi:type="utility:ConstantString" string="MQ Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="804,154" dataSource="myxe" computeExpression="esql://routine/#FundTransfer_mf_Compute1.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="809,188" dataSource="myxe" computeExpression="esql://routine/#FundTransfer_mf_Compute1.Main">
         <translation xmi:type="utility:ConstantString" string="Compute1"/>
       </nodes>
       <nodes xmi:type="gen_NewOperation_Fund_Transfer_Wsdl_FundTransfer_mf.subflow:FCMComposite_1" xmi:id="FCMComposite_1_9" location="543,212">

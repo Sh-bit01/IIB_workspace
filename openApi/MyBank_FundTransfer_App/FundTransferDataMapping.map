@@ -2,9 +2,7 @@
 <mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" xmlns:map="default" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0">
     <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/SOAPDomainMsg.xsd" var="var1"/>
     <input path="/Fund_Transfer_Wsdl_InlineSchema1.xsd" var="var"/>
-    <input path="db:routine(/xe.dbm,xe,SYSTEM,TRANSFERBALANCE,P_FROMCUSTOMERID,P_TOCUSTOMERID,P_AMOUNT,P_STATUS,P_MESSAGE)" var="TRANSFERBALANCE2"/>
     <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/SOAPDomainMsg.xsd" var="var2"/>
-    <output path="db:routine(/xe.dbm,xe,SYSTEM,TRANSFERBALANCE,P_FROMCUSTOMERID,P_TOCUSTOMERID,P_AMOUNT,P_STATUS,P_MESSAGE)" var="TRANSFERBALANCE3"/>
     <namespaces>
         <namespace kind="supplement" prefix="io" uri="http://www.example.org/Fund_Transfer_Wsdl/"/>
         <namespace kind="extension" prefix="xs" uri="http://www.w3.org/2001/XMLSchema"/>
@@ -42,39 +40,6 @@
             <input path="$MessageAssembly/SOAP_Domain_Msg/Context"/>
             <output path="$MessageAssembly2/SOAP_Domain_Msg/Context"/>
         </move>
-        <transaction>
-            <rdbcall>
-                <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/Amount" var="Amount2"/>
-                <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/CreditAccount/AccountNumber" var="AccountNumber4"/>
-                <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/DebitAccount/AccountNumber" var="AccountNumber5"/>
-                <output path="$TRANSFERBALANCE3/db:routine-call(0,1,2)"/>
-                <move>
-                    <input path="$AccountNumber4/."/>
-                    <output path="P_TOCUSTOMERID"/>
-                </move>
-                <move>
-                    <input path="$Amount2/."/>
-                    <output path="P_AMOUNT"/>
-                </move>
-                <move>
-                    <input path="$AccountNumber5/."/>
-                    <output path="P_FROMCUSTOMERID"/>
-                </move>
-            </rdbcall>
-            <rdbreturn>
-                <input path="$TRANSFERBALANCE2/db:routine-return(fn:false(),fn:nilled(),3,4)"/>
-                <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/FUNDSTRANSFERType/Message" var="Message"/>
-                <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/FUNDSTRANSFERType/TransactionStatus" var="TransactionStatus"/>
-                <move>
-                    <input path="P_STATUS"/>
-                    <output path="$TransactionStatus/."/>
-                </move>
-                <move>
-                    <input path="P_MESSAGE"/>
-                    <output path="$Message/."/>
-                </move>
-            </rdbreturn>
-        </transaction>
         <move>
             <input path="$MessageAssembly/SOAP_Domain_Msg/Body/FundTransferRequest/FundTransferTransctionType/TransactionDate"/>
             <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/FUNDSTRANSFERType/TransactionDate"/>
@@ -97,6 +62,12 @@
         </assign>
         <assign value="FundTransfer">
             <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/Service"/>
+        </assign>
+        <assign value="SUCCESS">
+            <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/FUNDSTRANSFERType/TransactionStatus"/>
+        </assign>
+        <assign value="Data transfer Successfully">
+            <output path="$MessageAssembly2/SOAP_Domain_Msg/Body/FundTransferResponse/FUNDSTRANSFERType/Message"/>
         </assign>
     </mappingDeclaration>
 </mappingRoot>

@@ -6,15 +6,15 @@
     <databaseVersion>11g</databaseVersion>
     <type4DriverClassName>oracle.jdbc.OracleDriver</type4DriverClassName>
     <type4DatasourceClassName>oracle.jdbc.xa.client.OracleXADataSource</type4DatasourceClassName>
-    <connectionUrlFormat>jdbc:oracle:thin:system/sarasu10@localhost:1521/xe</connectionUrlFormat>
+    <connectionUrlFormat>jdbc:oracle:thin:system/sarasu10@localhost:1521:xe</connectionUrlFormat>
     <connectionUrlFormatAttr1>xe</connectionUrlFormatAttr1>
     <connectionUrlFormatAttr2></connectionUrlFormatAttr2>
     <connectionUrlFormatAttr3></connectionUrlFormatAttr3>
     <connectionUrlFormatAttr4></connectionUrlFormatAttr4>
     <connectionUrlFormatAttr5></connectionUrlFormatAttr5>
-    <serverName>default_Database_Server_Name</serverName>
+    <serverName>localhost</serverName>
     <portNumber>1521</portNumber>
-    <jarsURL>C:\temp\jar</jarsURL>
+    <jarsURL>C:\temp\jar\e8</jarsURL>
     <databaseSchemaNames>system</databaseSchemaNames>
     <description></description>
     <maxConnectionPoolSize>0</maxConnectionPoolSize>

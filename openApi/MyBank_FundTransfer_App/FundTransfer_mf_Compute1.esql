@@ -2,6 +2,8 @@
 
 
 
+
+
 CREATE COMPUTE MODULE FundTransfer_mf_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -23,7 +25,26 @@ CREATE COMPUTE MODULE FundTransfer_mf_Compute1
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		SET OutputRoot.Properties = InputRoot.Properties;
 		CREATE NEXTSIBLING OF OutputRoot.Properties DOMAIN('MQMD');
-		SET OutputRoot.MQMD = Environment.Variables.MQMD;
-		SET OutputRoot.JSON.Data = InputRoot.XMLNSC;
+		SET OutputRoot.MQMD = Environment.MQMD;
+
+
+		SET Environment.Data = InputRoot.XMLNSC.fund:FundTransferResponse;
+
+		DECLARE RefFtRes REFERENCE TO InputRoot.XMLNSC.FundTransferResponse;
+		IF RefFtRes.FUNDSTRANSFERType.TransactionStatus = 'Success' THEN
+			SET OutputRoot.JSON.Data.FundTransferResponse = Environment.Data;
+			DELETE FIRSTCHILD OF OutputRoot.JSON.Data.FundTransferResponse;
+		ELSE
+
+			SET OutputRoot.JSON.Data.FundTransferResponse = Environment.Data;
+			DELETE FIRSTCHILD OF OutputRoot.JSON.Data.FundTransferResponse;
+
+
+
+
+		END IF;
+
+
+
 	END;
 END MODULE;

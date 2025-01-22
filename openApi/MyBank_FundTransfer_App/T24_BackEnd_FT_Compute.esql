@@ -1,0 +1,61 @@
+
+
+
+
+
+
+CREATE COMPUTE MODULE T24_BackEnd_FT_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN		
+		DECLARE refFT REFERENCE TO InputRoot.SOAP.Body.fund:FundTransferRequest.FundTransferTransctionType;
+		
+		DECLARE TRXID CHARACTER refFT.TRXID;
+		DECLARE DabitAn INTEGER refFT.DebitAccount.AccountNumber;	
+		DECLARE CreditAn INTEGER refFT.CreditAccount.AccountNumber;	
+		DECLARE amount DECIMAL refFT.Amount;
+		DECLARE transMSG CHARACTER refFT.TransactionDescription;
+		
+		DECLARE MESSAGE, STATUS CHARACTER;
+		CALL TransBalance(DabitAn, CreditAn, amount, STATUS, MESSAGE);
+
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.TRXID = TRXID;
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.MSGID = '';
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.successIndicator = STATUS;
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.Application = ApplicationLabel;
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.Service = 'FundTransfer';
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.Message = MESSAGE;
+
+		
+
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.FUNDSTRANSFERType.TransactionStatus = STATUS;
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.FUNDSTRANSFERType.TransactionId = TRXID;
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.FUNDSTRANSFERType.TransactionDate = CURRENT_DATE;
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.FUNDSTRANSFERType.TransactionTime = CURRENT_TIME;
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.FUNDSTRANSFERType.TransactionDescription = transMSG;
+		SET OutputRoot.SOAP.Body.fund:FundTransferResponse.FUNDSTRANSFERType.Message = MESSAGE;
+
+
+
+	END;
+END MODULE;
+
+
+CREATE PROCEDURE TransBalance(IN debit INTEGER, IN credit INTEGER, IN amount DECIMAL, OUT ststus CHARACTER, OUT message CHARACTER)
+LANGUAGE DATABASE
+EXTERNAL NAME "TransferBalance" ;
