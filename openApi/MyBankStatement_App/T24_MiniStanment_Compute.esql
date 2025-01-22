@@ -1,0 +1,47 @@
+
+
+CREATE COMPUTE MODULE T24_MiniStanment_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		
+		DECLARE accNo INTEGER InputRoot.JSON.Data.accNo;
+		DECLARE status, msg CHARACTER;
+		CALL stament(accNo, status, msg, Environment.res[]);
+		
+		SET OutputRoot.JSON.Data.Status = status;
+		SET OutputRoot.JSON.Data.Message = msg;
+		SET OutputRoot.JSON.Data.AccountNumber = accNo;
+		SET OutputRoot.JSON.Data.Statement[] = Environment.res[];
+		 
+		
+		
+		
+	END;
+END MODULE;
+
+
+CREATE PROCEDURE stament(IN accoutNo INTEGER, OUT status CHARACTER, OUT msg CHARACTER)
+LANGUAGE DATABASE
+Dynamic Result sets 1
+EXTERNAL NAME "CentralCust_Statement" ;
+
+
+
+
