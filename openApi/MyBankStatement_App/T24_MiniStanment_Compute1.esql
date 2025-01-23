@@ -1,7 +1,3 @@
-
-
-
-
 CREATE COMPUTE MODULE T24_MiniStanment_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -21,18 +17,33 @@ CREATE COMPUTE MODULE T24_MiniStanment_Compute1
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		CREATE LASTCHILD OF OutputRoot DOMAIN ('SOAP');
 
+		CREATE LASTCHILD OF OutputRoot DOMAIN ('XMLNSC');
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].ref_no = '';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].LOG_POINT = '';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].data = '';
+
+
+		CREATE LASTCHILD OF OutputRoot DOMAIN ('SOAP');
 		SET OutputRoot.SOAP.Context.Namespace.soapenv = 'http://schemas.xmlsoap.org/soap/envelope/';
 		SET OutputRoot.SOAP.Context.Namespace.tns = 'http://www.example.org/Bank_Statament/';
-
 		SET OutputRoot.SOAP.Header = '';
-
-		SET OutputRoot.SOAP.Body.ns4:BankStatmtReq.AccountNo = InputRoot.JSON.Data.AccNo;		
-		
-		
+		SET OutputRoot.SOAP.Body.ns4:BankStatmtReq.AccountNo = InputRoot.JSON.Data.AccNo;
 		--SET Environment.MQMD = InputRoot.MQMD;
 
+
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].ref_no = '';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].LOG_POINT = '';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].data = '';
+
+		SET Environment.SOAP = OutputRoot.SOAP;
+		DELETE LASTCHILD OF OutputRoot;
+
+		propagate TO TERMINAL 'out1';
+
+		DELETE LASTCHILD OF OutputRoot;
+		CREATE LASTCHILD OF OutputRoot DOMAIN ('SOAP');
+		SET OutputRoot.SOAP = Environment.SOAP;
 
 	END;
 END MODULE;

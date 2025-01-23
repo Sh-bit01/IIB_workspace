@@ -7,22 +7,22 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/MyBank_FundTransfer_App/icons/full/obj16/FundTransfer_mf.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/MyBank_FundTransfer_App/icons/full/obj30/FundTransfer_mf.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="396,197" dataSource="myxe" computeExpression="esql://routine/#FundTransfer_mf_Compute.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="256,182" dataSource="myxe" computeExpression="esql://routine/#FundTransfer_mf_Compute.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
-      <nodes xmi:type="test_Exception_Handling.subflow:FCMComposite_1" xmi:id="FCMComposite_1_3" location="634,67">
+      <nodes xmi:type="test_Exception_Handling.subflow:FCMComposite_1" xmi:id="FCMComposite_1_3" location="494,52">
         <translation xmi:type="utility:ConstantString" string="Exception_Handling"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="1010,68" queueName="FT_OUT_QUEUE">
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="870,53" queueName="FT_OUT_QUEUE">
         <translation xmi:type="utility:ConstantString" string="MQ Output1"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="202,74" queueName="FT_IN_QUEUE" messageDomainProperty="JSON" validateTiming="immediate" transactionMode="automatic">
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="62,59" queueName="FT_IN_QUEUE" messageDomainProperty="JSON" validateTiming="immediate" transactionMode="automatic">
         <translation xmi:type="utility:ConstantString" string="MQ Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="809,188" dataSource="myxe" computeExpression="esql://routine/#FundTransfer_mf_Compute1.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="669,173" dataSource="myxe" computeExpression="esql://routine/#FundTransfer_mf_Compute1.Main">
         <translation xmi:type="utility:ConstantString" string="Compute1"/>
       </nodes>
-      <nodes xmi:type="gen_NewOperation_Fund_Transfer_Wsdl_FundTransfer_mf.subflow:FCMComposite_1" xmi:id="FCMComposite_1_9" location="543,212">
+      <nodes xmi:type="gen_NewOperation_Fund_Transfer_Wsdl_FundTransfer_mf.subflow:FCMComposite_1" xmi:id="FCMComposite_1_9" location="403,197">
         <translation xmi:type="utility:ConstantString" string="NewOperation_Fund_Transfer_Wsdl"/>
         <shortDescription xmi:type="utility:ConstantString" string="Invokes WSDL operation and extracts the response from SOAP message."/>
         <longDescription xmi:type="utility:ConstantString" string="This subflow invokes the WSDL operation and extracts message body from the response message."/>
