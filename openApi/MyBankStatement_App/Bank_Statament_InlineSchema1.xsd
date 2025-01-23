@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/Bank_Statament/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Bank_Statament/">
+        
+  <xsd:element ibmSchExtn:docRoot="true" name="BankStatmtReq">
+            
+    <xsd:complexType>
+                
+      <xsd:sequence>
+                    
+        <xsd:element name="AccountNo" type="xsd:string"/>
+                  
+      </xsd:sequence>
+              
+    </xsd:complexType>
+          
+  </xsd:element>
+        
+  <xsd:element ibmSchExtn:docRoot="true" name="BankStatmtResponse">
+            
+    <xsd:complexType>
+                
+      <xsd:sequence>
+                  	
+        <xsd:element name="Status" type="xsd:string"/>
+                  	
+        <xsd:element name="Message" type="xsd:string"/>
+                  	
+        <xsd:element name="AccountNumber" type="xsd:string"/>
+                  	
+        <xsd:element maxOccurs="unbounded" minOccurs="0" name="Statement" type="tns:StatementType"/>
+                  
+      </xsd:sequence>
+              
+    </xsd:complexType>
+          
+  </xsd:element>
+      
+      
+  <xsd:complexType name="StatementType">
+          	
+    <xsd:sequence>
+            		
+      <xsd:element name="TRANSACTION_ID" type="xsd:string"/>
+            		
+      <xsd:element name="TRANSACTION_TYPE" type="xsd:string"/>
+            		
+      <xsd:element name="AMOUNT" type="xsd:decimal"/>
+            		
+      <xsd:element name="TRANSACTION_TIMESTAMP" type="xsd:dateTime"/>
+            		
+      <xsd:element name="DEBITED_FROM" type="xsd:string"/>
+            		
+      <xsd:element name="CREDITED_TO" type="xsd:string"/>
+            	
+    </xsd:sequence>
+          
+  </xsd:complexType>
+      
+</xsd:schema>

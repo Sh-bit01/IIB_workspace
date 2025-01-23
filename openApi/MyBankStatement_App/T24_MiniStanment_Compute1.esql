@@ -1,5 +1,7 @@
 
 
+
+
 CREATE COMPUTE MODULE T24_MiniStanment_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -19,6 +21,18 @@ CREATE COMPUTE MODULE T24_MiniStanment_Compute1
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		SET OutputRoot = InputRoot;
+		CREATE LASTCHILD OF OutputRoot DOMAIN ('SOAP');
+
+		SET OutputRoot.SOAP.Context.Namespace.soapenv = 'http://schemas.xmlsoap.org/soap/envelope/';
+		SET OutputRoot.SOAP.Context.Namespace.tns = 'http://www.example.org/Bank_Statament/';
+
+		SET OutputRoot.SOAP.Header = '';
+
+		SET OutputRoot.SOAP.Body.ns4:BankStatmtReq.AccountNo = InputRoot.JSON.Data.AccNo;		
+		
+		
+		--SET Environment.MQMD = InputRoot.MQMD;
+
+
 	END;
 END MODULE;

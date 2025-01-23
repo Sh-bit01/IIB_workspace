@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/Bank_Statament/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Bank_Statament" targetNamespace="http://www.example.org/Bank_Statament/">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <generatedXSD location="Bank_Statament_InlineSchema1.xsd"/>
+        <binding hasEncoding="false" imported="true" name="Bank_StatamentSOAP" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+    
+  <wsdl:types>
+        
+          
+    <xsd:schema xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" targetNamespace="http://www.example.org/Bank_Statament/">
+      
+      <xsd:include schemaLocation="Bank_Statament_InlineSchema1.xsd"/>
+    </xsd:schema>
+        
+  </wsdl:types>
+    
+  <wsdl:message name="BankStatmtRequest">
+        
+    <wsdl:part element="tns:BankStatmtReq" name="parameters"/>
+      
+  </wsdl:message>
+    
+  <wsdl:message name="BankStatmtResponse">
+        
+    <wsdl:part element="tns:BankStatmtResponse" name="parameters"/>
+      
+  </wsdl:message>
+    
+  <wsdl:portType name="Bank_Statament">
+        
+    <wsdl:operation name="BankStatmt">
+            
+      <wsdl:input message="tns:BankStatmtRequest"/>
+            
+      <wsdl:output message="tns:BankStatmtResponse"/>
+          
+    </wsdl:operation>
+      
+  </wsdl:portType>
+    
+  <wsdl:binding name="Bank_StatamentSOAP" type="tns:Bank_Statament">
+        
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        
+    <wsdl:operation name="BankStatmt">
+            
+      <soap:operation soapAction="http://www.example.org/Bank_Statament/BankStatmt"/>
+            
+      <wsdl:input>
+                
+        <soap:body use="literal"/>
+              
+      </wsdl:input>
+            
+      <wsdl:output>
+                
+        <soap:body use="literal"/>
+              
+      </wsdl:output>
+          
+    </wsdl:operation>
+      
+  </wsdl:binding>
+    
+  <wsdl:service name="Bank_Statament">
+        
+    <wsdl:port binding="tns:Bank_StatamentSOAP" name="Bank_StatamentSOAP">
+            
+      <soap:address location="http://www.example.org/"/>
+          
+    </wsdl:port>
+      
+  </wsdl:service>
+  
+</wsdl:definitions>

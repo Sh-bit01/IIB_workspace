@@ -1,3 +1,5 @@
+DECLARE ns4 NAMESPACE 'http://www.example.org/Bank_Statament/';
+
 
 
 CREATE COMPUTE MODULE T24_MiniStanment_Compute
@@ -18,17 +20,17 @@ CREATE COMPUTE MODULE T24_MiniStanment_Compute
 		END WHILE;
 	END;
 
-	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		CREATE PROCEDURE CopyEntireMessage() BEGIN
 		--SET OutputRoot = InputRoot;
 		
-		DECLARE accNo INTEGER InputRoot.JSON.Data.accNo;
+		DECLARE accNo INTEGER InputRoot.SOAP.Body.ns4:BankStatmtReq.AccountNo;
 		DECLARE status, msg CHARACTER;
 		CALL stament(accNo, status, msg, Environment.res[]);
 		
-		SET OutputRoot.JSON.Data.Status = status;
-		SET OutputRoot.JSON.Data.Message = msg;
-		SET OutputRoot.JSON.Data.AccountNumber = accNo;
-		SET OutputRoot.JSON.Data.Statement[] = Environment.res[];
+		SET OutputRoot.SOAP.Body.ns4:BankStatmtResponse.Status = status;
+		SET OutputRoot.SOAP.Body.ns4:BankStatmtResponse.Message = msg;
+		SET OutputRoot.SOAP.Body.ns4:BankStatmtResponse.AccountNumber = accNo;
+		SET OutputRoot.SOAP.Body.ns4:BankStatmtResponse.Statement[] = Environment.res[];
 		 
 		
 		
@@ -41,7 +43,3 @@ CREATE PROCEDURE stament(IN accoutNo INTEGER, OUT status CHARACTER, OUT msg CHAR
 LANGUAGE DATABASE
 Dynamic Result sets 1
 EXTERNAL NAME "CentralCust_Statement" ;
-
-
-
-
