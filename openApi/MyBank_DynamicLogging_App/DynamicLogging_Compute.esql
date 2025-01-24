@@ -31,15 +31,14 @@ CREATE COMPUTE MODULE DynamicLogging_Compute
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		--SET OutputRoot = InputRoot;
 
-		DECLARE BrokerName, ref_no, LOG_POINT, data CHARACTER;
+		DECLARE  ref_no, LOG_POINT, data CHARACTER;
 
 		DECLARE myref REFERENCE TO InputRoot.XMLNSC.LoggingDetails.data[1];
 
-
 		WHILE LASTMOVE(myref) DO
 			SET ref_no = myref.ref_no;
-			SET ref_no = myref.LOG_POINT;
-			SET ref_no = myref.data;
+			SET LOG_POINT = myref.LOG_POINT;
+			SET data = myref.data;
 
 			CALL DbLogging1(CURRENT_TIMESTAMP, ApplicationLabel ,BrokerName, ref_no, LOG_POINT, data);
 			MOVE myref NEXTSIBLING;

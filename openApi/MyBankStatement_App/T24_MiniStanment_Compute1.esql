@@ -1,3 +1,5 @@
+
+
 CREATE COMPUTE MODULE T24_MiniStanment_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -17,11 +19,17 @@ CREATE COMPUTE MODULE T24_MiniStanment_Compute1
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET Environment.Variable.CCSID = InputRoot.Properties.CodedCharSetId ;
+		SET Environment.Variable.ENCODING = InputRoot.Properties.Encoding;
+		
+		DECLARE refno CHARACTER InputLocalEnvironment.Destination.HTTP.RequestIdentifier;
+		SET Environment.Variable.RefNo = 'REF' || REPLACE(UUIDASCHAR, '-', '');
 
 		CREATE LASTCHILD OF OutputRoot DOMAIN ('XMLNSC');
-		SET OutputRoot.XMLNSC.LoggingDetails.data[1].ref_no = '';
-		SET OutputRoot.XMLNSC.LoggingDetails.data[1].LOG_POINT = '';
-		SET OutputRoot.XMLNSC.LoggingDetails.data[1].data = '';
+		DECLARE ReqData CHARACTER CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID Environment.Variable.CCSID ENCODING Environment.Variable.ENCODING) AS CHARACTER CCSID Environment.Variable.CCSID ENCODING Environment.Variable.ENCODING);
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].ref_no =  Environment.Variable.RefNo;
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].LOG_POINT = 'Channel request';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].data = ReqData;
 
 
 		CREATE LASTCHILD OF OutputRoot DOMAIN ('SOAP');
@@ -31,10 +39,10 @@ CREATE COMPUTE MODULE T24_MiniStanment_Compute1
 		SET OutputRoot.SOAP.Body.ns4:BankStatmtReq.AccountNo = InputRoot.JSON.Data.AccNo;
 		--SET Environment.MQMD = InputRoot.MQMD;
 
-
-		SET OutputRoot.XMLNSC.LoggingDetails.data[2].ref_no = '';
-		SET OutputRoot.XMLNSC.LoggingDetails.data[2].LOG_POINT = '';
-		SET OutputRoot.XMLNSC.LoggingDetails.data[2].data = '';
+		DECLARE ResData CHARACTER CAST(ASBITSTREAM(OutputRoot.SOAP CCSID Environment.Variable.CCSID ENCODING Environment.Variable.ENCODING) AS CHARACTER CCSID Environment.Variable.CCSID ENCODING Environment.Variable.ENCODING);
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].ref_no =  Environment.Variable.RefNo;
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].LOG_POINT = 'Backend Request';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].data = ResData;
 
 		SET Environment.SOAP = OutputRoot.SOAP;
 		DELETE LASTCHILD OF OutputRoot;

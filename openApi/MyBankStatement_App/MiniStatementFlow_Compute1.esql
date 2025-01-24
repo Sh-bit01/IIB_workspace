@@ -1,3 +1,5 @@
+
+
 CREATE COMPUTE MODULE MiniStatementFlow_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -18,10 +20,12 @@ CREATE COMPUTE MODULE MiniStatementFlow_Compute1
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		--SET OutputRoot = InputRoot;
+		DECLARE ReqData CHARACTER CAST(ASBITSTREAM(InputRoot.XMLNSC CCSID Environment.Variable.CCSID ENCODING Environment.Variable.ENCODING) AS CHARACTER CCSID Environment.Variable.CCSID ENCODING Environment.Variable.ENCODING);
+
 		CREATE LASTCHILD OF OutputRoot DOMAIN ('XMLNSC');
-		SET OutputRoot.XMLNSC.LoggingDetails.data[1].ref_no = '';
-		SET OutputRoot.XMLNSC.LoggingDetails.data[1].LOG_POINT = '';
-		SET OutputRoot.XMLNSC.LoggingDetails.data[1].data = '';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].ref_no = Environment.Variable.RefNo;
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].LOG_POINT ='Backend Responce';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[1].data = ReqData;
 
 
 		SET Environment.Data = InputRoot.XMLNSC.ns4:BankStatmtResponse;
@@ -29,13 +33,14 @@ CREATE COMPUTE MODULE MiniStatementFlow_Compute1
 		--SET OutputRoot.MQMD = Environment.MQMD;
 		SET OutputRoot.JSON.Data.BankStatmtResponse = Environment.Data;
 		DELETE FIRSTCHILD OF OutputRoot.JSON.Data.BankStatmtResponse;		
-		
-		
 
 
-		SET OutputRoot.XMLNSC.LoggingDetails.data[2].ref_no = '';
-		SET OutputRoot.XMLNSC.LoggingDetails.data[2].LOG_POINT = '';
-		SET OutputRoot.XMLNSC.LoggingDetails.data[2].data = '';
+
+		DECLARE ResData CHARACTER CAST(ASBITSTREAM(OutputRoot.JSON CCSID Environment.Variable.CCSID ENCODING Environment.Variable.ENCODING) AS CHARACTER CCSID Environment.Variable.CCSID ENCODING Environment.Variable.ENCODING);
+
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].ref_no = Environment.Variable.RefNo;
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].LOG_POINT = 'Channel Responce';
+		SET OutputRoot.XMLNSC.LoggingDetails.data[2].data = ResData;
 
 		SET Environment.JSON = OutputRoot.JSON;
 		DELETE LASTCHILD OF OutputRoot;
