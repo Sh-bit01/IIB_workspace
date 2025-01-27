@@ -1,5 +1,7 @@
 
 
+
+
 CREATE COMPUTE MODULE all_mf_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -19,6 +21,16 @@ CREATE COMPUTE MODULE all_mf_Compute1
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		SET OutputRoot = InputRoot;
+		--SET OutputRoot = InputRoot;
+
+		--SET OutputRoot.Properties = InputRoot.JSON.Data.InputProperty;		
+		--SET OutputRoot.HTTPInputHeader = InputRoot.JSON.Data.InputHeader;		
+		SET OutputLocalEnvironment.Destination.HTTP.RequestIdentifier = InputRoot.MQMD.MsgId;
+		
+		SET OutputRoot.JSON.Data.res = 'data';	
+		
+		
+
+
 	END;
 END MODULE;
