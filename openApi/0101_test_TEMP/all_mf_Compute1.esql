@@ -1,6 +1,6 @@
 
 
-CREATE COMPUTE MODULE all_mf_Compute
+CREATE COMPUTE MODULE all_mf_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
@@ -19,9 +19,6 @@ CREATE COMPUTE MODULE all_mf_Compute
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		
-		SET OutputRoot.JSON.Data.InputProperty = InputProperties;
-		SET OutputRoot.JSON.Data.InputHeader = InputRoot.HTTPInputHeader;
-		SET OutputRoot.JSON.Data.InputLocalenv = InputLocalEnvironment;
+		SET OutputRoot = InputRoot;
 	END;
 END MODULE;
