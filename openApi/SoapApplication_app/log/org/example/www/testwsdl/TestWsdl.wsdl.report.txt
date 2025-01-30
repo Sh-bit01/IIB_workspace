@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\IBM\ACET12\openApi\SoapApplication_app\TestWsdl.wsdl
+
+The WSDL import will proceed with bindings TestWsdlSOAP.
+Creating wsdl schema document for file:///C:/Users/Sreenivas Bandaru/IBM/ACET12/openApi/SoapApplication_app/TestWsdl.wsdl.
+Parsing wsdl binding {http://www.example.org/TestWsdl/}TestWsdlSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema TestWsdl.xsd.
+Creating file TestWsdl.xsd in the workspace.
+Creating file TestWsdl_InlineSchema1.xsd in the workspace.
+Copying source WSDL TestWsdl.wsdl to TestWsdl.wsdl.
+
+Elapsed time processing this message definition file: 0.153 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

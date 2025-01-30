@@ -33,7 +33,7 @@
     </composition>
     <propertyOrganizer/>
     <stickyBoard>
-      <stickyNote location="84,141">
+      <stickyNote location="81,225">
         <body xmi:type="utility:ConstantString" string="{&#xD;&#xA;    &quot;mail&quot;: {&#xD;&#xA;        &quot;subject&quot;: &quot;custom mail genrate by me&quot;,&#xD;&#xA;        &quot;body&quot;: &quot;hii this is by hjdf hg kjgdv kkkdf kkkhdsgvt m   sdvy   sdfiiok sdvhtgjsfg kkkfsy muy siuytgb; uyuitysdg &quot;&#xD;&#xA;    }&#xD;&#xA;}"/>
       </stickyNote>
     </stickyBoard>

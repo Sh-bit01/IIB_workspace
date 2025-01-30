@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
-public class BankStatementPDF {
+public class StmtGen {
 
     static class Transaction {
         String transactionId;
@@ -70,9 +70,9 @@ public class BankStatementPDF {
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
         
         // Using predefined fonts from PDFBox (PDType1Font)
-        PDFont font = PDType1Font.HELVETICA_BOLD;  
+       // PDFont font = PDType1Font.HELVETICA_BOLD;  
 
-        contentStream.setFont(font, 12);  // Bold Helvetica font
+       // contentStream.setFont(font, 12);  // Bold Helvetica font
         contentStream.beginText();
         contentStream.newLineAtOffset(50, 750);
 
@@ -85,7 +85,7 @@ public class BankStatementPDF {
         contentStream.newLineAtOffset(0, -20);
 
         // Add Table Data
-        contentStream.setFont(PDType1Font.HELVETICA, 10);  // Regular Helvetica font
+        //contentStream.setFont(PDType1Font.HELVETICA, 10);  // Regular Helvetica font
         for (Transaction transaction : transactions) {
             contentStream.showText(transaction.transactionId + " | " +
                     transaction.transactionType + " | " +
