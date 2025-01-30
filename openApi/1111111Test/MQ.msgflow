@@ -15,7 +15,11 @@
       <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="494,207">
         <translation xmi:type="utility:ConstantString" string="MQ Output1"/>
       </nodes>
+<<<<<<< HEAD
       <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="70,50" URLSpecifier="/mq">
+=======
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="86,44" URLSpecifier="/mq">
+>>>>>>> 204249c76b9f8865216e3145e2dfc43e66f2d0d3
         <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
       </nodes>
       <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="480,51">
