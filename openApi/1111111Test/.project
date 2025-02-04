@@ -3,6 +3,7 @@
 	<name>1111111Test</name>
 	<comment></comment>
 	<projects>
+		<project>TEST_EXT_DIR_VAULT</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

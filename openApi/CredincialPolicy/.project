@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>CredincialPolicy</name>
+	<comment></comment>
+	<projects>
+		<project>TEST_EXT_DIR_VAULT</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.ibm.etools.mft.policy.ui.policybuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.ibm.etools.mft.policy.ui.Nature</nature>
+	</natures>
+</projectDescription>

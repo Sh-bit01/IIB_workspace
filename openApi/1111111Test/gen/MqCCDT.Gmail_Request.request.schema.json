@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "To": {
+      "displayOrder": 2,
+      "title": "To",
+      "description": "The email addresses of one or more recipients. For multiple email addresses, use a comma as a separator.",
+      "type": "string"
+    },
+    "Subject": {
+      "displayOrder": 5,
+      "title": "Subject",
+      "description": "A description that serves to summarize the email content",
+      "type": "string"
+    },
+    "Body": {
+      "displayOrder": 6,
+      "title": "Body",
+      "description": "The body content of the email message",
+      "display": {
+        "multiLine": true
+      },
+      "type": "string"
+    },
+    "CC": {
+      "displayOrder": 3,
+      "title": "Cc",
+      "description": "The email addresses of the Carbon copy (Cc) recipients whom you intend to keep in the email loop. For multiple email addresses, use a comma as a separator.",
+      "type": "string"
+    },
+    "BCC": {
+      "displayOrder": 4,
+      "title": "Bcc",
+      "description": "The email addresses of the Blind carbon copy (Bcc) recipients whom you intend to keep private. For multiple email addresses, use a comma as a separator.",
+      "type": "string"
+    }
+  },
+  "title": "mail",
+  "additionalProperties": false,
+  "connectorName": "gmail",
+  "interaction": "CREATE"
+}
