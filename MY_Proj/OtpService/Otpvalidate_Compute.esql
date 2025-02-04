@@ -1,10 +1,10 @@
 
 
-CREATE COMPUTE MODULE mf1_Compute
+CREATE COMPUTE MODULE Otpvalidate_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
-		-- CALL CopyEntireMessage();
+		CALL CopyEntireMessage();
 		RETURN TRUE;
 	END;
 
