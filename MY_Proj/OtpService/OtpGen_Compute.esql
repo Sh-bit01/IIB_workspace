@@ -23,9 +23,8 @@ CREATE COMPUTE MODULE OtpGen_Compute
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		--SET OutputRoot = InputRoot;
 
-		--SET OutputRoot.EmailOutputHeader.To = 'shreyashgondane.eidiko@gmail.com';
-		SET OutputRoot.EmailOutputHeader.To = 'riteshsherekar.eidiko@gmail.com';
-		SET OutputRoot.EmailOutputHeader.From = 'shreyashvishwas.gondane@eidiko-india.com';
+		SET OutputRoot.EmailOutputHeader.To = 'gabriel@test.com';
+		SET OutputRoot.EmailOutputHeader.From = 'shreyash@test.com';
 		--SET OutputRoot.EmailOutputHeader.Subject = InputRoot.JSON.Data.mail.subject;
 		SET OutputRoot.EmailOutputHeader.Subject = 'OTP ';
 		--SET OutputLocalEnvironment.Destination.Email.SMTPServer ='192.168.2.21:25';
