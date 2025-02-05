@@ -36,17 +36,37 @@ CREATE COMPUTE MODULE MqCCDT_Compute
 		-- SET OutputRoot.XMLNSC.Top.WHILE.retryCount = retryCount;
 		-- SET OutputRoot.XMLNSC.Top.WHILE.afterCount = afterCount;
 
+--
+--		DECLARE inref REFERENCE TO InputRoot.XMLNSC;
+--		CREATE LASTCHILD OF OutputRoot DOMAIN('JSON');
+--		DECLARE outref REFERENCE TO OutputRoot.JSON.Data;
+--
+--		MOVE outref TO inref;
+--		MOVE outref NEXTSIBLING REPEAT TYPE NAME;
+--
+--		SET OutputRoot.JSON.Data = outref;
+--
+--		DECLARE n INTEGER 4;
 
-		DECLARE inref REFERENCE TO InputRoot.XMLNSC;
-		CREATE LASTCHILD OF OutputRoot DOMAIN('JSON');
-		DECLARE outref REFERENCE TO OutputRoot.JSON.Data;
 
-		MOVE outref TO inref;
-		MOVE outref NEXTSIBLING REPEAT TYPE NAME;
+ 		DECLARE CONTINUE HANDLER FOR SQLSTATE VALUE 'U11222'
+		 BEGIN
+			 SET OutputRoot.XMLNSC.Top.WHILE.mySQLCODE = SQLCODE;
+			 SET OutputRoot.XMLNSC.Top.WHILE.mySQLSTATE = SQLSTATE;
+			 SET OutputRoot.XMLNSC.Top.WHILE.mySQLNATIVEERROR = SQLNATIVEERROR;
+			 SET OutputRoot.XMLNSC.Top.WHILE.mySQLERRORTEXT = SQLERRORTEXT;
+			-- SET retryCount = retryCount + 1;
+		 END;
+		
+			SET OutputRoot.XMLNSC.Top.res.befour = 'befour';
+	
+		 THROW USER EXCEPTION VALUES( -1, 'U11222', 42, 'error text' );
 
-		SET OutputRoot.JSON.Data = outref;
+	
+		-- SET afterCount = afterCount + 1;
+		SET OutputRoot.XMLNSC.Top.res.after = 'after';
+	
 
-		DECLARE n INTEGER 4;
 
 
 	END;

@@ -2,6 +2,10 @@
 
 
 
+
+
+
+
 CREATE COMPUTE MODULE OtpGen_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -22,31 +26,36 @@ CREATE COMPUTE MODULE OtpGen_Compute
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		--SET OutputRoot = InputRoot;
-
-		SET OutputRoot.EmailOutputHeader.To = 'gabriel@test.com';
+		DECLARE id CHARACTER InputRoot.JSON.Data.id;
+		DECLARE mail CHARACTER;
+		CALL getmail(id, mail);
+		SET OutputRoot.EmailOutputHeader.To = mail;
 		SET OutputRoot.EmailOutputHeader.From = 'shreyash@test.com';
 		--SET OutputRoot.EmailOutputHeader.Subject = InputRoot.JSON.Data.mail.subject;
 		SET OutputRoot.EmailOutputHeader.Subject = 'OTP ';
 		--SET OutputLocalEnvironment.Destination.Email.SMTPServer ='192.168.2.21:25';
-		
+
 		DECLARE cha CHARACTER;
-		
+
 		SET cha = 'Your One Time Password (OTP) is ' || InputRoot.JSON.Data.otp || '. Do Not Share It......' ;
-		
-		SET OutputRoot.BLOB.BLOB = CAST(cha AS BLOB CCSID 1208);	
-		
+
+		SET OutputRoot.BLOB.BLOB = CAST(cha AS BLOB CCSID 1208);
+
 		Propagate TO TERMINAL 'out1';
-		
+
 		SET OutputRoot = NULL;
-		
+
 		SET OutputRoot = InputRoot;
 		SET OutputRoot.JSON.Data.message.info = 'Mail is sent....';
-		
+
 		DELETE FIELD OutputRoot.JSON.Data.otp;
-			
-				Propagate TO TERMINAL 'out';
-		
-
-
+		SET OutputRoot.HTTPInputHeader."Content-Type"= 'application/json';
+		Propagate TO TERMINAL 'out';
 	END;
 END MODULE;
+
+
+
+CREATE PROCEDURE getmail (IN id CHARACTER, OUT Mail CHARACTER )
+LANGUAGE DATABASE
+EXTERNAL NAME "get_email";

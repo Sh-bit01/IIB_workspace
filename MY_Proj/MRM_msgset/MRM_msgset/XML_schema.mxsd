@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) --><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+          
+  
+    
+  <xs:element name="users">
+                        
+    
+        
+    <xs:annotation>
+                        
+            
+      <xs:appinfo source="WMQI_APPINFO">
+        <MRMessage messageDefinition="/0/users;XSDElementDeclaration$MRObject"/>
+      </xs:appinfo>
+                      
+        
+    </xs:annotation>
+                        
+    
+        
+    <xs:complexType>
+                              
+      
+            
+      <xs:sequence>
+                                        
+        
+                
+        <xs:element name="user">
+                                                  
+          
+                    
+          <xs:complexType>
+                                                            
+            
+                        
+            <xs:sequence>
+                                                                      
+              
+                            
+              <xs:element name="user_id" type="xs:string"/>
+                                                                      
+              
+                            
+              <xs:element name="name" type="xs:string"/>
+                                                                      
+              
+                            
+              <xs:element name="email" type="xs:string"/>
+                                                                    
+            
+                        
+            </xs:sequence>
+                                                          
+          
+                    
+          </xs:complexType>
+                                                
+        
+                
+        </xs:element>
+                                      
+      
+            
+      </xs:sequence>
+                                    
+      
+            
+      <xs:attributeGroup ref="ComIbmMrmNamespaceInfo"/>
+                                
+    
+        
+    </xs:complexType>
+                  
+  
+    
+  </xs:element>
+            
+  
+    
+  <xs:attributeGroup name="ComIbmMrmNamespaceInfo">
+                
+        
+    <xs:attribute default="XML_schema.mxsd" name="xsi_schemaLocation" type="xs:string"/>
+                
+        
+    <xs:attribute default="http://www.w3.org/2001/XMLSchema" name="xmlns_xs" type="xs:string"/>
+              
+    
+  </xs:attributeGroup>
+        
+
+
+</xs:schema>
