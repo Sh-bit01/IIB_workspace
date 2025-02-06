@@ -1,0 +1,121 @@
+
+
+
+
+CREATE COMPUTE MODULE iso_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		DECLARE cid INTEGER InputRoot.Properties.CodedCharSetId ;
+		DECLARE enc INTEGER InputRoot.Properties.Encoding;
+		-- DECLARE mti CHAR(4);
+		-- DECLARE bitmap BIT(64);
+		-- DECLARE pan CHAR(16);
+		-- DECLARE processingCode CHAR(6);
+		-- DECLARE transactionAmount CHAR(12);
+		-- DECLARE transmissionDateTime CHAR(10);
+		-- DECLARE systemTraceAuditNumber CHAR(6);
+		-- DECLARE localTransactionTime CHAR(6);
+		-- DECLARE isoMessage BLOB;
+		-- SET mti = '0100';
+		-- SET bitmap = CAST(X'7230000000000000' AS BIT CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+		-- SET pan = '4761739001010010';
+		-- SET processingCode = '000000';
+		-- SET transactionAmount = '000000010000';
+		-- SET transmissionDateTime = '0325101530';
+		-- SET systemTraceAuditNumber = '000001';
+		-- SET localTransactionTime = '101530';
+		-- DECLARE mti CHAR(4);
+		-- DECLARE bitmap BIT(64);
+		-- DECLARE pan CHAR(16);
+		-- DECLARE processingCode CHAR(6);
+		-- DECLARE transactionAmount CHAR(12);
+		-- DECLARE transmissionDateTime CHAR(10);
+		-- DECLARE systemTraceAuditNumber CHAR(6);
+		-- DECLARE localTransactionTime CHAR(6);
+		-- DECLARE isoMessage BLOB;
+		-- SET mti = '0100';
+		-- SET bitmap = CAST(X'70000000000000000000000000000000' AS BIT CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+		-- SET pan = '1111111111111111111';
+		-- SET processingCode = '402010';
+		-- SET transactionAmount = '000000001500';
+		-- -- SET transmissionDateTime = '0325101530';
+		-- -- SET systemTraceAuditNumber = '000001';
+		-- -- SET localTransactionTime = '101530';
+		--
+		-- DECLARE mtiBlob BLOB;
+		-- DECLARE bitmapBlob BLOB;
+		-- DECLARE panBlob BLOB;
+		-- DECLARE processingCodeBlob BLOB;
+		-- DECLARE transactionAmountBlob BLOB;
+		-- -- Cast each field to BLOB with the specified CCSID and ENCODING
+		-- SET mtiBlob = CAST(mti AS BLOB CCSID cid ENCODING enc);
+		-- SET bitmapBlob = CAST(bitmap AS BLOB CCSID cid ENCODING enc);
+		-- SET panBlob = CAST(pan AS BLOB CCSID cid ENCODING enc);
+		-- SET processingCodeBlob = CAST(processingCode AS BLOB CCSID cid ENCODING enc);
+		-- SET transactionAmountBlob = CAST(transactionAmount AS BLOB CCSID cid ENCODING enc);
+		-- -- Concatenate all the BLOB variables
+		-- SET isoMessage = mtiBlob || bitmapBlob || panBlob || processingCodeBlob || transactionAmountBlob;
+		-- SET OutputRoot.BLOB.BLOB = isoMessage;
+		-- Define the ISO 8583 message structure
+		DECLARE isoRequest CHAR;
+		DECLARE mti CHAR;
+		DECLARE primaryBitmap CHAR;
+		DECLARE secondaryBitmap CHAR;
+		DECLARE processingCode CHAR;
+		DECLARE amountTransaction CHAR;
+		DECLARE transmissionDateTime CHAR;
+		DECLARE timeLocalTransaction CHAR;
+		DECLARE dateLocalTransaction CHAR;
+		DECLARE cardAcceptorTerminalId CHAR;
+		DECLARE cardAcceptorId CHAR;
+		DECLARE currencyCode CHAR;
+
+		SET mti = '0100'; -- Authorization Request
+		SET primaryBitmap = X'3218000000C080000000000000000000'; -- Example bitmap in hexadecimal
+		SET processingCode = '000000'; -- Purchase transaction
+		SET amountTransaction = '000000010000'; -- 100.00 in currency subunit
+		SET transmissionDateTime = '0123123000'; -- MMDDhhmmss format
+		SET timeLocalTransaction = '123000'; -- hhmmss format
+		SET dateLocalTransaction = '0123'; -- MMDD format
+		SET cardAcceptorTerminalId = '12345678';
+		SET cardAcceptorId = '9876543210';
+		SET currencyCode = '840'; -- USD
+		
+		
+		
+		SET isoRequest = mti || primaryBitmap || processingCode ||
+		amountTransaction || transmissionDateTime || timeLocalTransaction ||
+		dateLocalTransaction || cardAcceptorTerminalId || cardAcceptorId ||
+		currencyCode;
+
+
+
+		SET OutputRoot.BLOB.BLOB = CAST(isoRequest AS BLOB CCSID cid ENCODING enc);
+
+
+
+
+
+
+
+
+
+
+	END;
+END MODULE;

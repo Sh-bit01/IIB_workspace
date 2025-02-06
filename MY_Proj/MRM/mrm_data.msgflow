@@ -6,7 +6,7 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/MRM/icons/full/obj16/mrm_data.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/MRM/icons/full/obj30/mrm_data.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="20,20" URLSpecifier="/mrm" messageDomainProperty="MRM" messageSetProperty="Complex_msgSet" validateTiming="immediate" faultFormat="JSON" validateMaster="contentAndValue">
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="42,58" URLSpecifier="/mrm" messageDomainProperty="MRM" messageSetProperty="Complex_msgSet" validateTiming="immediate" faultFormat="JSON">
         <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
       </nodes>
       <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="673,20">
@@ -15,8 +15,12 @@
       <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="330,128" computeExpression="esql://routine/#mrm_data_Compute.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="26,140" URLSpecifier="/mrm2" messageDomainProperty="MRM" messageSetProperty="Complex_msgSet" validateTiming="complete" faultFormat="JSON">
+        <translation xmi:type="utility:ConstantString" string="HTTP Input1"/>
+      </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
     </composition>
     <propertyOrganizer/>
     <stickyBoard/>

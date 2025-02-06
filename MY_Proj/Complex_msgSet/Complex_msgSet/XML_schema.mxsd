@@ -1,531 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-                
-  
-  
-  
-  
-  
-  
-  
-  <!-- Define the CustomerDetails complex type -->
-                
-  
-  
-  
-  
-  
-  
-  <xs:complexType name="CustomerDetailsType">
-                                
-    
-        
-    
-                
-    
-    
-    
-    
-    <xs:sequence>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="CustomerName" type="xs:string"/>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="CustomerAddress" type="xs:string"/>
-                                              
-    
-    
-    
-    
-    
-    
-    </xs:sequence>
-                              
-  
-  
-  
-  
-  
-  
-  </xs:complexType>
-                
-  
-  
-  
-  
-  
-  
-  <!-- Define the Item complex type -->
-                
-  
-  
-  
-  
-  
-  
-  <xs:complexType name="ItemType">
-                                
-    
-        
-    
-                
-    
-    
-    
-    
-    <xs:sequence>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element minOccurs="1" name="ItemID" type="xs:string"/>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="Description" type="xs:string"/>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="Quantity" type="xs:int"/>
-                                              
-    
-    
-    
-    
-    
-    
-    </xs:sequence>
-                              
-  
-  
-  
-  
-  
-  
-  </xs:complexType>
-                
-  
-  
-  
-  
-  
-  
-  <!-- Define the Service complex type -->
-                
-  
-  
-  
-  
-  
-  
-  <xs:complexType name="ServiceType">
-                                
-    
-        
-    
-                
-    
-    
-    
-    
-    <xs:sequence>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="ServiceID" type="xs:string"/>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="ServiceDescription" type="xs:string"/>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="Quantity" type="xs:int"/>
-                                              
-    
-    
-    
-    
-    
-    
-    </xs:sequence>
-                              
-  
-  
-  
-  
-  
-  
-  </xs:complexType>
-                
-  
-  
-  
-  
-  
-  
-  <!-- Define the OrderDetails complex type with a choice between ItemList or ServiceList -->
-                
-  
-  
-  
-  
-  
-  
-  <xs:complexType name="OrderDetailsType">
-                                
-    
-        
-    
-    
-                    
-    
-    
-    
-    
-    <xs:sequence>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:choice>
-                                                                
-        
-                
-                        
-        
-        
-        
-        
-        <xs:element name="ItemList">
-                                                                                
-          
-          
-          
-          
-          
-          
-          <xs:complexType>
-                                                                                                
-            
-                        
-            
-            
-            
-            
-            <xs:annotation>
-                                                                      
-              
-              
-              
-              <xs:appinfo source="WMQI_APPINFO">
-                <MRComplexType content="open"/>
-              </xs:appinfo>
-                                                                    
-            
-            
-            
-            </xs:annotation>
-                                                                                    
-            
-            
-            
-            
-            <xs:sequence>
-                                                                                                                
-              
-              
-              
-              
-              
-              
-              <xs:element maxOccurs="unbounded" name="Item" type="ItemType"/>
-                                                                                                              
-            
-            
-            
-            
-            
-            
-            </xs:sequence>
-                                                                                              
-          
-          
-          
-          
-          
-          
-          </xs:complexType>
-                                                                              
-        
-        
-        
-        
-        
-        
-        </xs:element>
-                                                                
-        
-        
-        
-        
-        
-        
-        <xs:element name="ServiceList">
-                                                                                
-          
-          
-          
-          
-          
-          
-          <xs:complexType>
-                                                                                                
-            
-                        
-            
-            
-            
-            
-            <xs:annotation>
-                                                                      
-              
-              
-              
-              <xs:appinfo source="WMQI_APPINFO">
-                <MRComplexType content="open"/>
-              </xs:appinfo>
-                                                                    
-            
-            
-            
-            </xs:annotation>
-                                                                                    
-            
-            
-            
-            
-            <xs:sequence>
-                                                                                                                
-              
-              
-              
-              
-              
-              
-              <xs:element maxOccurs="unbounded" name="Service" type="ServiceType"/>
-                                                                                                              
-            
-            
-            
-            
-            
-            
-            </xs:sequence>
-                                                                                              
-          
-          
-          
-          
-          
-          
-          </xs:complexType>
-                                                                              
-        
-        
-        
-        
-        
-        
-        </xs:element>
-                                                              
-      
-      
-      
-      
-      
-      
-      </xs:choice>
-                                              
-    
-    
-    
-    
-    
-    
-    </xs:sequence>
-                              
-  
-  
-  
-  
-  
-  
-  </xs:complexType>
-                
-  
-  
-  
-  
-  
-  
-  <!-- Define the main Order complex type -->
-                
-  
-  
-  
-  
-  
-  
-  <xs:complexType name="OrderType">
-                                
-    
-        
-    
-    
-    
-                        
-    
-    
-    
-    
-    <xs:sequence>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="OrderID" type="xs:string"/>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="CustomerDetails" type="CustomerDetailsType"/>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="OrderDetails" type="OrderDetailsType"/>
-                                                
-      
-      
-      
-      
-      
-      
-      <xs:element name="OrderDate" type="xs:string"/>
-                                              
-    
-    
-    
-    
-    
-    
-    </xs:sequence>
-                              
-  
-  
-  
-  
-  
-  
-  </xs:complexType>
-                
-  
-  
-  
-  
-  
-  
-  <!-- Define the root element Order -->
-                
-  
-  
-  
-  
-  
-  
-  <xs:element name="Order" type="OrderType">
-                            
-    
-    
-    
-    
-    
-    <xs:annotation>
-                                          
-      
-      
-      
-      
-      
-      <xs:appinfo source="WMQI_APPINFO">
-        <MRMessage messageDefinition="/0/Order;XSDElementDeclaration$MRObject"/>
-      </xs:appinfo>
-                                        
-    
-    
-    
-    
-    
-    </xs:annotation>
-                          
-  
-  
-  
-  
-  
-  </xs:element>
-              
-
-
-
-
-
-
+    <!-- Define the CustomerDetails complex type -->
+    <xs:complexType name="CustomerDetailsType">
+        <xs:sequence>
+            <xs:element name="CustomerName" type="xs:string" minOccurs="1"/>
+            <xs:element name="CustomerAddress" type="xs:string" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Define the Item complex type -->
+    <xs:complexType name="ItemType">
+        <xs:sequence>
+            <xs:element name="ItemID" type="xs:string" minOccurs="1"/>
+            <xs:element name="Description" type="xs:string" minOccurs="1"/>
+            <xs:element name="Quantity" type="xs:int" minOccurs="1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:int">
+                        <xs:minInclusive value="1"/>
+                        <xs:maxInclusive value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Define the Service complex type -->
+    <xs:complexType name="ServiceType">
+        <xs:sequence>
+            <xs:element name="ServiceID" type="xs:string" minOccurs="1"/>
+            <xs:element name="ServiceDescription" type="xs:string" minOccurs="1"/>
+            <xs:element name="Quantity" type="xs:int" minOccurs="1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:int">
+                        <xs:minInclusive value="1"/>
+                        <xs:maxInclusive value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Define the OrderDetails complex type with a choice between ItemList or ServiceList -->
+    <xs:complexType name="OrderDetailsType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="ItemList">
+                    <xs:complexType>
+                        <xs:annotation>
+                            <xs:appinfo source="WMQI_APPINFO">
+                                <MRComplexType content="closed"/>
+                            </xs:appinfo>
+                        </xs:annotation>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="Item" type="ItemType"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="ServiceList">
+                    <xs:complexType>
+                        <xs:annotation>
+                            <xs:appinfo source="WMQI_APPINFO">
+                                <MRComplexType content="closed"/>
+                            </xs:appinfo>
+                        </xs:annotation>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="Service" type="ServiceType"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Define the main Order complex type -->
+    <xs:complexType name="OrderType">
+        <xs:sequence>
+            <xs:element name="OrderID" type="xs:string" minOccurs="1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="CustomerDetails" type="CustomerDetailsType" minOccurs="1"/>
+            <xs:element name="OrderDetails" type="OrderDetailsType" minOccurs="1"/>
+            <xs:element name="OrderDate" type="xs:string" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Define the root element Order -->
+    <xs:element name="Order" type="OrderType">
+        <xs:annotation>
+            <xs:appinfo source="WMQI_APPINFO">
+                <MRMessage messageDefinition="/0/Order;XSDElementDeclaration$MRObject" validate="strict"/>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
 </xs:schema>
