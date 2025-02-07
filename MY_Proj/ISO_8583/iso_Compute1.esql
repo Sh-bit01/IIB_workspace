@@ -96,26 +96,12 @@ CREATE COMPUTE MODULE iso_Compute1
 		SET cardAcceptorTerminalId = '12345678';
 		SET cardAcceptorId = '9876543210';
 		SET currencyCode = '840'; -- USD
-		
-		
-		
+	
 		SET isoRequest = mti || primaryBitmap || processingCode ||
 		amountTransaction || transmissionDateTime || timeLocalTransaction ||
 		dateLocalTransaction || cardAcceptorTerminalId || cardAcceptorId ||
 		currencyCode;
 
-
-
 		SET OutputRoot.BLOB.BLOB = CAST(isoRequest AS BLOB CCSID cid ENCODING enc);
-
-
-
-
-
-
-
-
-
-
 	END;
 END MODULE;
