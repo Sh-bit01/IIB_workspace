@@ -6,16 +6,16 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/ISO_8583/icons/full/obj16/iso.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/ISO_8583/icons/full/obj30/iso.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="141,151" URLSpecifier="/iso" messageDomainProperty="DFDL" messageSetProperty="{ISO_8583_data}" messageTypeProperty="{}:ISO8583_1987">
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="497,273" URLSpecifier="/iso" messageDomainProperty="DFDL" messageSetProperty="{ISO_8583_data}" messageTypeProperty="{}:ISO8583_1987">
         <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="456,152">
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="812,274">
         <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="294,209" computeExpression="esql://routine/#iso_Compute.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="650,331" computeExpression="esql://routine/#iso_Compute.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="81,39" URLSpecifier="/hit">
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="81,41" URLSpecifier="/hit">
         <translation xmi:type="utility:ConstantString" string="HTTP Input1"/>
       </nodes>
       <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="554,39">
