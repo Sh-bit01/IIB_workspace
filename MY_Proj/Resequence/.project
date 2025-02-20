@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>1111111Test</name>
+	<name>Resequence</name>
 	<comment></comment>
 	<projects>
-		<project>TEST_EXT_DIR_VAULT</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

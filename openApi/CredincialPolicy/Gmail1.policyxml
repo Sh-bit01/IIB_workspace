@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><policies><policy policyName="Gmail1" policyTemplate="online_v1_basic_oauth" policyType="gmail"><applicationType>online</applicationType><applicationVersion>v1</applicationVersion><authenticationMethod>BASIC_OAUTH</authenticationMethod><credentialName>CredincialPolicy_Gmail1</credentialName></policy></policies>

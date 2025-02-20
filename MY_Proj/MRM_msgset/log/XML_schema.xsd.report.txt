@@ -1,0 +1,18 @@
+
+
+Importing file: C:\Users\Sreenivas Bandaru\Desktop\XML_schema.XSD
+
+BIP0224W The message set has no XML Wire Format layer defined. Only the logical information will appear in the model.
+BIP0235W The message set has no namespace support. The imported XML Schema will be modified to remove namespaces.
+Creating group "ComIbmMrmNamespaceInfo".
+Creating attribute "xsi_schemaLocation" with value "XML_schema.mxsd".
+Creating attribute "xmlns_xs" with value "http://www.w3.org/2001/XMLSchema".
+Creating attribute group reference to "ComIbmMrmNamespaceInfo".
+
+Elapsed time processing this message definition file: 0.086 seconds
+Number of warnings for this message definition file: 2
+
+
+Number of files processed: 1
+
+

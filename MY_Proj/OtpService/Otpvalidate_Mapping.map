@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" xmlns:map="default" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0">
+    <inlinedXMLSchema>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?> 
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
+    
+     
+         
+    
+           
+  <xsd:element name="input_otp" nillable="true" type="xsd:string"/> 
+       
+  <xsd:element name="otp" nillable="true" type="xsd:string"/> 
+    
+     
+         
+    
+   
+  <xsd:element name="id" nillable="true" type="xsd:string"/> 
+    
+     
+     
+  
+ 
+</xsd:schema> 
+]]>
+    </inlinedXMLSchema>
+    <input path="jar:file://!com/ibm/msl/mapping/cache/xsds/cache.xsd" var="var1"/>
+    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/JsonDomainMsg.xsd" var="var2"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var3"/>
+    <output path="jar:file://!com/ibm/msl/mapping/cache/xsds/cache.xsd" var="var"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/JsonDomainMsg.xsd" var="var4"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="io" uri="http://www.ibm.com/msl/cache/1.0"/>
+        <namespace kind="supplement" prefix="io2" uri="http://www.ibm.com/iib/msl/json"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="Otpvalidate_Mapping">
+        <input namespace="http://www.ibm.com/iib/msl/json" path="$var2/mb:msg(JSON,assembly,JSON,Properties)" var="MessageAssembly">
+            <cast castType="userDefined" path="$MessageAssembly/JSON/Data/type('anyType')" qualifier="{http://www.ibm.com/iib/msl/json}JSONObject" ref="var2"/>
+            <cast castType="userDefined" path="$MessageAssembly/JSON/spath('Data',2)/any" qualifier="id" ref="var3"/>
+            <cast castType="userDefined" path="$MessageAssembly/JSON/spath('Data',2)/any" qualifier="otp" ref="var3"/>
+        </input>
+        <output namespace="http://www.ibm.com/iib/msl/json" path="$var4/mb:msg(JSON,assembly,JSON,Properties)" var="MessageAssembly1">
+            <cast castType="userDefined" path="$MessageAssembly1/JSON/Data/type('anyType')" qualifier="{http://www.ibm.com/iib/msl/json}JSONObject" ref="var4"/>
+            <cast castType="userDefined" path="$MessageAssembly1/JSON/spath('Data',2)/any" qualifier="id" ref="var3"/>
+            <cast castType="userDefined" path="$MessageAssembly1/JSON/spath('Data',2)/any" qualifier="otp" ref="var3"/>
+            <cast castType="userDefined" path="$MessageAssembly1/JSON/spath('Data',2)/any" qualifier="input_otp" ref="var3"/>
+        </output>
+        <transaction>
+            <cacheGet>
+                <input path="$MessageAssembly/JSON/spath('Data',2)/id"/>
+                <output path="$var/CacheGet"/>
+                <move>
+                    <input path="."/>
+                    <output path="Key"/>
+                </move>
+                <assign value="OtpService">
+                    <output path="MapName"/>
+                </assign>
+            </cacheGet>
+            <cacheReturn>
+                <input path="$var1/CacheGetReturn"/>
+                <output path="$MessageAssembly1/JSON/spath('Data',2)/otp"/>
+                <move>
+                    <input path="Value"/>
+                    <output path="."/>
+                </move>
+            </cacheReturn>
+        </transaction>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly1/Properties"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/JSON/spath('Data',2)/id"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/id"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/JSON/spath('Data',2)/otp"/>
+            <output path="$MessageAssembly1/JSON/spath('Data',2)/input_otp"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

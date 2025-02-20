@@ -1,0 +1,14 @@
+Generating .xsdzip file for message set "MsgSet_mrm" 
+
+Generating schema for no XML Wire format
+Generating schema using the lax option
+
+
+Processing File : "/MsgSet_mrm/MsgSet_mrm/XML_schema.mxsd"
+
+Saving File : "/MsgSet_mrm/.GeneratedSchemas/XML_schema.xsd" 
+
+Saving file "/MsgSet_mrm/.KeywordsFile/meta-inf/keywords.txt" 
+
+Saving file "/MsgSet_mrm/MsgSet_mrm/messageSet.mset" 
+

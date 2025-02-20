@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>1111111Test</name>
+	<name>OtpService</name>
 	<comment></comment>
 	<projects>
-		<project>TEST_EXT_DIR_VAULT</project>
+		<project>J_OtpService</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
