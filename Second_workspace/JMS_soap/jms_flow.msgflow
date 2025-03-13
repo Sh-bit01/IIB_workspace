@@ -19,7 +19,7 @@
       <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="278,327" computeExpression="esql://routine/#jms_flow_Compute.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
-      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="513,28" wsdlOperationMode="gateway" transport="jms" sslProtocol="TLS" jmsDestination="d3" jmsReplyToDestination="d2" locationJndiBindings="file:/C:/Users/Sreenivas Bandaru/Desktop/TEST/JMS/" connectionFactoryName="in" parserXmlnscBuildTreeUsingXMLSchema="false" validateMaster="none">
+      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="513,28" wsdlOperationMode="gateway" transport="jms" sslProtocol="TLS" jmsDestination="d1" jmsReplyToDestination="d2" locationJndiBindings="file:/C:/Users/Sreenivas Bandaru/Desktop/TEST/JMS/" connectionFactoryName="in" parserXmlnscBuildTreeUsingXMLSchema="false" validateMaster="none">
         <translation xmi:type="utility:ConstantString" string="SOAP Request"/>
       </nodes>
       <nodes xmi:type="ComIbmSOAPEnvelope.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="304,23" createEnvelope="true">
