@@ -6,7 +6,7 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Currency_Converter/icons/full/obj16/gfh.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Currency_Converter/icons/full/obj30/gfh.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmFileInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="81,60" inputDirectory="C:\Users\Sreenivas Bandaru\Desktop\XML_file\in" messageDomainProperty="DFDL" messageTypeProperty="{}:LargeFileData" waitInterval="10">
+      <nodes xmi:type="ComIbmFileInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="101,98" inputDirectory="C:\Users\Sreenivas Bandaru\Desktop\XML_file\in" messageDomainProperty="DFDL" messageTypeProperty="{}:LargeFileData" waitInterval="10">
         <translation xmi:type="utility:ConstantString" string="File Input"/>
       </nodes>
       <nodes xmi:type="ComIbmFileOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="661,86" outputDirectory="C:\Users\Sreenivas Bandaru\Desktop\XML_file\out" outputFilename="data.log" outputMode="append" recordDefinition="delimited" validateMaster="none">
