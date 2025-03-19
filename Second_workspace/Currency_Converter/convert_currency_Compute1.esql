@@ -1,0 +1,54 @@
+
+
+CREATE COMPUTE MODULE convert_currency_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+		DECLARE  from_currency CHARACTER Environment.input.from_currency;
+		DECLARE  to_currency CHARACTER Environment.input.to_currency;
+		
+		DECLARE EX_Rate DECIMAL InputRoot.JSON.Data.conversion_rates.{to_currency};
+--		{
+--		  "from_currency": "USD",
+--		  "to_currency": "EUR",
+--		  "amount": 100,
+--		  "converted_amount": 92.50,
+--		  "exchange_rate": 0.925,
+--		  "timestamp": "2025-03-18T12:00:00Z"
+--		}
+
+		DECLARE StatusCode CHARACTER InputRoot.HTTPResponseHeader."X-Original-HTTP-Status-Code";
+		SET StatusCode = LEFT(StatusCode, 1 );
+		IF StatusCode = 2 THEN
+			SET OutputRoot.JSON.Data = Environment.input;
+			SET OutputRoot.JSON.Data.converted_amount = EX_Rate * Environment.input.amount;
+			SET OutputRoot.JSON.Data.exchange_rate = EX_Rate;
+			SET OutputRoot.JSON.Data.time_last_update_utc = InputRoot.JSON.Data.time_last_update_utc;
+			SET OutputRoot.JSON.Data.timestamp = CURRENT_TIMESTAMP;
+						 
+		ELSE
+			 SET OutputRoot.JSON.Data = InputRoot.JSON.Data;
+			 SET OutputRoot.JSON.Data.Error_Message = 'Invalid currency code, Please provide a valid currency code';
+		END IF;
+		
+		
+		
+		
+	END;
+END MODULE;

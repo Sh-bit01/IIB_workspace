@@ -1,0 +1,37 @@
+
+DECLARE API_KEY EXTERNAL CHARACTER '';
+
+CREATE COMPUTE MODULE convert_currency_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		DECLARE url CHARACTER;
+		SET url = 'https://v6.exchangerate-api.com/v6/'||API_KEY||'/latest/';
+		
+		SET Environment.input = InputRoot.JSON.Data;
+		DECLARE from_currency CHARACTER;
+		SET from_currency = InputRoot.JSON.Data.from_currency;
+		
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL  = url || from_currency;
+		SET OutputLocalEnvironment.Destination.HTTP.RequestLine.Method = 'GET';
+		
+		
+		
+	END;
+END MODULE;
