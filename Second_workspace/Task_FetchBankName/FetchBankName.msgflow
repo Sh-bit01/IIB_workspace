@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmFileRead.msgnode="ComIbmFileRead.msgnode" xmlns:ComIbmWSInput.msgnode="ComIbmWSInput.msgnode" xmlns:ComIbmWSReply.msgnode="ComIbmWSReply.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="FetchBankName.msgflow" nsPrefix="FetchBankName.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="SQUARE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="FetchBankName" bundleName="FetchBankName" pluginId="Task_FetchBankName"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_FetchBankName/icons/full/obj16/FetchBankName.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_FetchBankName/icons/full/obj30/FetchBankName.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="63,81" URLSpecifier="/input" messageDomainProperty="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="752,20">
+        <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="379,16" computeExpression="esql://routine/#FetchBankName_Compute.Main">
+        <translation xmi:type="utility:ConstantString" string="Compute"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileRead.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="213,28" inputDirectory="C:\Users\Sreenivas Bandaru\Desktop\XML_file\in" filenamePattern="*.csv" outputDataLocation="$Environment" messageDomainProperty="DFDL" messageTypeProperty="{}:CSV_DFDL">
+        <translation xmi:type="utility:ConstantString" string="File Read"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="529,150" computeExpression="esql://routine/#FetchBankName_Compute2.Main">
+        <translation xmi:type="utility:ConstantString" string="Compute2"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="351,148" computeExpression="esql://routine/#FetchBankName_Compute3.Main">
+        <translation xmi:type="utility:ConstantString" string="Compute3"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

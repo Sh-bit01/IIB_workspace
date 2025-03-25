@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Encreption_java_rotine</name>
+	<name>TCPIPClient</name>
 	<comment></comment>
 	<projects>
+		<project>DataLibrary</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

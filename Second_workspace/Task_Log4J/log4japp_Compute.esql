@@ -1,0 +1,65 @@
+DECLARE external_var EXTERNAL CHARACTER 'C:\Inlog\Log4jConfigurationFile.xml';
+DECLARE var1 BOOLEAN;
+
+CREATE COMPUTE MODULE log4japp_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL initLog4j(external_var)INTO var1;
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		DECLARE ccsid INTEGER InputRoot.Properties.CodedCharSetId;
+		DECLARE enc INTEGER InputRoot.Properties.Encoding;
+		DECLARE data CHARACTER;
+		SET data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
+
+
+		IF InputRoot.JSON.Data.id = 100 THEN
+			CALL WriteLogFile('Invalid Data '||NodeLabel||' '||NodeType,'Logger2','WARN', 'Invalid ID: ' || CAST(InputRoot.JSON.Data.id as CHARACTER)) INTO var1;
+			THROW USER EXCEPTION CATALOG 'MyCatalog' MESSAGE 1234 VALUES ('Invalid ID: ' || CAST(InputRoot.JSON.Data.id as CHARACTER));
+		END IF;
+		DECLARE id CHARACTER InputRoot.JSON.Data.id;
+		DECLARE place CHARACTER InputRoot.JSON.Data.place;
+		DECLARE name CHARACTER InputRoot.JSON.Data.name;
+
+
+		PASSTHRU('INSERT INTO test (ID, NAME, PLACE) VALUES (?, ?, ?)',id , name , place);
+		DECLARE SQLCODE CHARACTER SQLCODE;
+		DECLARE SQLERRORTEXT CHARACTER SQLERRORTEXT;
+		DECLARE SQLNATIVEERROR CHARACTER SQLNATIVEERROR;
+		DECLARE SQLSTATE CHARACTER SQLSTATE;
+
+		SET OutputRoot.JSON.Data.Input = InputRoot.JSON.Data;
+		SET OutputRoot.JSON.Data.Status = 'Opration success';
+		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
+
+
+	END;
+END MODULE;
+
+
+CREATE FUNCTION WriteLogFile( IN COMPONENT_NAME CHARACTER,IN LOGGER_NAME CHARACTER, IN LEVEL CHARACTER, IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA --Indicates that this function is implemented in Java.
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log"; --Specifies the fully qualified Java class and method used for logging.
+-- Define a Java function named initLog4j for initializing Log4j with the provided configuration file.
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j"; -- Specifies the fully qualified Java class and method used for initialization.

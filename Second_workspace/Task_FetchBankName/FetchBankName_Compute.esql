@@ -1,0 +1,62 @@
+
+
+
+
+
+
+
+
+
+
+CREATE COMPUTE MODULE FetchBankName_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		DECLARE IFSC_Code CHARACTER InputRoot.XMLNSC.Data.IFSC_Code;
+		DECLARE ac_no CHARACTER InputRoot.XMLNSC.Data.ACCOUNT_NO;
+
+		DECLARE r ROW;
+		SET r.data[] =
+		SELECT P.IP, P.Port
+		FROM Environment.DFDL.CSV_DFDL.record[] AS P
+		WHERE P.IFSC_Code = IFSC_Code;
+		SET Environment = null;
+		SET OutputRoot = InputRoot;
+		DECLARE ip CHARACTER r.data.IP;
+		DECLARE port CHARACTER r.data.Port;	
+		DECLARE msg CHARACTER;
+		SET msg = '0156                    **  000026    003000100000006163060460000000000     0         00000000        0000000000000000000000000000000' || ac_no || '   5000000A';
+		DECLARE output CHARACTER;
+		CALL socket_send(ip, port, msg) INTO output;
+
+
+	END;
+END MODULE;
+
+CREATE PROCEDURE socket_send (in ip CHARACTER,  in port CHARACTER, in msg CHARACTER) RETURNS CHARACTER 
+LANGUAGE JAVA
+EXTERNAL NAME "encdec.SocketApp.sendDataToSocket";
+
+
+
+
+
+
+
+
+

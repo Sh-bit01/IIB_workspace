@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Encreption_java_rotine</name>
+	<name>TCPIPServer</name>
 	<comment></comment>
 	<projects>
+		<project>DataLibrary</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>com.ibm.etools.mft.applib.applibbuilder</name>
+			<name>com.ibm.etools.mft.mapping.builder.mappingbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>com.ibm.etools.mft.applib.applibresourcevalidator</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>com.ibm.etools.mft.connector.policy.ui.PolicyBuilder</name>
+			<name>com.ibm.etools.mft.bar.barbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -110,9 +106,26 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>com.ibm.etools.mft.applib.applibbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>com.ibm.etools.mft.applib.applibresourcevalidator</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>com.ibm.etools.mft.connector.policy.ui.PolicyBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>com.ibm.etools.msgbroker.tooling.applicationNature</nature>
 		<nature>com.ibm.etools.msgbroker.tooling.messageBrokerProjectNature</nature>
+		<nature>com.ibm.etools.mft.bar.barnature</nature>
+		<nature>com.ibm.etools.mft.bar.ext.barnature</nature>
+		<nature>com.ibm.etools.msgbroker.tooling.applicationNature</nature>
 	</natures>
 </projectDescription>

@@ -3,6 +3,7 @@
 	<name>Application_DFDL_ISO8583</name>
 	<comment></comment>
 	<projects>
+		<project>ISO8583</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

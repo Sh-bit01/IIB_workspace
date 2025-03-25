@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Encreption_java_rotine</name>
+	<name>Task_FetchBankName</name>
 	<comment></comment>
 	<projects>
+		<project>EncryptionDecryption</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -107,6 +108,11 @@
 		</buildCommand>
 		<buildCommand>
 			<name>com.ibm.etools.mft.unittest.ui.TestCaseBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>com.ibm.dfdl.validation.dfdlBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
