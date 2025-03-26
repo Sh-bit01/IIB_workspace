@@ -1,7 +1,3 @@
-
-
-
-
 CREATE COMPUTE MODULE log4japp_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -57,7 +53,7 @@ CREATE COMPUTE MODULE log4japp_Compute1
 		DECLARE data CHARACTER;
 		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
 		DECLARE exp REFERENCE TO InputExceptionList.[1];
-		CALL WriteLogFile(exp.Label ||' '||exp.Type,'Logger2','ERROR', data) INTO var1;
+		CALL WriteLogFile(exp.Label ||' '||exp.Type,'Logger1','ERROR', data) INTO var1;
 
 	END;
 END MODULE;

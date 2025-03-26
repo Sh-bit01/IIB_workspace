@@ -1,4 +1,9 @@
-DECLARE external_var EXTERNAL CHARACTER 'C:\Inlog\Log4jConfigurationFile.xml';
+
+
+DECLARE external_var EXTERNAL CHARACTER ;
+--DECLARE external_var EXTERNAL CHARACTER '';
+--/home/ace/inlog
+
 DECLARE var1 BOOLEAN;
 
 CREATE COMPUTE MODULE log4japp_Compute
@@ -46,12 +51,71 @@ CREATE COMPUTE MODULE log4japp_Compute
 
 		SET OutputRoot.JSON.Data.Input = InputRoot.JSON.Data;
 		SET OutputRoot.JSON.Data.Status = 'Opration success';
+		SET OutputRoot.JSON.Data.logStatus = var1;
 		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;		
+		
+		
 
+		if inRef.op = 'GET' THEN
+			-- DECLARE r ROW;
+			DECLARE flag BOOLEAN;
 
+			CALL getData(inRef.id) INTO flag;
+
+		elseif inRef.op = 'POST' THEN
+			DECLARE flag BOOLEAN;
+			CALL storeData(inRef.id, inRef.data) INTO flag;
+			SET OutputRoot.XMLNSC.response = flag;
+
+		elseif inRef.op = 'PUT' THEN
+			DECLARE flag BOOLEAN;
+			CALL updateData(inRef.id, inRef.data) INTO flag;
+			SET OutputRoot.XMLNSC.response = flag;
+		ELSEif inRef.op = 'DELETE' then
+			DECLARE flag BOOLEAN;
+			CALL deleteData(inRef.id) INTO flag;
+			SET OutputRoot.XMLNSC.response = flag;
+		else
+			Set OutputRoot.XMLNSC.response = 'invalid operation';
+		end if;
 	END;
+
+	CREATE FUNCTION getData (IN id CHARACTER) RETURNS BOOLEAN
+	BEGIN
+		DECLARE r ROW;
+		IF inRef.id = 'ALL' THEN
+			SET r.data[] = SELECT * FROM Database.MYXE as c ;
+		ELSE
+			SET r.data[] = SELECT * FROM Database.MYXE as c where c.data_id = id;
+		END IF;
+		SET OutputRoot.JSON.Data.response = r;
+		return true;
+	END;
+
+
+	CREATE FUNCTION storeData (IN id CHARACTER, IN msg CHARACTER) RETURNS BOOLEAN
+	BEGIN
+		INSERT INTO Database.MYXE (data_id, msg) VALUES (id, msg);
+		return true;
+	END;
+
+	CREATE FUNCTION updateData (IN id CHARACTER,IN data CHARACTER) RETURNS BOOLEAN
+	BEGIN
+		UPDATE Database.MYXE AS c SET msg = data WHERE c.data_id = id;
+		return true;
+	END;
+
+
+	CREATE FUNCTION deleteData (IN id CHARACTER) RETURNS BOOLEAN
+	BEGIN
+		DELETE FROM Database.MYXE AS c WHERE c.data_id = id;
+		return true;
+	END;		
+		
 END MODULE;
+
+
 
 
 CREATE FUNCTION WriteLogFile( IN COMPONENT_NAME CHARACTER,IN LOGGER_NAME CHARACTER, IN LEVEL CHARACTER, IN TEXT CHARACTER )
