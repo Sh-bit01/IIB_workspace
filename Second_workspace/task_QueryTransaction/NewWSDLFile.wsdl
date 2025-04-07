@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://fcubs.ofss.com/service/FCUBSRTService" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="FCUBSRTService" targetNamespace="http://fcubs.ofss.com/service/FCUBSRTService">
+  <documentation>
+    <appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <generatedXSD location="NewWSDLFile_InlineSchema1.xsd"/>
+        <binding hasEncoding="false" imported="true" name="FCUBSRTBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </appinfo>
+  </documentation>
+      
+    
+  <types>
+            
+        
+        
+        
+                  
+            
+    <xsd:schema xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" targetNamespace="http://fcubs.ofss.com/service/FCUBSRTService">
+      
+      <xsd:include schemaLocation="NewWSDLFile_InlineSchema1.xsd"/>
+    </xsd:schema>
+        
+  </types>
+      
+    
+  <message name="QueryTransactionRequest">
+            
+    <part element="tns:QUERYTRANSACTION_IOFS_REQ" name="parameters"/>
+        
+  </message>
+      
+    
+  <message name="QueryTransactionResponse">
+            
+    <part element="tns:QUERYTRANSACTION_IOFS_RES" name="parameters"/>
+        
+  </message>
+      
+    
+  <portType name="FCUBSRTPortType">
+            
+    <operation name="QueryTransaction">
+                  
+      <input message="tns:QueryTransactionRequest"/>
+                  
+      <output message="tns:QueryTransactionResponse"/>
+              
+    </operation>
+        
+  </portType>
+      
+    
+  <binding name="FCUBSRTBinding" type="tns:FCUBSRTPortType">
+            
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+            
+    <operation name="QueryTransaction">
+                  
+      <soap:operation soapAction="http://fcubs.ofss.com/service/FCUBSRTService/QueryTransaction"/>
+                  
+      <input>
+                        
+        <soap:body use="literal"/>
+                    
+      </input>
+                  
+      <output>
+                        
+        <soap:body use="literal"/>
+                    
+      </output>
+              
+    </operation>
+        
+  </binding>
+      
+    
+  <service name="FCUBSRTService">
+            
+    <port binding="tns:FCUBSRTBinding" name="FCUBSRTPort">
+                  
+      <soap:address location="http://your-service-endpoint-url"/>
+              
+    </port>
+        
+  </service>
+  
+</definitions>

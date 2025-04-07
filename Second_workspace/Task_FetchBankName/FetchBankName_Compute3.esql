@@ -69,8 +69,6 @@ CREATE COMPUTE MODULE FetchBankName_Compute3
 
 		--SET OutputRoot.XMLNSC.{ExpTitle}.excpText = CAST(messageInsert.Text AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
 
-
-
 		DECLARE cssid REFERENCE TO InputRoot.Properties.CodedCharSetId;
 		DECLARE Encoding REFERENCE TO InputRoot.Properties.Encoding;
 	END;

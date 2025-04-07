@@ -1,0 +1,194 @@
+--DECLARE ns NAMESPACE 'http://fcubs.ofss.com/service/FCUBSRTService';
+
+
+CREATE COMPUTE MODULE MF_QueryTransaction_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		
+		DECLARE result CHARACTER;
+		SET result = '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <QUERYTRANSACTION_IOFS_RES xmlns="http://fcubs.ofss.com/service/FCUBSRTService">
+            <FCUBS_HEADER>
+                <SOURCE>FLEXCUBE</SOURCE>
+                <UBSCOMP>FCUBS</UBSCOMP>
+                <MSGID>9210460413125522</MSGID>
+                <CORRELID>YW3152455211</CORRELID>
+                <USERID>YSAVEUSER</USERID>
+                <BRANCH>083</BRANCH>
+                <MODULEID>RT</MODULEID>
+                <SERVICE>FCUBSRTService</SERVICE>
+                <OPERATION>QueryTransaction</OPERATION>
+                <SOURCE_USERID>YSAVEUSER</SOURCE_USERID>
+                <DESTINATION>YELLOSAVE</DESTINATION>
+                <MULTITRIPID>6210460596106473</MULTITRIPID>
+                <FUNCTIONID>DEDQUERY</FUNCTIONID>
+                <ACTION>EXECUTEQUERY</ACTION>
+                <MSGSTAT>SUCCESS</MSGSTAT>
+            </FCUBS_HEADER>
+            <FCUBS_BODY>
+                <Transaction-Details>
+                    <XREF>YD34761672</XREF>
+                    <FCCREF>083YD01202235453</FCCREF>
+                    <PRD>YD01</PRD>
+                    <BRN>083</BRN>
+                    <TXNBRN>083</TXNBRN>
+                    <TXNACC>2089945631311</TXNACC>
+                    <TXNCCY>GHS</TXNCCY>
+                    <TXNAMT>12.11</TXNAMT>
+                    <TXNTRN>YST</TXNTRN>
+                    <OFFSETBRN>000</OFFSETBRN>
+                    <OFFSETACC>132003035</OFFSETACC>
+                    <OFFSETCCY>GHS</OFFSETCCY>
+                    <OFFSETAMT>12.11</OFFSETAMT>
+                    <OFFSETTRN>YST</OFFSETTRN>
+                    <XRATE>1</XRATE>
+                    <LCYAMT>12.11</LCYAMT>
+                    <TXNDATE>2020-09-11</TXNDATE>
+                    <VALDATE>2020-09-11</VALDATE>
+                    <RELCUST>9456313</RELCUST>
+                    <TCYCHGAMT>0</TCYCHGAMT>
+                    <TCYTOTCHGAMT>0</TCYTOTCHGAMT>
+                    <NARRATIVE>Testing Yellowsave Deposit</NARRATIVE>
+                    <MAKERID>YSAVEUSER</MAKERID>
+                    <MAKERSTAMP>2020-08-10 14:34:58 PM</MAKERSTAMP>
+                    <CHECKERID>YSAVEUSER</CHECKERID>
+                    <CHECKERSTAMP>2020-08-10 14:35:00 PM</CHECKERSTAMP>
+                    <RECSTAT>O</RECSTAT>
+                    <AUTHSTAT>A</AUTHSTAT>
+                    <LCYCHGAMT>0</LCYCHGAMT>
+                    <DRACC>OFS</DRACC>
+                    <TXNDRCR>C</TXNDRCR>
+                    <BOOKDATE>2020-09-11</BOOKDATE>
+                    <FT>N</FT>
+                    <LCYTOTCHGAMT>0</LCYTOTCHGAMT>
+                    <DENMCCY1>GHS</DENMCCY1>
+                    <DENMAMT1>0</DENMAMT1>
+                    <DENMAMT2>0</DENMAMT2>
+                    <ACCTITLE1>ADOGLA BESSA TSATSU JNR YELLO SAVE ACCOUNT</ACCTITLE1>
+                    <ACCTITLE2>YELLO SAVE E-TELLER</ACCTITLE2>
+                    <Charge-Details>
+                        <CHGCOMP>FC_CHARGES</CHGCOMP>
+                        <CHGAMT>0</CHGAMT>
+                        <CHGCCY>GHS</CHGCCY>
+                        <TXNCODE>CAW</TXNCODE>
+                        <NETTINGIND>N</NETTINGIND>
+                        <CHGGL>310008078</CHGGL>
+                        <TYPE>F</TYPE>
+                        <LCYCHG>0</LCYCHG>
+                        <XRATE>1</XRATE>
+                    </Charge-Details>
+                </Transaction-Details>
+                <FCUBS_WARNING_RESP>
+                    <WARNING>
+                        <WCODE>ST-SAVE-023</WCODE>
+                        <WDESC>Record Successfully Retrieved</WDESC>
+                    </WARNING>
+                </FCUBS_WARNING_RESP>
+            </FCUBS_BODY>
+        </QUERYTRANSACTION_IOFS_RES>
+    </S:Body>
+</S:Envelope>';
+		
+		
+		DECLARE blobres BLOB CAST(result AS BLOB CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+		CREATE LASTCHILD OF OutputRoot DOMAIN('XMLNSC') PARSE(blobres);		
+		
+		
+		
+		
+		
+		
+		
+		--CREATE LASTCHILD OF OutputRoot DOMAIN ('SOAP');
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.SOURCE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.UBSCOMP='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.MSGID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.CORRELID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.USERID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.BRANCH ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.MODULEID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.SERVICE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.OPERATION='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.SOURCE_USERID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.DESTINATION ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.MULTITRIPID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.FUNCTIONID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.ACTION ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_HEADER.MSGSTAT ='';
+--
+--		
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".XREF ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".FCCREF ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".PRD ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".BRN ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TXNBRN ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TXNACC ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TXNCCY ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TXNAMT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TXNTRN ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".OFFSETBRN ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".OFFSETACC ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".OFFSETCCY ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".OFFSETAMT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".OFFSETTRN ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".XRATE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".LCYAMT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TXNDATE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".VALDATE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".RELCUST ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TCYCHGAMT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TCYTOTCHGAMT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".NARRATIVE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".MAKERID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".MAKERSTAMP ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".CHECKERID ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".CHECKERSTAMP ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".RECSTAT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".AUTHSTAT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".LCYCHGAMT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".DRACC ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".TXNDRCR ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".BOOKDATE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".FT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".LCYTOTCHGAMT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".DENMCCY1 ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".DENMAMT1 ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".DENMAMT2 ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".ACCTITLE1 ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details".ACCTITLE2 ='';
+--		
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".CHGCOMP ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".CHGAMT ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".CHGCCY ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".TXNCODE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".NETTINGIND ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".CHGGL ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".TYPE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".LCYCHG ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY."Transaction-Details"."Charge-Details".XRATE ='';
+--		
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY.FCUBS_WARNING_RESP.WARNING.WCODE ='';
+--		SET OutputRoot.SOAP.Body.ns:QUERYTRANSACTION_IOFS_RES.FCUBS_BODY.FCUBS_WARNING_RESP.WARNING.WDESC ='';
+
+		
+		
+		
+	END;
+END MODULE;

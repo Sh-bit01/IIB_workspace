@@ -1,0 +1,14 @@
+
+
+CREATE FILTER MODULE lds_Filter
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE r REFERENCE TO Root.JSON.Data;
+		SET r = 'df';
+		SET Environment.k = Root.JSON.Data;
+		SET LocalEnvironment.L = 'lkd';
+		
+		RETURN TRUE;
+	END;
+
+END MODULE;

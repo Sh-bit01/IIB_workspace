@@ -1,0 +1,73 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE COMPUTE MODULE postSend_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN FALSE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		--{"status":"success","referenceId":"b82c3fd0-ddcb-11ec-a700-873dff98a18d"}
+		--{"mobileNo":"8501996633","accNo":"012345623456"}\
+
+		DECLARE inref REFERENCE TO InputRoot.JSON.Data;
+		DECLARE res ROW;
+		DECLARE query_check CHARACTER 'SELECT COUNT(*) AS record_count
+		FROM Account_Discovery
+		WHERE mobile_no =?
+		AND account_number =?';
+		SET res.check[] = PASSTHRU(query_check, inref.mobileNo, inref.accNo);
+
+		IF res.check.RECORD_COUNT > 0 THEN
+			DECLARE ref_no CHARACTER UUIDASCHAR;
+			DECLARE otp INTEGER;
+			DECLARE ts TIMESTAMP CURRENT_TIMESTAMP;
+			DECLARE secondsFraction DECIMAL;
+			SET secondsFraction = EXTRACT(SECOND FROM ts) - CAST(EXTRACT(SECOND FROM ts) AS INTEGER);
+			SET otp = 100000 + CAST(secondsFraction * 900000 AS INTEGER);
+
+			DECLARE query_in CHARACTER 'INSERT INTO OTP_TABLE (referenceNo, OTP, created_at) VALUES (?, ?,?)';
+			PASSTHRU(query_in, ref_no, otp, ts);
+
+			SET OutputRoot.JSON.Data.status = 'success';
+			SET OutputRoot.JSON.Data.referenceId = ref_no;
+			SET OutputRoot.JSON.Data.otp = otp;
+			PROPAGATE TO TERMINAL 'out';
+
+		ELSE
+			SET OutputRoot.JSON.Data.status = 'failed';
+			SET OutputRoot.JSON.Data.error.message = 'Account is not associate with mobile no.......';
+			--SET OutputRoot.JSON.Data.error.message1 = randomSixDigit;
+			PROPAGATE TO TERMINAL 'out';
+
+		END IF;
+
+
+
+	END;
+END MODULE;

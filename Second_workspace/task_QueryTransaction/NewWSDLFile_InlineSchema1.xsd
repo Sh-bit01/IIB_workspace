@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://fcubs.ofss.com/service/FCUBSRTService" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://fcubs.ofss.com/service/FCUBSRTService">
+              
+            
+  <xsd:element ibmSchExtn:docRoot="true" name="QUERYTRANSACTION_IOFS_REQ" type="tns:QUERYTRANSACTION_IOFS_REQ"/>
+              
+  <xsd:element ibmSchExtn:docRoot="true" name="QUERYTRANSACTION_IOFS_RES" type="tns:QUERYTRANSACTION_IOFS_RES"/>
+              
+  <xsd:complexType name="FCUBS_HEADER">
+                    
+    <xsd:sequence>
+                          
+      <xsd:element name="SOURCE" type="xsd:string"/>
+                          
+      <xsd:element name="UBSCOMP" type="xsd:string"/>
+                          
+      <xsd:element name="MSGID" type="xsd:string"/>
+                          
+      <xsd:element name="CORRELID" type="xsd:string"/>
+                          
+      <xsd:element name="USERID" type="xsd:string"/>
+                          
+      <xsd:element name="BRANCH" type="xsd:string"/>
+                          
+      <xsd:element name="MODULEID" type="xsd:string"/>
+                          
+      <xsd:element name="SERVICE" type="xsd:string"/>
+                          
+      <xsd:element name="OPERATION" type="xsd:string"/>
+                          
+      <xsd:element name="SOURCE_USERID" type="xsd:string"/>
+                          
+      <xsd:element minOccurs="0" name="ADDL">
+                                
+        <xsd:complexType>
+                                      
+          <xsd:sequence>
+                                            
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="PARAM">
+                                                  
+              <xsd:complexType>
+                                                        
+                <xsd:sequence>
+                                                              
+                  <xsd:element name="NAME" type="xsd:string"/>
+                                                              
+                  <xsd:element name="VALUE" type="xsd:string"/>
+                                                          
+                </xsd:sequence>
+                                                    
+              </xsd:complexType>
+                                              
+            </xsd:element>
+                                        
+          </xsd:sequence>
+                                  
+        </xsd:complexType>
+                            
+      </xsd:element>
+                      
+    </xsd:sequence>
+                
+  </xsd:complexType>
+              
+              
+  <xsd:complexType name="FCUBS_HEADER1">
+                    
+    <xsd:sequence>
+                          
+      <xsd:element name="SOURCE" type="xsd:string"/>
+                          
+      <xsd:element name="UBSCOMP" type="xsd:string"/>
+                          
+      <xsd:element name="MSGID" type="xsd:string"/>
+                          
+      <xsd:element name="CORRELID" type="xsd:string"/>
+                          
+      <xsd:element name="USERID" type="xsd:string"/>
+                          
+      <xsd:element name="BRANCH" type="xsd:string"/>
+                          
+      <xsd:element name="MODULEID" type="xsd:string"/>
+                          
+      <xsd:element name="SERVICE" type="xsd:string"/>
+                          
+      <xsd:element name="OPERATION" type="xsd:string"/>
+                          
+      <xsd:element name="SOURCE_USERID" type="xsd:string"/>
+                          
+      <xsd:element name="DESTINATION" type="xsd:string"/>
+                          
+      <xsd:element name="MULTITRIPID" type="xsd:string"/>
+                          
+      <xsd:element name="FUNCTIONID" type="xsd:string"/>
+                          
+      <xsd:element name="ACTION" type="xsd:string"/>
+                          
+      <xsd:element name="MSGSTAT" type="xsd:string"/>
+                      
+    </xsd:sequence>
+                
+  </xsd:complexType>
+              
+  <xsd:complexType name="FCUBS_BODY1">
+                    
+    <xsd:sequence>
+                          
+      <xsd:element name="Transaction-Details">
+                                
+        <xsd:complexType>
+                                      
+          <xsd:sequence>
+                                            
+            <xsd:element name="XREF" type="xsd:string"/>
+                                            
+            <xsd:element name="FCCREF" type="xsd:string"/>
+                                            
+            <xsd:element name="TXNACC" type="xsd:string"/>
+                                            
+            <xsd:element name="TXNAMT" type="xsd:decimal"/>
+                                            
+            <xsd:element name="TXNTRN" type="xsd:string"/>
+                                            
+            <xsd:element name="OFFSETTRN" type="xsd:string"/>
+                                            
+            <xsd:element name="TXNDATE" type="xsd:date"/>
+                                            
+            <xsd:element name="VALDATE" type="xsd:date"/>
+                                            
+            <xsd:element name="NARRATIVE" type="xsd:string"/>
+                                        
+          </xsd:sequence>
+                                  
+        </xsd:complexType>
+                            
+      </xsd:element>
+                          
+                    
+      <!-- Optional Charge-Details -->
+                          
+      <xsd:element minOccurs="0" name="Charge-Details">
+                                
+        <xsd:complexType>
+                                      
+          <xsd:sequence>
+                                            
+            <xsd:element name="CHGCOMP" type="xsd:string"/>
+                                            
+            <xsd:element name="CHGAMT" type="xsd:decimal"/>
+                                            
+            <xsd:element name="CHGCCY" type="xsd:string"/>
+                                            
+            <xsd:element name="TXNCODE" type="xsd:string"/>
+                                            
+            <xsd:element name="NETTINGIND" type="xsd:string"/>
+                                            
+            <xsd:element name="CHGGL" type="xsd:string"/>
+                                            
+            <xsd:element name="TYPE" type="xsd:string"/>
+                                            
+            <xsd:element name="LCYCHG" type="xsd:decimal"/>
+                                        
+          </xsd:sequence>
+                                  
+        </xsd:complexType>
+                            
+      </xsd:element>
+                          
+      <!-- Optional Warning -->
+                          
+      <xsd:element minOccurs="0" name="FCUBS_WARNING_RESP">
+                                
+        <xsd:complexType>
+                                      
+          <xsd:sequence>
+                                            
+            <xsd:element name="WARNING">
+                                                  
+              <xsd:complexType>
+                                                        
+                <xsd:sequence>
+                                                              
+                  <xsd:element name="WCODE" type="xsd:string"/>
+                                                              
+                  <xsd:element name="WDESC" type="xsd:string"/>
+                                                          
+                </xsd:sequence>
+                                                    
+              </xsd:complexType>
+                                              
+            </xsd:element>
+                                        
+          </xsd:sequence>
+                                  
+        </xsd:complexType>
+                            
+      </xsd:element>
+                      
+    </xsd:sequence>
+                
+  </xsd:complexType>
+          
+        
+        
+        
+
+            
+  <xsd:complexType name="QUERYTRANSACTION_IOFS_REQ">
+                    
+    <xsd:sequence>
+                          
+      <xsd:element name="FCUBS_HEADER" type="tns:FCUBS_HEADER"/>
+                          
+      <xsd:element name="FCUBS_BODY">
+                                
+        <xsd:complexType>
+                                      
+          <xsd:sequence>
+                                            
+            <xsd:element name="Transaction-Details-IO">
+                                                  
+              <xsd:complexType>
+                                                        
+                <xsd:sequence>
+                                                              
+                  <xsd:element name="XREF" type="xsd:string"/>
+                                                          
+                </xsd:sequence>
+                                                    
+              </xsd:complexType>
+                                              
+            </xsd:element>
+                                        
+          </xsd:sequence>
+                                  
+        </xsd:complexType>
+                            
+      </xsd:element>
+                      
+    </xsd:sequence>
+                
+  </xsd:complexType>
+              
+            
+  <xsd:complexType name="QUERYTRANSACTION_IOFS_RES">
+                    
+                
+    <xsd:sequence>
+                          
+      <xsd:element name="FCUBS_HEADER" type="tns:FCUBS_HEADER1"/>
+                          
+      <xsd:element name="FCUBS_BODY" type="tns:FCUBS_BODY1"/>
+                      
+    </xsd:sequence>
+                
+  </xsd:complexType>
+          
+</xsd:schema>

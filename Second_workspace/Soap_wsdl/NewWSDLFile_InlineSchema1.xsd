@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.example.org/NewWSDLFile/" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/NewWSDLFile/">
+    
+  
+  <xsd:element ibmSchExtn:docRoot="true" name="NewOperationV1">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence>
+                
+        <xsd:element name="param1" type="xsd:string"/>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+    
+  <xsd:element ibmSchExtn:docRoot="true" name="NewOperationResponseV1">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence>
+                
+        <xsd:element name="response1" type="xsd:string"/>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+    
+  <xsd:element ibmSchExtn:docRoot="true" name="NewOperationV2">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence>
+                
+        <xsd:element name="param2" type="xsd:string"/>
+                
+        <xsd:element name="extraInfo" type="xsd:string"/>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+    
+  <xsd:element ibmSchExtn:docRoot="true" name="NewOperationResponseV2">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence>
+                
+        <xsd:element name="response2" type="xsd:string"/>
+                
+        <xsd:element name="additionalData" type="xsd:string"/>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+  
+</xsd:schema>

@@ -1,0 +1,170 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "Task_AccountAggrator_rest",
+    "version" : "1.0.0",
+    "description" : "Task_AccountAggrator_rest"
+  },
+  "paths" : {
+    "/account/discover" : {
+      "post" : {
+        "operationId" : "postDiscover",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a discover",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/discover"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/sms/send" : {
+      "post" : {
+        "operationId" : "postSend",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a send",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/send"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/sms/validate" : {
+      "post" : {
+        "operationId" : "postValidate",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a validate",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/validate"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/deposit/fidata" : {
+      "post" : {
+        "operationId" : "postFidata",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a fidata",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/fidata"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    }
+  },
+  "basePath" : "/v1",
+  "definitions" : {
+    "discover" : {
+      "type" : "object",
+      "properties" : {
+        "bankId" : {
+          "type" : "string"
+        },
+        "mobileNo" : {
+          "type" : "string"
+        },
+        "fitype" : {
+          "type" : "string"
+        }
+      }
+    },
+    "send" : {
+      "type" : "object",
+      "properties" : {
+        "bankId" : {
+          "type" : "string"
+        },
+        "mobileNo" : {
+          "type" : "string"
+        },
+        "accNo" : {
+          "type" : "string"
+        }
+      }
+    },
+    "fidata" : {
+      "type" : "object",
+      "properties" : {
+        "bankId" : {
+          "type" : "string"
+        },
+        "accNo" : {
+          "type" : "string",
+          "format" : ""
+        },
+        "dataTypes" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "fromDate" : {
+          "type" : "string"
+        },
+        "toDate" : {
+          "type" : "string"
+        }
+      }
+    },
+    "validate" : {
+      "type" : "object",
+      "properties" : {
+        "bankId" : {
+          "type" : "string"
+        },
+        "accNo" : {
+          "type" : "string"
+        },
+        "token" : {
+          "type" : "string"
+        },
+        "referenceId" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
