@@ -1,10 +1,8 @@
-
-
-
-
-
-
-
+DECLARE schema_name EXTERNAL CHARACTER;
+DECLARE table_name EXTERNAL CHARACTER;
+DECLARE config EXTERNAL CHARACTER;
+DECLARE var1 BOOLEAN;
+DECLARE dsn EXTERNAL CHARACTER;
 
 
 
@@ -13,8 +11,15 @@ CREATE COMPUTE MODULE postSend_Compute
 	BEGIN
 		-- CALL CopyMessageHeaders();
 		CALL initLog4j(config)INTO var1;
-		CALL CopyEntireMessage();
-		RETURN FALSE;
+		DECLARE method_type CHARACTER;
+		SET method_type = SUBSTRING(InputRoot.HTTPInputHeader."X-Original-HTTP-Command" FROM 1 FOR 4);
+		IF method_type = 'POST' THEN
+			CALL CopyEntireMessage();
+		ELSE
+			THROW USER EXCEPTION CATALOG 'BIPmsgs' MESSAGE 2230 VALUES('Unsupported HTTP Method');
+			PROPAGATE TO TERMINAL 'Catch';
+		END IF;
+		RETURN TRUE;
 	END;
 
 	CREATE PROCEDURE CopyMessageHeaders() BEGIN
@@ -100,3 +105,14 @@ CREATE COMPUTE MODULE postSend_Compute
 
 		END;
 	END MODULE;
+	
+	
+CREATE FUNCTION WriteLogFile( IN COMPONENT_NAME CHARACTER,IN LOGGER_NAME CHARACTER, IN LEVEL CHARACTER, IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA --Indicates that this function is implemented in Java.
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log"; --Specifies the fully qualified Java class and method used for logging.
+-- Define a Java function named initLog4j for initializing Log4j with the provided configuration file.
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j"; -- Specifies the fully qualified Java class and method used for initialization.

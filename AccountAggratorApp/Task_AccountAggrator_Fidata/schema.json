@@ -1,0 +1,43 @@
+
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "bankId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{3}$"
+    },
+    "accNo": {
+      "type": "string"
+    },
+    "dataTypes": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "fromDate": {
+      "type": "string"
+    },
+    "toDate": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "bankId",
+    "accNo",
+    "dataTypes",
+    "fromDate",
+    "toDate"
+  ]
+}
+

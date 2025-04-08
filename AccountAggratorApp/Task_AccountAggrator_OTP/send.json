@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "bankId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{3}$"
+    },
+    "mobileNo": {
+      "type": "string",
+      "pattern": "^[0-9]{10}$"
+    },
+    "accNo": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "bankId",
+    "mobileNo",
+    "accNo"
+  ]
+}

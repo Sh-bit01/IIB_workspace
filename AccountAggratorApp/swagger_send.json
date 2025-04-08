@@ -1,0 +1,55 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Task_AccountAggrator_rest - Send SMS",
+    "version": "1.0.0",
+    "description": "API for sending SMS"
+  },
+  "basePath": "/v1",
+  "paths": {
+    "/sms/send": {
+      "post": {
+        "operationId": "postSend",
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          }
+        },
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "description": "Insert a send",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/send"
+            },
+            "description": "The request body for the operation",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "send": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "bankId": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "mobileNo": {
+          "type": "string",
+          "pattern": "^[0-9]{10}$"
+        },
+        "accNo": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

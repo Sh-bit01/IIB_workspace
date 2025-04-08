@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:restapiDescriptor xmlns="http://com.ibm.etools.mft.descriptor.base" xmlns:ns2="http://com.ibm.etools.mft.descriptor.restapi" definitionType="swagger_20" definitionFile="swagger.json" implementation="gen/Task_AccountAggrator_rest.msgflow" https="false" definitionWithExtRef="false" faultFormat="JSON">
+    <references/>
+    <ns2:operations>
+        <ns2:operation name="postDiscover" implementation="postDiscover.subflow"/>
+        <ns2:operation name="postFidata" implementation="postFidata.subflow"/>
+        <ns2:operation name="postSend" implementation="postSend.subflow"/>
+        <ns2:operation name="postValidate" implementation="postValidate.subflow"/>
+    </ns2:operations>
+    <ns2:errorHandlers>
+        <ns2:errorHandler type="CATCH" implementation="Task_AccountAggrator_restInputCatchHandler.subflow"/>
+    </ns2:errorHandlers>
+    <ns2:validations>
+        <ns2:validation type="INPUT" allowUnexpectedBody="false" onlyValidate2xx="false"/>
+    </ns2:validations>
+</ns2:restapiDescriptor>

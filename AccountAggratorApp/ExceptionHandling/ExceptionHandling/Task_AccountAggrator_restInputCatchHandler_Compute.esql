@@ -1,3 +1,4 @@
+BROKER SCHEMA ExceptionHandling
 DECLARE config EXTERNAL CHARACTER;
 DECLARE var1 BOOLEAN;
 CREATE COMPUTE MODULE Task_AccountAggrator_restInputCatchHandler_Compute
@@ -17,7 +18,7 @@ CREATE COMPUTE MODULE Task_AccountAggrator_restInputCatchHandler_Compute
 		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger1','ERROR', in_data) INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
-		SET OutputRoot = InputRoot;
+		--SET OutputRoot = InputRoot;
 		DECLARE ref REFERENCE TO InputExceptionList.*[>];
 		DECLARE Text CHARACTER;
 		DECLARE Itm ROW;

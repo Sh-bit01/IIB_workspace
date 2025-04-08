@@ -1,0 +1,55 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Task_AccountAggrator_rest - Discover",
+    "version": "1.0.0",
+    "description": "API for account discovery"
+  },
+  "basePath": "/v1",
+  "paths": {
+    "/account/discover": {
+      "post": {
+        "operationId": "postDiscover",
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          }
+        },
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "description": "Insert a discover",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/discover"
+            },
+            "description": "The request body for the operation",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "discover": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "bank_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "mobileNo": {
+          "type": "string",
+          "pattern": "^[0-9]{10}$"
+        },
+        "fitype": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

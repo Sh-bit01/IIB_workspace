@@ -1,0 +1,63 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Task_AccountAggrator_rest - Fidata",
+    "version": "1.0.0",
+    "description": "API for deposit fidata"
+  },
+  "basePath": "/v1",
+  "paths": {
+    "/deposit/fidata": {
+      "post": {
+        "operationId": "postFidata",
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          }
+        },
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "description": "Insert a fidata",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/fidata"
+            },
+            "description": "The request body for the operation",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "fidata": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "bankId": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "accNo": {
+          "type": "string"
+        },
+        "dataTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fromDate": {
+          "type": "string"
+        },
+        "toDate": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Task_AccountAggrator_rest - Validate",
+    "version": "1.0.0",
+    "description": "API for validating token"
+  },
+  "basePath": "/v1",
+  "paths": {
+    "/sms/validate": {
+      "post": {
+        "operationId": "postValidate",
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          }
+        },
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "description": "Insert a validate",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/validate"
+            },
+            "description": "The request body for the operation",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "validate": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "bankId": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "accNo": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "referenceId": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
