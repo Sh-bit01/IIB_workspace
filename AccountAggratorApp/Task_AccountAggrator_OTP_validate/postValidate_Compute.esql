@@ -1,4 +1,9 @@
-
+DECLARE schema_name EXTERNAL CHARACTER;
+DECLARE table_name EXTERNAL CHARACTER;
+DECLARE config EXTERNAL CHARACTER;
+DECLARE var1 BOOLEAN;
+DECLARE dsn EXTERNAL CHARACTER;
+DECLARE logger EXTERNAL CHARACTER;
 
 
 
@@ -30,13 +35,14 @@ CREATE COMPUTE MODULE postValidate_Compute
 		DECLARE enc INTEGER InputRoot.Properties.Encoding;
 		DECLARE in_data CHARACTER;
 		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', in_data) INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'valid','INFO', '---------------------------Start---------------------------') INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'valid','INFO', in_data) INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 		DECLARE inref REFERENCE TO InputRoot.JSON.Data;
-		DECLARE query_in CHARACTER 'SELECT * FROM OTP_TABLE WHERE REFERENCENO=? AND OTP=?';
-		DECLARE query_del CHARACTER 'DELETE FROM OTP_TABLE WHERE REFERENCENO=? AND OTP=?';
+		DECLARE query_in CHARACTER 'SELECT * FROM '||schema_name||'.'||'OTP_TABLE WHERE REFERENCENO=? AND OTP=?';
+		DECLARE query_del CHARACTER 'DELETE FROM '||schema_name||'.'||'OTP_TABLE WHERE REFERENCENO=? AND OTP=?';
 		DECLARE res ROW;
-		SET res.data[] = PASSTHRU(query_in VALUES(inref.referenceId, inref.token));
+		SET res.data[] = PASSTHRU(query_in TO Database.{dsn} VALUES(inref.referenceId, inref.token));
 
 		IF res.data.REFERENCENO IS NOT NULL THEN
 			SET OutputRoot.JSON.Data.status = 'success';
@@ -53,13 +59,13 @@ CREATE COMPUTE MODULE postValidate_Compute
 				--SET OutputRoot.JSON.Data.Top.After.V1 = V1;
 				SET OutputRoot.JSON.Data.status = 'Failed';
 				SET OutputRoot.JSON.Data.error.message = 'Invalide OTP...';
-				SET res.Del[] = PASSTHRU (query_del VALUES(inref.referenceId, inref.token));
+				SET res.Del[] = PASSTHRU (query_del TO Database.{dsn} VALUES(inref.referenceId, inref.token));
 				--PASSTHRU 'query_del VALUES( inref.token)';
 
 			ELSE
 				--SET OutputRoot.JSON.Data.Top.After.V1 = V1;
 				SET OutputRoot.JSON.Data.status='success';
-				SET res.Del[] = PASSTHRU (query_del VALUES(inref.referenceId, inref.token));
+				SET res.Del[] = PASSTHRU (query_del TO Database.{dsn} VALUES(inref.referenceId, inref.token));
 				--SET res.update[] = PASSTHRU (query_del VALUES(inref.token));
 			END IF;
 			------------
@@ -70,9 +76,18 @@ CREATE COMPUTE MODULE postValidate_Compute
 		----------------------------------------------------------------------------------------------------------------
 		DECLARE data CHARACTER;
 		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'valid','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'valid','INFO', '---------------------------END---------------------------') INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 	END;
 END MODULE;
 
-
+CREATE FUNCTION WriteLogFile( IN COMPONENT_NAME CHARACTER,IN LOGGER_NAME CHARACTER, IN LEVEL CHARACTER, IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA --Indicates that this function is implemented in Java.
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log"; --Specifies the fully qualified Java class and method used for logging.
+-- Define a Java function named initLog4j for initializing Log4j with the provided configuration file.
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j"; -- Specifies the fully qualified Java class and method used for initialization.

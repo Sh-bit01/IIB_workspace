@@ -1,5 +1,6 @@
 BROKER SCHEMA ExceptionHandling
 DECLARE config EXTERNAL CHARACTER;
+DECLARE logger EXTERNAL CHARACTER;
 DECLARE var1 BOOLEAN;
 CREATE COMPUTE MODULE Task_AccountAggrator_restInputCatchHandler_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
@@ -15,7 +16,8 @@ CREATE COMPUTE MODULE Task_AccountAggrator_restInputCatchHandler_Compute
 		----------------------------------------------------------------------------------------------------------------
 		DECLARE in_data CHARACTER;
 		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger1','ERROR', in_data) INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType, logger ,'ERROR', '---------------------------Start---------------------------') INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType, logger ,'ERROR', in_data) INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
 		--SET OutputRoot = InputRoot;
@@ -49,7 +51,8 @@ CREATE COMPUTE MODULE Task_AccountAggrator_restInputCatchHandler_Compute
 		------------------------------------------------------------------------------------------------------------------
 		DECLARE data CHARACTER;
 		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger1','ERROR', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType, logger ,'ERROR', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType, logger ,'ERROR', '---------------------------END---------------------------') INTO var1;
 		------------------------------------------------------------------------------------------------------------------
 
 	END;

@@ -12,12 +12,15 @@
     <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.table_name" name="table_name" defaultValueLiteral="BANKS_DETAIL">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.config" name="config" defaultValueLiteral="/home/ace/inlog/Log4jConfigurationFile.xml">
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.config" name="config" defaultValueLiteral="/home/ace/inlog/backup/SEND/Log4jConfigurationFile.xml">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
-    <translation xmi:type="utility:TranslatableString" key="sms_send" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP"/>
-    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_AccountAggrator_OTP/icons/full/obj16/sms_send.gif"/>
-    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_AccountAggrator_OTP/icons/full/obj30/sms_send.gif"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.logger" name="logger" defaultValueLiteral="e_send">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="sms_send" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP_send"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_AccountAggrator_OTP_send/icons/full/obj16/sms_send.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_AccountAggrator_OTP_send/icons/full/obj30/sms_send.gif"/>
     <composition>
       <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="60,51" URLSpecifier="/v1/sms/send" messageDomainProperty="JSON" messageSetProperty="send.json" validateTiming="complete" validateMaster="contentAndValue">
         <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
@@ -43,13 +46,16 @@
     </composition>
     <propertyOrganizer>
       <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.schema_name">
-        <propertyName xmi:type="utility:TranslatableString" key="Property.schema_name" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP"/>
+        <propertyName xmi:type="utility:TranslatableString" key="Property.schema_name" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP_send"/>
         <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.dsn">
-          <propertyName xmi:type="utility:TranslatableString" key="Property.dsn" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP"/>
+          <propertyName xmi:type="utility:TranslatableString" key="Property.dsn" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP_send"/>
           <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.table_name">
-            <propertyName xmi:type="utility:TranslatableString" key="Property.table_name" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP"/>
+            <propertyName xmi:type="utility:TranslatableString" key="Property.table_name" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP_send"/>
             <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.config">
-              <propertyName xmi:type="utility:TranslatableString" key="Property.config" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP"/>
+              <propertyName xmi:type="utility:TranslatableString" key="Property.config" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP_send"/>
+              <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.logger">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.logger" bundleName="sms_send" pluginId="Task_AccountAggrator_OTP_send"/>
+              </propertyDescriptor>
             </propertyDescriptor>
           </propertyDescriptor>
         </propertyDescriptor>

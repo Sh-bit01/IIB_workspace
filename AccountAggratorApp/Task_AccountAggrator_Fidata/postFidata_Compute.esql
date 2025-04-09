@@ -1,6 +1,23 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DECLARE logger EXTERNAL CHARACTER;
+
 DECLARE schema_name EXTERNAL CHARACTER;
 DECLARE table_name EXTERNAL CHARACTER;
 DECLARE config EXTERNAL CHARACTER;
@@ -41,12 +58,87 @@ CREATE COMPUTE MODULE postFidata_Compute
 		DECLARE enc INTEGER InputRoot.Properties.Encoding;
 		DECLARE in_data CHARACTER;
 		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', in_data) INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'fidata','INFO', ' ---------------------------Start---------------------------') INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'fidata','INFO', in_data) INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
-		DECLARE query_id CHARACTER 'select * from BANKS_DETAIL where BANK_ID=?';
-		DECLARE query_join CHARACTER 'SELECT
-		-- From ACCOUNT_DISCOVERY
+		DECLARE query_id CHARACTER 'select * from '||schema_name||'.'||table_name||' where BANK_ID=?';
+		-- DECLARE query_join CHARACTER 'SELECT
+		-- -- From ACCOUNT_DISCOVERY
+		-- ad.BANK_ID,
+		-- ad.MOBILE_NO AS DISCOVERY_MOBILE,
+		-- ad.EMAIL AS DISCOVERY_EMAIL,
+		-- ad.ACCOUNT_NUMBER,
+		-- ad.ACC_HOLDER_NAME,
+		-- ad.ACC_TYPE AS DISCOVERY_ACC_TYPE,
+		-- ad.FI_TYPE,
+		-- -- From ACCOUNT_PROFILE
+		-- ap.HOLDER_TYPE,
+		-- ap.HOLDER_NAME,
+		-- ap.DOB,
+		-- ap.MOBILE AS PROFILE_MOBILE,
+		-- ap.NOMINEE_STATUS,
+		-- ap.EMAIL AS PROFILE_EMAIL,
+		-- ap.PAN,
+		-- ap.CKYC_COMPLIANCE,
+		-- -- From ACCOUNT_SUMMARY
+		-- asum.CURRENT_BALANCE,
+		-- asum.CURRENCY,
+		-- asum.EXCHANGE_RATE,
+		-- asum.BALANCE_DATETIME,
+		-- asum.ACC_TYPE AS SUMMARY_ACC_TYPE,
+		-- asum.BRANCH,
+		-- asum.FACILITY,
+		-- asum.IFSC_CODE,
+		-- asum.MICR_CODE,
+		-- asum.OPENING_DATE,
+		-- asum.OD_LIMIT,
+		-- asum.DRAWING_LIMIT,
+		-- asum.STATUS,
+		-- asum.PENDING_AMOUNT,
+		-- -- From ACCOUNT_TRANSACTIONS
+		-- at.TXN_ID,
+		-- at.TXN_TYPE,
+		-- at.TXN_MODE,
+		-- at.AMOUNT,
+		-- at.CURRENT_BALANCE AS TXN_CURRENT_BALANCE,
+		-- at.TRANSACTION_TIMESTAMP,
+		-- at.VALUE_DATE,
+		-- at.NARRATION,
+		-- at.REFERENCE_ID,
+		-- at.START_DATE,
+		-- at.END_DATE
+		--
+		-- FROM
+		-- '||schema_name||'.'||'ACCOUNT_DISCOVERY ad
+		-- LEFT JOIN
+		-- '||schema_name||'.'||'ACCOUNT_PROFILE ap ON ad.ACCOUNT_NUMBER = ap.ACCOUNT_NUMBER
+		-- LEFT JOIN
+		-- '||schema_name||'.'||'ACCOUNT_SUMMARY asum ON ad.ACCOUNT_NUMBER = asum.ACCOUNT_NUMBER
+		-- LEFT JOIN
+		-- '||schema_name||'.'||'ACCOUNT_TRANSACTIONS at ON ad.ACCOUNT_NUMBER = at.ACCOUNT_NUMBER
+		--
+		-- WHERE
+		-- ad.ACCOUNT_NUMBER = ?
+		-- AND at.TRANSACTION_TIMESTAMP BETWEEN
+		-- TO_TIMESTAMP_TZ(?, ''YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'') AND
+		-- TO_TIMESTAMP_TZ(?, ''YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'')
+		-- ';
+
+
+		SET Environment.bank[] = PASSTHRU(query_id TO Database.{dsn} VALUES(inref.bankId));
+
+		DECLARE query_join CHARACTER 'WITH ONE_HOLDER AS (
+		SELECT * FROM (
+		SELECT
+		ap.*,
+		ROW_NUMBER() OVER (PARTITION BY ap.ACCOUNT_NUMBER ORDER BY ap.HOLDER_TYPE) AS rn
+		FROM '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_PROFILE ap
+		)
+		WHERE rn = 1
+		)
+		SELECT
+		-- ACCOUNT_DISCOVERY
 		ad.BANK_ID,
 		ad.MOBILE_NO AS DISCOVERY_MOBILE,
 		ad.EMAIL AS DISCOVERY_EMAIL,
@@ -54,16 +146,16 @@ CREATE COMPUTE MODULE postFidata_Compute
 		ad.ACC_HOLDER_NAME,
 		ad.ACC_TYPE AS DISCOVERY_ACC_TYPE,
 		ad.FI_TYPE,
-		-- From ACCOUNT_PROFILE
-		ap.HOLDER_TYPE,
-		ap.HOLDER_NAME,
-		ap.DOB,
-		ap.MOBILE AS PROFILE_MOBILE,
-		ap.NOMINEE_STATUS,
-		ap.EMAIL AS PROFILE_EMAIL,
-		ap.PAN,
-		ap.CKYC_COMPLIANCE,
-		-- From ACCOUNT_SUMMARY
+		-- ACCOUNT_PROFILE (only 1 holder)
+		oh.HOLDER_TYPE,
+		oh.HOLDER_NAME,
+		oh.DOB,
+		oh.MOBILE AS PROFILE_MOBILE,
+		oh.NOMINEE_STATUS,
+		oh.EMAIL AS PROFILE_EMAIL,
+		oh.PAN,
+		oh.CKYC_COMPLIANCE,
+		-- ACCOUNT_SUMMARY
 		asum.CURRENT_BALANCE,
 		asum.CURRENCY,
 		asum.EXCHANGE_RATE,
@@ -78,7 +170,7 @@ CREATE COMPUTE MODULE postFidata_Compute
 		asum.DRAWING_LIMIT,
 		asum.STATUS,
 		asum.PENDING_AMOUNT,
-		-- From ACCOUNT_TRANSACTIONS
+		-- ACCOUNT_TRANSACTIONS
 		at.TXN_ID,
 		at.TXN_TYPE,
 		at.TXN_MODE,
@@ -91,47 +183,51 @@ CREATE COMPUTE MODULE postFidata_Compute
 		at.START_DATE,
 		at.END_DATE
 
-		FROM
-		ACCOUNT_DISCOVERY ad
-		LEFT JOIN
-		ACCOUNT_PROFILE ap ON ad.ACCOUNT_NUMBER = ap.ACCOUNT_NUMBER
-		LEFT JOIN
-		ACCOUNT_SUMMARY asum ON ad.ACCOUNT_NUMBER = asum.ACCOUNT_NUMBER
-		LEFT JOIN
-		ACCOUNT_TRANSACTIONS at ON ad.ACCOUNT_NUMBER = at.ACCOUNT_NUMBER
+		FROM '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_DISCOVERY ad
+		LEFT JOIN ONE_HOLDER oh ON ad.ACCOUNT_NUMBER = oh.ACCOUNT_NUMBER
+		LEFT JOIN '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_SUMMARY asum ON ad.ACCOUNT_NUMBER = asum.ACCOUNT_NUMBER
+		LEFT JOIN '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_TRANSACTIONS at ON ad.ACCOUNT_NUMBER = at.ACCOUNT_NUMBER
 
-		WHERE
-		ad.ACCOUNT_NUMBER = ?
+		WHERE ad.ACCOUNT_NUMBER = ?
 		AND at.TRANSACTION_TIMESTAMP BETWEEN
 		TO_TIMESTAMP_TZ(?, ''YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'') AND
 		TO_TIMESTAMP_TZ(?, ''YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'')
+		ORDER BY at.TRANSACTION_TIMESTAMP DESC;
 		';
-
-
-
-		SET Environment.bank[] = PASSTHRU(query_id VALUES(inref.bankId));
-		SET Environment.Summary[] = PASSTHRU(query_join VALUES(inref.accNo,inref.fromDate, inref.toDate));
+		--SET Environment.bank[] = PASSTHRU(query_id TO Database.{dsn} VALUES(inref.bankId));
+		SET Environment.Summary[] = PASSTHRU(query_join TO Database.{Environment.bank.DSN_NAME} VALUES(inref.accNo,inref.fromDate, inref.toDate));
 
 
 		CREATE FIELD OutputRoot.JSON.Data;
 		DECLARE jsonRef REFERENCE TO OutputRoot.JSON.Data;
 		SET jsonRef.status = 'success';
+		SET jsonRef.BankCode = Environment.bank.BANK_CODE;
+		SET jsonRef.BankName = Environment.bank.BANK_NAME;
 
 		CREATE FIELD OutputRoot.JSON.Data.data.Account;
 		DECLARE accRef REFERENCE TO OutputRoot.JSON.Data.data.Account;
 		declare txnref REFERENCE to Environment.Summary[1];
 
 		SET accRef.type = 'deposit';
+		--SET accRef.Profile.Holders.type = txnref.HOLDER_TYPE;
 
+		CREATE FIELD accRef.Profile.Holders type JSON.Array;
+		DECLARE holref REFERENCE TO txnref;
 
-		SET accRef.Profile.Holders.type = txnref.HOLDER_TYPE;
-		SET accRef.Profile.Holders.Holder.name = txnref.HOLDER_NAME;
-		SET accRef.Profile.Holders.Holder.dob = txnref.DOB;
-		SET accRef.Profile.Holders.Holder.mobile = txnref.PROFILE_MOBILE;
-		SET accRef.Profile.Holders.Holder.nominee = txnref.NOMINEE_STATUS;
-		SET accRef.Profile.Holders.Holder.email = txnref.PROFILE_EMAIL ;
-		SET accRef.Profile.Holders.Holder.pan = txnref.PAN;
-		SET accRef.Profile.Holders.Holder.ckycCompliance = txnref.CKYC_COMPLIANCE ;
+		declare j INTEGER 1;
+		--while LASTMOVE(holref) do
+		SET accRef.Profile.Holders.Item[j].type = holref.HOLDER_TYPE;
+		SET accRef.Profile.Holders.Item[j].Holder.name = holref.HOLDER_NAME;
+		SET accRef.Profile.Holders.Item[j].Holder.dob = holref.DOB;
+		SET accRef.Profile.Holders.Item[j].Holder.mobile = holref.PROFILE_MOBILE;
+		SET accRef.Profile.Holders.Item[j].Holder.nominee = holref.NOMINEE_STATUS;
+		SET accRef.Profile.Holders.Item[j].Holder.email = holref.PROFILE_EMAIL ;
+		SET accRef.Profile.Holders.Item[j].Holder.pan = holref.PAN;
+		SET accRef.Profile.Holders.Item[j].Holder.ckycCompliance = holref.CKYC_COMPLIANCE ;
+		SET j = j+1;
+		--MOVE holref NEXTSIBLING;
+		--end WHILE;
+
 
 		SET accRef.Summary.currentBalance = txnref.CURRENT_BALANCE;
 		SET accRef.Summary.currency = txnref.CURRENCY;
@@ -171,7 +267,8 @@ CREATE COMPUTE MODULE postFidata_Compute
 		----------------------------------------------------------------------------------------------------------------
 		DECLARE data CHARACTER;
 		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'fidata','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'fidata','INFO', ' ---------------------------END---------------------------') INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
 	END;

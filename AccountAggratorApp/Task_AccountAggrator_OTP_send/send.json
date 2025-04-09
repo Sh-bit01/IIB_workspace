@@ -18,5 +18,6 @@
     "bankId",
     "mobileNo",
     "accNo"
-  ]
+  ],
+   "additionalProperties": false
 }

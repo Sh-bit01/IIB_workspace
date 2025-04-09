@@ -5,7 +5,7 @@
     <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.dsn" name="dsn" defaultValueLiteral="MYXE">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.config" name="config" defaultValueLiteral="/home/ace/inlog/Log4jConfigurationFile.xml">
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.config" name="config" defaultValueLiteral="/home/ace/inlog/backup/VALID/Log4jConfigurationFile.xml">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.table_name" name="table_name" defaultValueLiteral="BANKS_DETAIL">
@@ -14,9 +14,12 @@
     <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.schema_name" name="schema_name" defaultValueLiteral="SYSTEM">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
-    <translation xmi:type="utility:TranslatableString" key="sms_validate" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP"/>
-    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_AccountAggrator_OTP/icons/full/obj16/sms_validate.gif"/>
-    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_AccountAggrator_OTP/icons/full/obj30/sms_validate.gif"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.logger" name="logger" defaultValueLiteral="e_valid">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="sms_validate" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP_validate"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_AccountAggrator_OTP_validate/icons/full/obj16/sms_validate.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/Task_AccountAggrator_OTP_validate/icons/full/obj30/sms_validate.gif"/>
     <composition>
       <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="726,48">
         <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
@@ -38,13 +41,16 @@
     </composition>
     <propertyOrganizer>
       <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.dsn">
-        <propertyName xmi:type="utility:TranslatableString" key="Property.dsn" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP"/>
+        <propertyName xmi:type="utility:TranslatableString" key="Property.dsn" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP_validate"/>
         <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.config">
-          <propertyName xmi:type="utility:TranslatableString" key="Property.config" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP"/>
+          <propertyName xmi:type="utility:TranslatableString" key="Property.config" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP_validate"/>
           <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.table_name">
-            <propertyName xmi:type="utility:TranslatableString" key="Property.table_name" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP"/>
+            <propertyName xmi:type="utility:TranslatableString" key="Property.table_name" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP_validate"/>
             <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.schema_name">
-              <propertyName xmi:type="utility:TranslatableString" key="Property.schema_name" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP"/>
+              <propertyName xmi:type="utility:TranslatableString" key="Property.schema_name" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP_validate"/>
+              <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.logger">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.logger" bundleName="sms_validate" pluginId="Task_AccountAggrator_OTP_validate"/>
+              </propertyDescriptor>
             </propertyDescriptor>
           </propertyDescriptor>
         </propertyDescriptor>

@@ -13,5 +13,6 @@
   "required": [
     "referenceId",
     "token"
-  ]
+  ],
+   "additionalProperties": false
 }

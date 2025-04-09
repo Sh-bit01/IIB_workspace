@@ -14,5 +14,6 @@
   "required": [
     "bank_id",
     "mobileNo"
-  ]
+  ],
+  "additionalProperties": false
 }

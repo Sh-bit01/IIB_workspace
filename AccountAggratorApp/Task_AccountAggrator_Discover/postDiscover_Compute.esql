@@ -3,6 +3,7 @@
 DECLARE schema_name EXTERNAL CHARACTER;
 DECLARE table_name EXTERNAL CHARACTER;
 DECLARE config EXTERNAL CHARACTER;
+DECLARE logger EXTERNAL CHARACTER;
 DECLARE var1 BOOLEAN;
 DECLARE dsn EXTERNAL CHARACTER;
 
@@ -32,6 +33,7 @@ CREATE COMPUTE MODULE postDiscover_Compute
 		DECLARE enc INTEGER InputRoot.Properties.Encoding;
 		DECLARE in_data CHARACTER;
 		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', '---------------------------Start---------------------------') INTO var1;
 		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', in_data) INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
@@ -68,6 +70,7 @@ CREATE COMPUTE MODULE postDiscover_Compute
 		DECLARE data CHARACTER;
 		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
 		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', '---------------------------END---------------------------') INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
 

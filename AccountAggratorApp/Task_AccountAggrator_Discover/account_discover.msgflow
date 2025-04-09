@@ -8,10 +8,13 @@
     <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.table_name" name="table_name" defaultValueLiteral="BANKS_DETAIL">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.config" name="config" defaultValueLiteral="/home/ace/inlog/Log4jConfigurationFile.xml">
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.config" name="config" defaultValueLiteral="/home/ace/inlog/backup/AD/Log4jConfigurationFile.xml">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.dsn" name="dsn" defaultValueLiteral="MYXE">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.logger" name="logger" defaultValueLiteral="err1">
       <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <translation xmi:type="utility:TranslatableString" key="account_discover" bundleName="account_discover" pluginId="Task_AccountAggrator_Discover"/>
@@ -45,6 +48,9 @@
             <propertyName xmi:type="utility:TranslatableString" key="Property.config" bundleName="account_discover" pluginId="Task_AccountAggrator_Discover"/>
             <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.dsn">
               <propertyName xmi:type="utility:TranslatableString" key="Property.dsn" bundleName="account_discover" pluginId="Task_AccountAggrator_Discover"/>
+              <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.logger">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.logger" bundleName="account_discover" pluginId="Task_AccountAggrator_Discover"/>
+              </propertyDescriptor>
             </propertyDescriptor>
           </propertyDescriptor>
         </propertyDescriptor>

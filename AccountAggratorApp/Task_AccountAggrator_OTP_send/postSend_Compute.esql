@@ -3,6 +3,7 @@ DECLARE table_name EXTERNAL CHARACTER;
 DECLARE config EXTERNAL CHARACTER;
 DECLARE var1 BOOLEAN;
 DECLARE dsn EXTERNAL CHARACTER;
+DECLARE logger EXTERNAL CHARACTER;
 
 
 
@@ -41,7 +42,8 @@ CREATE COMPUTE MODULE postSend_Compute
 		DECLARE enc INTEGER InputRoot.Properties.Encoding;
 		DECLARE in_data CHARACTER;
 		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', in_data) INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'send','INFO', '---------------------------Start---------------------------') INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'send','INFO', in_data) INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
 		DECLARE inref REFERENCE TO InputRoot.JSON.Data;
@@ -50,17 +52,17 @@ CREATE COMPUTE MODULE postSend_Compute
 		AD.ACCOUNT_NUMBER,
 		BT.BANK_CODE,
 		(SELECT COUNT(*)
-		FROM Account_Discovery
+		FROM '||schema_name||'.'||'Account_Discovery
 		WHERE mobile_no = ? AND account_number = ?) AS record_count
 		FROM
-		Account_Discovery AD
+		'||schema_name||'.'||'Account_Discovery AD
 		JOIN
-		BANKS_DETAIL BT ON AD.BANK_ID = BT.BANK_ID
+		'||schema_name||'.'||'BANKS_DETAIL BT ON AD.BANK_ID = BT.BANK_ID
 		WHERE
 		AD.mobile_no = ?
 		AND AD.account_number = ?;
 		';
-		SET res.check[] = PASSTHRU(query_check VALUES(inref.mobileNo, inref.accNo, inref.mobileNo, inref.accNo));
+		SET res.check[] = PASSTHRU(query_check TO Database.{dsn} VALUES(inref.mobileNo, inref.accNo, inref.mobileNo, inref.accNo));
 
 		IF res.check.RECORD_COUNT >0 THEN
 			DECLARE ref_no CHARACTER UUIDASCHAR;
@@ -70,8 +72,8 @@ CREATE COMPUTE MODULE postSend_Compute
 			SET secondsFraction = EXTRACT(SECOND FROM ts) - CAST(EXTRACT(SECOND FROM ts) AS INTEGER);
 			SET otp = 100000 + CAST(secondsFraction * 900000 AS INTEGER);
 
-			DECLARE query_in CHARACTER 'INSERT INTO OTP_TABLE (referenceNo, OTP, created_at) VALUES (?, ?,?)';
-			PASSTHRU(query_in, ref_no, otp, ts);
+			DECLARE query_in CHARACTER 'INSERT INTO '||schema_name||'.'||'OTP_TABLE (referenceNo, OTP, created_at) VALUES (?, ?,?)';
+			SET res.tmp[] =PASSTHRU(query_in TO Database.{dsn} VALUES( ref_no, otp, ts));
 
 			DECLARE text CHARACTER;
 			SET text = 'Dear Customer, '||CAST(otp AS CHARACTER)||' is the OTP to link your '||res.check.BANK_CODE ||' Bank Accounts with Account Aggregator. Do not share it with anyone. Bank NEVER asks for OTP.';
@@ -98,7 +100,8 @@ CREATE COMPUTE MODULE postSend_Compute
 			----------------------------------------------------------------------------------------------------------------
 			DECLARE data CHARACTER;
 			SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-			CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
+			CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'send','INFO', data) INTO var1;
+			CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'send','INFO', '---------------------------END---------------------------') INTO var1;
 			----------------------------------------------------------------------------------------------------------------
 			----email:- gabriel@test.com
 

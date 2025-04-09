@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Task_AccountAggrator_OTP</name>
+	<name>Task_AccountAggrator_OTP_send</name>
 	<comment></comment>
 	<projects>
 		<project>ExceptionHandling</project>
