@@ -1,12 +1,4 @@
 
-
-
-
-
-
-
-
-
 DECLARE logger EXTERNAL CHARACTER;
 
 DECLARE schema_name EXTERNAL CHARACTER;
