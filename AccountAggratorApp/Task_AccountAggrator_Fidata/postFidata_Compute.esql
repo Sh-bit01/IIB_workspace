@@ -7,15 +7,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 DECLARE logger EXTERNAL CHARACTER;
 
 DECLARE schema_name EXTERNAL CHARACTER;
@@ -128,142 +119,157 @@ CREATE COMPUTE MODULE postFidata_Compute
 
 		SET Environment.bank[] = PASSTHRU(query_id TO Database.{dsn} VALUES(inref.bankId));
 
-		DECLARE query_join CHARACTER 'WITH ONE_HOLDER AS (
-		SELECT * FROM (
-		SELECT
-		ap.*,
-		ROW_NUMBER() OVER (PARTITION BY ap.ACCOUNT_NUMBER ORDER BY ap.HOLDER_TYPE) AS rn
-		FROM '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_PROFILE ap
-		)
-		WHERE rn = 1
-		)
-		SELECT
-		-- ACCOUNT_DISCOVERY
-		ad.BANK_ID,
-		ad.MOBILE_NO AS DISCOVERY_MOBILE,
-		ad.EMAIL AS DISCOVERY_EMAIL,
-		ad.ACCOUNT_NUMBER,
-		ad.ACC_HOLDER_NAME,
-		ad.ACC_TYPE AS DISCOVERY_ACC_TYPE,
-		ad.FI_TYPE,
-		-- ACCOUNT_PROFILE (only 1 holder)
-		oh.HOLDER_TYPE,
-		oh.HOLDER_NAME,
-		oh.DOB,
-		oh.MOBILE AS PROFILE_MOBILE,
-		oh.NOMINEE_STATUS,
-		oh.EMAIL AS PROFILE_EMAIL,
-		oh.PAN,
-		oh.CKYC_COMPLIANCE,
-		-- ACCOUNT_SUMMARY
-		asum.CURRENT_BALANCE,
-		asum.CURRENCY,
-		asum.EXCHANGE_RATE,
-		asum.BALANCE_DATETIME,
-		asum.ACC_TYPE AS SUMMARY_ACC_TYPE,
-		asum.BRANCH,
-		asum.FACILITY,
-		asum.IFSC_CODE,
-		asum.MICR_CODE,
-		asum.OPENING_DATE,
-		asum.OD_LIMIT,
-		asum.DRAWING_LIMIT,
-		asum.STATUS,
-		asum.PENDING_AMOUNT,
-		-- ACCOUNT_TRANSACTIONS
-		at.TXN_ID,
-		at.TXN_TYPE,
-		at.TXN_MODE,
-		at.AMOUNT,
-		at.CURRENT_BALANCE AS TXN_CURRENT_BALANCE,
-		at.TRANSACTION_TIMESTAMP,
-		at.VALUE_DATE,
-		at.NARRATION,
-		at.REFERENCE_ID,
-		at.START_DATE,
-		at.END_DATE
-
-		FROM '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_DISCOVERY ad
-		LEFT JOIN ONE_HOLDER oh ON ad.ACCOUNT_NUMBER = oh.ACCOUNT_NUMBER
-		LEFT JOIN '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_SUMMARY asum ON ad.ACCOUNT_NUMBER = asum.ACCOUNT_NUMBER
-		LEFT JOIN '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_TRANSACTIONS at ON ad.ACCOUNT_NUMBER = at.ACCOUNT_NUMBER
-
-		WHERE ad.ACCOUNT_NUMBER = ?
-		AND at.TRANSACTION_TIMESTAMP BETWEEN
-		TO_TIMESTAMP_TZ(?, ''YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'') AND
-		TO_TIMESTAMP_TZ(?, ''YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'')
-		ORDER BY at.TRANSACTION_TIMESTAMP DESC;
-		';
-		--SET Environment.bank[] = PASSTHRU(query_id TO Database.{dsn} VALUES(inref.bankId));
-		SET Environment.Summary[] = PASSTHRU(query_join TO Database.{Environment.bank.DSN_NAME} VALUES(inref.accNo,inref.fromDate, inref.toDate));
+		IF EXISTS(Environment.bank[]) THEN
 
 
-		CREATE FIELD OutputRoot.JSON.Data;
-		DECLARE jsonRef REFERENCE TO OutputRoot.JSON.Data;
-		SET jsonRef.status = 'success';
-		SET jsonRef.BankCode = Environment.bank.BANK_CODE;
-		SET jsonRef.BankName = Environment.bank.BANK_NAME;
+			DECLARE query_join CHARACTER 'WITH ONE_HOLDER AS (
+			SELECT * FROM (
+			SELECT
+			ap.*,
+			ROW_NUMBER() OVER (PARTITION BY ap.ACCOUNT_NUMBER ORDER BY ap.HOLDER_TYPE) AS rn
+			FROM '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_PROFILE ap
+			)
+			WHERE rn = 1
+			)
+			SELECT
+			-- ACCOUNT_DISCOVERY
+			ad.BANK_ID,
+			ad.MOBILE_NO AS DISCOVERY_MOBILE,
+			ad.EMAIL AS DISCOVERY_EMAIL,
+			ad.ACCOUNT_NUMBER,
+			ad.ACC_HOLDER_NAME,
+			ad.ACC_TYPE AS DISCOVERY_ACC_TYPE,
+			ad.FI_TYPE,
+			-- ACCOUNT_PROFILE (only 1 holder)
+			oh.HOLDER_TYPE,
+			oh.HOLDER_NAME,
+			oh.DOB,
+			oh.MOBILE AS PROFILE_MOBILE,
+			oh.NOMINEE_STATUS,
+			oh.EMAIL AS PROFILE_EMAIL,
+			oh.PAN,
+			oh.CKYC_COMPLIANCE,
+			-- ACCOUNT_SUMMARY
+			asum.CURRENT_BALANCE,
+			asum.CURRENCY,
+			asum.EXCHANGE_RATE,
+			asum.BALANCE_DATETIME,
+			asum.ACC_TYPE AS SUMMARY_ACC_TYPE,
+			asum.BRANCH,
+			asum.FACILITY,
+			asum.IFSC_CODE,
+			asum.MICR_CODE,
+			asum.OPENING_DATE,
+			asum.OD_LIMIT,
+			asum.DRAWING_LIMIT,
+			asum.STATUS,
+			asum.PENDING_AMOUNT,
+			-- ACCOUNT_TRANSACTIONS
+			at.TXN_ID,
+			at.TXN_TYPE,
+			at.TXN_MODE,
+			at.AMOUNT,
+			at.CURRENT_BALANCE AS TXN_CURRENT_BALANCE,
+			at.TRANSACTION_TIMESTAMP,
+			at.VALUE_DATE,
+			at.NARRATION,
+			at.REFERENCE_ID,
+			at.START_DATE,
+			at.END_DATE
 
-		CREATE FIELD OutputRoot.JSON.Data.data.Account;
-		DECLARE accRef REFERENCE TO OutputRoot.JSON.Data.data.Account;
-		declare txnref REFERENCE to Environment.Summary[1];
+			FROM '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_DISCOVERY ad
+			LEFT JOIN ONE_HOLDER oh ON ad.ACCOUNT_NUMBER = oh.ACCOUNT_NUMBER
+			LEFT JOIN '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_SUMMARY asum ON ad.ACCOUNT_NUMBER = asum.ACCOUNT_NUMBER
+			LEFT JOIN '||Environment.bank.SCHEMA_NAME||'.'||'ACCOUNT_TRANSACTIONS at ON ad.ACCOUNT_NUMBER = at.ACCOUNT_NUMBER
 
-		SET accRef.type = 'deposit';
-		--SET accRef.Profile.Holders.type = txnref.HOLDER_TYPE;
-
-		CREATE FIELD accRef.Profile.Holders type JSON.Array;
-		DECLARE holref REFERENCE TO txnref;
-
-		declare j INTEGER 1;
-		--while LASTMOVE(holref) do
-		SET accRef.Profile.Holders.Item[j].type = holref.HOLDER_TYPE;
-		SET accRef.Profile.Holders.Item[j].Holder.name = holref.HOLDER_NAME;
-		SET accRef.Profile.Holders.Item[j].Holder.dob = holref.DOB;
-		SET accRef.Profile.Holders.Item[j].Holder.mobile = holref.PROFILE_MOBILE;
-		SET accRef.Profile.Holders.Item[j].Holder.nominee = holref.NOMINEE_STATUS;
-		SET accRef.Profile.Holders.Item[j].Holder.email = holref.PROFILE_EMAIL ;
-		SET accRef.Profile.Holders.Item[j].Holder.pan = holref.PAN;
-		SET accRef.Profile.Holders.Item[j].Holder.ckycCompliance = holref.CKYC_COMPLIANCE ;
-		SET j = j+1;
-		--MOVE holref NEXTSIBLING;
-		--end WHILE;
+			WHERE ad.ACCOUNT_NUMBER = ?
+			AND at.TRANSACTION_TIMESTAMP BETWEEN
+			TO_TIMESTAMP_TZ(?, ''YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'') AND
+			TO_TIMESTAMP_TZ(?, ''YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'')
+			ORDER BY at.TRANSACTION_TIMESTAMP DESC;
+			';
+			--SET Environment.bank[] = PASSTHRU(query_id TO Database.{dsn} VALUES(inref.bankId));
+			SET Environment.Summary[] = PASSTHRU(query_join TO Database.{Environment.bank.DSN_NAME} VALUES(inref.accNo,inref.fromDate, inref.toDate));
 
 
-		SET accRef.Summary.currentBalance = txnref.CURRENT_BALANCE;
-		SET accRef.Summary.currency = txnref.CURRENCY;
-		SET accRef.Summary.exchgeRate = txnref.EXCHANGE_RATE;
-		SET accRef.Summary.balanceDateTime = txnref.BALANCE_DATETIME;
-		SET accRef.Summary.type = txnref.SUMMARY_ACC_TYPE;
-		SET accRef.Summary.branch = txnref.BRANCH;
-		SET accRef.Summary.facility = txnref.FACILITY;
-		SET accRef.Summary.ifscCode = txnref.IFSC_CODE;
-		SET accRef.Summary.micrCode = txnref.MICR_CODE;
-		SET accRef.Summary.openingDate = txnref.OPENING_DATE;
-		SET accRef.Summary.currentODLimit = txnref.OD_LIMIT;
-		SET accRef.Summary.drawingLimit = txnref.DRAWING_LIMIT;
-		SET accRef.Summary.status = txnref.STATUS;
-		SET accRef.Summary.Pending.amount = CAST(txnref.PENDING_AMOUNT AS INTEGER);
+			IF EXISTS(Environment.Summary[]) THEN
 
-		SET accRef.Transactions.startDate = inref.fromDate;
-		SET accRef.Transactions.endDate = inref.toDate;
+				CREATE FIELD OutputRoot.JSON.Data;
+				DECLARE jsonRef REFERENCE TO OutputRoot.JSON.Data;
+				SET jsonRef.status = 'success';
+				SET jsonRef.BankCode = Environment.bank.BANK_CODE;
+				SET jsonRef.BankName = Environment.bank.BANK_NAME;
 
-		CREATE FIELD accRef.Transactions.Transaction type JSON.Array;
+				CREATE FIELD OutputRoot.JSON.Data.data.Account;
+				DECLARE accRef REFERENCE TO OutputRoot.JSON.Data.data.Account;
+				declare txnref REFERENCE to Environment.Summary[1];
+
+				SET accRef.type = 'deposit';
+				--SET accRef.Profile.Holders.type = txnref.HOLDER_TYPE;
+
+				CREATE FIELD accRef.Profile.Holders type JSON.Array;
+				DECLARE holref REFERENCE TO txnref;
+
+				declare j INTEGER 1;
+				--while LASTMOVE(holref) do
+				SET accRef.Profile.Holders.Item[j].type = holref.HOLDER_TYPE;
+				SET accRef.Profile.Holders.Item[j].Holder.name = holref.HOLDER_NAME;
+				SET accRef.Profile.Holders.Item[j].Holder.dob = holref.DOB;
+				SET accRef.Profile.Holders.Item[j].Holder.mobile = holref.PROFILE_MOBILE;
+				SET accRef.Profile.Holders.Item[j].Holder.nominee = holref.NOMINEE_STATUS;
+				SET accRef.Profile.Holders.Item[j].Holder.email = holref.PROFILE_EMAIL ;
+				SET accRef.Profile.Holders.Item[j].Holder.pan = holref.PAN;
+				SET accRef.Profile.Holders.Item[j].Holder.ckycCompliance = holref.CKYC_COMPLIANCE ;
+				SET j = j+1;
+				--MOVE holref NEXTSIBLING;
+				--end WHILE;
 
 
-		declare i INTEGER 1;
-		while LASTMOVE(txnref) do
-			SET accRef.Transactions.Transaction.Item[i].txnId = txnref.TXN_ID;
-			SET accRef.Transactions.Transaction.Item[i].type = txnref.TXN_TYPE;
-			SET accRef.Transactions.Transaction.Item[i].mode = txnref.TXN_MODE;
-			SET accRef.Transactions.Transaction.Item[i].amount = CAST(txnref.AMOUNT AS INTEGER);
-			SET accRef.Transactions.Transaction.Item[i].currentBalance = CAST(txnref.TXN_CURRENT_BALANCE AS INTEGER);
-			SET accRef.Transactions.Transaction.Item[i].transactionTimestamp = txnref.TRANSACTION_TIMESTAMP;
-			SET accRef.Transactions.Transaction.Item[i].valueDate = txnref.VALUE_DATE;
-			SET accRef.Transactions.Transaction.Item[i].narration = txnref.NARRATION;
-			SET accRef.Transactions.Transaction.Item[i].reference = txnref.REFERENCE_ID;
-			set i = i+1;
-			move txnref NEXTSIBLING;
-		end WHILE;
+				SET accRef.Summary.currentBalance = txnref.CURRENT_BALANCE;
+				SET accRef.Summary.currency = txnref.CURRENCY;
+				SET accRef.Summary.exchgeRate = txnref.EXCHANGE_RATE;
+				SET accRef.Summary.balanceDateTime = txnref.BALANCE_DATETIME;
+				SET accRef.Summary.type = txnref.SUMMARY_ACC_TYPE;
+				SET accRef.Summary.branch = txnref.BRANCH;
+				SET accRef.Summary.facility = txnref.FACILITY;
+				SET accRef.Summary.ifscCode = txnref.IFSC_CODE;
+				SET accRef.Summary.micrCode = txnref.MICR_CODE;
+				SET accRef.Summary.openingDate = txnref.OPENING_DATE;
+				SET accRef.Summary.currentODLimit = txnref.OD_LIMIT;
+				SET accRef.Summary.drawingLimit = txnref.DRAWING_LIMIT;
+				SET accRef.Summary.status = txnref.STATUS;
+				SET accRef.Summary.Pending.amount = CAST(txnref.PENDING_AMOUNT AS INTEGER);
+
+				SET accRef.Transactions.startDate = inref.fromDate;
+				SET accRef.Transactions.endDate = inref.toDate;
+
+				CREATE FIELD accRef.Transactions.Transaction type JSON.Array;
+
+
+				declare i INTEGER 1;
+				while LASTMOVE(txnref) do
+					SET accRef.Transactions.Transaction.Item[i].txnId = txnref.TXN_ID;
+					SET accRef.Transactions.Transaction.Item[i].type = txnref.TXN_TYPE;
+					SET accRef.Transactions.Transaction.Item[i].mode = txnref.TXN_MODE;
+					SET accRef.Transactions.Transaction.Item[i].amount = CAST(txnref.AMOUNT AS INTEGER);
+					SET accRef.Transactions.Transaction.Item[i].currentBalance = CAST(txnref.TXN_CURRENT_BALANCE AS INTEGER);
+					SET accRef.Transactions.Transaction.Item[i].transactionTimestamp = txnref.TRANSACTION_TIMESTAMP;
+					SET accRef.Transactions.Transaction.Item[i].valueDate = txnref.VALUE_DATE;
+					SET accRef.Transactions.Transaction.Item[i].narration = txnref.NARRATION;
+					SET accRef.Transactions.Transaction.Item[i].reference = txnref.REFERENCE_ID;
+					set i = i+1;
+					move txnref NEXTSIBLING;
+				end WHILE;
+
+			ELSE
+				SET OutputRoot.JSON.Data.status = 'error';
+				SET OutputRoot.JSON.Data.message = 'Invalid Account no ';
+			END IF;
+
+		ELSE
+			SET OutputRoot.JSON.Data.status = 'error';
+			SET OutputRoot.JSON.Data.message = 'Invalid Bank ID ';
+		END IF;
 		----------------------------------------------------------------------------------------------------------------
 		DECLARE data CHARACTER;
 		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);

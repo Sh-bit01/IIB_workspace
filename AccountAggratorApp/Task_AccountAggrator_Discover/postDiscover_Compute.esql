@@ -1,5 +1,15 @@
 
 
+
+
+
+
+
+
+
+
+
+
 DECLARE schema_name EXTERNAL CHARACTER;
 DECLARE table_name EXTERNAL CHARACTER;
 DECLARE config EXTERNAL CHARACTER;
@@ -33,7 +43,7 @@ CREATE COMPUTE MODULE postDiscover_Compute
 		DECLARE enc INTEGER InputRoot.Properties.Encoding;
 		DECLARE in_data CHARACTER;
 		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', '---------------------------Start---------------------------') INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', ' ---------------------------Start---------------------------') INTO var1;
 		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', in_data) INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
@@ -48,29 +58,42 @@ CREATE COMPUTE MODULE postDiscover_Compute
 		-- SET retryCount = retryCount + 1;
 		-- END;
 		SET Environment.bank[] = PASSTHRU(query_id TO Database.{dsn} VALUES(inref.bank_id));
-		SET query_AccDis = 'select * from '||Environment.bank.SCHEMA_NAME||'.'||Environment.bank.TABLE_NAME||' where BANK_ID=? and MOBILE_NO=?';
-		SET Environment.AccDis[] = PASSTHRU(query_AccDis TO Database.{Environment.bank.DSN_NAME} VALUES(Environment.bank.BANK_ID, inref.mobileNo));
-		-- END WHILE;
 
-		SET OutputRoot.JSON.Data.status = 'success';
-		SET OutputRoot.JSON.Data.BankCode = Environment.bank.BANK_CODE;
-		SET OutputRoot.JSON.Data.BankName = Environment.bank.BANK_NAME;
-		CREATE FIELD OutputRoot.JSON.Data.accounts type JSON.Array;
-		declare i INTEGER 1;
-		declare bankref REFERENCE to Environment.AccDis[1];
-		while LASTMOVE(bankref) do
-			set OutputRoot.JSON.Data.accounts.Item[i].accountNumber=bankref.ACCOUNT_NUMBER;
-			set OutputRoot.JSON.Data.accounts.Item[i].accountType=bankref.ACC_TYPE;
-			set OutputRoot.JSON.Data.accounts.Item[i].fitype=bankref.FI_TYPE;
-			set i = i+1;
-			move bankref NEXTSIBLING;
-		end WHILE;
+		IF EXISTS(Environment.bank[]) THEN
+
+			SET query_AccDis = 'select * from '||Environment.bank.SCHEMA_NAME||'.'||Environment.bank.TABLE_NAME||' where BANK_ID=? and MOBILE_NO=?';
+			SET Environment.AccDis[] = PASSTHRU(query_AccDis TO Database.{Environment.bank.DSN_NAME} VALUES(Environment.bank.BANK_ID, inref.mobileNo));
+			-- END WHILE;
+			IF EXISTS(Environment.AccDis[]) THEN
+
+				SET OutputRoot.JSON.Data.status = 'success';
+				SET OutputRoot.JSON.Data.BankCode = Environment.bank.BANK_CODE;
+				SET OutputRoot.JSON.Data.BankName = Environment.bank.BANK_NAME;
+				CREATE FIELD OutputRoot.JSON.Data.accounts type JSON.Array;
+				declare i INTEGER 1;
+				declare bankref REFERENCE to Environment.AccDis[1];
+				while LASTMOVE(bankref) do
+					set OutputRoot.JSON.Data.accounts.Item[i].accountNumber=bankref.ACCOUNT_NUMBER;
+					set OutputRoot.JSON.Data.accounts.Item[i].accountType=bankref.ACC_TYPE;
+					set OutputRoot.JSON.Data.accounts.Item[i].fitype=bankref.FI_TYPE;
+					set i = i+1;
+					move bankref NEXTSIBLING;
+				end WHILE;
+			ELSE
+				SET OutputRoot.JSON.Data.status = 'error';
+				SET OutputRoot.JSON.Data.message = 'Invalid Mobile No ';
+			END IF;
+
+		ELSE
+			SET OutputRoot.JSON.Data.status = 'error';
+			SET OutputRoot.JSON.Data.message = 'Invalid Bank ID ';
+		END IF;
 		--SET OutputRoot.JSON.Data.res[] = Environment.AccDis[];
 		----------------------------------------------------------------------------------------------------------------
 		DECLARE data CHARACTER;
 		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
 		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
-		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', '---------------------------END---------------------------') INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', ' ---------------------------END---------------------------') INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
 
