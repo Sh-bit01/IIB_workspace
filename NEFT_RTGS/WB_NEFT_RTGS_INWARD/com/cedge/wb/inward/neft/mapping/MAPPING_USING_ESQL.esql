@@ -1,0 +1,44 @@
+BROKER SCHEMA com.cedge.wb.inward.neft.mapping
+
+
+
+	CREATE FUNCTION MsdId_972 (IN cDateTime CHARACTER, IN MsgIdVar CHARACTER , OUT SCB CHARACTER) RETURNS CHARACTER
+	BEGIN
+		DECLARE newMsgId , cDate , cTime CHARACTER '';
+		SET cDate = REPLACE(LEFT(cDateTime , 10),'-' ,'');
+		SET cTime = REPLACE(SUBSTRING(cDateTime FROM 12 FOR 4),':' ,'');
+		SET MsgIdVar = RIGHT(MsgIdVar , 6);
+		SET newMsgId = cDate||cTime||MsgIdVar;
+		RETURN newMsgId;
+	END;
+	
+	CREATE FUNCTION UTR_16 (IN cDate CHARACTER, IN MsgIdVar CHARACTER) RETURNS CHARACTER
+	BEGIN
+		DECLARE jDate , getYear , doy , utr CHARACTER '';
+		SET getYear = SUBSTRING(cDate FROM 3 FOR 2);
+		DECLARE target DATE CAST(cDate AS DATE FORMAT 'yyyyMMdd');
+		SET doy = EXTRACT(DAYOFYEAR FROM target);
+		DECLARE len INTEGER (3 - (LENGTH(doy)));
+		IF len<3 THEN
+			SET jDate = REPLICATE('0' , len);
+			SET jDate = getYear||jDate||doy;
+		ELSE
+			SET jDate = getYear||doy;
+		END IF;
+			SET utr = OVERLAY(MsgIdVar PLACING jDate FROM 6 for 11);
+		RETURN utr;
+	END;
+	
+	CREATE FUNCTION AmtDotChange (in Val CHARACTER ) RETURNS CHARACTER
+	BEGIN
+		 DECLARE amt CHARACTER '';
+		 SET amt = TRANSLATE(Val,'.',',') ;
+		RETURN amt;
+	END;
+
+		CREATE FUNCTION XUTR (in Utr CHARACTER ) RETURNS CHARACTER
+	BEGIN
+		 DECLARE amt CHARACTER '';
+		 SET amt = REPLACE(Utr,'/XUTR/','');
+		RETURN amt;
+	END;

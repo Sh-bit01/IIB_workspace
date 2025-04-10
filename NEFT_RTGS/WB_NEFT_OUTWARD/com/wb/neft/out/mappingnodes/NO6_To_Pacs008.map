@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.map.neft.out" version="8.0.5.0" xmlns:map="com.map.neft.out">
+    <input path="/N06/OUTWARD.xsd"/>
+    <output path="/IFTNEFT_Pacs00X.xsd"/>
+    <namespaces>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="NO6_To_Pacs008">
+        <input path="mb:msg(N06,assembly,DFDL,Properties)" var="ComIbmMessageAssembly_N06"/>
+        <output path="mb:msg(RequestPayload,assembly,XMLNSC,Properties)" var="ComIbmMessageAssembly_RequestPayload"/>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/Properties"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/Properties"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/SENDERADDRESS"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/Fr/FIId/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/RECEIVERADDRESS"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/To/FIId/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:head.001.001.02">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/@AppHdr1"/>
+        </assign>
+        <assign value="http://www.w3.org/2000/09/xmldsig#">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/@AppHdr3"/>
+        </assign>
+        <assign value="pacs.008.001.09">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/MsgDefIdr"/>
+        </assign>
+        <assign value="NEFTFIToFICustomerCredit">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/BizSvc"/>
+        </assign>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.09">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/@Document1"/>
+        </assign>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/TOTALNUMBEROFMESSAGES"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/NbOfTxs"/>
+        </move>
+        <function ref="fn:replace">
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/SUMOFAMOUNTS" var="SUMOFAMOUNTS"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/TtlIntrBkSttlmAmt/text()"/>
+            <param name="input" value="$SUMOFAMOUNTS"/>
+            <param name="pattern" value="&quot;,&quot;"/>
+            <param name="replacement" value="&quot;.&quot;"/>
+        </function>
+        <assign value="INR">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/TtlIntrBkSttlmAmt/@Ccy"/>
+        </assign>
+        <expression>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/VALUEDATE" var="VALUEDATE"/>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/ORIGINATINGTIME" var="ORIGINATINGTIME1"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/CreDtTm"/>
+            <code lang="xpath">fn:concat( fn:substring( $VALUEDATE,0 ,5 ),'-',fn:substring( $VALUEDATE,5 ,2 ),'-',fn:substring( $VALUEDATE,7 ,2 ),'T' ,fn:substring( $ORIGINATINGTIME1,0 ,3 ),':',fn:substring( $ORIGINATINGTIME1,3 ,2 ),':00')</code>
+        </expression>
+        <assign value="CLRG">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/SttlmInf/SttlmMtd"/>
+        </assign>
+        <function ref="fn:concat">
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/TRANSACTIONREFERENCENUMBER" var="TRANSACTIONREFERENCENUMBER"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtId/EndToEndId"/>
+            <param name="string1" value="'/XUTR/'"/>
+            <param name="string2" value="$TRANSACTIONREFERENCENUMBER"/>
+        </function>
+        <assign value="HIGH">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtTpInf/InstrPrty"/>
+        </assign>
+        <assign value="INR">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/IntrBkSttlmAmt/@Ccy"/>
+        </assign>
+        <function ref="fn:replace">
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/AMOUNT" var="AMOUNT"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/IntrBkSttlmAmt/text()"/>
+            <param name="input" value="$AMOUNT"/>
+            <param name="pattern" value="&quot;,&quot;"/>
+            <param name="replacement" value="&quot;.&quot;"/>
+        </function>
+        <assign value="SLEV">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/ChrgBr"/>
+        </assign>
+        <assign value="SDVA">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtTpInf/SvcLvl/Cd"/>
+        </assign>
+        <assign value="TRF">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtTpInf/LclInstrm/Cd"/>
+        </assign>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SEDINGCUSTOMERACCOUNTNAME"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/Nm"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/ORIGINATOROFREMITTANCE/LINE1"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/PstlAdr/AdrLine"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/ORIGINATOROFREMITTANCE/LINE2"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/PstlAdr/AdrLine"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/ORIGINATOROFREMITTANCE/LINE3"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/PstlAdr/AdrLine"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/ORIGINATOROFREMITTANCE/LINE4"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/PstlAdr/AdrLine"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SENDINGCUSTOMERACCOUNTNUMBER" var="SENDINGCUSTOMERACCOUNTNUMBER"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/DbtrAcct/Id/Othr/Id"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SENDINGBRANCHIFSC"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/DbtrAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/BENEFICIARYBRANCHSIFSC"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/CdtrAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/BENEFICIARYCUSTOMERACNAME"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/Nm"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/BENEFICIARYCUSTOMERADDRESS/LINE1"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/PstlAdr/AdrLine"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/BENEFICIARYCUSTOMERADDRESS/LINE2"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/PstlAdr/AdrLine"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/BENEFICIARYCUSTOMERADDRESS/LINE3"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/PstlAdr/AdrLine"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/BENEFICIARYCUSTOMERADDRESS/LINE4"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/PstlAdr/AdrLine"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/BENEFICIARYCUSTOMERACNUMBER"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/CdtrAcct/Id/Othr/Id"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/BENEFICIARYCUSTOMERACTYPE"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/CdtrAcct/Tp/Cd"/>
+        </move>
+        <condition>
+            <if>
+                <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SENDINGCUSTOMERMOBILE_EMAILID1" var="SENDINGCUSTOMERMOBILE_EMAILID1"/>
+                <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/CtctDtls/MobNb" var="MobNb1"/>
+                <test lang="xpath">$SENDINGCUSTOMERMOBILE_EMAILID1/EML_SMS = 'SMS'</test>
+                <move>
+                    <input path="$SENDINGCUSTOMERMOBILE_EMAILID1/VALUE" var="VALUE"/>
+                    <output path="$MobNb1/."/>
+                </move>
+            </if>
+            <else>
+                <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SENDINGCUSTOMERMOBILE_EMAILID1/VALUE" var="VALUE2"/>
+                <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/CtctDtls/EmailAdr"/>
+                <move>
+                    <input path="$VALUE2/." var="VALUE1"/>
+                    <output path="."/>
+                </move>
+            </else>
+        </condition>
+        <expression>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/ORIGINATINGDATE" var="ORIGINATINGDATE"/>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/ORIGINATINGTIME" var="ORIGINATINGTIME"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/CreDt"/>
+            <code lang="xpath">fn:concat( fn:substring( $ORIGINATINGDATE,0 ,5 ),'-',fn:substring( $ORIGINATINGDATE,5 ,2 ),'-',fn:substring( $ORIGINATINGDATE,7 ,2 ),'T' ,fn:substring( $ORIGINATINGTIME,0 ,3 ),':',fn:substring( $ORIGINATINGTIME,3 ,2 ),':00Z')</code>
+        </expression>
+        <expression>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/SENDERADDRESS" var="SENDERADDRESS"/>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/ORIGINATINGDATE" var="ORIGINATINGDATE1"/>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/UNIQUETRANSACTIONREF" var="UNIQUETRANSACTIONREF"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/BizMsgIdr" var="BizMsgIdr"/>
+            <code lang="xpath">fn:concat( fn:substring($SENDERADDRESS,0 ,5 ),$ORIGINATINGDATE1 ,'5',fn:substring($UNIQUETRANSACTIONREF ,8 ,9 ))</code>
+        </expression>
+        <expression>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/UNIQUETRANSACTIONREF" var="UNIQUETRANSACTIONREF1"/>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/ORIGINATINGDATE" var="ORIGINATINGDATE2"/>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/SENDERADDRESS" var="SENDERADDRESS1"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/MsgId"/>
+            <code lang="xpath">fn:concat( fn:substring($SENDERADDRESS1,0 ,5 ),$ORIGINATINGDATE2 ,'5',fn:substring($UNIQUETRANSACTIONREF1 ,8 ,9 ))</code>
+        </expression>
+        <expression>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/TRANSACTIONREFERENCENUMBER" var="TRANSACTIONREFERENCENUMBER1"/>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/VALUEDATE" var="VALUEDATE1"/>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/SENDERADDRESS" var="SENDERADDRESS2"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtId/TxId"/>
+            <code lang="xpath">fn:concat( fn:substring($SENDERADDRESS2,0 ,5 ),'N','5',$VALUEDATE1,fn:substring($TRANSACTIONREFERENCENUMBER1 ,9 ,8 ))</code>
+        </expression>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:Header">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/AppHdr/@AppHdr2"/>
+        </assign>
+        <expression>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/ORIGINATINGDATE" var="ORIGINATINGDATE3"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/IntrBkSttlmDt"/>
+            <code lang="xpath">fn:concat( fn:substring( $ORIGINATINGDATE3,0 ,5 ),'-',fn:substring( $ORIGINATINGDATE3,5 ,2 ),'-',fn:substring( $ORIGINATINGDATE3,7 ,2 ))</code>
+        </expression>
+        <condition>
+            <if>
+                <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SENDINGCUSTOMERACCOUNTTYPE" var="SENDINGCUSTOMERACCOUNTTYPE"/>
+                <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtTpInf/CtgyPurp/Cd"/>
+                <test lang="xpath">$SENDINGCUSTOMERACCOUNTTYPE = '41'</test>
+                <assign value="FCRA">
+                    <output path="."/>
+                </assign>
+            </if>
+            <elseif>
+                <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SENDINGCUSTOMERACCOUNTTYPE" var="SENDINGCUSTOMERACCOUNTTYPE1"/>
+                <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtTpInf/CtgyPurp/Cd"/>
+                <test lang="">$SENDINGCUSTOMERACCOUNTTYPE1 = '51'</test>
+                <assign value="INDNPL">
+                    <output path="."/>
+                </assign>
+            </elseif>
+            <else>
+                <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtTpInf/CtgyPurp/Cd"/>
+                <assign value="EFT">
+                    <output path="."/>
+                </assign>
+            </else>
+        </condition>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SENDINGCUSTOMERACCOUNTTYPE"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/DbtrAcct/Tp/Cd"/>
+            <annotation key="$NON-PERSISTENT" value="2"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_N06/N06/Header/SENDERADDRESS"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/InstgAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <assign value="RBIP0NEFTSC">
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/GrpHdr/InstdAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </assign>
+        <local>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/SENDERTIRECEIVERINFORMATION" var="SENDERTIRECEIVERINFORMATION"/>
+            <input auxiliary="true" path="$ComIbmMessageAssembly_N06/N06/Body/BATCHTIME" var="BATCHTIME2"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf"/>
+            <if>
+                <input path="$BATCHTIME2/." var="BATCHTIME1"/>
+                <output path="Ustrd"/>
+                <test lang="xpath">$BATCHTIME1!=''</test>
+                <function ref="fn:concat">
+                    <input path="$BATCHTIME1/." var="BATCHTIME1"/>
+                    <output path="."/>
+                    <param name="string1" value="&quot;BatchId:&quot;"/>
+                    <param name="string2" value="$BATCHTIME1"/>
+                </function>
+            </if>
+            <move>
+                <input path="$SENDERTIRECEIVERINFORMATION/LINE2"/>
+                <output path="Ustrd"/>
+                <annotation key="$NON-PERSISTENT" value="1"/>
+            </move>
+            <move>
+                <input path="$SENDERTIRECEIVERINFORMATION/LINE3"/>
+                <output path="Ustrd"/>
+                <annotation key="$NON-PERSISTENT" value="1"/>
+            </move>
+            <move>
+                <input path="$SENDERTIRECEIVERINFORMATION/LINE1"/>
+                <output path="Ustrd"/>
+                <annotation key="$NON-PERSISTENT" value="1"/>
+            </move>
+        </local>
+        <local>
+            <input path="$ComIbmMessageAssembly_N06/N06/Body/record/ORIGINATOROFREMITTANCE"/>
+            <output path="$ComIbmMessageAssembly_RequestPayload/RequestPayload/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/InstrForCdtrAgt"/>
+            <function ref="concat">
+                <input path="LINE1" var="LINE1"/>
+                <input path="LINE2" var="LINE2"/>
+                <input path="LINE3" var="LINE3"/>
+                <input path="LINE4" var="LINE4"/>
+                <output path="InstrInf"/>
+                <param name="input" value="$LINE1"/>
+            </function>
+        </local>
+    </mappingDeclaration>
+</mappingRoot>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.wb.rtgs" version="8.0.4.0" xmlns:map="com.cedge.wb.rtgs">
+    <input path="/RTGS_XML/iso/std/iso/_20022/tech/xsd/admi00400101/admi.004.001.01.mxsd" var="var1"/>
+    <input path="/RTGS_XML/BankDetails.mxsd" var="var"/>
+    <input path="/RTGS_XML/BankDetails.mxsd" var="var2"/>
+    <output path="/N06/INWARD.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="urn:iso:std:iso:20022:tech:xsd:admi.004.001.01"/>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="ADMI00400101_TO_R90">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:admi.004.001.01" path="$var1/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)">
+            <cast path="MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(R90,assembly,DFDL,Properties)"/>
+        <move>
+            <input path="Properties"/>
+            <output path="Properties"/>
+            <override>
+                <assign value="{}:R90">
+                    <output path="Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <assign value="RTG">
+            <output path="R90/header/BankApp_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="R90/header/Message_Identifier"/>
+        </assign>
+        <assign value="I">
+            <output path="R90/header/IO_Identifier"/>
+        </assign>
+        <assign value="298">
+            <output path="R90/header/Message_Type"/>
+        </assign>
+        <assign value="R90">
+            <output path="R90/header/SubMessage_Type"/>
+        </assign>
+        <assign value="2">
+            <output path="R90/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="R90/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="R90/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <assign value="000">
+            <output path="R90/header/Obsolescence_Period"/>
+        </assign>
+        <assign value="2">
+            <output path="R90/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="RTG">
+            <output path="R90/header/Service_Identifier"/>
+        </assign>
+        <assign value="2">
+            <output path="R90/header/Testing_Training_Flag"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R90/header/MUR"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R90/header/Unique_Transaction_Number"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R90/body/Transaction_Reference_Number"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateDate"/>
+            <output path="R90/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateTime"/>
+            <output path="R90/header/Originate_Time"/>
+        </move>
+        <assign value="99">
+            <output path="R90/header/RTGS_Priority"/>
+        </assign>
+        <assign value="000000000">
+            <output path="R90/header/Sequence_Number"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="R90/header/Filler"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/EvtParam"/>
+            <output path="R90/body/Acknowledgement_Indicator"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/SdrIfsc"/>
+            <output path="R90/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/RcvrIfsc"/>
+            <output path="R90/header/Receiver_IFSC"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/Xutr"/>
+            <output path="R90/body/Reason_Code"/>
+        </move>
+        <function ref="fn:substring">
+            <input path="Document/SysEvtNtfnV01/EvtInf/EvtDesc" var="EvtDesc"/>
+            <output path="R90/body/Reason_Description"/>
+            <param name="sourceString" value="$EvtDesc"/>
+            <param name="startLocation" value="1"/>
+            <param name="length" value="35"/>
+        </function>
+    </mappingDeclaration>
+</mappingRoot>

@@ -1,0 +1,12 @@
+
+
+Importing file: D:\shared\Ved\RTGS_RRB(ISO_2000)\ng-rtgs3\NG-RTGS3\camt.054.001.03.xsd
+
+
+Elapsed time processing this message definition file: 0.422 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.wb.rtgs" version="8.0.4.0" xmlns:map="com.cedge.wb.rtgs">
+    <input path="/RTGS_XML/iso/std/iso/_20022/tech/xsd/pacs00900103/pacs.009.001.03.mxsd" var="var1"/>
+    <input path="/RTGS_XML/BankDetails.mxsd" var="var"/>
+    <input path="/RTGS_XML/BankDetails.mxsd" var="var2"/>
+    <output path="/N06/INWARD.xsd"/>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="PACS00900103_TO_R42">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:pacs.009.001.03" path="$var1/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)">
+            <cast path="MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(R42,assembly,DFDL,Properties)"/>
+        <move>
+            <input path="Properties"/>
+            <output path="Properties"/>
+            <override>
+                <assign value="{}:R42">
+                    <output path="Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <assign value="RTG">
+            <output path="R42/header/BankApp_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="R42/header/Message_Identifier"/>
+        </assign>
+        <assign value="I">
+            <output path="R42/header/IO_Identifier"/>
+        </assign>
+        <assign value="298">
+            <output path="R42/header/Message_Type"/>
+        </assign>
+        <assign value="R42">
+            <output path="R42/header/SubMessage_Type"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/SdrIfsc"/>
+            <output path="R42/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/RcvrIfsc"/>
+            <output path="R42/header/Receiver_IFSC"/>
+        </move>
+        <assign value="2">
+            <output path="R42/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="R42/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="R42/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <assign value="000">
+            <output path="R42/header/Obsolescence_Period"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R42/header/MUR"/>
+        </move>
+        <assign value="2">
+            <output path="R42/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="RTG">
+            <output path="R42/header/Service_Identifier"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateDate"/>
+            <output path="R42/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateTime"/>
+            <output path="R42/header/Originate_Time"/>
+        </move>
+        <assign value="2">
+            <output path="R42/header/Testing_Training_Flag"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R42/header/Unique_Transaction_Number"/>
+        </move>
+        <assign value="00">
+            <output path="R42/header/RTGS_Priority"/>
+        </assign>
+        <assign value="000000000">
+            <output path="R42/header/Sequence_Number"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="R42/header/Filler"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R42/body/Transaction_Reference_Number"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/Amount"/>
+            <output path="R42/body/ValueDate_Currency_Amount"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R42/body/Related_Reference"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/SdrIfsc"/>
+            <output path="R42/body/Senders_Correspondent"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/RcvrIfsc"/>
+            <output path="R42/body/Beneficiary_Institution"/>
+        </move>
+        <move>
+            <input path="Document/FinInstnCdtTrf/CdtTrfTxInf[1]/RmtInf/Ustrd[1]"/>
+            <output path="R42/body/Sender_Receiver_Info/Line1"/>
+        </move>
+        <move>
+            <input path="Document/FinInstnCdtTrf/CdtTrfTxInf[1]/RmtInf/Ustrd[2]"/>
+            <output path="R42/body/Sender_Receiver_Info/Line2"/>
+        </move>
+        <move>
+            <input path="Document/FinInstnCdtTrf/CdtTrfTxInf[1]/RmtInf/Ustrd[3]"/>
+            <output path="R42/body/Sender_Receiver_Info/Line3"/>
+        </move>
+        <move>
+            <input path="Document/FinInstnCdtTrf/CdtTrfTxInf[1]/RmtInf/Ustrd[4]"/>
+            <output path="R42/body/Sender_Receiver_Info/Line4"/>
+        </move>
+        <move>
+            <input path="Document/FinInstnCdtTrf/CdtTrfTxInf[1]/RmtInf/Ustrd[5]"/>
+            <output path="R42/body/Sender_Receiver_Info/Line5"/>
+        </move>
+        <move>
+            <input path="Document/FinInstnCdtTrf/GrpHdr/MsgId"/>
+            <output path="R42/body/MsgId"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

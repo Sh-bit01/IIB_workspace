@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.map.neft.out" version="8.0.5.0" xmlns:map="com.map.neft.out">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">      
+    <xsd:element name="temp">      
+    <xsd:complexType>      
+      <xsd:sequence>      
+        <xsd:element name="OrgnlMsgId" type="xsd:string"/>      
+        <xsd:element name="OrgnlTxId" type="xsd:string"/>      
+      </xsd:sequence>      
+    </xsd:complexType>      
+  </xsd:element>      
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/N06/OUTWARD.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/IFTNEFT_Pacs00X.xsd"/>
+    <namespaces>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="N10_To_Camt59">
+        <input path="$var1/mb:msg(N10,assembly,DFDL,LocalEnvironment,Properties)" var="MessageAssembly">
+            <cast castType="userDefined" path="$MessageAssembly/LocalEnvironment/Variables/any" qualifier="temp" ref="var"/>
+        </input>
+        <output path="mb:msg(RequestPayload,assembly,XMLNSC,Properties)" var="MessageAssembly1"/>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly1/Properties"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/N10/Header/SENDERADDRESS"/>
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/Fr/FIId/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/N10/Header/RECEIVERADDRESS"/>
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/To/FIId/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <assign value="camt.059.001.06">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/MsgDefIdr"/>
+        </assign>
+        <assign value="NEFTCustomerCreditNotification">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/BizSvc"/>
+        </assign>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:camt.059.001.06">
+            <output path="$MessageAssembly1/RequestPayload/Document/@Document1"/>
+        </assign>
+        <move>
+            <input path="$MessageAssembly/N10/Body/record/IFSC_OF_ORIGINATOR_OF_REMITTANCE"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/NtfctnToRcvStsRpt/OrgnlNtfctnAndSts/OrgnlNtfctnRef/DbtrAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <function ref="fn:concat">
+            <input path="$MessageAssembly/N10/Body/record/RELATED_REFERENCE" var="RELATED_REFERENCE"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/NtfctnToRcvStsRpt/OrgnlNtfctnAndSts/OrgnlNtfctnRef/OrgnlItmAndSts/OrgnlEndToEndId"/>
+            <param name="string1" value="&quot;/XUTR/&quot;"/>
+            <param name="string2" value="$RELATED_REFERENCE"/>
+        </function>
+        <assign value="RCVD">
+            <output path="$MessageAssembly1/RequestPayload/Document/NtfctnToRcvStsRpt/OrgnlNtfctnAndSts/OrgnlNtfctnRef/OrgnlItmAndSts/ItmSts"/>
+        </assign>
+        <expression>
+            <input path="$MessageAssembly/N10/Body/record/AMT_CREDITED/LINE1" var="LINE1"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/NtfctnToRcvStsRpt/OrgnlNtfctnAndSts/OrgnlNtfctnRef/OrgnlItmAndSts/XpctdValDt"/>
+            <code lang="xpath">fn:concat( fn:substring( $LINE1 ,0 ,5 ),'-',fn:substring( $LINE1, 5 ,2 ),'-',fn:substring( $LINE1, 7 ,2 ) ) </code>
+        </expression>
+        <expression>
+            <input path="$MessageAssembly/N10/Header/ORIGINATINGDATE" var="ORIGINATINGDATE"/>
+            <input path="$MessageAssembly/N10/Header/ORIGINATINGTIME" var="ORIGINATINGTIME"/>
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/CreDt"/>
+            <code lang="xpath">fn:concat( fn:substring( $ORIGINATINGDATE,0 ,5 ),'-',fn:substring( $ORIGINATINGDATE,5 ,2 ),'-',fn:substring( $ORIGINATINGDATE,7 ,2 ),'T' ,fn:substring( $ORIGINATINGTIME,0 ,3 ),':',fn:substring( $ORIGINATINGTIME,3 ,2 ),':00Z')</code>
+        </expression>
+        <expression>
+            <input path="$MessageAssembly/N10/Header/ORIGINATINGDATE" var="ORIGINATINGDATE1"/>
+            <input path="$MessageAssembly/N10/Header/ORIGINATINGTIME" var="ORIGINATINGTIME1"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/NtfctnToRcvStsRpt/GrpHdr/CreDtTm"/>
+            <code lang="xpath">fn:concat( fn:substring( $ORIGINATINGDATE1,0 ,5 ),'-',fn:substring( $ORIGINATINGDATE1,5 ,2 ),'-',fn:substring( $ORIGINATINGDATE1,7 ,2 ),'T' ,fn:substring( $ORIGINATINGTIME1,0 ,3 ),':',fn:substring( $ORIGINATINGTIME1,3 ,2 ),':00')</code>
+        </expression>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:head.001.001.02">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/@AppHdr1"/>
+        </assign>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:Header">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/@AppHdr2"/>
+        </assign>
+        <assign value="http://www.w3.org/2000/09/xmldsig#">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/@AppHdr3"/>
+        </assign>
+        <expression>
+            <input path="$MessageAssembly/N10/Header/SENDERADDRESS" var="SENDERADDRESS"/>
+            <input path="$MessageAssembly/N10/Header/ORIGINATINGDATE" var="ORIGINATINGDATE2"/>
+            <input path="$MessageAssembly/N10/Header/UNIQUETRANSACTIONREF" var="UNIQUETRANSACTIONREF"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/NtfctnToRcvStsRpt/GrpHdr/MsgId"/>
+            <code lang="xpath">fn:concat( fn:substring($SENDERADDRESS,0 ,5 ), $ORIGINATINGDATE2,'5',fn:substring($UNIQUETRANSACTIONREF ,8 ,9 ))</code>
+        </expression>
+        <expression>
+            <input path="$MessageAssembly/N10/Header/SENDERADDRESS" var="SENDERADDRESS1"/>
+            <input path="$MessageAssembly/N10/Header/ORIGINATINGDATE" var="ORIGINATINGDATE3"/>
+            <input path="$MessageAssembly/N10/Header/UNIQUETRANSACTIONREF" var="UNIQUETRANSACTIONREF1"/>
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/BizMsgIdr"/>
+            <code lang="xpath">fn:concat( fn:substring($SENDERADDRESS1,0 ,5 ),$ORIGINATINGDATE3 ,'5',fn:substring($UNIQUETRANSACTIONREF1 ,8 ,9 ))</code>
+        </expression>
+        <move>
+            <input path="$MessageAssembly/LocalEnvironment/Variables/temp/OrgnlTxId"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/NtfctnToRcvStsRpt/OrgnlNtfctnAndSts/OrgnlNtfctnRef/OrgnlItmAndSts/OrgnlItmId"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

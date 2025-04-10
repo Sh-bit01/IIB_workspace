@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.rrb.inward.map.neft" version="8.0.5.0" xmlns:map="com.cedge.rrb.inward.map.neft">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
+    <xsd:element name="BankDetails"> 
+    <xsd:complexType> 
+      <xsd:sequence> 
+        <xsd:element name="UTR" type="xsd:string"/> 
+        <xsd:element name="cDate" type="xsd:string"/> 
+        <xsd:element name="cTime" type="xsd:string"/> 
+      </xsd:sequence> 
+    </xsd:complexType> 
+  </xsd:element> 
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/ISO/pacs.002.001.11.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/N06/INWARD.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="urn:iso:std:iso:20022:tech:xsd:pacs.002.001.11"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="Pacs002_TO_N09">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:pacs.002.001.11" path="$var1/mb:msg(Document,assembly,XMLNSC,Properties,MQMD,MQRFH2)" var="ComIbmMessageAssembly_Document">
+            <cast castType="userDefined" path="$ComIbmMessageAssembly_Document/MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(N09,assembly,DFDL,Properties)" var="ComIbmMessageAssembly_N09"/>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Properties"/>
+            <output path="$ComIbmMessageAssembly_N09/Properties"/>
+            <override>
+                <assign value="{}:N09">
+                    <output path="$ComIbmMessageAssembly_N09/Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cDate"/>
+            <output path="$ComIbmMessageAssembly_N09/N09/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cTime"/>
+            <output path="$ComIbmMessageAssembly_N09/N09/header/Originate_Time"/>
+        </move>
+        <assign value="N">
+            <output path="$ComIbmMessageAssembly_N09/N09/body/Status"/>
+        </assign>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Document/FIToFIPmtStsRpt/TxInfAndSts/StsRsnInf/Rsn/Cd"/>
+            <output path="$ComIbmMessageAssembly_N09/N09/body/Reason"/>
+        </move>
+        <assign value="FAILED BY N03">
+            <output path="$ComIbmMessageAssembly_N09/N09/body/Description"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

@@ -1,0 +1,103 @@
+BROKER SCHEMA com.cedge.wb.neft.out
+
+
+CREATE COMPUTE MODULE WB_NEFT_OUTWARD_RETRY
+	DECLARE CONFIG EXTERNAL CHARACTER;
+	DECLARE DSN EXTERNAL CHARACTER;
+	DECLARE PROP_LOC EXTERNAL CHARACTER;
+	DECLARE NEFT_OUT_PAYLOAD EXTERNAL CHARACTER ;
+	
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	DECLARE rc BOOLEAN;
+		CALL initLog4j(CONFIG) INTO rc;
+		CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','-------------------------------------START-------------------------------------') INTO rc;
+		DECLARE bool BOOLEAN ;
+		SET bool = fetchRecord();
+		RETURN bool;
+	END;
+
+	CREATE PROCEDURE fetchRecord() RETURNS BOOLEAN 
+	BEGIN
+	   DECLARE creationTime CHARACTER;
+	   DECLARE rc BOOLEAN;
+	   DECLARE DB ROW;
+	   SET creationTime = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyyMMdd') || '%';
+	   DECLARE Qry CHARACTER 'SELECT * FROM NEFT_OUT_PAYLOAD  WHERE RETRY_COUNT <= 6 AND RETRY_COUNT >= 1 AND STATUS = ''F'' AND TXN_REF_NUM LIKE ?'; 
+	   SET DB.Details[] = PASSTHRU(Qry TO Database.{DSN} VALUES(creationTime));
+	   SET Environment.DB.Details[] = DB.Details[]; 	   	
+       DECLARE RecordRef REFERENCE TO Environment.DB.Details[1];
+       
+       DECLARE bool BOOLEAN LASTMOVE(RecordRef) ;
+       
+       IF bool = FALSE THEN
+       CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','Record Not Found in the NEFT_OUT_PAYLOAD ') INTO rc;
+       CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','-------------------------------------END-------------------------------------') INTO rc;
+       RETURN FALSE ;
+       END IF;
+       
+       WHILE LASTMOVE(RecordRef) DO
+       	IF RecordRef.RETRY_COUNT = 6 THEN
+       	   DECLARE refNum CHARACTER RecordRef.TXN_REF_NUM;
+	       CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','Retry Mechanism count reached to 6 for the TXN_REF_NUM : '||refNum) INTO rc;
+       		    
+	       DECLARE toEmail,ccEmail,fromEmail,smtpServer CHARACTER '';
+		   CALL getMailProp(PROP_LOC,toEmail,ccEmail,fromEmail,smtpServer);
+		   
+		   DECLARE CR CHARACTER CAST(CAST('X''0A''' AS BLOB) AS CHARACTER CCSID 1208);
+		   DECLARE TRAN_REF_NO CHARACTER refNum ;
+	       SET TRAN_REF_NO = SUBSTRING(TRAN_REF_NO FROM 9) ;
+	       DECLARE exc CHARACTER RecordRef.EXCEPTION_DESCRIPTION;
+	       		    
+	       DECLARE body CHARACTER 'Dear Team,'||CR||' We have Retried for 6 times for the mentioned TRAN_REF_NO : '||TRAN_REF_NO||'.But still it is not processing , Kindly look into issue.'
+	       ||CR||CR||' Exception Description Details are : '|| exc; 
+         	
+         	SET Environment.mailSubject = 'Retry Notification Regarding Gujrath NEFT Outward Interface';	
+	       	SET Environment.mailBody = body; 
+	        SET Environment.toEmail = toEmail;
+	       	SET Environment.ccEmail = ccEmail;
+	       	SET Environment.fromEmail =fromEmail;
+	       	SET Environment.smtpServer = smtpServer;
+	       	SET OutputRoot.MQMD.Priority = CAST(RecordRef.RETRY_COUNT AS INTEGER );
+	       
+	        UPDATE Database.NEFT_OUT_PAYLOAD as T
+			SET
+			RETRY_COUNT = RecordRef.RETRY_COUNT+1,
+			LAST_MOD_TIME = CURRENT_TIMESTAMP
+			WHERE
+			T.TXN_REF_NUM = refNum;
+		
+			CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','Email Configuration Details ') INTO rc;
+			CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','TO Mail :'||toEmail) INTO rc;
+			CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','CC Mail :'||ccEmail) INTO rc;
+			CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','From Mail :'||fromEmail) INTO rc;
+			CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','Smtp Server :'||smtpServer) INTO rc;	
+	        PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+	        CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','-------------------------------------END-------------------------------------') INTO rc;
+	       	RETURN FALSE ;
+      END IF;
+      
+       		IF RecordRef.RETRY_COUNT < 6 THEN
+       			SET Environment.mailSubject = 'Retry Notification Regarding WB NEFT Outward Interface';
+       			DECLARE refNum CHARACTER RecordRef.TXN_REF_NUM;
+       			CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','TXN_REF_NUM : '||refNum) INTO rc;
+       			SET refNum = SUBSTRING(refNum FROM 9);
+       		END IF;
+       			DECLARE bl BLOB CAST(RecordRef.PAYLOAD AS BLOB CCSID 819);
+       			DECLARE retryCount CHARACTER RecordRef.RETRY_COUNT ;
+       			SET OutputRoot.MQMD.Priority = CAST(RecordRef.RETRY_COUNT AS INTEGER );
+       			CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','Retrying the transaction for ' || retryCount || ' time') INTO rc;
+       			SET OutputRoot.BLOB.BLOB = bl;
+  				CALL log4j_1_1('DB_RETRY', 'WB_NEFT_OUTWARD_RETRY', 'WARN','-------------------------------------END-------------------------------------') INTO rc;
+       			PROPAGATE TO TERMINAL 'out' DELETE NONE;
+       			MOVE RecordRef NEXTSIBLING;
+       END WHILE; 
+     
+       RETURN FALSE ; 
+	END;
+	
+	CREATE FUNCTION  getMailProp( IN P1 CHARACTER, OUT P2 CHARACTER,OUT P3 CHARACTER, OUT P4 CHARACTER,OUT P5 CHARACTER)
+	LANGUAGE JAVA 
+ 	EXTERNAL NAME "com.cedge.wb.neft.out.WB_NEFT_OUTWARD_JavaCompute.getMailProp";
+END MODULE;
+	

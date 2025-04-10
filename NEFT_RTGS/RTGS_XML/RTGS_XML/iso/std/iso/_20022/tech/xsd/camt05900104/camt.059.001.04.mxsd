@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:iso:std:iso:20022:tech:xsd:camt.059.001.04" xmlns="urn:iso:std:iso:20022:tech:xsd:camt.059.001.04">
+    <xs:element name="Document" type="Document">
+    <xs:annotation>
+      <xs:appinfo source="WMQI_APPINFO">
+        <MRMessage messageDefinition="/0/Document;XSDElementDeclaration$MRObject"/>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+    <xs:complexType name="AccountIdentification4Choice">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="FinInstnId" type="GenericAccountIdentification1"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>    
+    <xs:complexType name="AccountNotification5">
+        <xs:sequence>
+            <xs:element name="OrgnlMsgId" type="Max35Text"/>            
+            <xs:element name="OrgnlNtfctnId" type="Max34Text">
+            </xs:element>
+            <xs:element name="OrgnlNtfctnRef" type="CashAccount25"/>            
+            <xs:element name="OrgnlItmAndSts" type="ReportEntry3"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="ActiveOrHistoricCurrencyAndAmount_SimpleType">
+        <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="5"/>
+            <xs:totalDigits value="18"/>
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="ActiveOrHistoricCurrencyAndAmount">
+        <xs:simpleContent>
+            <xs:extension base="ActiveOrHistoricCurrencyAndAmount_SimpleType">
+                <xs:attribute name="Ccy" type="ActiveOrHistoricCurrencyCode" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="ActiveOrHistoricCurrencyCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INR"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="BankToCustomerDebitCreditNotificationV03">
+        <xs:sequence>
+            <xs:element name="GrpHdr" type="GroupHeader58"/>
+            <xs:element name="OrgnlNtfctnAndSts" type="AccountNotification5"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BankTransactionCodeStructure4">
+        <xs:sequence>
+            <xs:element name="Prtry" type="ProprietaryBankTransactionCodeStructure1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CashAccount25">
+        <xs:sequence>
+            <xs:element name="DbtrAgt" type="TransactionParties3"/>            
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="CreditDebitCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CRDT"/>
+            <xs:enumeration value="DBIT"/>
+        </xs:restriction>
+    </xs:simpleType>    
+    <xs:complexType name="DateAndDateTimeChoice">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="DtTm" type="ISODateTime">
+          <xs:annotation>
+            <xs:appinfo source="WMQI_APPINFO">
+              <xmlInclRep format="yyyy-MM-dd'T'HH:mm:ss" messageSetDefaultRep="XML1"/>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Document">
+        <xs:sequence>
+            <xs:element name="NtfctnToRcvStsRpt" type="BankToCustomerDebitCreditNotificationV03"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EntryDetails2">
+        <xs:sequence>
+            <xs:element name="TxDtls" type="EntryTransaction3"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="EntryStatus2Code">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BOOK"/>
+            <xs:enumeration value="PDNG"/>
+            <xs:enumeration value="INFO"/>
+	    <xs:enumeration value="FUTR"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="EntryTransaction3">
+        <xs:sequence>
+            <xs:element name="Refs" type="TransactionReferences3"/>
+            <xs:element name="Amt" type="ActiveOrHistoricCurrencyAndAmount"/>
+            <xs:element name="CdtDbtInd" type="CreditDebitCode"/>
+            <xs:element name="RltdPties" type="TransactionParties3"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="Purp" type="Purpose2Choice"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="RmtInf" type="RemittanceInformation7"/>            
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GenericAccountIdentification1">
+        <xs:sequence>
+            <xs:element name="ClrSysMmbId" type="EntryTransaction3"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GenericOrganisationIdentification1">
+        <xs:sequence>
+            <xs:element name="Id" type="Max35Text"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GroupHeader58">
+        <xs:sequence>
+            <xs:element name="MsgId" type="Max35Text"/>
+            <xs:element name="CreDtTm" type="xs:string">
+      </xs:element>            
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="ISODateTime">
+        <xs:restriction base="xs:dateTime"/>
+    </xs:simpleType>   
+    <xs:simpleType name="Max140Text">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="140"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Max34Text">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="34"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Max35Text">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="35"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Number">
+        <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="0"/>
+            <xs:totalDigits value="18"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="OrganisationIdentification8">
+        <xs:sequence>
+            <xs:element name="Othr" type="GenericOrganisationIdentification1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Party11Choice">
+        <xs:sequence>
+            <xs:element name="MmbId" type="Max34Text"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PartyIdentification43">
+        <xs:sequence>            
+            <xs:element name="ClrSysMmbId" type="Party11Choice"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ProprietaryBankTransactionCodeStructure1">
+        <xs:sequence>
+            <xs:element name="Cd" type="Max35Text"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Purpose2Choice">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="Prtry" type="xs:string"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="Purpose2ChoiceCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="REPO"/>
+            <xs:enumeration value="REVREPO"/>
+            <xs:enumeration value="SODBAL"/>
+            <xs:enumeration value="EODZERO"/>
+            <xs:enumeration value="MNSB"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RemittanceInformation7">
+        <xs:sequence>
+            <xs:element maxOccurs="4" minOccurs="1" name="Ustrd" type="Max140Text"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ReportEntry3">
+        <xs:sequence>
+            <xs:element name="OrgnlItmId" type="Max35Text"/>
+            <xs:element name="OrgnlEndToEndId" type="Max35Text"/>
+            <xs:element name="Amt" type="ActiveOrHistoricCurrencyAndAmount"/>                        
+            <xs:element name="ItmSts" type="Max34Text"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TransactionParties3">
+        <xs:sequence>
+            <xs:element name="FinInstnId" type="PartyIdentification43"/>          
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TransactionReferences3">
+        <xs:sequence> 
+            <xs:element maxOccurs="1" minOccurs="0" name="InstrId" type="Max35Text"/>
+            <xs:element name="EndToEndId" type="Max35Text"/>
+            <xs:element name="TxId" type="Max35Text"/>            
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

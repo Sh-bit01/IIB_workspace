@@ -1,0 +1,103 @@
+
+
+
+
+
+
+CREATE COMPUTE MODULE rr42_to_xml_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN FALSE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE FUNCTION CleanAlphanumericOnly(in inputStr CHARACTER) RETURNS CHARACTER
+	BEGIN
+		DECLARE allowedChars CHARACTER 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.';
+		DECLARE outputStr CHARACTER '';
+		DECLARE len INT LENGTH(inputStr);
+		DECLARE i INT 1;
+		DECLARE char1 CHARACTER;
+
+		WHILE i <= len DO
+			SET char1 = SUBSTRING(inputStr FROM i FOR 1);
+			IF POSITION(char1 IN allowedChars) > 0 THEN
+				SET outputStr = outputStr || char1;
+			END IF;
+
+			SET i = i + 1;
+		END WHILE;
+
+		RETURN outputStr;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+
+		IF EXISTS(InputRoot.DFDL.RR42[])THEN
+			--SET OutputRoot.XMLNSC.Data = InputRoot.DFDL.RR42;
+			 SET OutputRoot.XMLNSC.RR42.header.Block_A_Identifier = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Block_A_Identifier);
+			 SET OutputRoot.XMLNSC.RR42.header.BankApp_Identifier = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.BankApp_Identifier);
+			 SET OutputRoot.XMLNSC.RR42.header.Message_Identifier = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Message_Identifier);
+			 SET OutputRoot.XMLNSC.RR42.header.IO_Identifier = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.IO_Identifier);
+			 SET OutputRoot.XMLNSC.RR42.header.Message_Type = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Message_Type);
+			 SET OutputRoot.XMLNSC.RR42.header.SubMessage_Type = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.SubMessage_Type);
+			 SET OutputRoot.XMLNSC.RR42.header.Sender_IFSC = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Sender_IFSC);
+			 SET OutputRoot.XMLNSC.RR42.header.Receiver_IFSC = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Receiver_IFSC);
+			 SET OutputRoot.XMLNSC.RR42.header.Delivery_Monitoring_Flag = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Delivery_Monitoring_Flag);
+			 SET OutputRoot.XMLNSC.RR42.header.Open_Notification_Number = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Open_Notification_Number);
+			 SET OutputRoot.XMLNSC.RR42.header.NonDelivery_Warning_Flag = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.NonDelivery_Warning_Flag);
+			 SET OutputRoot.XMLNSC.RR42.header.Obsolescence_Period = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Obsolescence_Period);
+			 SET OutputRoot.XMLNSC.RR42.header.MUR = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.MUR);
+			 SET OutputRoot.XMLNSC.RR42.header.Possible_Duplicate_Flag = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Possible_Duplicate_Flag);
+			 SET OutputRoot.XMLNSC.RR42.header.Service_Identifier = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Service_Identifier);
+			 SET OutputRoot.XMLNSC.RR42.header.Originate_Date = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Originate_Date);
+			 SET OutputRoot.XMLNSC.RR42.header.Originate_Time = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Originate_Time);
+			 SET OutputRoot.XMLNSC.RR42.header.Testing_Training_Flag = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Testing_Training_Flag);
+			 SET OutputRoot.XMLNSC.RR42.header.Sequence_Number = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Sequence_Number);
+			 SET OutputRoot.XMLNSC.RR42.header.Filler = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Filler);
+			 SET OutputRoot.XMLNSC.RR42.header.Unique_Transaction_Number = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Unique_Transaction_Number);
+			 SET OutputRoot.XMLNSC.RR42.header.RTGS_Priority = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.RTGS_Priority);
+			 SET OutputRoot.XMLNSC.RR42.header.Block_A_End_Identifer = CleanAlphanumericOnly(InputRoot.DFDL.RR42.header.Block_A_End_Identifer);
+			
+			 SET OutputRoot.XMLNSC.RR42.body.Block_4_Initiator = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.Block_4_Initiator);
+			 SET OutputRoot.XMLNSC.RR42.body.Transaction_Reference_Number = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.Transaction_Reference_Number);
+			 SET OutputRoot.XMLNSC.RR42.body.Related_Reference = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.Related_Reference);
+			 SET OutputRoot.XMLNSC.RR42.body.ValueDate_Currency_Amount = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.ValueDate_Currency_Amount);
+			 SET OutputRoot.XMLNSC.RR42.body.Senders_Correspondent = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.Senders_Correspondent);
+			 SET OutputRoot.XMLNSC.RR42.body.Beneficiary_Institution = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.Beneficiary_Institution);
+			 SET OutputRoot.XMLNSC.RR42.body.Sender_Receiver_Info.Line1 = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.Sender_Receiver_Info.Line1);
+			 SET OutputRoot.XMLNSC.RR42.body.Sender_Receiver_Info.Line2 = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.Sender_Receiver_Info.Line2);
+			 SET OutputRoot.XMLNSC.RR42.body.Sender_Receiver_Info.Line3 = CleanAlphanumericOnly(InputRoot.DFDL.RR42.body.Sender_Receiver_Info.Line3);		
+
+
+			PROPAGATE TO TERMINAL 'out';
+
+		ELSE
+			DECLARE indata CHARACTER CAST(InputRoot.BLOB.BLOB AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+			DECLARE data CHARACTER;
+			SET data = TRANSLATE(indata, '@#$%^&*!~`<>"|[](_)', '');
+			DECLARE newLine CONSTANT CHARACTER CAST( X'0D0A' AS CHAR CCSID 1208);
+			--DECLARE po INTEGER;
+			--SET po = POSITION( '-}' IN data);
+			--SET data = LTRIM(data);
+			--SET data = RTRIM(data);
+			--SET data = RIGHT(data , po);
+			SET data = data || newLine;
+			SET OutputRoot.BLOB.BLOB = CAST(data AS BLOB CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+			--SET OutputRoot.BLOB.BLOB=InputRoot.BLOB.BLOB;
+			PROPAGATE TO TERMINAL 'out1';
+		END IF;
+
+	END;
+END MODULE;

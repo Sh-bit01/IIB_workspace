@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.rrb.inward.map.neft" version="8.0.5.0" xmlns:map="com.cedge.rrb.inward.map.neft">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">      
+    <xsd:element name="BankDetails">      
+    <xsd:complexType>      
+      <xsd:sequence>      
+        <xsd:element name="sdrIfsc" type="xsd:string"/>      
+        <xsd:element name="rcvrIfsc" type="xsd:string"/>      
+        <xsd:element name="UTR" type="xsd:string"/>      
+        <xsd:element name="seqNo" type="xsd:string"/>      
+                              <xsd:element name="cDate" type="xsd:string"/>      
+        <xsd:element name="cTime" type="xsd:string"/>      
+      </xsd:sequence>      
+    </xsd:complexType>      
+  </xsd:element>      
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/ISO/admi.004.001.02.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/N06/INWARD.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="urn:iso:std:iso:20022:tech:xsd:admi.004.001.01"/>
+        <namespace kind="supplement" prefix="in2" uri="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="Admi004_TO_N09">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02" path="$var1/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)" var="MessageAssembly">
+            <cast castType="userDefined" path="$MessageAssembly/MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(N09,assembly,DFDL,Properties)" var="MessageAssembly1"/>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly1/Properties"/>
+            <override>
+                <assign value="{}:N09">
+                    <output path="$MessageAssembly1/Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <assign value="N">
+            <output path="$MessageAssembly1/N09/body/Status"/>
+        </assign>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$MessageAssembly1/N09/header/MUR"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$MessageAssembly1/N09/header/Unique_Transaction_Number"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$MessageAssembly1/N09/body/Transaction_Reference_Number"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/sdrIfsc"/>
+            <output path="$MessageAssembly1/N09/header/Receiver_IFSC"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/rcvrIfsc"/>
+            <output path="$MessageAssembly1/N09/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/cDate"/>
+            <output path="$MessageAssembly1/N09/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/cTime"/>
+            <output path="$MessageAssembly1/N09/header/Originate_Time"/>
+        </move>
+        <assign value="000000000">
+            <output path="$MessageAssembly1/N09/header/Sequence_Number"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="$MessageAssembly1/N09/header/Filler"/>
+        </assign>
+        <assign value="00">
+            <output path="$MessageAssembly1/N09/header/RTGS_Priority"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/N09/header/Testing_Training_Flag"/>
+        </assign>
+        <assign value="RTG">
+            <output path="$MessageAssembly1/N09/header/Service_Identifier"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/N09/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="000">
+            <output path="$MessageAssembly1/N09/header/Obsolescence_Period"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/N09/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/N09/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/N09/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="N09">
+            <output path="$MessageAssembly1/N09/header/SubMessage_Type"/>
+        </assign>
+        <assign value="298">
+            <output path="$MessageAssembly1/N09/header/Message_Type"/>
+        </assign>
+        <assign value="I">
+            <output path="$MessageAssembly1/N09/header/IO_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="$MessageAssembly1/N09/header/Message_Identifier"/>
+        </assign>
+        <assign value="RTG">
+            <output path="$MessageAssembly1/N09/header/BankApp_Identifier"/>
+        </assign>
+        <move>
+            <input path="$MessageAssembly/Document/SysEvtNtfctn/EvtInf/EvtParam"/>
+            <output path="$MessageAssembly1/N09/body/Reason"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/Document/SysEvtNtfctn/EvtInf/EvtDesc"/>
+            <output path="$MessageAssembly1/N09/body/Description"/>
+        </move>
+        <assign value="{4:">
+            <output path="$MessageAssembly1/N09/body/Block_4_Initiator"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

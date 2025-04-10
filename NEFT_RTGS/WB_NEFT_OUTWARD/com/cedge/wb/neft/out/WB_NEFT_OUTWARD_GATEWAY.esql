@@ -1,0 +1,94 @@
+BROKER SCHEMA com.cedge.wb.neft.out
+
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+   RETURNS BOOLEAN
+   LANGUAGE JAVA
+   EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j";
+
+   CREATE FUNCTION log4j_1_1( IN COMPONENT_NAME CHARACTER,
+   IN LOGGER_NAME CHARACTER,
+   IN LEVEL CHARACTER,
+   IN TEXT CHARACTER )
+   RETURNS BOOLEAN
+   LANGUAGE JAVA
+   EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+   
+CREATE COMPUTE MODULE WB_NEFT_OUTWARD_GATEWAY
+	DECLARE CONFIG EXTERNAL CHARACTER '';
+	DECLARE N06N07 EXTERNAL CHARACTER '';
+	DECLARE N10 EXTERNAL CHARACTER '';
+	DECLARE MIRROR EXTERNAL CHARACTER '';
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE rc BOOLEAN;
+		CALL initLog4j(CONFIG) INTO rc;
+		
+		CALL log4j_1_1('GATEWAY_LOG', 'WB_NEFT_OUTWARD_GATEWAY', 'INFO','-------------------------------------START-------------------------------------') INTO rc;
+		CALL log4j_1_1('GATEWAY_LOG', 'WB_NEFT_OUTWARD_GATEWAY', 'INFO','File received from CBS ') INTO rc;
+		CALL log4j_1_1('GATEWAY_LOG', 'WB_NEFT_OUTWARD_GATEWAY', 'INFO','File Name : '||InputRoot.MQRFH2.usr.UFM_FileName) INTO rc;
+		CALL log4j_1_1('GATEWAY_LOG', 'WB_NEFT_OUTWARD_GATEWAY', 'INFO','MESSAGE TYPE : '||InputRoot.DFDL.*.Header.SUBMESSAGETYPE) INTO rc;
+
+		
+		DECLARE bool BOOLEAN;
+		CALL CopyMessageHeaders();	
+--		SET bool = CopyEntireMessage();
+		CALL CopyEntireMessage();
+--MQ--		RETURN bool; 
+		DECLARE ExcRef REFERENCE TO InputExceptionList.*;
+		IF NOT LASTMOVE(ExcRef) THEN
+			CALL log4j_1_1('GATEWAY_LOG', 'WB_NEFT_OUTWARD_GATEWAY', 'INFO','--------------------------------------END--------------------------------------') INTO rc;	
+		END IF;
+		
+		
+--		 CALL CopyMessageHeaders();
+--		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+--	CREATE PROCEDURE CopyEntireMessage() BEGIN
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+/*		--SET OutputRoot.MQMD.Format = '';
+		SET OutputRoot.MQRFH2.usr.filename = InputLocalEnvironment.File.Name;
+		--SET OutputRoot.MQRFH2.(MQRFH2.Field)Format = 'MQSTR';
+		--SET OutputRoot.BLOB.BLOB = InputRoot.BLOB.BLOB;
+		SET OutputRoot.DFDL = InputRoot.DFDL;
+*/
+--MQ--		SET OutputRoot.Properties = InputRoot.Properties;
+--MQ--		CREATE NEXTSIBLING OF "OutputRoot"."Properties" DOMAIN 'MQMD' NAME 'MQMD';
+--MQ--		SET OutputRoot.MQMD.Format = 'MQHRF2';
+--MQ--		CREATE NEXTSIBLING OF "OutputRoot"."MQMD" DOMAIN 'MQRFH2' NAME 'MQRFH2';
+--MQ--		SET OutputRoot.MQRFH2.(MQRFH2.Field)Version = 2;
+--MQ--		SET OutputRoot.MQRFH2.(MQRFH2.Field)Format = 'MQSTR';
+--MQ--		SET OutputRoot.MQRFH2.(MQRFH2.Field)NameValueCCSID = 1208;
+--MQ--		SET OutputRoot.MQRFH2.usr.filename = InputLocalEnvironment.File.Name;
+		DECLARE sType , destinationQ CHARACTER;
+		DECLARE rc BOOLEAN;
+		SET sType = InputRoot.DFDL.*.Header.SUBMESSAGETYPE;	
+		
+		IF sType = 'N10' THEN
+			CALL log4j_1_1('GATEWAY_LOG', 'WB_NEFT_OUTWARD_GATEWAY', 'INFO','MESSAGE TYPE : '|| sType) INTO rc;
+			CALL log4j_1_1('GATEWAY_LOG', 'WB_NEFT_OUTWARD_GATEWAY', 'INFO','Transaction number : '||InputRoot.DFDL.Generic_Message.Header.MUR) INTO rc;
+			SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName = N10;
+		ELSE 
+			CALL log4j_1_1('GATEWAY_LOG', 'WB_NEFT_OUTWARD_GATEWAY', 'INFO','Transaction number : '||InputRoot.DFDL.Generic_Message.Header.MUR) INTO rc;
+			SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName = N06N07;
+
+		END IF;
+		
+		
+-- 		SET OutputLocalEnvironment.Destination.MQ.DestinationData[2].queueName = MIRROR;
+		
+		SET OutputRoot.DFDL = InputRoot.DFDL;
+		 
+	END;
+END MODULE;

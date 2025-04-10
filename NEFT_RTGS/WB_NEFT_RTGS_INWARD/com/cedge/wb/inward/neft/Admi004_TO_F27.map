@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.rrb.inward.map.neft" version="8.0.5.0" xmlns:map="com.cedge.rrb.inward.map.neft">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">   
+    <xsd:element name="BankDetails">   
+    <xsd:complexType>   
+      <xsd:sequence>   
+        <xsd:element name="seqNo" type="xsd:string"/>   
+        <xsd:element name="sdrIfsc" type="xsd:string"/>   
+        <xsd:element name="cDateTime" type="xsd:string"/>   
+      </xsd:sequence>   
+    </xsd:complexType>   
+  </xsd:element>   
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/ISO/admi.004.001.02.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/N06/INWARD.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="Admi004_TO_F27">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02" path="$var1/mb:msg(Document,assembly,XMLNSC,Properties,MQMD,MQRFH2)" var="ComIbmMessageAssembly_Document">
+            <cast castType="userDefined" path="$ComIbmMessageAssembly_Document/MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(F27_CBS,assembly,DFDL,Properties)" var="ComIbmMessageAssembly_F27_CBS"/>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Properties"/>
+            <output path="$ComIbmMessageAssembly_F27_CBS/Properties"/>
+            <override>
+                <assign value="{}:F27_CBS">
+                    <output path="$ComIbmMessageAssembly_F27_CBS/Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Document/SysEvtNtfctn/EvtInf/EvtParam"/>
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/BankAPI_Response_Code"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Document/SysEvtNtfctn/EvtInf/EvtCd"/>
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/Message_Identifier"/>
+        </move>
+        <assign value="CBS">
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/Bank_Application_Identifier"/>
+        </assign>
+        <assign value="{A:">
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/Block_A_Identifier"/>
+        </assign>
+        <assign value="O">
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/IO_Identifier"/>
+        </assign>
+        <assign value="XX">
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/Block_End_Identifier"/>
+        </assign>
+        <assign value="}">
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/Block_End_Identifier1"/>
+        </assign>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/seqNo"/>
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/Sequence_Number"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/sdrIfsc"/>
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cDateTime"/>
+            <output path="$ComIbmMessageAssembly_F27_CBS/F27_CBS/header/Date_Time"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

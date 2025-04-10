@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.map.neft.out" version="8.0.5.0" xmlns:map="com.map.neft.out">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">               
+    <xsd:element name="temp">               
+    <xsd:complexType>               
+      <xsd:sequence>               
+        <xsd:element name="OrgnlMsgId" type="xsd:string"/>               
+        <xsd:element name="OrgnlTxId" type="xsd:string"/>               
+      </xsd:sequence>               
+    </xsd:complexType>               
+  </xsd:element>               
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/N06/OUTWARD.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/IFTNEFT_Pacs00X.xsd"/>
+    <namespaces>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="N07_To_Pacs004">
+        <input path="$var1/mb:msg(N07,assembly,DFDL,LocalEnvironment,Properties)" var="MessageAssembly">
+            <cast castType="userDefined" path="$MessageAssembly/LocalEnvironment/Variables/any" qualifier="temp" ref="var"/>
+        </input>
+        <output path="mb:msg(RequestPayload,assembly,XMLNSC,Properties)" var="MessageAssembly1"/>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly1/Properties"/>
+        </move>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:head.001.001.02">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/@AppHdr1"/>
+        </assign>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+            <output path="$MessageAssembly1/RequestPayload/Document/@Document1"/>
+        </assign>
+        <move>
+            <input path="$MessageAssembly/N07/Header/SENDERADDRESS"/>
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/Fr/FIId/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/N07/Header/RECEIVERADDRESS"/>
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/To/FIId/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <assign value="pacs.004.001.10">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/MsgDefIdr"/>
+        </assign>
+        <assign value="NEFTPaymentReturn">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/BizSvc"/>
+        </assign>
+        <move>
+            <input path="$MessageAssembly/N07/Body/TOTALNUMBEROFMESSAGES"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/NbOfTxs"/>
+        </move>
+        <assign value="INR">
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/TtlRtrdIntrBkSttlmAmt/@Ccy"/>
+        </assign>
+        <function ref="fn:replace">
+            <input path="$MessageAssembly/N07/Body/SUMOFAMOUNTS" var="SUMOFAMOUNTS"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/TtlRtrdIntrBkSttlmAmt/text()"/>
+            <param name="input" value="$SUMOFAMOUNTS"/>
+            <param name="pattern" value="&quot;,&quot;"/>
+            <param name="replacement" value="&quot;.&quot;"/>
+        </function>
+        <expression>
+            <input path="$MessageAssembly/N07/Body/record/VALUEDATE" var="VALUEDATE"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/IntrBkSttlmDt"/>
+            <code lang="xpath">fn:concat( fn:substring( $VALUEDATE,0 ,5 ),'-',fn:substring( $VALUEDATE,5 ,2 ),'-',fn:substring( $VALUEDATE,7 ,2 ) )</code>
+        </expression>
+        <assign value="CLRG">
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/SttlmInf/SttlmMtd"/>
+        </assign>
+        <assign value="INR">
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/RtrdIntrBkSttlmAmt/@Ccy"/>
+        </assign>
+        <function ref="fn:replace">
+            <input path="$MessageAssembly/N07/Body/record/AMOUNT" var="AMOUNT"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/RtrdIntrBkSttlmAmt/text()"/>
+            <param name="input" value="$AMOUNT"/>
+            <param name="pattern" value="&quot;,&quot;"/>
+            <param name="replacement" value="&quot;.&quot;"/>
+        </function>
+        <move>
+            <input path="$MessageAssembly/N07/Header/SENDERADDRESS"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/InstgAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <expression>
+            <input path="$MessageAssembly/N07/Body/record/VALUEDATE" var="VALUEDATE1"/>
+            <input path="$MessageAssembly/N07/Header/ORIGINATINGTIME" var="ORIGINATINGTIME"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/CreDtTm"/>
+            <code lang="xpath">fn:concat( fn:substring( $VALUEDATE1,0 ,5 ),'-',fn:substring( $VALUEDATE1,5 ,2 ),'-',fn:substring( $VALUEDATE1,7 ,2 ),'T' ,fn:substring( $ORIGINATINGTIME, 0 ,3 ),':',fn:substring( $ORIGINATINGTIME ,3 ,2 ),':00')</code>
+        </expression>
+        <expression>
+            <input path="$MessageAssembly/N07/Header/ORIGINATINGDATE" var="ORIGINATINGDATE"/>
+            <input path="$MessageAssembly/N07/Header/ORIGINATINGTIME" var="ORIGINATINGTIME1"/>
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/CreDt"/>
+            <code lang="xpath">fn:concat( fn:substring( $ORIGINATINGDATE,0 ,5 ),'-',fn:substring( $ORIGINATINGDATE,5 ,2 ),'-',fn:substring( $ORIGINATINGDATE,7 ,2 ),'T' ,fn:substring( $ORIGINATINGTIME1 ,0,3 ),':',fn:substring( $ORIGINATINGTIME1 ,3 ,2 ),':00Z')</code>
+        </expression>
+        <local>
+            <input path="$MessageAssembly/N07/Body/record/SENDERTIRECEIVERINFORMATION" var="SENDERTIRECEIVERINFORMATION"/>
+            <input auxiliary="true" path="$MessageAssembly/N07/Body/BATCHTIME" var="BATCHTIME1"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/RmtInf"/>
+            <move>
+                <input path="$SENDERTIRECEIVERINFORMATION/LINE1"/>
+                <output path="Ustrd"/>
+                <annotation key="$NON-PERSISTENT" value="1"/>
+            </move>
+            <move>
+                <input path="$SENDERTIRECEIVERINFORMATION/LINE2"/>
+                <output path="Ustrd"/>
+                <annotation key="$NON-PERSISTENT" value="1"/>
+            </move>
+            <move>
+                <input path="$SENDERTIRECEIVERINFORMATION/LINE3"/>
+                <output path="Ustrd"/>
+                <annotation key="$NON-PERSISTENT" value="1"/>
+            </move>
+            <move>
+                <input path="$SENDERTIRECEIVERINFORMATION/LINE4"/>
+                <output path="Ustrd"/>
+                <annotation key="$NON-PERSISTENT" value="1"/>
+            </move>
+            <move>
+                <input path="$SENDERTIRECEIVERINFORMATION/LINE5"/>
+                <output path="Ustrd"/>
+                <annotation key="$NON-PERSISTENT" value="1"/>
+            </move>
+            <if>
+                <input path="$MessageAssembly/N07/Body/BATCHTIME" var="BATCHTIME"/>
+                <output path="Ustrd"/>
+                <test lang="xpath">$BATCHTIME!=''</test>
+                <function ref="fn:concat">
+                    <input path="$BATCHTIME/." var="BATCHTIME3"/>
+                    <output path="."/>
+                    <param name="string1" value="&quot;BatchId:&quot;"/>
+                    <param name="string2" value="$BATCHTIME3"/>
+                </function>
+            </if>
+        </local>
+        <expression>
+            <input path="$MessageAssembly/N07/Header/SENDERADDRESS" var="SENDERADDRESS"/>
+            <input path="$MessageAssembly/N07/Header/ORIGINATINGDATE" var="ORIGINATINGDATE1"/>
+            <input path="$MessageAssembly/N07/Header/UNIQUETRANSACTIONREF" var="UNIQUETRANSACTIONREF"/>
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/BizMsgIdr"/>
+            <code lang="xpath">fn:concat( fn:substring($SENDERADDRESS,0 ,5 ),$ORIGINATINGDATE1 ,'5',fn:substring($UNIQUETRANSACTIONREF ,8 ,9 ))</code>
+        </expression>
+        <expression>
+            <input path="$MessageAssembly/N07/Header/SENDERADDRESS" var="SENDERADDRESS1"/>
+            <input path="$MessageAssembly/N07/Header/ORIGINATINGDATE" var="ORIGINATINGDATE2"/>
+            <input path="$MessageAssembly/N07/Header/UNIQUETRANSACTIONREF" var="UNIQUETRANSACTIONREF1"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/MsgId"/>
+            <code lang="xpath">fn:concat( fn:substring($SENDERADDRESS1,0 ,5 ),$ORIGINATINGDATE2 ,'5',fn:substring($UNIQUETRANSACTIONREF1 ,8 ,9 ))</code>
+        </expression>
+        <expression>
+            <input path="$MessageAssembly/N07/Header/SENDERADDRESS" var="SENDERADDRESS2"/>
+            <input path="$MessageAssembly/N07/Header/ORIGINATINGDATE" var="ORIGINATINGDATE3"/>
+            <input path="$MessageAssembly/N07/Header/UNIQUETRANSACTIONREF" var="UNIQUETRANSACTIONREF2"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/RtrId"/>
+            <code lang="xpath">fn:concat( fn:substring($SENDERADDRESS2,0 ,5 ),'N5',$ORIGINATINGDATE3 ,fn:substring($UNIQUETRANSACTIONREF2 ,9 ,8 ))</code>
+        </expression>
+        <move>
+            <input path="$MessageAssembly/LocalEnvironment/Variables/temp/OrgnlTxId"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxId"/>
+        </move>
+        <function ref="fn:concat">
+            <input path="$MessageAssembly/N07/Body/record/RELATED_REFERENCE_NUMBER" var="RELATED_REFERENCE_NUMBER"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlEndToEndId"/>
+            <param name="string1" value="&quot;/XUTR/&quot;"/>
+            <param name="string2" value="$RELATED_REFERENCE_NUMBER"/>
+        </function>
+        <move>
+            <input path="$MessageAssembly/N07/Body/record/BENEFICIARYCUSTOMERACNUMBER"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/DbtrAcct/Id/Othr/Id"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/N07/Body/record/BENEFICIARYCUSTOMERACTYPE"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/DbtrAcct/Tp/Cd"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/N07/Body/record/BENEFICIARYBRANCHSIFSC"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/DbtrAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/N07/Body/record/SENDINGBRANCHIFSC"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/CdtrAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/N07/Body/record/SENDINGCUSTOMERACCOUNTNUMBER"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/CdtrAcct/Id/Othr/Id"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/N07/Body/record/SENDINGCUSTOMERACCOUNTTYPE"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/CdtrAcct/Tp/Cd"/>
+        </move>
+        <local>
+            <input path="$MessageAssembly/N07/Body/record/ORIGINATOROFREMITTANCE"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/InstrForCdtrAgt"/>
+            <function ref="concat">
+                <input path="LINE1" var="LINE1"/>
+                <input path="LINE2" var="LINE21"/>
+                <input path="LINE3" var="LINE3"/>
+                <input path="LINE4" var="LINE4"/>
+                <output path="InstrInf"/>
+                <param name="input" value="$LINE1"/>
+            </function>
+        </local>
+        <move>
+            <input path="$MessageAssembly/N07/Body/record/BENEFICIARYCUSTOMERACNAME"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/Dbtr/Nm"/>
+        </move>
+        <local>
+            <input path="$MessageAssembly/N07/Body/record/BENEFICIARYCUSTOMERADDRESS"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/Dbtr/PstlAdr"/>
+            <move>
+                <input path="LINE1"/>
+                <output path="AdrLine"/>
+            </move>
+            <move>
+                <input path="LINE2"/>
+                <output path="AdrLine"/>
+            </move>
+            <move>
+                <input path="LINE3"/>
+                <output path="AdrLine"/>
+            </move>
+            <move>
+                <input path="LINE4"/>
+                <output path="AdrLine"/>
+            </move>
+        </local>
+        <move>
+            <input path="$MessageAssembly/N07/Body/record/SEDINGCUSTOMERACCOUNTNAME"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/OrgnlTxRef/UndrlygCstmrCdtTrf/Cdtr/Nm"/>
+        </move>
+        <assign value="urn:iso:std:iso:20022:tech:xsd:Header">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/@AppHdr2"/>
+        </assign>
+        <assign value="http://www.w3.org/2000/09/xmldsig#">
+            <output path="$MessageAssembly1/RequestPayload/AppHdr/@AppHdr3"/>
+        </assign>
+        <move>
+            <input path="$MessageAssembly/N07/Header/RECEIVERADDRESS"/>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/GrpHdr/InstdAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+        </move>
+        <assign value="AC01">
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/RtrRsnInf/Rsn/Cd"/>
+        </assign>
+        <task type="todo">
+            <documentation description="HARD CODED">NEED TO BE FETCH FROM DB.</documentation>
+            <output path="$MessageAssembly1/RequestPayload/Document/PmtRtr/TxInf/RtrRsnInf/Rsn/Cd"/>
+        </task>
+    </mappingDeclaration>
+</mappingRoot>

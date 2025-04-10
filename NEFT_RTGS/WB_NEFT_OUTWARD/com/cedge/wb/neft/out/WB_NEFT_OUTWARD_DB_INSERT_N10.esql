@@ -1,0 +1,524 @@
+BROKER SCHEMA com.cedge.wb.neft.out
+
+
+CREATE COMPUTE MODULE WB_NEFT_OUTWARD_DB_INSERT_N10
+	DECLARE DSN EXTERNAL CHARACTER '';
+	DECLARE PROP_LOC EXTERNAL CHARACTER '';
+	DECLARE CONFIG EXTERNAL CHARACTER '';
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL CopyMessageHeaders();
+		DECLARE rc BOOLEAN;
+--		CALL initLog4j('/var/iib/interface/wb/neft/inward/properties/log4j/wb_neft_inward.xml') INTO rc;
+		CALL initLog4j(CONFIG) INTO rc;
+		CALL copyPayload();
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','---------------------------------------------------START---------------------------------------------------') INTO rc;
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Message received from CBS ') INTO rc;
+		
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Transaction number : '||InputRoot.DFDL.*.Body.record.TRANSACTONREFERENCENUMBER) INTO rc;
+
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Message inserted into NEFT_OUT_PAYLOAD table') INTO rc;
+		
+		SET OutputRoot.MQRFH2 = NULL;
+		DECLARE flag BOOLEAN CopyEntireMessage();
+        DECLARE whiteSpace CONSTANT CHARACTER CAST( X'090D0A20' AS CHAR CCSID 1208);
+		
+		DECLARE FTP_FILE,Extension CHARACTER ;
+        SET Extension = Environment.filename;
+        SET FTP_FILE  = Environment.filename;
+        SET FTP_FILE  = SUBSTRING(FTP_FILE BEFORE '.');
+        SET Extension = SUBSTRING(Extension AFTER '.');
+        SET Extension = LOWER(Extension);	
+
+		IF flag THEN
+			CALL updateLocalEnv();
+			SET OutputRoot.DFDL = InputRoot.DFDL;
+			SET OutputLocalEnvironment.Destination.File.Name = FTP_FILE||'.'||Extension||'.Done';
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Writing '||FTP_FILE||'.'||Extension||'.Done file to CBS') INTO rc;	
+			RETURN TRUE;
+		ELSE
+			CALL updateLocalEnv();
+			SET OutputRoot.DFDL = InputRoot.DFDL;
+			IF Environment.retryCount >= 1 THEN
+			SET OutputLocalEnvironment.Destination.File.Name = FTP_FILE||'.'||Extension||'.Done';
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Writing '||FTP_FILE||'.'||Extension||'.Done file to CBS') INTO rc;
+					
+			RETURN TRUE;
+		ELSE
+					SET OutputLocalEnvironment.Destination.File.Name = FTP_FILE||'.'||Extension||'.Dup';
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Writing '||FTP_FILE||'.'||Extension||'.Dup file to CBS') INTO rc;
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','-----------------------------------------------END------------------------------------------') INTO rc;
+
+			PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+			RETURN FALSE;
+			END IF;	
+		END IF;
+		
+	END;
+	
+	CREATE PROCEDURE copyPayload ( )
+	BEGIN
+		
+		DECLARE msgId CHARACTER InputRoot.MQMD.MsgId;
+		SET msgId = SUBSTRING(msgId FROM 3 FOR 48);
+		SET Environment.msgType = InputRoot.DFDL.*.Header.SUBMESSAGETYPE;
+		DECLARE txnNum CHARACTER ;
+		IF Environment.msgType = 'DRS' THEN
+			SET txnNum = InputRoot.DFDL.*.Body_N29.TRANSACTIONREFERENCENUMBER;		
+		ELSE
+			SET txnNum = InputRoot.DFDL.*.Body.TRANSACTIONREFERENCENUMBER;
+		END IF;
+--		DECLARE txnNum CHARACTER InputRoot.DFDL.*.Body.TRANSACTIONREFERENCENUMBER;
+		DECLARE datechar CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyyMMdd');
+		SET txnNum = datechar||txnNum;
+		DECLARE check ROW;
+		DECLARE fileName CHARACTER 'filename';
+		SET check.R[] = PASSTHRU('SELECT RETRY_COUNT,FILE_NAME,STATUS FROM NEFT_OUT_PAYLOAD WHERE TXN_REF_NUM = ?' TO Database.{DSN} VALUES(txnNum));
+		--DECLARE flag INTEGER CARDINALITY(check.R[]);
+		IF check.R[1].RETRY_COUNT >= 0 THEN
+			UPDATE Database.NEFT_OUT_PAYLOAD as T
+			SET
+			LAST_MOD_TIME = CURRENT_TIMESTAMP,
+			RETRY_COUNT=check.R[1].RETRY_COUNT+1
+			WHERE
+			T.TXN_REF_NUM = txnNum;
+			SET Environment.filename  = check.R[1].FILE_NAME;
+			SET Environment.retryCount = check.R[1].RETRY_COUNT;
+		ELSEIF check.R[1].RETRY_COUNT = 0 OR check.R[1].STATUS = 'S' THEN
+			
+--			SET Environment.filename  = check.R[1].FILE_NAME;
+			--CHANGES FOR MQ START--
+--MQ--			SET fileName = InputRoot.MQRFH2.usr.filename;
+--MQ--			SET Environment.filename = fileName;
+			SET fileName = InputRoot.MQRFH2.usr.UFM_FileName;
+			SET Environment.filename = fileName;
+			--CHANGES FOR MQ START-- 
+			
+		ELSE
+			DECLARE wholeMsgBlob BLOB ASBITSTREAM(InputRoot.DFDL, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+	 		DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+	 		DECLARE fileName CHARACTER 'filename';
+			--CHANGES FOR MQ START--
+--MQ--	 		SET fileName = InputRoot.MQRFH2.usr.filename;
+				SET fileName = InputRoot.MQRFH2.usr.UFM_FileName;
+			--CHANGES FOR MQ START--
+	 		SET Environment.filename = fileName;
+	 		
+	 		INSERT INTO Database.NEFT_OUT_PAYLOAD (MSGID,PAYLOAD,CREATION_TIME,LAST_MOD_TIME,STATUS,RETRY_COUNT,FILE_NAME,TXN_REF_NUM ) 
+	 		VALUES (msgId,wholeMsgChar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'', '0',fileName,txnNum);			
+		END IF;
+		
+	END;
+	/*
+	* This Methode is used to copy the message headers from Input tree to Output tress
+	*/
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+	/*
+	* In this message we will call appropriate methods to update/insert the values in the Database.
+	* For the Message Type N06&N07, this methode calls insertDatabase method
+	* For the Message Type N10, this methode calls updateDatabase method
+	*/
+	CREATE PROCEDURE CopyEntireMessage()RETURNS BOOLEAN BEGIN
+		
+		DECLARE sType CHARACTER InputRoot.DFDL.*.Header.SUBMESSAGETYPE;
+		SET OutputRoot.DFDL.{sType} = NULL;
+		SET Environment.appId = InputRoot.DFDL.*.Header.BANKAPPLICATIONIDENTIFIER;   -- ISO
+		DECLARE rc BOOLEAN;
+		DECLARE whiteSpace CONSTANT CHARACTER CAST( X'090D0A20' AS CHAR CCSID 1208);
+		DECLARE trn CHARACTER ;
+		IF sType = 'DRS' THEN
+			SET trn = InputRoot.DFDL.*.Body_N29.TRANSACTIONREFERENCENUMBER;
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Transaction number : '||trn) INTO rc;
+		ELSE
+	    	SET trn =InputRoot.DFDL.*.Body.record[1].TRANSACTIONREFERENCENUMBER ;
+		END IF;
+--	    SET trn =InputRoot.DFDL.*.Body.record[1].TRANSACTIONREFERENCENUMBER ;
+	    SET trn =TRIM(whiteSpace FROM trn);
+	    SET Environment.TRAN_REF_NO=trn;                                          -- ISO
+		SET Environment.msgtype = sType;                                          -- check when iso testing
+		DECLARE sod_date,header_date,body_date,enable_flag CHARACTER;
+		DECLARE sodcheck ROW;
+		SET sodcheck.R[] = PASSTHRU('SELECT * FROM NEFT_24X7 ' TO Database.{DSN} );
+		SET sod_date = sodcheck.R[1].SOD_DATE;
+		SET enable_flag = sodcheck.R[1].ENABLE_FLAG;
+		DECLARE msg CHARACTER;
+--		IF sType <> 'N10' THEN
+	IF sType NOT IN ('N10','DRS') THEN	
+			DECLARE verify ROW;
+			SET verify.R[] = PASSTHRU('SELECT TRAN_REF_NO FROM NEFT_OUT WHERE TRAN_REF_NO = ?' TO Database.{DSN} VALUES(trn));
+			DECLARE Ref REFERENCE TO verify.R[<];
+			IF NOT LASTMOVE(Ref) THEN
+					IF sType = 'N06' THEN
+						DECLARE N06Header REFERENCE TO InputRoot.DFDL.N06.Header;
+						DECLARE N06Record REFERENCE TO InputRoot.DFDL.N06.Body.record[1];
+						DECLARE N06Body REFERENCE TO InputRoot.DFDL.N06.Body;
+						WHILE LASTMOVE(N06Record) DO
+							IF (enable_flag = 'Y') AND (sod_date <> '00000000') AND (sType = 'N06') AND ((sod_date <> N06Header.ORIGINATINGDATE) OR (sod_date <> N06Record.VALUEDATE)) THEN
+								SET header_date = N06Header.ORIGINATINGDATE;
+								SET body_date = N06Record.VALUEDATE;
+								CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Header date changed from '||header_date||' to '||sod_date) INTO rc;
+								CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Body date changed from '||body_date||' to '||sod_date) INTO rc;
+								SET N06Header.ORIGINATINGDATE = sod_date;
+								SET N06Record.VALUEDATE = sod_date;
+							END IF;
+							SET msg = '';
+							CALL getMsg(N06Header,N06Record,N06Body,sType,msg);
+							CALL insertDatabase(N06Header,N06Record,N06Body,sType,msg );
+							MOVE N06Record NEXTSIBLING;
+						END WHILE;	
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Message Type is : '||sType) INTO rc;
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Data inserted into NEFT_OUT,NEFT_MSG_OUT tables') INTO rc;
+					ELSE
+						DECLARE N07Header REFERENCE TO InputRoot.DFDL.N07.Header;
+						DECLARE N07Record REFERENCE TO InputRoot.DFDL.N07.Body.record[1];
+						DECLARE N07Body REFERENCE TO InputRoot.DFDL.N07.Body;
+						WHILE LASTMOVE(N07Record) DO
+							IF (enable_flag = 'Y') AND (sod_date <> '00000000') AND (sType = 'N07') AND ((sod_date <> N07Header.ORIGINATINGDATE) OR (sod_date <> N07Record.VALUEDATE)) THEN
+								SET header_date = N07Header.ORIGINATINGDATE;
+								SET body_date = N07Record.VALUEDATE;
+								CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Header date changed from '||header_date||' to '||sod_date) INTO rc;
+								CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Body date changed from '||body_date||' to '||sod_date) INTO rc;
+								SET N07Header.ORIGINATINGDATE = sod_date;
+								SET N07Record.VALUEDATE = sod_date;
+							END IF;								
+							SET msg = '';
+							CALL getMsg(N07Header,N07Record,N07Body,sType,msg);
+							CALL insertDatabase(N07Header,N07Record,N07Body,sType,msg );
+							CALL updateDatabaseN07(N07Record);
+							MOVE N07Record NEXTSIBLING;
+						END WHILE;
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Message Type is : '||sType) INTO rc;
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Data inserted into NEFT_OUT,NEFT_MSG_OUT and updated in NEFT_IN table') INTO rc;
+					END IF;	
+					RETURN TRUE;
+			ELSE
+				DECLARE sIFSC CHARACTER;
+				SET sIFSC = TRIM(whiteSpace FROM InputRoot.DFDL.*.Body.record[1].SENDINGBRANCHIFSC);
+				DECLARE DB_Details ROW;
+				DECLARE sifsc CHARACTER ;
+		        SET sifsc = SUBSTRING(sIFSC FROM 1 FOR 9) || '%';
+--		   		DECLARE Qry CHARACTER 'SELECT A.BANKNAME FROM IFSC_BANKNAME A WHERE A.IFSC LIKE ?';
+				DECLARE Qry CHARACTER 'SELECT A.BANKNAME FROM BANKNAME A WHERE A.IFSC_CODE LIKE ?';
+		   		SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSN} VALUES(sifsc));
+				SET Environment.bankName = DB_Details.A[1].BANKNAME;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Duplicate record found for this transaction.') INTO rc;
+				RETURN FALSE;
+			END IF;
+		ELSEIF sType = 'N10' THEN
+			DECLARE N10Record REFERENCE TO InputRoot.DFDL.N10.Body.record[1];
+			DECLARE N10Header REFERENCE TO InputRoot.DFDL.N10.Header;
+			DECLARE N10Body REFERENCE TO InputRoot.DFDL.N10.Body;
+			WHILE LASTMOVE(N10Record) DO
+			IF (enable_flag = 'Y') AND (sod_date <> '00000000') AND  (sType = 'N10') AND ((sod_date <> N10Header.ORIGINATINGDATE) OR (sod_date <> N10Record.AMT_CREDITED.LINE1)) THEN
+				SET header_date = N10Header.ORIGINATINGDATE;
+				SET body_date = N10Record.AMT_CREDITED.LINE1;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Header date changed from '||header_date||' to '||sod_date) INTO rc;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Body date changed from '||body_date||' to '||sod_date) INTO rc;
+				SET N10Header.ORIGINATINGDATE = sod_date;
+				SET N10Record.AMT_CREDITED.LINE1 = sod_date;
+			END IF;
+			CALL getMsg(N10Header,N10Record,N10Body,sType,msg);
+			CALL updateDatabaseN10(N10Record,msg);
+			MOVE N10Record NEXTSIBLING;
+			END WHILE;	
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Message Type is : '||sType) INTO rc;
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Record updated in NEFT_IN table') INTO rc;
+			RETURN TRUE;
+			
+		ELSEIF sType = 'DRS' THEN
+			DECLARE N29BodyRef REFERENCE TO InputRoot.DFDL.N29DRS.Body_N29;
+			DECLARE rejectCode CHARACTER N29BodyRef.RESPONSE_CODE;
+			DECLARE rejectReason CHARACTER N29BodyRef.REJECTION_REASON;
+			DECLARE seqHeader CHARACTER InputRoot.DFDL.N29DRS.Header.SEQUENCENUMBER;
+			DECLARE Related_Txn_Ref CHARACTER N29BodyRef.RELATED_REFERENCE;
+			DECLARE Res_Code CHARACTER N29BodyRef.RESPONSE_CODE;
+			DECLARE DB_Update,DB_Details ROW;
+			
+			IF Res_Code = '001' THEN
+				SET DB_Update.A[] = PASSTHRU(('UPDATE NEFT_OUT SET ACK_NACK=''P'', SEQINHEADER = ? WHERE TRIM(TRAN_REF_RETURN_UTR) = ? ') TO Database.{DSN} VALUES(seqHeader,Related_Txn_Ref));
+			ELSEIF Res_Code = '002' then
+				SET DB_Update.A[] = PASSTHRU(('UPDATE NEFT_OUT SET ACK_NACK=''N'', SEQINHEADER = ?, REJECT_CODE = ?, REJECT_REASON = ? WHERE TRIM(TRAN_REF_RETURN_UTR) = ? ') TO Database.{DSN} VALUES(seqHeader,rejectCode,rejectReason,Related_Txn_Ref));
+			END IF;
+				
+			SET DB_Details.A[] = PASSTHRU(('SELECT A.BANKNAME FROM NEFT_OUT A WHERE TRIM(A.TRAN_REF_RETURN_UTR)= ?') TO Database.{DSN} VALUES (Related_Txn_Ref));
+            SET Environment.bankName = DB_Details.A[1].BANKNAME;
+            	
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Message Type is : '||sType) INTO rc;
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Record updated in NEFT_OUT table') INTO rc;
+			
+			RETURN TRUE;		
+		END IF;	
+	END;
+
+	CREATE PROCEDURE updateDatabaseN07(IN record REFERENCE)
+	BEGIN
+		DECLARE relRefNum,tranRefNum CHARACTER;
+		DECLARE currentTime CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+		DECLARE Relref REFERENCE TO record.RELATED_REFERENCE_NUMBER;--2006
+		DECLARE TranRef REFERENCE TO record.TRANSACTIONREFERENCENUMBER; --2020
+		DECLARE whiteSpace CONSTANT CHARACTER CAST( X'090D0A20' AS CHAR CCSID 1208);
+		IF LASTMOVE(Relref) THEN
+			SET relRefNum = TRIM(whiteSpace FROM Relref);			
+		END IF;
+		SET tranRefNum = TRIM(whiteSpace FROM TranRef);	
+		DECLARE ref ROW;
+		
+		DECLARE relRefNumLen INTEGER;
+		SET relRefNumLen = LENGTH(relRefNum);
+		WHILE relRefNumLen < 16 DO
+			SET relRefNum = relRefNum || ' ';
+			SET relRefNumLen = relRefNumLen + 1;
+		END WHILE;
+		
+		DECLARE qry CHARACTER 'UPDATE NEFT_IN SET ACK_NACK=''N'', LAST_UPD_STAMP = CURRENT_TIMESTAMP, ACK_NACK_FROM_CBS=''Y'', TRAN_REF_RETURN_UTR = ? WHERE TRAN_REF_NO = ?';
+		SET ref.A[] = PASSTHRU(qry TO Database.{DSN} VALUES(tranRefNum,relRefNum));
+		
+	END;		
+	CREATE PROCEDURE getMsg(IN HeaderRef REFERENCE, IN RecRef REFERENCE,IN BodyRef REFERENCE, IN stype2 CHARACTER, INOUT msg2 CHARACTER )
+	BEGIN
+		DECLARE Outref REFERENCE TO OutputRoot.DFDL;
+		DECLARE whiteSpace CONSTANT CHARACTER CAST( X'090D0A20' AS CHAR CCSID 1208);
+		SET Outref.{stype2}.Header = HeaderRef;
+		SET Outref.{stype2}.Body.BLOCKIDENTIFIER = TRIM(whiteSpace FROM BodyRef.BLOCKIDENTIFIER);
+		SET Outref.{stype2}.Body.TRANSACTIONREFERENCENUMBER = BodyRef.TRANSACTIONREFERENCENUMBER;
+		SET Outref.{stype2}.Body.BATCHTIME = BodyRef.BATCHTIME;
+		SET Outref.{stype2}.Body.TOTALNUMBEROFMESSAGES = BodyRef.TOTALNUMBEROFMESSAGES;
+		SET Outref.{stype2}.Body.SUMOFAMOUNTS = BodyRef.SUMOFAMOUNTS;
+		SET Outref.{stype2}.Body.record = RecRef;
+		DECLARE wholeMsgBlob BLOB ASBITSTREAM(OutputRoot.DFDL, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+	 	DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+		SET msg2 = wholeMsgChar;
+		--SET OutputRoot.DFDL = NULL;
+		
+	END;
+	CREATE PROCEDURE updateDatabaseN10 (IN N10Record REFERENCE, IN msg CHARACTER)
+	BEGIN
+			
+		DECLARE ref ROW;
+		DECLARE cTime CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+		DECLARE whiteSpace CONSTANT CHARACTER CAST( X'090D0A20' AS CHAR CCSID 1208);
+		--DECLARE Relrefn10 REFERENCE TO N10Record.TRANSACTONREFERENCENUMBER;--2020
+		DECLARE Relrefn10 REFERENCE TO N10Record.RELATED_REFERENCE;--2006
+		DECLARE relRefNum CHARACTER;
+		IF LASTMOVE(Relrefn10) THEN
+			SET relRefNum = TRIM(whiteSpace FROM Relrefn10);			
+		END IF;
+		
+		DECLARE relRefNumLen INTEGER;
+		SET relRefNumLen = LENGTH(relRefNum);
+		WHILE relRefNumLen < 16 DO
+			SET relRefNum = relRefNum || ' ';
+			SET relRefNumLen = relRefNumLen + 1;
+		END WHILE;
+		DECLARE DB_Details ROW;
+   		DECLARE Qry CHARACTER 'SELECT A.BANKNAME,A.ORG_MSG_ID,A.ORG_TXN_ID FROM NEFT_IN A WHERE TRIM(A.TRAN_REF_NO) = ?';
+   		SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSN} VALUES(relRefNum));
+		SET Environment.bankName = DB_Details.A[1].BANKNAME;
+		
+		SET OutputLocalEnvironment.Variables.temp.OrgnlMsgId = DB_Details.A[1].ORG_MSG_ID;
+		SET OutputLocalEnvironment.Variables.temp.OrgnlTxId = DB_Details.A[1].ORG_TXN_ID;
+		DECLARE qry CHARACTER 'UPDATE NEFT_IN SET ACK_NACK=''Y'', LAST_MOD_TIME = ?, LAST_UPD_STAMP=CURRENT_TIMESTAMP, ACK_NACK_FROM_CBS=''Y'', ACK_NACK_MSG = ? WHERE TRAN_REF_NO = ?';
+		SET ref.A[] = PASSTHRU(qry TO Database.{DSN} VALUES(cTime,msg,relRefNum));
+		
+	END;
+	CREATE PROCEDURE insertDatabase(IN Header REFERENCE, IN Rec REFERENCE,IN Body REFERENCE, IN msgType CHARACTER, IN msg CHARACTER ) 
+	BEGIN
+		DECLARE whiteSpace CONSTANT CHARACTER CAST( X'090D0A20' AS CHAR CCSID 1208);
+		DECLARE OrgRemitRef REFERENCE TO Rec.ORIGINATOROFREMITTANCE.LINE1;
+		DECLARE BenAddrRef REFERENCE TO Rec.BENEFICIARYCUSTOMERADDRESS.LINE1;
+		DECLARE SendToRecvInfoRef REFERENCE TO Rec.SENDERTIRECEIVERINFORMATION.LINE1;
+		DECLARE branchCode CHARACTER InputRoot.DFDL.*.SpaceFiller;
+		SET branchCode = SUBSTRING(branchCode FROM 1 FOR 5);
+		IF LENGTH(branchCode) is null OR LENGTH(branchCode) < 5  THEN
+			SET branchCode = '00000';
+		END IF;
+		--SET branchCode = TRIM(whiteSpace FROM branchCode);
+		--DECLARE msgType CHARACTER FIELDNAME(InputRoot.DFDL.*);
+		DECLARE relRefNum CHARACTER;
+		DECLARE Relref REFERENCE TO Rec.RELATED_REFERENCE_NUMBER;
+		IF LASTMOVE(Relref) THEN
+			SET relRefNum = Relref;			
+		END IF;
+		--DECLARE bankName CHARACTER 'bankname';
+		DECLARE bankNameref ROW;    
+		DECLARE sIFSC CHARACTER TRIM(whiteSpace FROM Rec.SENDINGBRANCHIFSC);
+		DECLARE sifsc CHARACTER ;
+		SET sifsc = SUBSTRING(sIFSC FROM 1 FOR 9) || '%';
+		
+		DECLARE DB_Details ROW;
+   		-- DECLARE Qry CHARACTER 'SELECT A.BANKNAME FROM IFSC_BANKNAME A WHERE A.IFSC LIKE ?';
+   		DECLARE Qry CHARACTER 'SELECT A.BANKNAME FROM BANKNAME A WHERE A.IFSC_CODE LIKE ?';
+   		 SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSN} VALUES(sifsc));
+		SET Environment.bankName = DB_Details.A[1].BANKNAME;
+		DECLARE orgRemt CHARACTER '';
+		DECLARE benAddr CHARACTER '';
+		DECLARE sendToRecvInfo CHARACTER '';
+		WHILE lastmove(OrgRemitRef) DO
+			SET orgRemt = orgRemt||OrgRemitRef;
+			MOVE OrgRemitRef NEXTSIBLING;
+		END WHILE;
+		WHILE lastmove(BenAddrRef) DO
+			SET benAddr = benAddr||BenAddrRef;
+			MOVE BenAddrRef NEXTSIBLING;
+		END WHILE;
+		WHILE lastmove(SendToRecvInfoRef) DO
+			SET sendToRecvInfo = sendToRecvInfo||SendToRecvInfoRef;
+			MOVE SendToRecvInfoRef NEXTSIBLING;
+		END WHILE;
+		/*DECLARE wholeMsgBlob BLOB ASBITSTREAM(InputRoot.DFDL, Root.Properties.Encoding, Root.Properties.CodedCharSetId );
+	 	DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);*/
+	 	DECLARE trRef CHARACTER TRIM(whiteSpace FROM Rec.TRANSACTIONREFERENCENUMBER);
+	 	/*
+	 	:6346:R03 / <REASON_CODE>
+		:6366:ACCOUNT NO DOES NOT EXIST / <REJECTION_CODE>
+	 	*/
+	 	DECLARE rejectCode CHARACTER '';
+	 	DECLARE rejectReason CHARACTER '';
+	 	IF Environment.msgtype = 'N07' THEN
+	 		SET rejectCode = Rec.REASON_CODE;
+	 		SET rejectReason = Rec.REJECTION_CODE;
+	 	END IF;
+	 	DECLARE bIFSC CHARACTER TRIM(whiteSpace FROM Rec.BENEFICIARYBRANCHSIFSC);
+	 	DECLARE vdate CHARACTER TRIM(whiteSpace FROM Rec.VALUEDATE);
+	 	DECLARE bname CHARACTER TRIM(whiteSpace FROM Environment.bankName);
+	 	DECLARE cTime CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+	 	DECLARE inc_utr CHARACTER LEFT(sIFSC,4)||vdate||'5'||RIGHT(trRef,9);                     -- ISO
+	 	SET Environment.amount = Rec.AMOUNT;
+		-- Production server query.
+		INSERT INTO Database.NEFT_MSG_OUT (TRAN_REF_NO,SENDER_CORRES,RECVR_CORRES,MSG,TRAN_DATE,BANKNAME,CREATION_TIME,CREATION_TIME_STAMP) 
+		VALUES ( trRef,
+		sIFSC,
+		bIFSC,
+		msg,
+		vdate,
+		bname,
+		cTime,
+		CURRENT_TIMESTAMP
+		);
+		/*INSERT INTO Database.NEFT_MSG_OUT (TRAN_REF_NO,SENDER_CORRES,RECVR_CORRES,MSG,TRAN_DATE,BANKNAME,CREATION_TIME) 
+		VALUES ( trRef,
+		sIFSC,
+		bIFSC,
+		msg,
+		vdate,
+		bname,
+		cTime
+		);*/
+		INSERT INTO Database.NEFT_OUT (TRAN_REF_NO,INC_UTR,TRAN_DATE,AMOUNT,IFSC_SENDER,SENDER_ACCT_TYPE,SENDER_ACCT_NO,SENDER_ACCT_NAME,
+		ORIG_REMITTANCE,IFSC_RECVR,RECVR_ACCT_TYPE,RECVR_ACCT_NO,RECVR_ACCT_NAME,BENEF_ADDRS,SEND_TO_RECE_INFO,REJECT_CODE,
+		REJECT_REASON,ACK_NACK,CREATION_TIME,LAST_MOD_TIME,OUT_MSG_SENT_SBI,BANKNAME,TRAN_BRANCH,ACK_NACKOUT_SEND_CBS,
+		SUB_MSG_TYPE,ACK_NACK_TIME,RET_ORG_ERR,DUP_ORG_OUT,N10_ACKNACK,SEQINHEADER,TRAN_REF_RETURN_UTR,LAST_UPD_STAMP,
+		CREATION_TIME_STAMP) 
+		 VALUES 
+		(Rec.TRANSACTIONREFERENCENUMBER,
+		 inc_utr,
+		 Rec.VALUEDATE,
+		 Rec.AMOUNT,
+		 Rec.SENDINGBRANCHIFSC,
+		 Rec.SENDINGCUSTOMERACCOUNTTYPE,
+		 Rec.SENDINGCUSTOMERACCOUNTNUMBER,
+		 Rec.SEDINGCUSTOMERACCOUNTNAME,
+		 orgRemt,
+		 Rec.BENEFICIARYBRANCHSIFSC,
+		 Rec.BENEFICIARYCUSTOMERACTYPE,
+		 Rec.BENEFICIARYCUSTOMERACNUMBER,
+		 Rec.BENEFICIARYCUSTOMERACNAME,
+		 benAddr,
+		 sendToRecvInfo,
+		 rejectCode,
+		 rejectReason,
+		 '0',
+		 cTime,
+		 cTime,
+		 '0',
+		 Environment.bankName,
+		 branchCode,
+		 '0',
+		 msgType,
+		 '0',
+		 '0',
+		 '0',
+		 '0',
+		 Header.SEQUENCENUMBER,
+		 relRefNum,
+		 CURRENT_TIMESTAMP,
+		 CURRENT_TIMESTAMP
+		 );
+	END;
+	CREATE PROCEDURE updateLocalEnv() BEGIN
+		DECLARE key CHARACTER 'key';-- Environment.bankName||'_'||Environment.stype;
+		DECLARE bank CHARACTER TRIM(Environment.bankName);
+		DECLARE rc BOOLEAN;
+		
+		IF Environment.msgtype='N06' THEN
+			SET key = 'OUT_'||bank;
+		ELSEIF Environment.msgtype='N07' THEN
+			SET key = 'OUT_'||bank;
+		ELSEIF Environment.msgtype='N10' THEN
+			SET key = 'N10_OUT_'||bank;
+		ELSEIF Environment.msgtype='DRS' THEN
+			SET key = 'DRS_OUT_'||bank;
+		END IF;
+		
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Retrieving values from properties file') INTO rc;
+		DECLARE fileLoc,ftpProvider,pfxfile,pfxpass CHARACTER;
+		-- Reading values from properties file.
+		CALL getProp( PROP_LOC, key,bank, fileLoc, ftpProvider,pfxfile,pfxpass);
+		
+		SET Environment.pfxfile = pfxfile;
+		SET Environment.pfxpass = pfxpass;
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','file:-'||Environment.pfxfile) INTO rc;
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','pass:- '||Environment.pfxpass) INTO rc;
+		DECLARE whiteSpace CONSTANT CHARACTER CAST( X'090D0A20' AS CHAR CCSID 1208);
+		DECLARE sign_flag CHARACTER TRIM(whiteSpace FROM pfxpass);
+		
+		IF LENGTH(sign_flag)<> 0 THEN
+		  SET Environment.signFlag = 'S';
+		ELSE
+		  SET Environment.signFlag = 'F';
+		END IF;
+		
+		
+		DECLARE STP_LIMIT ROW;				
+		SET STP_LIMIT.R[] = PASSTHRU('SELECT NEFT FROM STP_LIMIT');
+		
+		DECLARE NSTP , NSTP_TEMP_INT INTEGER;
+		DECLARE NSTP_TEMP CHARACTER;
+		
+		SET NSTP_TEMP = SUBSTRING(Environment.amount BEFORE ',');		
+		SET NSTP_TEMP_INT = CAST(SUBSTRING(Environment.amount BEFORE ',') AS INTEGER); 
+		
+		SET NSTP = STP_LIMIT.R[1].NEFT;
+		IF Environment.signFlag = 'S' THEN
+			IF(NSTP < NSTP_TEMP_INT) THEN
+				SET Environment.signFlag = 'F';
+			END IF; 
+		END IF;	
+		
+		--Logging
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Bank name : '||bank) INTO rc;
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','FTP Provider name : '||ftpProvider) INTO rc;
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_OUTWARD_N10', 'INFO','Remote Server directory : '||fileLoc) INTO rc;
+		-- Updating local Environment.
+		
+		--- CODE to be uncommented before going to deploy on prod.
+		--CHANGES FOR MQ START--
+--MQ--		SET OutputLocalEnvironment.Destination.File.Remote.Server = ftpProvider;
+--MQ--		SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = fileLoc;
+			SET OutputLocalEnvironment.Destination.File.Directory = fileLoc;
+		--CHANGES FOR MQ START--
+		
+	END;
+	CREATE PROCEDURE  getProp( IN P1 CHARACTER, IN P2 CHARACTER, IN P3 CHARACTER,INOUT P4 CHARACTER, INOUT P5 CHARACTER,INOUT P6 CHARACTER,INOUT P7 CHARACTER)
+ 	LANGUAGE JAVA 
+ 	EXTERNAL NAME "com.cedge.wb.neft.out.WB_NEFT_OUTWARD_JavaCompute.getProperties";
+
+END MODULE;

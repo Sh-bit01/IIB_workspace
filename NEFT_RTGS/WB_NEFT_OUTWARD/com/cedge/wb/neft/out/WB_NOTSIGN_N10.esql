@@ -1,0 +1,110 @@
+BROKER SCHEMA com.cedge.wb.neft.out
+
+
+CREATE COMPUTE MODULE WB_SIGN_N10
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+
+		IF Environment.signFlag='S' THEN    --------------------------------signing------------------------------------
+			
+	SET OutputRoot.Properties = InputRoot.Properties;
+			DECLARE CRLF ,CR,LF ,fourBlock CHARACTER ;
+			DECLARE i INTEGER;
+			DECLARE rc BOOLEAN;
+			DECLARE verify ROW;
+			DECLARE  ref REFERENCE TO InputRoot.XMLNSC.RequestPayload.Document[1];							
+			MOVE ref FIRSTCHILD TYPE XMLNSC.Element;
+			DECLARE  refMsgType REFERENCE TO InputRoot.XMLNSC.RequestPayload.AppHdr.MsgDefIdr[1];						
+			MOVE refMsgType FIRSTCHILD TYPE XMLNSC.Element;
+			DECLARE wholeMsgBlob BLOB;
+			SET wholeMsgBlob = ASBITSTREAM( ref OPTIONS FolderBitStream CCSID 1208);
+			DECLARE wholeMsgChar CHARACTER CAST(wholeMsgBlob AS CHARACTER ENCODING 546);
+	        
+	        IF refMsgType = 'pacs.008.001.09' THEN
+	        	SET fourBlock ='<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.09">'||wholeMsgChar||'</Document>';      
+	        ELSEIF refMsgType = 'pacs.004.001.10' THEN
+	        	SET fourBlock ='<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">'||wholeMsgChar||'</Document>';
+	        ELSEIF refMsgType = 'camt.059.001.06' THEN	
+	       		SET fourBlock ='<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.059.001.06">'||wholeMsgChar||'</Document>';		
+	        END IF;
+		    
+			DECLARE signature CHARACTER;
+			CALL getProp( Environment.pfxfile, Environment.pfxpass,fourBlock,signature);
+			SET signature = signature ;
+			DECLARE sigmsg CHARACTER;
+			SET sigmsg = signature;
+			SET Environment.SIG = sigmsg ;
+			SET sigmsg = REPLACE(signature, '"','');
+			DECLARE addpayload REFERENCE TO InputRoot.XMLNSC;
+		    SET addpayload.RequestPayload.AppHdr.Sgntr.XMLSgntrs = NULL;
+--		    SET addpayload.RequestPayload.*:AppHdr.Sgntr.(XMLNSC.NamespaceDecl)sig:XMLSgntrs=NULL;
+--		    SET addpayload.RequestPayload.AppHdr.Sgntr.XMLSgntrs.(XMLNSC.NamespaceDecl)Sgntrs1	='http://www.w3.org/2000/09/xmldsig#';
+	        SET addpayload.RequestPayload.AppHdr.Sgntr."sig:XMLSgntrs"								='-----BEGIN PKCS7-----'||sigmsg||'-----END PKCS7-----';
+	       
+			CALL log4j_1_1('Signed', 'WB_NEFT_OUTWARD_N10', 'INFO','Message is successully signing') INTO rc;
+		SET OutputRoot.DFDL = NULL;
+		DECLARE appId CHARACTER Environment.appId;
+		DECLARE wholeMsgBlob1 BLOB ASBITSTREAM(addpayload, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );		
+	    DECLARE wholeMsgChar1 CHAR CAST(wholeMsgBlob1 AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+	    SET wholeMsgChar1 = appId||wholeMsgChar1;	
+		SET wholeMsgChar1 = REPLACE(wholeMsgChar1,'^M','');		
+		SET wholeMsgChar1 = REPLACE(wholeMsgChar1,'AppHdr1','xmlns');
+		SET wholeMsgChar1 = REPLACE(wholeMsgChar1,'AppHdr2','xmlns:xsi');
+		SET wholeMsgChar1 = REPLACE(wholeMsgChar1,'AppHdr3','xmlns:sig');
+		SET wholeMsgChar1 = REPLACE(wholeMsgChar1,'Document1','xmlns');
+		CALL log4j_1_1('Signed', 'WB_NEFT_OUTWARD_N10', 'INFO','Message :- ' || wholeMsgChar1 ) INTO rc;
+		CALL log4j_1_1('Signed', 'WB_NEFT_OUTWARD_N10', 'INFO','----------------------------------------------------END----------------------------------------------------') INTO rc;
+	    DECLARE wholeMsgBlob2 BLOB CAST(wholeMsgChar1 AS BLOB CCSID InputRoot.Properties.CodedCharSetId);
+	    SET OutputRoot.BLOB.BLOB = wholeMsgBlob2;
+	    
+		ELSEIF Environment.signFlag='F' THEN   --------------------------------non signing -------------------------------
+		
+		DECLARE CRLF ,CR,LF ,fourBlock CHARACTER ;
+		DECLARE rc BOOLEAN;
+--		SET CRLF  = CAST(X'0D0A' AS CHARACTER CCSID 1208);
+--		SET CR    = CAST(X'0D' AS CHARACTER CCSID 1208);
+--		SET LF    = CAST(X'0A' AS CHARACTER CCSID 1208);
+		
+		DECLARE wholeMsgBlob BLOB ASBITSTREAM(InputRoot.XMLNSC, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+	    DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+--	   	SET wholeMsgChar = wholeMsgChar;
+--	    SET wholeMsgChar = REPLACE(wholeMsgChar, '"','');
+		SET wholeMsgChar = Environment.appId||wholeMsgChar;	
+		SET wholeMsgChar = REPLACE(wholeMsgChar,'^M','');		
+		SET wholeMsgChar = REPLACE(wholeMsgChar,'AppHdr1','xmlns');
+		SET wholeMsgChar = REPLACE(wholeMsgChar,'AppHdr2','xmlns:xsi');
+		SET wholeMsgChar = REPLACE(wholeMsgChar,'AppHdr3','xmlns:sig');
+		SET wholeMsgChar = REPLACE(wholeMsgChar,'Document1','xmlns');
+	    CALL log4j_1_1('NOTSIGN','WB_NEFT_OUTWARD_N10', 'INFO','Message is not signing') INTO rc;
+	    CALL log4j_1_1('Signed', 'WB_NEFT_OUTWARD_N10', 'INFO','----------------------------------------------------END----------------------------------------------------') INTO rc;
+	    DECLARE wholeMsgBlob1 BLOB CAST(wholeMsgChar AS BLOB CCSID InputRoot.Properties.CodedCharSetId);
+	    SET OutputRoot.DFDL = NULL;
+		SET OutputRoot.BLOB.BLOB = wholeMsgBlob1 ;
+			
+		END IF;
+		
+		
+	END;
+	
+---------------------------------------------------------------------------------SIGN_UNSIGN-----------------------------------------------------------------------------	
+	
+	CREATE PROCEDURE  getProp( IN P1 CHARACTER, IN P2 CHARACTER,IN P3 CHARACTER, INOUT P4 CHARACTER)
+ 	LANGUAGE JAVA 
+ 	EXTERNAL NAME "com.cedge.signer.Signatureflow_JavaCompute.getProperties";
+ END MODULE;

@@ -1,0 +1,67 @@
+BROKER SCHEMA com.wb.cedge.rtgs.exc
+
+
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j";
+--CREATE FUNCTION log4j( IN COMPONENT_NAME CHARACTER,
+--IN LEVEL CHARACTER,
+--IN TEXT CHARACTER )
+--RETURNS BOOLEAN
+--LANGUAGE JAVA
+--EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+CREATE FUNCTION log4j_1_1( IN COMPONENT_NAME CHARACTER,
+IN LOGGER_NAME CHARACTER,
+IN LEVEL CHARACTER,
+IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+
+CREATE COMPUTE MODULE EXCEPTION_HANDLING_SUBFLOW_EXC
+-- DECLARE xmlns NAMESPACE 'urn:iso:std:iso:20022:tech:xsd:pacs.008.001.03';
+DECLARE rc BOOLEAN;
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE msgIdentifier , bankIdentifier CHARACTER ;
+		DECLARE inMsgDetailsref REFERENCE TO InputRoot.DFDL ;
+		DECLARE outMsgDetailsRef REFERENCE TO OutputRoot;
+		SET bankIdentifier = InputRoot.DFDL.*.header.BankApp_Identifier ;
+		SET msgIdentifier = InputRoot.DFDL.*.header.Message_Identifier ;
+		DECLARE chDate CHARACTER;
+		SET chDate = CAST(CURRENT_DATE as CHARACTER FORMAT 'yyyyMMdd');
+		DECLARE ExcRef REFERENCE TO InputRoot.XMLNSC.*.*:FIToFICstmrCdtTrf; 
+
+
+		IF FIELDNAME(InputBody)='XMLNSC' THEN
+			DECLARE wholeMsgBlob BLOB ASBITSTREAM(InputRoot.XMLNSC, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+			DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+			SET OutputRoot.XMLNSC.ExceptionDetail.whole_msg= wholeMsgChar;
+			SET OutputRoot.XMLNSC.ExceptionDetail.exection=InputExceptionList;
+
+			SET OutputRoot.XMLNSC.ExceptionDetail.MSGTYPE=COALESCE(SUBSTRING(InputRoot.XMLNSC.*.xmlns AFTER 'xsd:'), InputRoot.*:XMLNSC.*:RequestPayload.*:AppHdr.*:MsgDefIdr ) ;
+			-- SET OutputRoot.XMLNSC.ExceptionDetail.UTR=COALESCE(InputRoot.XMLNSC.*.*:FIToFICstmrCdtTrf.*:CdtTrfTxInf.*:PmtId.*:EndToEndId, InputRoot.*:XMLNSC.*:RequestPayload.*:Document.*:FIToFICstmrCdtTrf.*:CdtTrfTxInf.*:PmtId.*:EndToEndId);
+			--MQRFH2 Code added for UTR
+			SET OutputRoot.XMLNSC.ExceptionDetail.UTR=COALESCE(InputRoot.MQRFH2.usr.BankDetails.UTR, InputRoot.XMLNSC.*.*:FIToFICstmrCdtTrf.*:CdtTrfTxInf.*:PmtId.*:EndToEndId, InputRoot.*:XMLNSC.*:RequestPayload.*:Document.*:FIToFICstmrCdtTrf.*:CdtTrfTxInf.*:PmtId.*:EndToEndId);
+			SET OutputRoot.XMLNSC.ExceptionDetail.TXN_REF_NUM = chDate||COALESCE(Environment.UniqueId.BizMsgIdr, InputRoot.*:XMLNSC.*:RequestPayload.*:AppHdr.*:BizMsgIdr) ;
+			SET OutputRoot.XMLNSC.ExceptionDetail.FILE_NAME =COALESCE(InputLocalEnvironment.Destination.File.Name,InputRoot.MQRFH2.usr.UFM_FileName);
+		ELSEIF FIELDNAME(InputBody)='DFDL' THEN
+			DECLARE wholeMsgBlob BLOB ASBITSTREAM(InputRoot.DFDL, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+			DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+
+			SET OutputRoot.XMLNSC.ExceptionDetail.whole_msg= wholeMsgChar;
+			SET OutputRoot.XMLNSC.ExceptionDetail.exection=InputExceptionList;
+			SET OutputRoot.XMLNSC.ExceptionDetail.MSGTYPE=InputRoot.DFDL.*.header.SubMessage_Type;
+			SET OutputRoot.XMLNSC.ExceptionDetail.UTR=InputRoot.DFDL.*.header.MUR;
+			SET OutputRoot.XMLNSC.ExceptionDetail.TXN_REF_NUM = chDate||InputRoot.DFDL.*.header.MUR;
+			SET OutputRoot.XMLNSC.ExceptionDetail.FILE_NAME =InputLocalEnvironment.Destination.File.Name;
+			--Code added for Pacs.004
+			IF InputRoot.MQRFH2.usr.BankDetails.MsgType = 'pacs.004.001.03' THEN
+				SET OutputRoot.XMLNSC.ExceptionDetail.MSGTYPE = 'RR42';
+			END IF;
+		END IF;
+		RETURN TRUE;
+	END;
+
+END MODULE;

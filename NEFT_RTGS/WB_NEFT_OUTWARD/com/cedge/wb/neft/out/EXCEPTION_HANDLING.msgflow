@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmTrace.msgnode="ComIbmTrace.msgnode" xmlns:SEND_EMAIL.subflow="SEND_EMAIL.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="com/cedge/wb/neft/out/EXCEPTION_HANDLING.msgflow" nsPrefix="com_cedge_wb_neft_out_EXCEPTION_HANDLING.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="SQUARE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.DSN" name="DSN" defaultValueLiteral="WBPROD">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.PROP_LOC" name="PROP_LOC" defaultValueLiteral="/var/iib/interface/wb/neft/inward/properties/WBInward.properties">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.CONFIG" name="CONFIG" defaultValueLiteral="/var/iib/interface/wb/neft/inward/properties/log4j/wb_neft_inward.xml">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="EXCEPTION_HANDLING" bundleName="com/cedge/wb/neft/out/EXCEPTION_HANDLING" pluginId="WB_NEFT_OUTWARD"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_OUTWARD/icons/full/obj16/EXCEPTION_HANDLING.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_OUTWARD/icons/full/obj30/EXCEPTION_HANDLING.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmTrace.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="447,61" destination="file" filePath="/sysout/wb/neft/outward/logs/exception//WB_NEFT_OUT_EXC_TRACE.log" pattern="${CURRENT_TIMESTAMP} &#xD;&#xA; Exception Description : ${ExceptionList} ">
+        <translation xmi:type="utility:ConstantString" string="Trace"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="8,179" queueName="WB.NEFT.OUT.EXC" messageDomainProperty="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="WB.NEFT.OUT.EXC"/>
+      </nodes>
+      <nodes xmi:type="SEND_EMAIL.subflow:FCMComposite_1" xmi:id="FCMComposite_1_2" location="363,180">
+        <translation xmi:type="utility:ConstantString" string="SEND_EMAIL"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="209,178" dataSource="WBPROD" computeExpression="esql://routine/com.cedge.wb.neft.out#EXCEPTION_HANDLING_Compute.Main" computeMode="all">
+        <translation xmi:type="utility:ConstantString" string="Compute"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.DSN">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.DSN" bundleName="com/cedge/wb/neft/out/EXCEPTION_HANDLING" pluginId="WB_NEFT_OUTWARD"/>
+        <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.PROP_LOC">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.PROP_LOC" bundleName="com/cedge/wb/neft/out/EXCEPTION_HANDLING" pluginId="WB_NEFT_OUTWARD"/>
+          <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.CONFIG">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.CONFIG" bundleName="com/cedge/wb/neft/out/EXCEPTION_HANDLING" pluginId="WB_NEFT_OUTWARD"/>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

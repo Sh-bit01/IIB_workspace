@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="complexType">
+    <xsd:sequence>
+      <xsd:element name="UTR" type="xsd:string"/>
+      <xsd:element name="SdrIfsc" type="xsd:string"/>
+      <xsd:element name="RcvrIfsc" type="xsd:string"/>
+            <xsd:element name="OriginateDate" type="xsd:string"/>
+            <xsd:element name="OriginateTime" type="xsd:string"/>
+            <xsd:element name="Amount" type="xsd:string"/>
+            <xsd:element name="EvtParam" type="xsd:string"/>
+            <xsd:element name="Xutr" type="xsd:string"/>
+        </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="BankDetails" type="complexType">
+    <xsd:annotation>
+      <xsd:appinfo source="WMQI_APPINFO">
+        <MRMessage messageDefinition="/0/BankDetails;XSDElementDeclaration$MRObject"/>
+      </xsd:appinfo>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

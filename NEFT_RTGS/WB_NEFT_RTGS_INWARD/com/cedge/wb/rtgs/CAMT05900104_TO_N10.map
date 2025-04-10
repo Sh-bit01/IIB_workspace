@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.wb.rtgs" version="8.0.4.0" xmlns:map="com.cedge.wb.rtgs">
+    <input path="/RTGS_XML/iso/std/iso/_20022/tech/xsd/camt05900104/camt.059.001.04.mxsd" var="var1"/>
+    <input path="/RTGS_XML/BankDetails.mxsd" var="var"/>
+    <input path="/RTGS_XML/BankDetails.mxsd" var="var2"/>
+    <output path="/N06/INWARD.xsd"/>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="CAMT05900104_TO_N10">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:camt.059.001.04" path="$var1/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)">
+            <cast path="MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(N10,assembly,DFDL,Properties)"/>
+        <move>
+            <input path="Properties"/>
+            <output path="Properties"/>
+            <override>
+                <assign value="{}:N10">
+                    <output path="Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <assign value="NFT">
+            <output path="N10/header/BankApp_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="N10/header/Message_Identifier"/>
+        </assign>
+        <assign value="I">
+            <output path="N10/header/IO_Identifier"/>
+        </assign>
+        <assign value="298">
+            <output path="N10/header/Message_Type"/>
+        </assign>
+        <assign value="N10">
+            <output path="N10/header/SubMessage_Type"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/SdrIfsc"/>
+            <output path="N10/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/RcvrIfsc"/>
+            <output path="N10/header/Receiver_IFSC"/>
+        </move>
+        <assign value="2">
+            <output path="N10/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="N10/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="N10/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <assign value="000">
+            <output path="N10/header/Obsolescence_Period"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="N10/header/MUR"/>
+        </move>
+        <assign value="2">
+            <output path="N10/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="EFT">
+            <output path="N10/header/Service_Identifier"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateDate"/>
+            <output path="N10/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateTime"/>
+            <output path="N10/header/Originate_Time"/>
+        </move>
+        <assign value="2">
+            <output path="N10/header/Testing_Training_Flag"/>
+        </assign>
+        <assign value="000000000">
+            <output path="N10/header/Sequence_Number"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="N10/header/Filler"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="N10/header/Unique_Transaction_Number"/>
+        </move>
+        <assign value="99">
+            <output path="N10/header/RTGS_Priority"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="N10/body/Transaction_Reference_Number"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="N10/body/record/Transaction_Reference_Number"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/RcvrIfsc"/>
+            <output path="N10/body/record/IFSC_of_Originator_of_Remittance"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/Xutr"/>
+            <output path="N10/body/record/Related_RefNumber"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateDate"/>
+            <output path="N10/body/record/Amt_Credited_Time/Line1"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateTime"/>
+            <output path="N10/body/record/Amt_Credited_Time/Line2"/>
+        </move>
+        <assign value="{4:">
+            <output path="N10/body/Block_4_Initiator"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.rrb.inward.map.neft" version="8.0.5.0" xmlns:map="com.cedge.rrb.inward.map.neft">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">       
+    <xsd:element name="BankDetails">       
+    <xsd:complexType>       
+      <xsd:sequence>       
+        <xsd:element name="UTR" type="xsd:string"/>       
+        <xsd:element name="HO_SENDER_IFCS" type="xsd:string"/>       
+        <xsd:element name="HO_RECEIVER_IFCS" type="xsd:string"/>       
+        <xsd:element name="cDate" type="xsd:string"/>       
+        <xsd:element name="cTime" type="xsd:string"/>       
+                      <xsd:element name="DBIT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+                <xsd:element name="RJTDBIT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+                <xsd:element name="CRDT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+                <xsd:element name="RTNCRDT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+                <xsd:element name="RJTCRDT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+            </xsd:sequence>       
+    </xsd:complexType>       
+  </xsd:element>       
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/ISO/camt.052.001.08.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/N06/INWARD.xsd"/>
+    <imports>
+        <import kind="esql" namespace="/iso/neft/inward/map/esql/MAPPING_USING_ESQL.esql"/>
+        <import kind="esql" namespace="/com/cedge/rrb/inward/neft/mapping/MAPPING_USING_ESQL.esql"/>
+    </imports>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="urn:iso:std:iso:20022:tech:xsd:camt.052.001.08"/>
+        <namespace kind="extension" prefix="MAPPING_USING_ESQL" uri="/iso/neft/inward/map/esql/MAPPING_USING_ESQL.esql"/>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+        <namespace kind="extension" prefix="MAPPING_USING_ESQL0" uri="/com/cedge/rrb/inward/neft/mapping/MAPPING_USING_ESQL.esql"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="Camt052_TO_INF972">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:camt.052.001.08" path="$var1/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)" var="MessageAssembly">
+            <cast castType="userDefined" path="$MessageAssembly/MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(INF972,assembly,DFDL,Properties)" var="MessageAssembly1"/>
+        <move>
+            <input path="$MessageAssembly/Properties"/>
+            <output path="$MessageAssembly1/Properties"/>
+            <override>
+                <assign value="{}:INF972">
+                    <output path="$MessageAssembly1/Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <move>
+            <input path="$MessageAssembly/Document/BkToCstmrAcctRpt/Rpt/ElctrncSeqNb"/>
+            <output path="$MessageAssembly1/INF972/body/Statement_Number"/>
+        </move>
+        <assign value="XXX">
+            <output path="$MessageAssembly1/INF972/header/BankApp_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="$MessageAssembly1/INF972/header/Message_Identifier"/>
+        </assign>
+        <assign value="I">
+            <output path="$MessageAssembly1/INF972/header/IO_Identifier"/>
+        </assign>
+        <assign value="972">
+            <output path="$MessageAssembly1/INF972/header/Message_Type"/>
+        </assign>
+        <assign value="XXX">
+            <output path="$MessageAssembly1/INF972/header/SubMessage_Type"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/INF972/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/INF972/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/INF972/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <assign value="000">
+            <output path="$MessageAssembly1/INF972/header/Obsolescence_Period"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/INF972/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="RTG">
+            <output path="$MessageAssembly1/INF972/header/Service_Identifier"/>
+        </assign>
+        <assign value="2">
+            <output path="$MessageAssembly1/INF972/header/Testing_Training_Flag"/>
+        </assign>
+        <assign value="000000000">
+            <output path="$MessageAssembly1/INF972/header/Sequence_Number"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="$MessageAssembly1/INF972/header/Filler"/>
+        </assign>
+        <assign value="00">
+            <output path="$MessageAssembly1/INF972/header/RTGS_Priority"/>
+        </assign>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$MessageAssembly1/INF972/header/Unique_Transaction_Number"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/HO_SENDER_IFCS"/>
+            <output path="$MessageAssembly1/INF972/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/HO_RECEIVER_IFCS"/>
+            <output path="$MessageAssembly1/INF972/header/Receiver_IFSC"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$MessageAssembly1/INF972/header/MUR"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/cDate" var="cDate"/>
+            <output path="$MessageAssembly1/INF972/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/cTime"/>
+            <output path="$MessageAssembly1/INF972/header/Originate_Time"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/HO_SENDER_IFCS"/>
+            <output path="$MessageAssembly1/INF972/body/Account_Identification"/>
+        </move>
+        <move>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$MessageAssembly1/INF972/body/Transaction_Reference"/>
+        </move>
+        <function ref="fn:concat">
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/cDate" var="cDate1"/>
+            <output path="$MessageAssembly1/INF972/body/Opening_Balance"/>
+            <param name="string1" value="&quot;C&quot;"/>
+            <param name="string2" value="$cDate1"/>
+            <param name="string3" value="&quot;INR0,00&quot;"/>
+        </function>
+        <function ref="fn:concat">
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/cDate" var="cDate2"/>
+            <output path="$MessageAssembly1/INF972/body/Closing_Balance"/>
+            <param name="string1" value="&quot;C&quot;"/>
+            <param name="string2" value="$cDate2"/>
+            <param name="string3" value="&quot;INR0,00&quot;"/>
+        </function>
+        <local>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/DBIT" var="DBIT"/>
+            <input auxiliary="true" path="$MessageAssembly/Document/BkToCstmrAcctRpt/GrpHdr/AddtlInf" var="AddtlInf"/>
+            <output path="$MessageAssembly1/INF972/body/Statement_Line"/>
+            <function ref="fn:substring-after">
+                <input path="$AddtlInf/." var="AddtlInf"/>
+                <output path="Line2"/>
+                <param name="string1" value="$AddtlInf"/>
+                <param name="string2" value="'Id:'"/>
+            </function>
+            <function ref="fn:concat">
+                <input path="$DBIT/Amt" var="Amt"/>
+                <output path="Line1"/>
+                <param name="string1" value="&quot;DR&quot;"/>
+                <param name="string2" value="$Amt"/>
+                <param name="string3" value="&quot;NDDT&quot;"/>
+            </function>
+        </local>
+        <local>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/RJTDBIT" var="RJTDBIT"/>
+            <input auxiliary="true" path="$MessageAssembly/Document/BkToCstmrAcctRpt/GrpHdr/AddtlInf" var="AddtlInf2"/>
+            <output path="$MessageAssembly1/INF972/body/Statement_Line"/>
+            <function ref="fn:substring-after">
+                <input path="$AddtlInf2/." var="AddtlInf2"/>
+                <output path="Line2"/>
+                <param name="string1" value="$AddtlInf2"/>
+                <param name="string2" value="'Id:'"/>
+            </function>
+            <function ref="fn:concat">
+                <input path="$RJTDBIT/Amt" var="Amt1"/>
+                <output path="Line1"/>
+                <param name="string1" value="&quot;DR&quot;"/>
+                <param name="string2" value="$Amt1"/>
+                <param name="string3" value="&quot;NMSC&quot;"/>
+            </function>
+        </local>
+        <local>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/CRDT" var="CRDT"/>
+            <input auxiliary="true" path="$MessageAssembly/Document/BkToCstmrAcctRpt/GrpHdr/AddtlInf" var="AddtlInf3"/>
+            <output path="$MessageAssembly1/INF972/body/Statement_Line"/>
+            <function ref="fn:substring-after">
+                <input path="$AddtlInf3/." var="AddtlInf3"/>
+                <output path="Line2"/>
+                <param name="string1" value="$AddtlInf3"/>
+                <param name="string2" value="'Id:'"/>
+            </function>
+            <function ref="fn:concat">
+                <input path="$CRDT/Amt" var="Amt2"/>
+                <output path="Line1"/>
+                <param name="string1" value="&quot;CR&quot;"/>
+                <param name="string2" value="$Amt2"/>
+                <param name="string3" value="&quot;NCLR&quot;"/>
+            </function>
+        </local>
+        <local>
+            <input path="$MessageAssembly/MQRFH2/usr/BankDetails/RTNCRDT" var="RTNCRDT"/>
+            <input auxiliary="true" path="$MessageAssembly/Document/BkToCstmrAcctRpt/GrpHdr/AddtlInf" var="AddtlInf4"/>
+            <output path="$MessageAssembly1/INF972/body/Statement_Line"/>
+            <function ref="fn:substring-after">
+                <input path="$AddtlInf4/." var="AddtlInf4"/>
+                <output path="Line2"/>
+                <param name="string1" value="$AddtlInf4"/>
+                <param name="string2" value="'Id:'"/>
+            </function>
+            <function ref="fn:concat">
+                <input path="$RTNCRDT/Amt" var="Amt3"/>
+                <output path="Line1"/>
+                <param name="string1" value="&quot;CR&quot;"/>
+                <param name="string2" value="$Amt3"/>
+                <param name="string3" value="&quot;NRTI&quot;"/>
+            </function>
+        </local>
+        <assign value="{4:">
+            <output path="$MessageAssembly1/INF972/body/Block_4_Initiator"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

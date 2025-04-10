@@ -1,0 +1,1212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:recSepFieldsFmt="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      
+  <xsd:import namespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat" schemaLocation="../IBMdefined/RecordSeparatedFieldFormat.xsd"/>
+                                                                                      
+  <xsd:element ibmSchExtn:docRoot="true" name="N04">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}">
+                            
+              <xsd:element ref="Block_4_Initiator"/>
+                            
+              <xsd:element dfdl:initiator="3385:" name="Value_Date" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="3535:" dfdl:occursCountKind="implicit" minOccurs="0" name="Batch_Time" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="5175:" name="Total_Out_Debit_Txn" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="4105:" name="Total_Amt_Out_Debit_Txn" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="5180:" name="Total_Out_Debit_Txn_Accepted" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="4110:" name="Total_Amt_Out_Debit_Txn_Accepted" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="5185:" name="Total_Out_Debit_Txn_Rejected" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="4115:" name="Total_Amt_Out_Debit_Txn_Rejected" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="5267:" name="Total_In_Credits_Received_For_Bank" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="4410:" name="Total_Amt_In_Credits_Received" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="5047:" name="Total_Return_Txn_Received_For_Bank" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="4460:" name="Total_Amt_Return_Txn_Received" type="xsd:string"/>
+                          
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+                
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Optional" type="xsd:string"/>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="INF972">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}">
+                            
+              <xsd:element ref="Block_4_Initiator"/>
+                            
+              <xsd:element dfdl:initiator="20:" name="Transaction_Reference" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="25:" name="Account_Identification" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="28C:" name="Statement_Number" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="60F:" name="Opening_Balance" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="61:" dfdl:occursCountKind="implicit" maxOccurs="5" minOccurs="0" name="Statement_Line">
+                                
+                <xsd:complexType>
+                                    
+                  <xsd:sequence dfdl:separator="%CR;%LF;">
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2" type="xsd:string"/>
+                                      
+                  </xsd:sequence>
+                                  
+                </xsd:complexType>
+                              
+              </xsd:element>
+                            
+              <xsd:element dfdl:initiator="62F:" name="Closing_Balance" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="64:" dfdl:occursCountKind="implicit" minOccurs="0" name="Closing_Balance_Op" type="xsd:string"/>
+                          
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+                
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Optional" type="xsd:string"/>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="N29">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}">
+                            
+              <xsd:element ref="Block_4_Initiator"/>
+                            
+              <xsd:element dfdl:initiator="2020:" name="Transaction_RefNumber" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="2006:" name="Related_RefNumber" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="2021:" name="Original_RTGS_RefNumber" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="3380:" name="Value_Date" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="5756:" name="Sending_Branch_IFSC" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6021:" name="Customer_Acc" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6091:" name="Customer_AccName" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="5569:" name="BenfBranch_IFSC" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6061:" name="BenfCustomer_Acc" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6081:" name="BenfCustomer_AccName" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="4038:" name="Amount" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="7495:" name="Remittance_information">
+                                
+                <xsd:complexType>
+                                    
+                  <xsd:sequence dfdl:separator="%CR;%LF;">
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line4" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line5" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line6" type="xsd:string"/>
+                                      
+                  </xsd:sequence>
+                                  
+                </xsd:complexType>
+                              
+              </xsd:element>
+                          
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+                
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Optional" type="xsd:string"/>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="IFSC_PROLFRTN">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="|" dfdl:terminator="|%CR;%LF;">
+                
+        <xsd:element name="PROLIFERTAION_TYPE" type="xsd:string"/>
+                
+        <xsd:element name="IFSC_CODE" type="xsd:string"/>
+                
+        <xsd:element dfdl:lengthKind="delimited" dfdl:occursCountKind="implicit" minOccurs="0" name="BANK_NAME" type="xsd:string"/>
+                
+        <xsd:element dfdl:lengthKind="delimited" dfdl:occursCountKind="implicit" minOccurs="0" name="BRANCH_NAME" type="xsd:string"/>
+                
+        <xsd:element dfdl:lengthKind="delimited" dfdl:occursCountKind="implicit" minOccurs="0" name="ADDRS" type="xsd:string"/>
+                
+        <xsd:element dfdl:lengthKind="delimited" dfdl:occursCountKind="implicit" dfdl:terminator="" minOccurs="0" name="DISTRICT" type="xsd:string"/>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="F27_CBS">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element name="header">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="">
+                            
+              <xsd:element default="{A:" dfdl:length="3" dfdl:lengthKind="explicit" name="Block_A_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Bank_Application_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Message_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="IO_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="9" dfdl:lengthKind="explicit" name="Sequence_Number" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="11" dfdl:lengthKind="explicit" name="Sender_IFSC" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="12" dfdl:lengthKind="explicit" name="Date_Time" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="11" dfdl:lengthKind="explicit" name="BankAPI_Response_Code" type="xsd:string"/>
+                                                        
+              <xsd:element dfdl:length="2" dfdl:lengthKind="explicit" name="Block_End_Identifier" type="xsd:string"/>
+                                          
+              <xsd:element default="}" dfdl:length="1" dfdl:lengthKind="explicit" name="Block_End_Identifier1" type="xsd:string"/>
+                                                                              
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="RR42">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence>
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}%CR;%LF;">
+                            
+              <xsd:element default="{4:" name="Block_4_Initiator" type="xsd:string"/>
+                            
+              <xsd:element ref="Transaction_Reference_Number"/>
+                            
+              <xsd:element dfdl:initiator="2006:" name="Related_Reference" type="xsd:string"/>
+                            
+              <xsd:element ref="ValueDate_Currency_Amount"/>
+                            
+              <xsd:element dfdl:initiator="5518:" name="Senders_Correspondent" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6521:" name="Beneficiary_Institution" type="xsd:string"/>
+                            
+              <xsd:element ref="Sender_Receiver_Info"/>
+                          
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="N09">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                                      
+        <xsd:element ref="header"/>
+                        
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}%CR;%LF;">
+                            
+              <xsd:element ref="Block_4_Initiator"/>
+                            
+              <xsd:element ref="Transaction_Reference_Number"/>
+                            
+              <xsd:element dfdl:initiator="1076:" name="Status" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6346:" name="Reason" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6366:" name="Description" type="xsd:string"/>
+                                                                              
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+                                    
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Optional" type="xsd:string"/>
+                    
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="R42">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}%CR;%LF;">
+                                                                      
+              <xsd:element default="{4:" name="Block_4_Initiator" type="xsd:string"/>
+                                          
+              <xsd:element ref="Transaction_Reference_Number"/>
+                            
+              <xsd:element dfdl:initiator="2006:" name="Related_Reference" type="xsd:string"/>
+                            
+              <xsd:element ref="ValueDate_Currency_Amount"/>
+                            
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="5518:" dfdl:occursCountKind="implicit" minOccurs="0" name="Senders_Correspondent" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6521:" name="Beneficiary_Institution" type="xsd:string"/>
+                            
+              <xsd:element ref="Sender_Receiver_Info"/>
+                                                      
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="8000:" dfdl:occursCountKind="implicit" minOccurs="0" name="MsgId" type="xsd:string"/>
+                                      
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="R09">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}%CR;%LF;">
+                                                                      
+              <xsd:element default="{4:" name="Block_4_Initiator" type="xsd:string"/>
+                                          
+              <xsd:element ref="Transaction_Reference_Number"/>
+                            
+              <xsd:element dfdl:initiator="6450:" name="Settled_Indicator" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="6346:" name="Reason_Code" type="xsd:string"/>
+                            
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="3525:" dfdl:occursCountKind="implicit" minOccurs="0" name="Settlement_Time" type="xsd:string"/>
+                          
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="R90">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}%CR;%LF;">
+                                                                      
+              <xsd:element default="{4:" name="Block_4_Initiator" type="xsd:string"/>
+                                          
+              <xsd:element ref="Transaction_Reference_Number"/>
+                            
+              <xsd:element dfdl:initiator="1076:" name="Acknowledgement_Indicator" type="xsd:string"/>
+                            
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="6346:" dfdl:occursCountKind="implicit" minOccurs="0" name="Reason_Code" type="xsd:string"/>
+                                                      
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="6366:" dfdl:occursCountKind="implicit" minOccurs="0" name="Reason_Description" type="xsd:string"/>
+                                      
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="R41">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                                      
+        <xsd:element ref="header"/>
+                        
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}%CR;%LF;">
+                                                                      
+              <xsd:element default="{4:" name="Block_4_Initiator" type="xsd:string"/>
+                                          
+              <xsd:element ref="Transaction_Reference_Number"/>
+                                                                      
+              <xsd:element ref="ValueDate_Currency_Amount"/>
+                                          
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="5500:/" dfdl:occursCountKind="implicit" minOccurs="0" name="Ordering_Customer">
+                                
+                <xsd:complexType>
+                                    
+                  <xsd:sequence dfdl:separator="%CR;%LF;">
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line4" type="xsd:string"/>
+                                      
+                  </xsd:sequence>
+                                  
+                </xsd:complexType>
+                              
+              </xsd:element>
+                            
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="5517:" dfdl:occursCountKind="implicit" minOccurs="0" name="Ordering_Institution" type="xsd:string"/>
+                            
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="5516:" dfdl:occursCountKind="implicit" minOccurs="0" name="Ordering_Institution1">
+                                
+                <xsd:complexType>
+                                    
+                  <xsd:sequence dfdl:separator="%CR;%LF;">
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line4" type="xsd:string"/>
+                                      
+                  </xsd:sequence>
+                                  
+                </xsd:complexType>
+                              
+              </xsd:element>
+                            
+              <xsd:element dfdl:initiator="6516:" name="Account_With_Institution" type="xsd:string"/>
+                                                                      
+              <xsd:element dfdl:initiator="5561:/" name="Beneficiary_Customer1">
+                                
+                <xsd:complexType>
+                                    
+                  <xsd:sequence dfdl:separator="%CR;%LF;">
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line4" type="xsd:string"/>
+                                      
+                  </xsd:sequence>
+                                  
+                </xsd:complexType>
+                              
+              </xsd:element>
+                                          
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="7028:" dfdl:occursCountKind="implicit" minOccurs="0" name="Details_of_Charges" type="xsd:string"/>
+                                                                                                                                                                                
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:occursCountKind="implicit" minOccurs="0" ref="Sender_Receiver_Info"/>
+                                                                  
+              <xsd:element dfdl:emptyValueDelimiterPolicy="none" dfdl:initiator="8000:" dfdl:occursCountKind="implicit" minOccurs="0" name="MsgId" type="xsd:string"/>
+                                      
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+                    
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="All">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element name="header">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="">
+                            
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Block_A_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="BankApp_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Message_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="IO_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Message_Type" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="SubMessage_Type" type="xsd:string"/>
+                            
+              <xsd:element name="WholeString" type="xsd:string"/>
+                          
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="F27">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element name="header">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="">
+                                                                                                                                                                                                                                              
+              <xsd:element default="{A:" dfdl:length="3" dfdl:lengthKind="explicit" name="Block_A_Identifier" type="xsd:string"/>
+                                          
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Bank_Application_Identifier" type="xsd:string"/>
+                                                                                                                                                                        
+              <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Message_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="IO_Identifier" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="9" dfdl:lengthKind="explicit" name="Sequence_Number" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="11" dfdl:lengthKind="explicit" name="Sender_IFSC" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="12" dfdl:lengthKind="explicit" name="Date_Time" type="xsd:string"/>
+                            
+              <xsd:element dfdl:length="11" dfdl:lengthKind="explicit" name="BankAPI_Response_Code" type="xsd:string"/>
+                                                                      
+              <xsd:element dfdl:length="2" dfdl:lengthKind="explicit" name="Block_End_Identifier" type="xsd:string"/>
+                                          
+              <xsd:element default="}" dfdl:length="1" dfdl:lengthKind="explicit" name="Block_End_Identifier1" type="xsd:string"/>
+                                                                                                                              
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+              
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+                                                                                        
+  <xsd:element ibmSchExtn:docRoot="true" name="N_03">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}">
+                            
+              <xsd:element ref="Block_4_Initiator"/>
+                            
+              <xsd:element ref="Transaction_Reference_Number"/>
+                            
+              <xsd:element dfdl:initiator="3535:" name="Batch_Number" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="5185:" name="Total_No_of_transactions" type="xsd:string"/>
+                            
+              <xsd:element dfdl:initiator="4115:" name="Total_amount" type="xsd:string"/>
+                            
+              <xsd:element dfdl:occursCountKind="implicit" maxOccurs="unbounded" name="record">
+                                
+                <xsd:complexType>
+                                    
+                  <xsd:sequence dfdl:separator="%CR;%LF;:">
+                                        
+                    <xsd:element dfdl:initiator="2020:" name="Transaction_RefNumber" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="5756:" name="Sending_IFSC" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="2006:" name="Related_Reference_Number" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="5569:" name="Beneficiary_IFSC" type="xsd:string"/>
+                                                                              
+                    <xsd:element dfdl:initiator="6061:" name="Beneficiary_customer_AC_no" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="6081:" name="Beneficiary_customer_AC" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="5565:" dfdl:occursCountKind="implicit" minOccurs="0" name="Beneficiary_customer_address">
+                                            
+                      <xsd:complexType>
+                                                
+                        <xsd:sequence dfdl:separator="">
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1" type="xsd:string"/>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2" type="xsd:string"/>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3" type="xsd:string"/>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="field4" type="xsd:string"/>
+                                                  
+                        </xsd:sequence>
+                                              
+                      </xsd:complexType>
+                                          
+                    </xsd:element>
+                                                            
+                    <xsd:element dfdl:initiator="4038:" name="Amount" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="3380:" name="Value_Date" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="3375:" name="Remittance_Date" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="3381:" dfdl:occursCountKind="implicit" minOccurs="0" name="Original_value_date" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="6346:" name="Reason_Code" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="6366:" name="Rejection_Reason" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="7495:" dfdl:occursCountKind="implicit" minOccurs="0" name="Remittance_Information_from_sender_to_customer" type="xsd:string"/>
+                                                        
+                  </xsd:sequence>
+                                  
+                </xsd:complexType>
+                              
+              </xsd:element>
+                          
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+                              
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Optional" type="xsd:string"/>
+                    
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:element ibmSchExtn:docRoot="true" name="N10">
+        
+    <xsd:complexType>
+            
+      <xsd:sequence dfdl:separator="">
+                
+        <xsd:element ref="header"/>
+                
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}">
+                            
+              <xsd:element ref="Block_4_Initiator"/>
+                            
+              <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" ref="Transaction_Reference_Number"/>
+                            
+              <xsd:element dfdl:occursCountKind="implicit" maxOccurs="unbounded" name="record">
+                                
+                <xsd:complexType>
+                                    
+                  <xsd:sequence dfdl:separator="%CR;%LF;:">
+                                        
+                    <xsd:element dfdl:initiator="2020:" name="Transaction_Reference_Number" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="5518:" name="IFSC_of_Originator_of_Remittance" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="2006:" name="Related_RefNumber" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="3501:" name="Amt_Credited_Time">
+                                            
+                      <xsd:complexType>
+                                                
+                        <xsd:sequence dfdl:separator="%CR;%LF;">
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1" type="xsd:string"/>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2" type="xsd:string"/>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3" type="xsd:string"/>
+                                                  
+                        </xsd:sequence>
+                                              
+                      </xsd:complexType>
+                                          
+                    </xsd:element>
+                                      
+                  </xsd:sequence>
+                                  
+                </xsd:complexType>
+                              
+              </xsd:element>
+                                                                              
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+                              
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Optional" type="xsd:string"/>
+                    
+      </xsd:sequence>
+          
+    </xsd:complexType>
+      
+  </xsd:element>
+      
+  <xsd:annotation>
+    		
+    <xsd:appinfo source="http://www.ogf.org/dfdl/">
+      			
+      <dfdl:format byteOrder="{$dfdl:byteOrder}" encoding="{$dfdl:encoding}" escapeSchemeRef="recSepFieldsFmt:RecordEscapeScheme" occursCountKind="fixed" ref="recSepFieldsFmt:RecordSeparatedFieldsFormat"/>
+      		
+    </xsd:appinfo>
+    	
+  </xsd:annotation>
+  	
+  <xsd:element ibmSchExtn:docRoot="true" name="N02">
+    		
+    <xsd:complexType>
+      			
+      <xsd:sequence dfdl:separator="">
+                                        															                
+        <xsd:element ref="header"/>
+                        
+        <xsd:element name="body">
+                    
+          <xsd:complexType>
+                        
+            <xsd:sequence dfdl:separator="%CR;%LF;:" dfdl:terminator="%CR;%LF;-}">
+                                                                                                                
+              <xsd:element ibmDfdlExtn:sampleValue="" ref="Block_4_Initiator"/>
+                                                                                                                
+              <xsd:element ref="Transaction_Reference_Number"/>
+                                          
+              <xsd:element dfdl:initiator="3535:" name="Batch_Time" type="xsd:string"/>
+                                                                                    
+              <xsd:element dfdl:initiator="5180:" dfdl:occursCountKind="implicit" minOccurs="0" name="Total_No_of_transactions" type="xsd:string"/>
+                                                                                    
+              <xsd:element dfdl:initiator="4110:" dfdl:occursCountKind="implicit" minOccurs="0" name="Total_amount" type="xsd:string"/>
+                                                                                    
+              <xsd:element dfdl:occursCountKind="implicit" maxOccurs="unbounded" name="record">
+                                
+                <xsd:complexType>
+                                    
+                  <xsd:sequence dfdl:separator="%CR;%LF;:">
+                                        
+                    <xsd:element dfdl:initiator="2020:" name="Transaction_RefNumber" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="2006:" dfdl:occursCountKind="implicit" minOccurs="0" name="Related_RefNumber" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="5756:" name="Sending_Branch_IFSC" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="6305:" dfdl:occursCountKind="implicit" minOccurs="0" name="Sending_Customer_AccType" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="6021:" name="Customer_Acc" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="6091:" name="Customer_AccName" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="5629:" dfdl:occursCountKind="implicit" minOccurs="0" name="Customer_Mobile_Email" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="7002:" name="Originator_of_Remittance">
+                                            
+                      <xsd:complexType>
+                                                
+                        <xsd:sequence dfdl:separator="%CR;%LF;">
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line4">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                  
+                        </xsd:sequence>
+                                              
+                      </xsd:complexType>
+                                          
+                    </xsd:element>
+                                        
+                    <xsd:element dfdl:initiator="5569:" name="BenfBranch_IFSC" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="6310:" dfdl:occursCountKind="implicit" minOccurs="0" name="BenfCustomer_AccType" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="6061:" name="BenfCustomer_Acc" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="6081:" name="BenfCustomer_AccName" type="xsd:string"/>
+                                        
+                    <xsd:element dfdl:initiator="5565:" dfdl:occursCountKind="implicit" minOccurs="0" name="BenfCustomer_Address">
+                                            
+                      <xsd:complexType>
+                                                
+                        <xsd:sequence dfdl:separator="%CR;%LF;">
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line4">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                  
+                        </xsd:sequence>
+                                              
+                      </xsd:complexType>
+                                          
+                    </xsd:element>
+                                        
+                    <xsd:element dfdl:initiator="7495:" dfdl:occursCountKind="implicit" minOccurs="0" name="Remittance_information">
+                                            
+                      <xsd:complexType>
+                                                
+                        <xsd:sequence dfdl:separator="%CR;%LF;">
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line4">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line5">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                    
+                          <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line6">
+                                                        
+                            <xsd:simpleType>
+                                                            
+                              <xsd:restriction base="xsd:string">
+                                                                
+                                <xsd:maxLength value="35"/>
+                                                              
+                              </xsd:restriction>
+                                                          
+                            </xsd:simpleType>
+                                                      
+                          </xsd:element>
+                                                  
+                        </xsd:sequence>
+                                              
+                      </xsd:complexType>
+                                          
+                    </xsd:element>
+                                                                              
+                    <xsd:element dfdl:initiator="6346:" dfdl:occursCountKind="implicit" minOccurs="0" name="Reason_Code" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="6366:" dfdl:occursCountKind="implicit" minOccurs="0" name="Rejection_Reason" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="4038:" name="Amount" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="3380:" name="Value_Date" type="xsd:string"/>
+                                                            
+                    <xsd:element dfdl:initiator="3375:" name="Remittance_Date" type="xsd:string"/>
+                                                        
+                  </xsd:sequence>
+                                  
+                </xsd:complexType>
+                              
+              </xsd:element>
+                                                                                                                                                                                                                                                  
+            </xsd:sequence>
+                      
+          </xsd:complexType>
+                  
+        </xsd:element>
+                                    
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Optional" type="xsd:string"/>
+                    
+      </xsd:sequence>
+      		
+    </xsd:complexType>
+    	
+  </xsd:element>
+      
+  <xsd:element name="header">
+              
+    <xsd:complexType>
+                  
+      <xsd:sequence dfdl:initiator="" dfdl:separator="" dfdl:terminator="">
+                      
+        <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" fixed="{A:" name="Block_A_Identifier" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="BankApp_Identifier" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Message_Identifier" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="IO_Identifier" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Message_Type" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="SubMessage_Type" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="11" dfdl:lengthKind="explicit" name="Sender_IFSC" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="11" dfdl:lengthKind="explicit" name="Receiver_IFSC" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="Delivery_Monitoring_Flag" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="Open_Notification_Number" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="NonDelivery_Warning_Flag" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Obsolescence_Period" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="16" dfdl:lengthKind="explicit" name="MUR" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="Possible_Duplicate_Flag" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="3" dfdl:lengthKind="explicit" name="Service_Identifier" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="8" dfdl:lengthKind="explicit" name="Originate_Date" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="4" dfdl:lengthKind="explicit" name="Originate_Time" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="Testing_Training_Flag" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="9" dfdl:lengthKind="explicit" name="Sequence_Number" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="9" dfdl:lengthKind="explicit" name="Filler" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="16" dfdl:lengthKind="explicit" name="Unique_Transaction_Number" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="2" dfdl:lengthKind="explicit" name="RTGS_Priority" type="xsd:string"/>
+                      
+        <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" fixed="}" name="Block_A_End_Identifer" type="xsd:string"/>
+                                                
+      </xsd:sequence>
+                
+    </xsd:complexType>
+            
+  </xsd:element>
+      
+  <xsd:element name="Block_4_Initiator" type="xsd:string"/>
+      
+  <xsd:element dfdl:initiator="2020:" name="Transaction_Reference_Number" type="xsd:string"/>
+      
+  <xsd:element dfdl:initiator="4488:" name="ValueDate_Currency_Amount" type="xsd:string"/>
+      
+  <xsd:element dfdl:initiator="7495:" name="Sender_Receiver_Info">
+                    
+    <xsd:complexType>
+                        
+      <xsd:sequence dfdl:separator="%CR;%LF;">
+                            
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line1" type="xsd:string"/>
+                            
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line2" type="xsd:string"/>
+                            
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line3" type="xsd:string"/>
+                            
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line4" type="xsd:string"/>
+                            
+        <xsd:element dfdl:occursCountKind="implicit" minOccurs="0" name="Line5" type="xsd:string"/>
+                                                      
+      </xsd:sequence>
+                      
+    </xsd:complexType>
+                  
+  </xsd:element>
+  
+</xsd:schema>

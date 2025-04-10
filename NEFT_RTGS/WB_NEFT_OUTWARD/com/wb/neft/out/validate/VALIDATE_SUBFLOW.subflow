@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmResetContentDescriptor.msgnode="ComIbmResetContentDescriptor.msgnode" xmlns:ComIbmRoute.msgnode="ComIbmRoute.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="com/wb/neft/out/validate/VALIDATE_SUBFLOW.subflow" nsPrefix="com_wb_neft_out_validate_VALIDATE_SUBFLOW.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="VALIDATE_SUBFLOW" bundleName="com/wb/neft/out/validate/VALIDATE_SUBFLOW" pluginId="WB_NEFT_OUTWARD"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_OUTWARD/icons/full/obj16/VALIDATE_SUBFLOW.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_OUTWARD/icons/full/obj30/VALIDATE_SUBFLOW.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="37,100">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="com/wb/neft/out/validate/VALIDATE_SUBFLOW" pluginId="WB_NEFT_OUTWARD"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="601,113">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="com/wb/neft/out/validate/VALIDATE_SUBFLOW" pluginId="WB_NEFT_OUTWARD"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output1" location="597,17">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Failure" bundleName="com/wb/neft/out/validate/VALIDATE_SUBFLOW" pluginId="WB_NEFT_OUTWARD"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="113,100" messageDomain="DFDL" resetMessageDomain="true" resetMessageSet="true" messageType="{}:Generic_Message" resetMessageType="true">
+        <translation xmi:type="utility:ConstantString" string="Generic"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRoute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="227,104">
+        <outTerminals terminalNodeID="N06" dynamic="true" label="N06"/>
+        <outTerminals terminalNodeID="N07" dynamic="true" label="N07"/>
+        <outTerminals terminalNodeID="N10" dynamic="true" label="N10"/>
+        <outTerminals terminalNodeID="N29DRS" dynamic="true" label="N29DRS"/>
+        <translation xmi:type="utility:ConstantString" string="Route"/>
+        <filterTable filterPattern="$Root/DFDL/Generic_Message/Header/SUBMESSAGETYPE='N06'" routingOutputTerminal="N06"/>
+        <filterTable filterPattern="$Root/DFDL/Generic_Message/Header/SUBMESSAGETYPE='N07'" routingOutputTerminal="N07"/>
+        <filterTable filterPattern="$Root/DFDL/Generic_Message/Header/SUBMESSAGETYPE='N10'" routingOutputTerminal="N10"/>
+        <filterTable filterPattern="$Root/DFDL/Generic_Message/Header/SUBMESSAGETYPE='DRS'" routingOutputTerminal="N29DRS"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="368,19" messageDomain="DFDL" resetMessageDomain="true" resetMessageSet="true" messageType="{}:N06" resetMessageType="true" resetMessageFormat="true" validateFailureAction="exceptionList">
+        <translation xmi:type="utility:ConstantString" string="N06"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="368,104" messageDomain="DFDL" resetMessageDomain="true" resetMessageSet="true" messageType="{}:N07" resetMessageType="true" resetMessageFormat="true">
+        <translation xmi:type="utility:ConstantString" string="N07"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="369,189" messageDomain="DFDL" resetMessageDomain="true" resetMessageSet="true" messageType="{}:N10" resetMessageType="true" resetMessageFormat="true">
+        <translation xmi:type="utility:ConstantString" string="N10"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="370,251" messageDomain="DFDL" resetMessageDomain="true" resetMessageSet="true" messageType="{}:N29DRS" resetMessageType="true" resetMessageFormat="true">
+        <translation xmi:type="utility:ConstantString" string="DRS"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="N06" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_2" sourceTerminalName="N07" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_2" sourceTerminalName="N10" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in">
+        <bendPoints>202,-119,-276,-36</bendPoints>
+      </connections>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_14" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_2" sourceTerminalName="N29DRS" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_15" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_16" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

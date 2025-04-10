@@ -1,0 +1,46 @@
+BROKER SCHEMA com.cedge.wb.neft
+
+CREATE COMPUTE MODULE UPDATE_FAIL
+	DECLARE PROP_LOC EXTERNAL CHARACTER;
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 CALL setMailInfo();
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE setMailInfo ( )
+	BEGIN
+		DECLARE toEmail,ccEmail,fromEmail,smtpServer , type , fail , transRefNo CHARACTER '';
+		DECLARE rc BOOLEAN ;
+		SET type = Environment.Type;
+		SET fail = Environment.Fail ;
+		CALL getMailProp(PROP_LOC,toEmail,ccEmail,fromEmail,smtpServer);
+		SET Environment.toEmail = toEmail;
+		SET Environment.ccEmail = ccEmail;
+		SET Environment.fromEmail = fromEmail;
+		SET Environment.mailSubject = 'Warning Regarding CEDGERRB NEFT Inward Interface';
+		SET Environment.smtpServer = smtpServer;
+		IF type = 'NEFT_IN' THEN
+			CALL log4j_1_1('UPDATE_FAIL', 'WB_NEFT_IN', 'WARN','---------------START---------------') INTO rc;
+			SET transRefNo = InputRoot.DFDL.*.body.Transaction_Reference_Number;
+			IF LENGTH(transRefNo) <> 0 THEN
+				SET Environment.mailBody = 'Message with transaction ID :'||transRefNo||',  processing failed because of this exception: Updation Failed'||fail;	
+			ELSE
+				SET transRefNo = InputRoot.DFDL.*.header.Sequence_Number;
+				SET Environment.mailBody = 'Message with Sequence Number :'||transRefNo||',  processing failed because of this exception:'||fail;
+			END IF;
+			CALL log4j_1_1('UPDATE_FAIL', 'WB_NEFT_IN', 'WARN','Message with Sequence Number :'||transRefNo||',  processing failed because of this exception:'||fail) INTO rc;
+			CALL log4j_1_1('UPDATE_FAIL', 'WB_NEFT_IN', 'WARN','----------------END----------------') INTO rc;
+		ELSEIF type = 'RTGS_IN' THEN
+			CALL log4j_1_1('UPDATE_FAIL', 'WB_RTGS_IN', 'WARN','---------------START---------------') INTO rc;
+			DECLARE msgId CHARACTER OutputRoot.MQRFH2.usr.BankDetails.MsgId;
+			SET Environment.mailBody = 'Message with Message ID (In RTGS XML Request) :'||msgId||',  processing failed because of this exception:'||fail;
+			CALL log4j_1_1('UPDATE_FAIL', 'WB_RTGS_IN', 'WARN','Message with Message ID (In RTGS XML Request) :'||msgId||',  processing failed because of this exception:'||fail) INTO rc;
+			CALL log4j_1_1('UPDATE_FAIL', 'WB_RTGS_IN', 'WARN','----------------END----------------') INTO rc;
+		END IF;
+	END;
+	CREATE FUNCTION  getMailProp( IN P1 CHARACTER, OUT P2 CHARACTER, OUT P3 CHARACTER,OUT P4 CHARACTER, OUT P5 CHARACTER)
+ 	LANGUAGE JAVA 
+ 	EXTERNAL NAME "com.cedge.wb.rtgs.WB_NEFT_INWARD_LoadProperties.getMailProp";
+	
+END MODULE;

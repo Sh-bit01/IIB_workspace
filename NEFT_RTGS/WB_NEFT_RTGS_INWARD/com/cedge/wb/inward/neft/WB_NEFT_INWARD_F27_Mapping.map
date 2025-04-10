@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.wb.inward.neft" version="8.0.4.0" xmlns:map="com.cedge.wb.inward.neft">
+    <input path="/N06/INWARD.xsd"/>
+    <output path="/N06/INWARD.xsd"/>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="WB_NEFT_INWARD_F27_Mapping">
+        <input path="mb:msg(F27,assembly,DFDL,Properties)"/>
+        <output path="mb:msg(F27_CBS,assembly,DFDL,Properties)"/>
+        <move>
+            <input path="Properties"/>
+            <output path="Properties"/>
+            <override>
+                <assign value="{}:F27_CBS">
+                    <output path="Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <move>
+            <input path="F27/header/Bank_Application_Identifier"/>
+            <output path="F27_CBS/header/Bank_Application_Identifier"/>
+        </move>
+        <move>
+            <input path="F27/header/Message_Identifier"/>
+            <output path="F27_CBS/header/Message_Identifier"/>
+        </move>
+        <move>
+            <input path="F27/header/IO_Identifier"/>
+            <output path="F27_CBS/header/IO_Identifier"/>
+        </move>
+        <move>
+            <input path="F27/header/Sequence_Number"/>
+            <output path="F27_CBS/header/Sequence_Number"/>
+        </move>
+        <move>
+            <input path="F27/header/Sender_IFSC"/>
+            <output path="F27_CBS/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="F27/header/Date_Time"/>
+            <output path="F27_CBS/header/Date_Time"/>
+        </move>
+        <move>
+            <input path="F27/header/BankAPI_Response_Code"/>
+            <output path="F27_CBS/header/BankAPI_Response_Code"/>
+        </move>
+        <move>
+            <input path="F27/header/Block_End_Identifier"/>
+            <output path="F27_CBS/header/Block_End_Identifier"/>
+        </move>
+        <assign value="{A:">
+            <output path="F27_CBS/header/Block_A_Identifier"/>
+        </assign>
+        <move>
+            <input path="F27/header/Block_End_Identifier1"/>
+            <output path="F27_CBS/header/Block_End_Identifier1"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

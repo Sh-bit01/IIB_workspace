@@ -1,0 +1,157 @@
+BROKER SCHEMA com.cedge.wb.inward.neft
+
+
+
+CREATE COMPUTE MODULE WB_NEFT_INWARD_EXC_Compute
+DECLARE DSN EXTERNAL CHARACTER;
+DECLARE PROP_LOC EXTERNAL CHARACTER;
+DECLARE logConfigFile EXTERNAL CHARACTER;
+DECLARE CR CHARACTER CAST(CAST('X''0A''' AS BLOB) AS CHARACTER CCSID 1208);
+DECLARE rc BOOLEAN;
+-- DECLARE nodepath CHARACTER InputExceptionList.RecoverableException.Label;
+CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+		CALL initLog4j(logConfigFile) INTO rc;
+-- 		CALL initLog4j('/var/iib/interface/guj/neft/inward/properties/log4j/guj_neft_rtgs_log4j.xml') INTO rc;
+
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN',' ---------------START---------------') INTO rc;
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','EXCEPTION MSG TYPE : '||InputRoot.XMLNSC.ExceptionDetail.MSGTYPE) INTO rc;
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','EXCEPTION UTR NUM  : '||InputRoot.XMLNSC.ExceptionDetail.UTR) INTO rc;
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','EXCEPTION TXN NUM  : '||InputRoot.XMLNSC.ExceptionDetail.TXN_REF_NUM) INTO rc;
+		DECLARE TIMESTAMP_FORMAT CHARACTER 'yyyy-MM-dd''T''HH:mm:ss.SSSSSS';
+		DECLARE ccsid INTEGER 1208;
+		DECLARE Error ROW;
+		DECLARE errorRef REFERENCE TO Error;
+		CALL getException(InputRoot.XMLNSC.ExceptionDetail.exection, errorRef);
+		SET Environment.Variables.TraceFileExc.ExceptionDate=CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT TIMESTAMP_FORMAT);
+		CALL originalMsg(ccsid, InputRoot);
+		SET Environment.excDesc = errorRef.ErrorDetail;
+		CALL storeException(errorRef.ErrorDetail);
+		
+--		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','ERROR CODE     : '||errorRef.ErrorCode) INTO rc;
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','ExceptionType  : '||errorRef.ExceptionType) INTO rc;
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','ErrorMessage   : '||errorRef.ErrorMessage) INTO rc;
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','ErrorDetail    : '||errorRef.ErrorDetail) INTO rc;
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','EXCEPTION MESSAGE  : '||InputRoot.XMLNSC.ExceptionDetail.whole_msg) INTO rc;
+		SET Environment.Variables.TraceFileExc.NodeName=errorRef.ErrorLocation;
+		CALL setMailInfo();
+		RETURN TRUE;
+	END;
+	CREATE PROCEDURE originalMsg (IN ccsid INTEGER, IN InputRoot REFERENCE)
+	BEGIN
+		--If error occurs capture the original message
+		DECLARE domainFldName CHARACTER FIELDNAME(InputBody);
+		IF domainFldName='MRM' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=InputRoot.MRM;
+		ELSEIF domainFldName='XMLNSC' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=CAST(ASBITSTREAM(InputRoot.XMLNSC CCSID ccsid) AS CHARACTER CCSID ccsid);
+		ELSEIF domainFldName='SOAP' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=CAST(ASBITSTREAM(InputRoot.SOAP CCSID ccsid) AS CHARACTER CCSID ccsid);
+		ELSEIF domainFldName='BLOB' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=CAST(ASBITSTREAM(InputRoot.BLOB CCSID ccsid) AS CHARACTER CCSID ccsid);
+		ELSEIF domainFldName='DFDL' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=CAST(ASBITSTREAM(InputRoot.DFDL CCSID ccsid) AS CHARACTER CCSID ccsid);
+		END IF;
+	END;
+
+
+	CREATE PROCEDURE getException(IN InputExceptionList REFERENCE, INOUT ErrorRef REFERENCE) BEGIN
+
+		DECLARE inExRef REFERENCE TO InputExceptionList.[1];
+
+		WHILE ENDSWITH(FIELDNAME(inExRef), 'Exception') DO
+			SET ErrorRef.ErrorCode = inExRef.Number;
+			SET ErrorRef.ExceptionType = FIELDNAME(inExRef);
+			SET ErrorRef.ErrorMessage = inExRef.Text;
+			SET ErrorRef.ErrorDetail = inExRef.Text;
+			FOR insertRef AS inExRef.Insert[] DO
+				SET ErrorRef.ErrorDetail = ErrorRef.ErrorDetail ||'.. '||insertRef.Text||'.. ';
+			END FOR;
+
+			IF(inExRef.Label<>'') THEN
+				SET ErrorRef.ErrorLocation = inExRef.Label;
+				CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','ERROR LOCATION : '||ErrorRef.ErrorLocation) INTO rc;
+			END IF;
+			MOVE inExRef LASTCHILD;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE storeException (IN exc CHARACTER )
+	BEGIN
+		DECLARE rc BOOLEAN ;
+		DECLARE msgId CHARACTER InputRoot.MQMD.MsgId;
+		SET msgId = SUBSTRING(msgId FROM 3 FOR 48);
+		DECLARE check ROW;
+
+		
+		DECLARE txnNum CHARACTER InputRoot.XMLNSC.ExceptionDetail.TXN_REF_NUM;
+		
+--		CALL log4j_1_1('Exception_Handling_Subflow', 'CEDGERRB_RTGS_IN_EXC', 'WARN','Transaction Reference Number : '||txnNum) INTO rc;
+		
+		
+		
+		SET check.R[] = PASSTHRU('SELECT RETRY_COUNT FROM NEFT_IN_PAYLOAD WHERE TXN_REF_NUM = ?' TO Database.{DSN} VALUES(txnNum));
+		IF check.R[1].RETRY_COUNT >= 0 THEN
+			UPDATE Database.NEFT_IN_PAYLOAD as T SET RETRY_COUNT = check.R[1].RETRY_COUNT+1, LAST_MOD_TIME = CURRENT_TIMESTAMP,	EXCEPTION_DESCRIPTION = Environment.excDesc	WHERE T.TXN_REF_NUM = txnNum;
+			CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','Retry Count is Updated successfully with Transaction Reference Number : '||txnNum) INTO rc;
+		ELSE
+		
+			DECLARE wholeMsgChar CHAR InputRoot.XMLNSC.ExceptionDetail.whole_msg;
+			DECLARE fileName CHARACTER InputRoot.XMLNSC.ExceptionDetail.FILE_NAME;	 		
+	 		INSERT INTO Database.RTGS_IN_PAYLOAD (MSGID,PAYLOAD,CREATION_TIME,LAST_MOD_TIME,STATUS,RETRY_COUNT,FILE_NAME,EXCEPTION_DESCRIPTION,TXN_REF_NUM) 
+	 		VALUES (msgId,wholeMsgChar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'F', '1',fileName,Environment.excDesc,txnNum);			
+		END IF;
+	END;
+	
+	CREATE PROCEDURE setMailInfo ( )
+	BEGIN
+		DECLARE toEmail,ccEmail,fromEmail,smtpServer CHARACTER '';
+		DECLARE rc BOOLEAN ;
+		CALL getMailProp(PROP_LOC,toEmail,ccEmail,fromEmail,smtpServer);
+--		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','Email Configuration Details ') INTO rc;
+--		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','TO Mail :'||toEmail) INTO rc;
+--		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','CC Mail :'||ccEmail) INTO rc;
+--		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','From Mail :'||fromEmail) INTO rc;
+--		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','Smtp Server :'||smtpServer) INTO rc;
+				
+		SET Environment.toEmail = toEmail;
+		SET Environment.ccEmail = ccEmail;
+		SET Environment.fromEmail = fromEmail;
+		SET Environment.mailSubject = 'Warning Regarding CEDGERRB NEFT INWARD Interface';
+		SET Environment.smtpServer = smtpServer;
+		
+		DECLARE transRefNo CHARACTER InputRoot.XMLNSC.ExceptionDetail.UTR;
+		DECLARE txnNum CHARACTER InputRoot.XMLNSC.ExceptionDetail.TXN_REF_NUM;
+		IF LENGTH(transRefNo) = 0 OR transRefNo IS NULL THEN
+			SET transRefNo = InputRoot.DFDL.*.header.Sequence_Number ;
+		END IF;
+	
+		IF LENGTH(transRefNo) <> 0 THEN						
+		SET Environment.mailBody = 'Dear Team,'||CR||'Message with transaction ID :'|| transRefNo ||','||CR||CR||'Processing failed because of this exception:'||Environment.excDesc;
+		
+		ELSE
+			SET Environment.mailBody = 'Dear Team,'||CR||'processing failed because of this exception:'||Environment.excDesc;
+		END IF;
+--		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','Mail Body Description :'||Environment.mailBody) INTO rc;
+		CALL log4j_1_1('Exception_Handling_Subflow', 'WB_NEFT_IN_EXC', 'WARN','----------------END----------------') INTO rc;			
+	END;
+	CREATE FUNCTION  getMailProp( IN P1 CHARACTER, OUT P2 CHARACTER, OUT P3 CHARACTER,OUT P4 CHARACTER, OUT P5 CHARACTER)
+ 	LANGUAGE JAVA
+ 	EXTERNAL NAME "com.cedge.wb.rtgs.WB_NEFT_INWARD_LoadProperties.getMailProp";
+END MODULE;
+
+
+
+
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j";
+CREATE FUNCTION log4j_1_1( IN COMPONENT_NAME CHARACTER,
+IN LOGGER_NAME CHARACTER,
+IN LEVEL CHARACTER,
+IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";

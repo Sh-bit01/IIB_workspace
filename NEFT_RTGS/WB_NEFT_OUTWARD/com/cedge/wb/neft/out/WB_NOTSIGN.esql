@@ -1,0 +1,40 @@
+BROKER SCHEMA com.cedge.wb.neft.out
+
+
+CREATE COMPUTE MODULE WB_NOTSIGN
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+--		SET OutputRoot = InputRoot;
+		DECLARE CRLF ,CR,LF ,fourBlock CHARACTER ;
+		DECLARE rc BOOLEAN;
+		SET CRLF  = CAST(X'0D0A' AS CHARACTER CCSID 1208);
+		SET CR    = CAST(X'0D' AS CHARACTER CCSID 1208);
+		SET LF    = CAST(X'0A' AS CHARACTER CCSID 1208);
+		DECLARE wholeMsgBlob BLOB ASBITSTREAM(InputRoot.DFDL, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+	    DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+	  --  SET wholeMsgChar = wholeMsgChar || '{UMAC:-----BEGIN PKCS7-----' ;
+	   	SET wholeMsgChar = wholeMsgChar;
+	    SET wholeMsgChar = REPLACE(wholeMsgChar, '"','');
+	    CALL log4j_1_1('NEFT_OUT', 'WB_NEFT_OUTWARD', 'WARN','Message is not signing') INTO rc;
+	    DECLARE wholeMsgBlob1 BLOB CAST(wholeMsgChar AS BLOB CCSID InputRoot.Properties.CodedCharSetId);
+	    SET OutputRoot.DFDL = NULL;
+		SET OutputRoot.BLOB.BLOB = wholeMsgBlob1 ;
+	    
+	END;
+END MODULE;

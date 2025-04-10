@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:recSepFieldsFmt="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat">
+    <xsd:import namespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat" schemaLocation="IBMdefined/RecordSeparatedFieldFormat.xsd"/>
+            <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format encoding="{$dfdl:encoding}" escapeSchemeRef="" occursCountKind="implicit" ref="recSepFieldsFmt:RecordSeparatedFieldsFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+	<xsd:element ibmSchExtn:docRoot="true" name="SBI_RRB_N06">
+		<xsd:complexType>
+			<xsd:sequence dfdl:separator="">
+                				                			                        <xsd:element name="body">
+					<xsd:complexType>
+						<xsd:sequence dfdl:initiatedContent="no" dfdl:separator="%LF;:" dfdl:terminator="%LF;-}">
+							                            							<xsd:element name="BLOCK_IDENTIFIER" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="2020:" name="UTR_NO" type="xsd:string"/>
+							<xsd:element dfdl:initiator="4488:" name="TRANDATE_AMT" type="xsd:string"/>
+                                                        						                                                                                                                                            <xsd:element dfdl:initiator="5500:" name="ADDRESS">
+                <xsd:complexType>
+                  <xsd:sequence dfdl:separator="%LF;">
+                    <xsd:element minOccurs="0" name="LINE1" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="LINE2" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="LINE3" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="LINE4" type="xsd:string"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+                            <xsd:element dfdl:initiator="5518:" name="SENDER_IFSC" type="xsd:string"/>
+                                                                                                                                                                        <xsd:element dfdl:initiator="6500:" name="RECIEVER_IFSC" type="xsd:string"/>
+                                                                                                                                                                        <xsd:element dfdl:initiator="5546:" name="SEND_ACCT" type="xsd:string"/>
+                                                                                                                                                                        <xsd:element dfdl:initiator="5561:" name="BENIF_ACCT_DETAIL">
+                <xsd:complexType>
+                  <xsd:sequence dfdl:separator="%LF;">
+                    <xsd:element minOccurs="0" name="LINE1" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="LINE2" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="LINE3" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="LINE4" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="LINE5" type="xsd:string"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+                                                                                                                                                                                                    <xsd:element dfdl:initiator="7023:" minOccurs="0" name="DETAILS_OF_PAYMENT" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="7495:" minOccurs="0" name="SENDER_TO_RECV_INF" type="xsd:string"/>
+                            <xsd:element dfdl:initiator="5629:" name="MOB" type="xsd:string"/>
+                                                                                                                                                                                                                                </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                            <xsd:element dfdl:lengthKind="delimited" name="TRN_CODE" type="xsd:string"/>
+            </xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+    <xsd:element ibmSchExtn:docRoot="true" name="SBI_RRB_N10">
+    <xsd:complexType>
+      <xsd:sequence dfdl:separator="">
+                                                                  <xsd:element name="body">
+          <xsd:complexType>
+            <xsd:sequence dfdl:separator="">
+              <xsd:element dfdl:length="16" dfdl:lengthKind="explicit" name="UTR" type="xsd:string"/>
+              <xsd:element dfdl:length="1" dfdl:lengthKind="explicit" name="STATUS" type="xsd:string"/>
+              <xsd:element dfdl:length="14" dfdl:lengthKind="explicit" name="TRN_DATE" type="xsd:string"/>
+              <xsd:element dfdl:length="4" dfdl:lengthKind="explicit" name="ERROR" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+            </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

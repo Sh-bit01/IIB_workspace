@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmDatabase.msgnode="ComIbmDatabase.msgnode" xmlns:ComIbmFileOutput.msgnode="ComIbmFileOutput.msgnode" xmlns:ComIbmFlowOrder.msgnode="ComIbmFlowOrder.msgnode" xmlns:ComIbmMQGet.msgnode="ComIbmMQGet.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:com_cedge_wb_exception_EXCEPTION_HNADLING.subflow="com/cedge/wb/exception/EXCEPTION_HNADLING.subflow"
+    xmlns:com_cedge_wb_inwaard_neft_FILLER_CEDGE_NONCEDGE.subflow="com/cedge/wb/inwaard/neft/FILLER_CEDGE_NONCEDGE.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="com/cedge/wb/inward/neft/WB_NEFT_INWARD.msgflow" nsPrefix="com_cedge_wb_inward_neft_WB_NEFT_INWARD.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.DSNNAME" name="DSNNAME" defaultValueLiteral="WBPROD">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.SCHEMANAME" name="SCHEMANAME" defaultValueLiteral="wbneft">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.BANKCOUNT_TABLENAME" name="BANKCOUNT_TABLENAME" defaultValueLiteral="BANKCOUNT">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.NEFT_IN_TABLENAME" name="NEFT_IN_TABLENAME" defaultValueLiteral="NEFT_IN">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.NEFT_MSG_IN_TABLENAME" name="NEFT_MSG_IN_TABLENAME" defaultValueLiteral="NEFT_MSG_IN">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.NEFT_OUT_TABLENAME" name="NEFT_OUT_TABLENAME" defaultValueLiteral="NEFT_OUT">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.NEFT_IN_PAYLOAD_TABLENAME" name="NEFT_IN_PAYLOAD_TABLENAME" defaultValueLiteral="NEFT_IN_PAYLOAD">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.PROP_LOC" name="PROP_LOC" defaultValueLiteral="/var/iib/interface/wb/neft/inward/properties/WBInward.properties">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.BANKNAME" name="BANKNAME" defaultValueLiteral="BANKNAME">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.F27_TABLENAME" name="F27_TABLENAME" defaultValueLiteral="F27">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="WB_NEFT_INWARD" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_RTGS_INWARD/icons/full/obj16/WB_NEFT_INWARD.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_RTGS_INWARD/icons/full/obj30/WB_NEFT_INWARD.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="601,159" dataSource="WBPROD" computeExpression="esql://routine/com.cedge.wb.neft#UPDATE_FLAG_FILE.Main">
+        <translation xmi:type="utility:ConstantString" string="UPDATE_FLAG_FILE"/>
+      </nodes>
+      <nodes xmi:type="ComIbmDatabase.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="615,26" dataSource="WBPROD" statement="esql://routine/com.cedge.wb.neft#WB_NEFT_INWARD_UPDATE_STATUS.Main">
+        <translation xmi:type="utility:ConstantString" string="UPDATE_STATUS"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQGet.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="782,159" queueName="WB.NEFT.IN.COPY" transactionMode="no" waitInterval="0" getWithMessageID="true">
+        <translation xmi:type="utility:ConstantString" string="WB.NEFT.IN.COPY"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFlowOrder.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="486,118">
+        <translation xmi:type="utility:ConstantString" string="FLOW_ORDER"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="13,112" queueName="WB.NEFT.IN" messageDomainProperty="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="WB.NEFT.IN"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_11" location="253,112" dataSource="WBPROD" computeExpression="esql://routine/com.cedge.wb.neft#DatabaseInsertion.Main" computeMode="all">
+        <translation xmi:type="utility:ConstantString" string="DB_INSERT"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_12" location="373,118" outputDirectory="/var/iib/interface/wb/neft/inward/file_backup/" outputFilename="sample.txt" outputMode="archiveAndReplace" replaceDuplicateArchives="true" failedFileAction="moveToFailure" remoteTransferType="SFTP" fileFtpServer="WB_CBS_143" fileFtpUser="WB143_SID">
+        <translation xmi:type="utility:ConstantString" string="FTP_TO_CBS"/>
+      </nodes>
+      <nodes xmi:type="com_cedge_wb_inwaard_neft_FILLER_CEDGE_NONCEDGE.subflow:FCMComposite_1" xmi:id="FCMComposite_1_13" location="90,112">
+        <translation xmi:type="utility:ConstantString" string="FILLER_CEDGE_NONCEDGE"/>
+      </nodes>
+      <nodes xmi:type="com_cedge_wb_exception_EXCEPTION_HNADLING.subflow:FCMComposite_1" xmi:id="FCMComposite_1_1" location="119,292" rotation="TOP_TO_BOTTOM">
+        <translation xmi:type="utility:ConstantString" string="EXCEPTION_HNADLING"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFlowOrder.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="82,197" rotation="TOP_TO_BOTTOM">
+        <translation xmi:type="utility:ConstantString" string="Flow Order"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="9,281" rotation="TOP_TO_BOTTOM" queueName="WB.NEFT.IN.FAIL">
+        <translation xmi:type="utility:ConstantString" string="WB.NEFT.IN.FAIL"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="792,28" computeExpression="esql://routine/com.cedge.wb.neft#UPDATE_FAIL.Main">
+        <translation xmi:type="utility:ConstantString" string="UAPDATE_FAIL"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_12" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.second" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_12" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.first" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="FCMComposite_1_11" sourceNode="FCMComposite_1_13" sourceTerminalName="OutTerminal.Cedge" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.second" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.first" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_15" targetNode="FCMComposite_1_13" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.out1" targetTerminalName="InTerminal.in">
+        <bendPoints>33,83,-513,36</bendPoints>
+        <bendPoints>517,84,-29,37</bendPoints>
+      </connections>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.DSNNAME">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.DSNNAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+        <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.SCHEMANAME">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.SCHEMANAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+          <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.BANKCOUNT_TABLENAME">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.BANKCOUNT_TABLENAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+            <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.NEFT_IN_TABLENAME">
+              <propertyName xmi:type="utility:TranslatableString" key="Property.NEFT_IN_TABLENAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+              <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.NEFT_MSG_IN_TABLENAME">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.NEFT_MSG_IN_TABLENAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+                <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.NEFT_OUT_TABLENAME">
+                  <propertyName xmi:type="utility:TranslatableString" key="Property.NEFT_OUT_TABLENAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+                  <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.NEFT_IN_PAYLOAD_TABLENAME">
+                    <propertyName xmi:type="utility:TranslatableString" key="Property.NEFT_IN_PAYLOAD_TABLENAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+                    <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.PROP_LOC">
+                      <propertyName xmi:type="utility:TranslatableString" key="Property.PROP_LOC" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+                      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.BANKNAME">
+                        <propertyName xmi:type="utility:TranslatableString" key="Property.BANKNAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+                        <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.F27_TABLENAME">
+                          <propertyName xmi:type="utility:TranslatableString" key="Property.F27_TABLENAME" bundleName="com/cedge/wb/inward/neft/WB_NEFT_INWARD" pluginId="WB_NEFT_RTGS_INWARD"/>
+                        </propertyDescriptor>
+                      </propertyDescriptor>
+                    </propertyDescriptor>
+                  </propertyDescriptor>
+                </propertyDescriptor>
+              </propertyDescriptor>
+            </propertyDescriptor>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,175 @@
+BROKER SCHEMA com.cedge.wb.rtgs
+
+
+CREATE COMPUTE MODULE SOD_EOD_PROCESS_Compute
+	DECLARE DSNNAME EXTERNAL CHARACTER;
+	DECLARE SCHEMANAME EXTERNAL CHARACTER;
+	DECLARE TABLENAME EXTERNAL CHARACTER;
+	DECLARE TABLENAME1 EXTERNAL CHARACTER;
+	DECLARE PROP_LOC EXTERNAL CHARACTER;
+	DECLARE RTGS_OUT_TABLENAME EXTERNAL CHARACTER;
+	DECLARE RTGS_IN_PAYLOAD_TABLENAME EXTERNAL CHARACTER;
+	DECLARE BANKCOUNT_TABLENAME EXTERNAL CHARACTER; 
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 DECLARE bool BOOLEAN;
+		 DECLARE rc BOOLEAN;
+		 CALL CopyMessageHeaders();
+		 SET bool = CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() RETURNS BOOLEAN BEGIN
+-- 		SET OutputRoot = InputRoot;
+		DECLARE count,count1 CHARACTER;
+		DECLARE rc BOOLEAN;
+		DECLARE rcvrIfsc,bsDate,bankName1,rcvrIfscSodhead,rcvrIfscEodhead,cTime CHARACTER;	  
+		IF (Environment.Sod = 'SOD') THEN 
+		DECLARE DB_Details ROW;
+		SET rcvrIfsc = Environment.rcvrIfscSod;
+		SET rcvrIfscSodhead = Environment.UniqueId.MmId; 
+		SET bsDate = Environment.bsDate; 
+--		DECLARE QrySod CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.'||TABLENAME||' A WHERE A.IFSC_CODE like ? ';
+--		SET DB_Details.A[] = PASSTHRU(QrySod TO Database.{DSNNAME} VALUES(rcvrIfscSodhead));    
+--		DECLARE bankDetailsRefSod REFERENCE TO DB_Details;
+--    	MOVE bankDetailsRefSod FIRSTCHILD;
+--    	DECLARE tempDbRefsod REFERENCE TO bankDetailsRefSod;	 	
+--		SET bankName1 = TRIM(tempDbRefsod.BANKNAME);  
+
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','SOD MESSAGE RECEIVED WITH DATE:'||bsDate) INTO rc;
+		DECLARE DB_Det ROW;
+		DECLARE Qrybtime CHARACTER 'UPDATE '||SCHEMANAME||'.RTGS_24X7'||' A SET A.SOD_DATE = ? ' ;  -- BDATE --
+		SET DB_Det.T[] = PASSTHRU (Qrybtime TO Database.{DSNNAME} VALUES(bsDate));  -- BDATE -- 
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','DATA UPDATED TO RTGS_24X7 WITH DATE:'||bsDate) INTO rc; 
+
+-----------------------------------FETCHING ALL BANKS------------------------------------------------------------------------
+			DECLARE BankName_List ROW;		
+			DECLARE Bank_Name_Qry CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.SOD_EOD_BANKNAME A';
+			SET BankName_List.List[] = PASSTHRU(Bank_Name_Qry TO Database.{DSNNAME});	 			
+			DECLARE BankName_Cursor REFERENCE TO BankName_List; 
+			MOVE BankName_Cursor FIRSTCHILD;
+			WHILE LASTMOVE(BankName_Cursor) DO
+			SET bankName1 = TRIM(FIELDVALUE(BankName_Cursor.BANKNAME));
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','SOD BANKNAME:'||bankName1) INTO rc; 
+-------------------------------------SEQ---------------------------------------------------------------
+				DECLARE seqNoRow ROW;
+				DECLARE seqNumber INTEGER;
+				DECLARE seqNumberChar, msgID CHARACTER;
+				SET seqNoRow.R[] = PASSTHRU('SELECT SOD_EOD_SEQ.NEXTVAL FROM DUAL' TO Database.{DSNNAME});
+				DECLARE seqNoRowRef REFERENCE TO seqNoRow;
+		    	MOVE seqNoRowRef FIRSTCHILD;
+		    	DECLARE TempseqNoRow REFERENCE TO seqNoRowRef;
+				SET seqNumber = CAST(TempseqNoRow.NEXTVAL AS INTEGER);
+				SET seqNumberChar = CAST(seqNumber AS CHARACTER); 
+-------------------------------------------------------------------------------------------------------------
+		DECLARE fileLoc,ftpProvider , key,fileName CHARACTER;	
+		SET cTime = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'HHmmss');
+		
+		SET fileName = 'RTGS_'||bankName1||'_'||'SOD_'||bsDate||'_'||cTime||'_'||seqNumberChar||'.TXT';  
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','FILENAME:'||fileName) INTO rc;  
+		
+		SET OutputLocalEnvironment.Destination.File.Name = fileName;
+		SET key = bankName1||'_'||'RTGSSOD'||'_IN'; 
+		
+		CALL getProp(PROP_LOC, key, fileLoc, ftpProvider , bankName1);
+		--CHANGES FOR MQ START-- 
+--MQ--		SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = fileLoc;	
+--MQ--		SET OutputLocalEnvironment.Destination.File.Remote.Server = ftpProvider;
+		SET OutputLocalEnvironment.Destination.File.Directory = fileLoc;
+		--CHANGES FOR MQ END--
+		
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','REMOTE FILE LOCATION:'||fileLoc) INTO rc;
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','REMOTE FILE LOCATION:'||ftpProvider) INTO rc;
+-- 		SET OutputRoot.MRM = InputRoot.MRM ;
+		SET OutputRoot.BLOB.BLOB = CAST(fileName AS BLOB CCSID InputRoot.Properties.CodedCharSetId);    
+		PROPAGATE TO TERMINAL 'out' DELETE NONE;
+		MOVE BankName_Cursor NEXTSIBLING;
+		END WHILE;  
+		
+		ELSE 
+		DECLARE DB_Details ROW;
+		SET rcvrIfsc = Environment.rcvrIfscEod; 
+		SET rcvrIfscEodhead = Environment.UniqueId.MmId; 
+		SET bsDate = Environment.bsDate;  
+--		DECLARE QryEod CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.'||TABLENAME||' A WHERE A.IFSC_CODE like ? ';
+--		SET DB_Details.A[] = PASSTHRU(QryEod TO Database.{DSNNAME} VALUES(rcvrIfscEodhead));   
+--		DECLARE bankDetailsRefEod REFERENCE TO DB_Details;
+--    	MOVE bankDetailsRefEod FIRSTCHILD;
+--    	DECLARE tempDbRefeod REFERENCE TO bankDetailsRefEod; 		
+--		SET bankName1 = TRIM(tempDbRefeod.BANKNAME);  
+
+
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','EOD MESSAGE RECEIVED WITH DATE:'||bsDate) INTO rc;
+		DECLARE DB_Det ROW;
+		DECLARE Qrybtime CHARACTER 'UPDATE '||SCHEMANAME||'.RTGS_24X7'||' A SET A.EOD_DATE = ? ' ;  -- BDATE --
+		SET DB_Det.T[] = PASSTHRU (Qrybtime TO Database.{DSNNAME} VALUES(bsDate));  -- BDATE -- 
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','DATA UPDATED TO RTGS_24X7 WITH DATE:'||bsDate) INTO rc; 
+
+-----------------------------------FETCHING ALL BANKS------------------------------------------------------------------------
+			DECLARE BankName_List ROW;		
+			DECLARE Bank_Name_Qry CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.SOD_EOD_BANKNAME A';
+			SET BankName_List.List[] = PASSTHRU(Bank_Name_Qry TO Database.{DSNNAME});	 			
+			DECLARE BankName_Cursor REFERENCE TO BankName_List; 
+			MOVE BankName_Cursor FIRSTCHILD;
+			WHILE LASTMOVE(BankName_Cursor) DO
+			SET bankName1 = TRIM(FIELDVALUE(BankName_Cursor.BANKNAME));
+
+-----------------------------------------------------------------------------------------------------------------------------
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','EOD BANKNAME:'||bankName1) INTO rc;
+-------------------------------------SEQ---------------------------------------------------------------
+				DECLARE seqNoRow ROW;
+				DECLARE seqNumber INTEGER;
+				DECLARE seqNumberChar, msgID CHARACTER;
+				SET seqNoRow.R[] = PASSTHRU('SELECT SOD_EOD_SEQ.NEXTVAL FROM DUAL' TO Database.{DSNNAME}); 
+				DECLARE seqNoRowRef REFERENCE TO seqNoRow;
+		    	MOVE seqNoRowRef FIRSTCHILD;
+		    	DECLARE TempseqNoRow REFERENCE TO seqNoRowRef;
+				SET seqNumber = CAST(TempseqNoRow.NEXTVAL AS INTEGER);
+				SET seqNumberChar = CAST(seqNumber AS CHARACTER);
+-------------------------------------------------------------------------------------------------------------		 
+		DECLARE fileLoc,ftpProvider , key,fileName CHARACTER;	
+		SET cTime = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'HHmmss');
+		
+		SET fileName = 'RTGS_'||bankName1||'_'||'EOD_'||bsDate||'_'||cTime||'_'||seqNumberChar||'.TXT';   
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','FILENAME:'||fileName) INTO rc;  
+		
+		SET OutputLocalEnvironment.Destination.File.Name = fileName;
+		SET key = bankName1||'_'||'RTGSEOD'||'_IN'; 
+		
+		CALL getProp(PROP_LOC, key, fileLoc, ftpProvider , bankName1);
+		--CHANGES FOR MQ START--
+--MQ--		SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = fileLoc;	
+--MQ--		SET OutputLocalEnvironment.Destination.File.Remote.Server = ftpProvider; 
+		SET OutputLocalEnvironment.Destination.File.Directory = fileLoc;
+		--CHANGES FOR MQ END--
+		
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','REMOTE FILE LOCATION:'||fileLoc) INTO rc;
+		CALL log4j_1_1('SOD_EOD_PROCESS', 'WB_RTGS_IN', 'WARN','REMOTE FILE LOCATION:'||ftpProvider) INTO rc;
+-- 		SET OutputRoot.MRM = InputRoot.MRM ;
+		SET OutputRoot.BLOB.BLOB = CAST(fileName AS BLOB CCSID InputRoot.Properties.CodedCharSetId);  
+		PROPAGATE TO TERMINAL 'out' DELETE NONE;
+		MOVE BankName_Cursor NEXTSIBLING;
+		END WHILE;
+		END IF;	
+		
+		
+	END;
+
+
+CREATE PROCEDURE  getProp( IN P1 CHARACTER, IN P2 CHARACTER, INOUT P3 CHARACTER,INOUT P4 CHARACTER , IN P5 CHARACTER)
+ 	LANGUAGE JAVA 
+ 	EXTERNAL NAME "com.cedge.wb.rtgs.WB_NEFT_INWARD_LoadProperties.getProperties";	
+END MODULE; 

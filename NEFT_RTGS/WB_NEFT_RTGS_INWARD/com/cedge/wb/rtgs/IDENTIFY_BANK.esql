@@ -1,0 +1,544 @@
+BROKER SCHEMA com.cedge.wb.rtgs
+
+DECLARE ns3 NAMESPACE 'urn:iso:std:iso:20022:tech:xsd:pacs.009.001.03';
+DECLARE ns7 NAMESPACE 'urn:iso:std:iso:20022:tech:xsd:pacs.004.001.03';
+DECLARE ns12 NAMESPACE 'urn:iso:std:iso:20022:tech:xsd:pacs.002.001.04';
+DECLARE ns1 NAMESPACE 'urn:iso:std:iso:20022:tech:xsd:camt.054.001.03';
+DECLARE ns6 NAMESPACE 'urn:iso:std:iso:20022:tech:xsd:admi.004.001.01';
+DECLARE ns NAMESPACE 'urn:iso:std:iso:20022:tech:xsd:pacs.008.001.03';
+DECLARE ns5 NAMESPACE 'urn:iso:std:iso:20022:tech:xsd:camt.059.001.04';
+
+DECLARE IFSC_Prolifrtn_Flag SHARED BOOLEAN FALSE;
+
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j";
+--CREATE FUNCTION log4j( IN COMPONENT_NAME CHARACTER,
+--IN LEVEL CHARACTER,
+--IN TEXT CHARACTER )
+--RETURNS BOOLEAN
+--LANGUAGE JAVA
+--EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+CREATE FUNCTION log4j_1_1( IN COMPONENT_NAME CHARACTER,
+IN LOGGER_NAME CHARACTER,
+IN LEVEL CHARACTER,
+IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+
+
+CREATE COMPUTE MODULE IDENTIFY_BANK
+	DECLARE CONFIG EXTERNAL CHARACTER;
+	DECLARE DSNNAME EXTERNAL CHARACTER;
+	DECLARE SCHEMANAME EXTERNAL CHARACTER;
+	DECLARE TABLENAME EXTERNAL CHARACTER;
+	DECLARE TABLENAME1 EXTERNAL CHARACTER;
+	DECLARE RTGS_OUT_TABLENAME EXTERNAL CHARACTER;
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE rc BOOLEAN;
+		CALL initLog4j(CONFIG) INTO rc;
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','---------------START---------------') INTO rc;
+		 
+		 DECLARE bool BOOLEAN;
+		 CALL CopyMessageHeaders();
+		 SET bool = CopyEntireMessage();
+		RETURN bool;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() RETURNS BOOLEAN 
+	BEGIN
+		DECLARE rc BOOLEAN;
+		DECLARE msgType , msgIdentifier ,sdrIfsc , rcvrIfsc , bankName , bankType , curStatus , utr ,  seq , getYear , doy ,  msgId , originateDate , originateTime , amount , amt , orgMsgId ,orgTxnId,newRecvrifsc CHARACTER ;		
+		DECLARE creDate , creditor_acct , reject_reason CHARACTER ;
+		
+		SET msgType = InputLocalEnvironment.BankDetails.MsgType ;
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Type of Message : '||msgType) INTO rc;
+		SET OutputRoot.MQRFH2.usr.BankDetails.MsgType = msgType ;		
+		DECLARE DB_Details , DB_Info ROW;
+		
+		DECLARE pacs008Ref REFERENCE TO InputRoot.MRM.ns:FIToFICstmrCdtTrf;
+		DECLARE pacs009Ref REFERENCE TO InputRoot.MRM.ns3:FinInstnCdtTrf;
+		DECLARE pacs004Ref REFERENCE TO InputRoot.MRM.ns7:PmtRtr;
+		DECLARE Pacs002Ref REFERENCE TO InputRoot.MRM.ns12:FIToFIPmtStsRpt;
+		DECLARE Camt054Ref REFERENCE TO InputRoot.MRM.ns1:BkToCstmrDbtCdtNtfctn;	
+		DECLARE AdmiRef004 REFERENCE TO InputRoot.MRM.ns6:SysEvtNtfnV01;	
+		DECLARE Camt059Ref REFERENCE TO InputRoot.MRM.ns5:NtfctnToRcvStsRpt;
+		
+		DECLARE Qry CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.'||TABLENAME||' A WHERE A.IFSC_CODE like ? ';			
+		
+		IF msgType = 'pacs.008.001.03' THEN
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Message Belogs To PACS.008.001.03 Category') INTO rc;
+			SET IFSC_Prolifrtn_Flag=FALSE;     
+			SET sdrIfsc = pacs008Ref.ns:CdtTrfTxInf.ns:DbtrAgt.ns:FinInstnId.ns:ClrSysMmbId.ns:MmbId;
+			
+			SET rcvrIfsc = pacs008Ref.ns:CdtTrfTxInf.ns:CdtrAgt.ns:FinInstnId.ns:ClrSysMmbId.ns:MmbId;
+			
+			SET amt = pacs008Ref.ns:GrpHdr.ns:TtlIntrBkSttlmAmt ;
+			SET msgId = pacs008Ref.ns:GrpHdr.ns:MsgId;
+			SET creDate = pacs008Ref.ns:GrpHdr.ns:CreDtTm;
+			SET orgMsgId = pacs008Ref.ns:GrpHdr.ns:MsgId ;
+			SET orgTxnId = pacs008Ref.ns:CdtTrfTxInf.ns:PmtId.ns:TxId ;
+			
+			SET bankName = SUBSTRING(msgId FROM 1 FOR 4);
+			SET seq = SUBSTRING(msgId FROM 17 FOR 6);
+			SET getYear = SUBSTRING(creDate FROM 3 FOR 2);
+			SET doy = REPLACE(SUBSTRING(creDate FROM 3 FOR 8),'-','');--REPLACE(SUBSTRING(source FROM 3 FOR 8),'-' , '');
+			
+			DECLARE target DATE;
+			DECLARE pattern CHARACTER 'yyMMdd';
+			SET target = CAST(doy AS DATE FORMAT pattern);
+			SET doy = EXTRACT(DAYOFYEAR FROM target);
+			DECLARE len INTEGER ;
+			SET len = LENGTH(doy);
+			
+			WHILE len < 3 DO
+				SET doy = '0'||doy ;
+				SET len = len + 1 ;
+			END WHILE;
+			SET utr = bankName||'H'||getYear||doy||seq;
+			
+			SET originateDate = REPLACE(SUBSTRING(creDate FROM 1 FOR 10),'-','');-- '2015-02-23T15:06:26Z';
+			SET originateTime = REPLACE(SUBSTRING(creDate FROM 12 FOR 5),':','');
+			SET amount = originateDate||'INR'||REPLACE(amt , '.',',') ;
+			
+			SET OutputRoot.MQRFH2.usr.BankDetails.UTR = utr ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.SdrIfsc = sdrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.RcvrIfsc = rcvrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateDate = originateDate ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateTime = originateTime ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.Amount = amount ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OrgMsgId = orgMsgId ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OrgTxnId = orgTxnId ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.AmountInsert = REPLACE(amt , '.',',') ;			
+		ELSEIF msgType = 'pacs.009.001.03' THEN
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Message Belogs To PACS.009.001.03 Category') INTO rc;
+			SET sdrIfsc = pacs009Ref.ns3:CdtTrfTxInf.ns3:Dbtr.ns3:FinInstnId.ns3:ClrSysMmbId.ns3:MmbId ;
+			SET rcvrIfsc = pacs009Ref.ns3:CdtTrfTxInf.ns3:Cdtr.ns3:FinInstnId.ns3:ClrSysMmbId.ns3:MmbId ;
+			SET msgId = pacs009Ref.ns3:GrpHdr.ns3:MsgId;
+			SET creDate = pacs009Ref.ns3:GrpHdr.ns3:CreDtTm ;
+			SET creditor_acct = pacs009Ref.ns3:CdtTrfTxInf.ns3:CdtrAcct.ns3:Id.ns3:Othr.ns3:Id ;			
+			SET orgMsgId = pacs009Ref.ns3:GrpHdr.ns3:MsgId ;
+			SET orgTxnId = pacs009Ref.ns3:CdtTrfTxInf.ns3:PmtId.ns3:TxId ;
+			SET amt = pacs009Ref.ns3:GrpHdr.ns3:TtlIntrBkSttlmAmt ;
+
+			SET bankName = SUBSTRING(msgId FROM 1 FOR 4);
+			SET seq = SUBSTRING(msgId FROM 17 FOR 6);
+			SET getYear = SUBSTRING(creDate FROM 3 FOR 2);
+
+			SET doy = REPLACE(SUBSTRING(creDate FROM 3 FOR 8),'-','');
+			DECLARE target DATE;
+			DECLARE pattern CHARACTER 'yyMMdd';
+			SET target = CAST(doy AS DATE FORMAT pattern);
+			SET doy = EXTRACT(DAYOFYEAR FROM target);
+			DECLARE len INTEGER ;
+			SET len = LENGTH(doy);
+			WHILE len < 3 DO
+				SET doy = '0'||doy ;
+				SET len = len + 1 ;
+			END WHILE;
+			SET utr = bankName||'H'||getYear||doy||seq;
+			
+			--SET originateDate = SUBSTRING(timeStampToChar FROM 1 FOR 8);
+			--SET originateTime = SUBSTRING(timeStampToChar FROM 10 FOR 4);
+			SET originateDate = REPLACE(SUBSTRING(creDate FROM 1 FOR 10),'-','');-- '2015-02-23T15:06:26Z';
+			SET originateTime = REPLACE(SUBSTRING(creDate FROM 12 FOR 5),':','');
+			SET amount = originateDate||'INR'||REPLACE(amt , '.',',') ;
+			
+			SET OutputRoot.MQRFH2.usr.BankDetails.UTR = utr ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.SdrIfsc = sdrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.RcvrIfsc = rcvrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateDate = originateDate ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateTime = originateTime ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.Amount = amount ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OrgMsgId = orgMsgId ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OrgTxnId = orgTxnId ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.AmountInsert = REPLACE(amt , '.',',') ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.CreditorAcct = creditor_acct ;
+			
+		ELSEIF msgType = 'pacs.004.001.03' THEN
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Message Belogs To PACS.004.001.03 Category') INTO rc;
+			SET sdrIfsc = pacs004Ref.ns7:TxInf.ns7:InstgAgt.ns7:FinInstnId.ns7:ClrSysMmbId.ns7:MmbId;
+			SET msgId = pacs004Ref.ns7:GrpHdr.ns7:MsgId;
+			SET creDate = pacs004Ref.ns7:GrpHdr.ns7:CreDtTm ;
+			SET orgMsgId = pacs004Ref.ns7:GrpHdr.ns7:MsgId ;
+			SET orgTxnId = pacs004Ref.ns7:TxInf.ns7:RtrId ;
+			SET amt = pacs004Ref.ns7:GrpHdr.ns7:TtlRtrdIntrBkSttlmAmt ;
+			SET reject_reason = pacs004Ref.ns7:TxInf.ns7:RtrRsnInf.ns7:Rsn.ns7:Cd || ' ' || pacs004Ref.ns7:TxInf.ns7:RtrRsnInf.ns7:AddtlInf ;			
+			
+		/*	
+			DECLARE timeStampToChar CHARACTER ;
+			SET timeStampToChar = CAST(creDate AS CHARACTER FORMAT 'yyyyMMdd-HHmmss');
+		*/	
+			SET bankName = SUBSTRING(msgId FROM 1 FOR 4);
+			SET seq = SUBSTRING(msgId FROM 17 FOR 6);
+			SET getYear = SUBSTRING(creDate FROM 3 FOR 2);
+			--SET doy = SUBSTRING(timeStampToChar FROM 3 FOR 6);
+			SET doy = REPLACE(SUBSTRING(creDate FROM 3 FOR 8),'-','');--REPLACE(SUBSTRING(source FROM 3 FOR 8),'-' , '');
+			DECLARE target DATE;
+			DECLARE pattern CHARACTER 'yyMMdd';
+			SET target = CAST(doy AS DATE FORMAT pattern);
+			SET doy = EXTRACT(DAYOFYEAR FROM target);
+			DECLARE len INTEGER ;
+			SET len = LENGTH(doy);
+			WHILE len < 3 DO
+				SET doy = '0'||doy ;
+				SET len = len + 1 ;
+			END WHILE;
+			SET utr = bankName||'H'||getYear||doy||seq;
+			
+			--SET originateDate = SUBSTRING(timeStampToChar FROM 1 FOR 8);
+			--SET originateTime = SUBSTRING(timeStampToChar FROM 10 FOR 4);
+			SET originateDate = REPLACE(SUBSTRING(creDate FROM 1 FOR 10),'-','');-- '2015-02-23T15:06:26Z';
+			SET originateTime = REPLACE(SUBSTRING(creDate FROM 12 FOR 5),':','');
+			SET amount = originateDate||'INR'||REPLACE(amt , '.',',') ;			
+			
+			--DECLARE Qry1 CHARACTER 'SELECT A.RECVR_CORRES FROM '||SCHEMANAME||'.'||TABLENAME1||' A WHERE A.TRAN_REF_NO = ? ';
+		/*
+			DECLARE Qry1 CHARACTER 'SELECT A.SENDER_CORRES FROM '||SCHEMANAME||'.'||TABLENAME1||' A WHERE A.TRAN_REF_NO = ? ';
+			SET DB_Info.A[] = PASSTHRU(Qry1 TO Database.{DSNNAME} VALUES(utr));
+			
+			DECLARE bankDetailsRef REFERENCE TO DB_Info;
+	    	MOVE bankDetailsRef FIRSTCHILD;
+	    	DECLARE tempDbRef REFERENCE TO bankDetailsRef;
+			--SET rcvrIfsc = tempDbRef.RECVR_CORRES ;
+			SET rcvrIfsc = TRIM(tempDbRef.SENDER_CORRES);
+		*/	
+			DECLARE xutr , OrgnlMsgId CHARACTER ;
+			SET OrgnlMsgId = pacs004Ref.ns7:OrgnlGrpInf.ns7:OrgnlMsgId;
+			--change by gaurav
+			DECLARE Qry2 CHARACTER 'SELECT A.SENDER_CORRES , A.TRAN_REF_NO FROM '||SCHEMANAME||'.'||RTGS_OUT_TABLENAME||' A WHERE A.INCUTR = ? ';
+			SET DB_Info.A[] = PASSTHRU(Qry2 TO Database.{DSNNAME} VALUES(OrgnlMsgId));
+			
+			DECLARE XutrRef REFERENCE TO DB_Info;
+	    	MOVE XutrRef FIRSTCHILD;
+	    	DECLARE tempXutrRef REFERENCE TO XutrRef;
+			SET xutr = tempXutrRef.TRAN_REF_NO ;
+			SET rcvrIfsc = TRIM(tempXutrRef.SENDER_CORRES);
+			SET OutputRoot.MQRFH2.usr.BankDetails.Xutr = xutr ;
+			
+			
+			SET OutputRoot.MQRFH2.usr.BankDetails.UTR = utr ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.SdrIfsc = sdrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.RcvrIfsc = rcvrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateDate = originateDate ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateTime = originateTime ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.Amount = amount ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OrgMsgId = orgMsgId ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OrgTxnId = orgTxnId ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.AmountInsert = REPLACE(amt , '.',',') ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.RejectReason = reject_reason ;
+			
+		ELSEIF msgType = 'camt.054.001.03' THEN
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Message Belogs To CAMT.054.001.03 Category') INTO rc;
+			
+-------------------------------------------------BDATE CHANGES(SOD/EOD)------------------------------------------------------------------
+		DECLARE businessDate,bsDate,sodEodCheck CHARACTER; 
+		SET businessDate= Camt054Ref.ns1:Ntfctn.ns1:Ntry.ns1:NtryDtls.ns1:TxDtls.ns1:RmtInf.ns1:Ustrd;
+		SET sodEodCheck = Camt054Ref.ns1:Ntfctn.ns1:Ntry.ns1:NtryDtls.ns1:TxDtls.ns1:Purp.ns1:Prtry;
+
+	IF CONTAINS (sodEodCheck,'SOD') OR CONTAINS (sodEodCheck,'sod') THEN   
+		
+		IF CONTAINS (businessDate,'BDATE') OR CONTAINS (businessDate,'bdate') OR CONTAINS (businessDate,'Bdate') OR CONTAINS (businessDate,'BDate') THEN
+		SET Environment.Sod = 'SOD';	  
+		DECLARE bankName1,rcvrIfscSod CHARACTER;  
+		SET rcvrIfscSod = Camt054Ref.ns1:Ntfctn.ns1:Ntry.ns1:NtryDtls.ns1:TxDtls.ns1:RltdPties.ns1:Dbtr.ns1:Id.ns1:OrgId.ns1:Othr.ns1:Id;
+		SET Environment.rcvrIfscSod = rcvrIfscSod; 
+ 		SET bsDate = REPLACE(SUBSTRING(businessDate FROM 7 FOR 10),'-',''); 
+ 		SET Environment.bsDate = bsDate; 
+ 
+		PROPAGATE TO TERMINAL 'out3' DELETE NONE;
+ 		RETURN FALSE ;
+ 
+		END IF;
+		
+		
+	ELSEIF CONTAINS (sodEodCheck,'EOD') OR CONTAINS (sodEodCheck,'eod') THEN   
+		IF CONTAINS (businessDate,'BDATE') OR CONTAINS (businessDate,'bdate') OR CONTAINS (businessDate,'Bdate') OR CONTAINS (businessDate,'BDate') THEN 
+		DECLARE bankName1,rcvrIfscEod CHARACTER;  
+		SET rcvrIfscEod = Camt054Ref.ns1:Ntfctn.ns1:Ntry.ns1:NtryDtls.ns1:TxDtls.ns1:RltdPties.ns1:Dbtr.ns1:Id.ns1:OrgId.ns1:Othr.ns1:Id;
+		SET Environment.rcvrIfscEod = rcvrIfscEod; 
+ 		SET bsDate = REPLACE(SUBSTRING(businessDate FROM 7 FOR 10),'-','');
+ 		SET Environment.bsDate = bsDate;   
+		PROPAGATE TO TERMINAL 'out3' DELETE NONE;
+		RETURN FALSE ;
+ 
+		END IF;
+		
+	END IF;
+-------------------------------------------------BDATE CHANGES END(SOD/EOD)------------------------------------------------------------------
+		
+			
+			DECLARE xutr , Qry1 CHARACTER ;
+			DECLARE RR42Ack BOOLEAN FALSE;
+			SET xutr = Camt054Ref.ns1:Ntfctn.ns1:Ntry.ns1:NtryDtls.ns1:TxDtls.ns1:Refs.ns1:EndToEndId ;
+			SET creDate = Camt054Ref.ns1:GrpHdr.ns1:CreDtTm ;
+			
+			IF CONTAINS(xutr , '/XUTR') OR CONTAINS(xutr , '/xutr') THEN
+				IF LENGTH(xutr) > 16 THEN
+					DECLARE count ,count1 INTEGER 0 ;
+					SET count = LENGTH(xutr);
+					SET count1 = (LENGTH(xutr)-16)+1;
+					SET utr = SUBSTRING(xutr FROM count1 FOR count);
+				ELSEIF LENGTH(xutr) = 16 THEN
+					SET utr = xutr ;
+				END IF;				
+			
+			ELSEIF LENGTH(xutr) = 22 THEN
+				DECLARE flag BOOLEAN FALSE;
+				IF CONTAINS(xutr , 'NPCI') THEN
+					SET flag = TRUE;
+				END IF;
+				IF flag = FALSE THEN
+					SET utr = Camt054Ref.ns1:Ntfctn.ns1:Ntry.ns1:NtryDtls.ns1:TxDtls.ns1:Refs.ns1:TxId ;
+				END IF;
+			END IF;
+			
+			IF LENGTH(utr) <> 16 THEN
+				SET utr = Camt054Ref.ns1:Ntfctn.ns1:Ntry.ns1:NtryDtls.ns1:TxDtls.ns1:Refs.ns1:EndToEndId ;
+				SET RR42Ack = TRUE;											
+			END IF;			
+			
+			SET originateDate = REPLACE(SUBSTRING(creDate FROM 1 FOR 10),'-','');-- '2015-02-23T15:06:26Z';
+			SET originateTime = REPLACE(SUBSTRING(creDate FROM 12 FOR 5),':','');
+
+			IF RR42Ack = FALSE THEN
+				SET Qry1 = 'SELECT A.SENDER_CORRES , A.RECVR_CORRES FROM '||SCHEMANAME||'.'||TABLENAME1||' A WHERE A.TRAN_REF_NO = ? ';
+			ELSE
+				SET Qry1 = 'SELECT A.TRAN_REF_NO , A.SENDER_CORRES , A.RECVR_CORRES FROM '||SCHEMANAME||'.'||TABLENAME1||' A WHERE A.INCUTR = ? ';
+			END IF;
+			
+			SET DB_Info.A[] = PASSTHRU(Qry1 TO Database.{DSNNAME} VALUES(utr));
+			
+			DECLARE bankDetailsRef REFERENCE TO DB_Info;
+	    	MOVE bankDetailsRef FIRSTCHILD;
+	    	DECLARE tempDbRef REFERENCE TO bankDetailsRef;
+			SET sdrIfsc = TRIM(tempDbRef.RECVR_CORRES) ;
+			SET rcvrIfsc = TRIM(tempDbRef.SENDER_CORRES) ;
+			
+			IF RR42Ack = FALSE THEN
+				SET OutputRoot.MQRFH2.usr.BankDetails.UTR = utr ;
+			ELSE
+				SET OutputRoot.MQRFH2.usr.BankDetails.UTR = tempDbRef.TRAN_REF_NO ;
+			END IF;
+			
+			--SET OutputRoot.MQRFH2.usr.BankDetails.UTR = utr ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.SdrIfsc = sdrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.RcvrIfsc = rcvrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateDate = originateDate ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateTime = originateTime ;
+			
+			--change by pradip	
+			--new creadit conformation msg received from SFMS
+		ELSEIF msgType = 'camt.059.001.04' THEN
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Message Belogs To CAMT.059.001.04 Category') INTO rc;
+			DECLARE Qry1, trnRefNo, OrgmsgId CHARACTER ;
+
+			SET creDate = Camt059Ref.ns5:GrpHdr.ns5:CreDtTm ;
+			SET msgId = Camt059Ref.ns5:GrpHdr.ns5:MsgId;
+			SET OrgmsgId = Camt059Ref.ns5:OrgnlNtfctnAndSts.ns5:OrgnlMsgId;
+			
+			SET bankName = SUBSTRING(msgId FROM 1 FOR 4);
+			SET seq = SUBSTRING(msgId FROM 17 FOR 6);
+			SET getYear = SUBSTRING(creDate FROM 3 FOR 2);
+			SET doy = REPLACE(SUBSTRING(creDate FROM 3 FOR 8),'-','');--REPLACE(SUBSTRING(source FROM 3 FOR 8),'-' , '');
+		
+			DECLARE target DATE;
+			DECLARE pattern CHARACTER 'yyMMdd';
+			SET target = CAST(doy AS DATE FORMAT pattern);
+			SET doy = EXTRACT(DAYOFYEAR FROM target);
+			DECLARE len INTEGER ;
+			SET len = LENGTH(doy);
+			WHILE len < 3 DO
+				SET doy = '0'||doy ;
+				SET len = len + 1 ;
+			END WHILE;
+			SET utr = bankName||'H'||getYear||doy||seq;
+			
+			SET originateDate = REPLACE(SUBSTRING(creDate FROM 1 FOR 10),'-','');-- '2015-02-23T15:06:26Z';
+			SET originateTime = REPLACE(SUBSTRING(creDate FROM 12 FOR 5),':','');
+			
+			SET Qry1 = 'SELECT A.TRAN_REF_NO , A.SENDER_CORRES , A.RECVR_CORRES FROM '||SCHEMANAME||'.'||TABLENAME1||' A WHERE A.INCUTR = ? ';
+			SET DB_Info.A[] = PASSTHRU(Qry1 TO Database.{DSNNAME} VALUES(OrgmsgId));
+			
+			DECLARE bankDetailsRef REFERENCE TO DB_Info;
+	    	MOVE bankDetailsRef FIRSTCHILD;
+	    	DECLARE tempDbRef REFERENCE TO bankDetailsRef;
+			SET sdrIfsc = TRIM(tempDbRef.RECVR_CORRES) ;
+			SET rcvrIfsc = TRIM(tempDbRef.SENDER_CORRES) ;
+			SET trnRefNo = TRIM(tempDbRef.TRAN_REF_NO);
+			
+			SET OutputRoot.MQRFH2.usr.BankDetails.Xutr = trnRefNo;	
+			SET OutputRoot.MQRFH2.usr.BankDetails.UTR = utr ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.SdrIfsc = sdrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.RcvrIfsc = rcvrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateDate = originateDate ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateTime = originateTime ;
+	
+		--change end here	
+			
+			
+		ELSEIF msgType = 'pacs.002.001.04' THEN
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Message Belogs To PACS.002.001.03 Category') INTO rc;
+			SET rcvrIfsc = Pacs002Ref.ns12:TxInfAndSts.ns12:OrgnlTxRef.ns12:Dbtr.ns12:Id.ns12:OrgId.ns12:Othr.ns12:Id ;
+			--SET rcvrIfsc = Pacs002Ref.ns12:TxInfAndSts.ns12:OrgnlTxRef.ns12:Cdtr.ns12:Id.ns12:Othr.ns12:Id ;
+			SET sdrIfsc = Pacs002Ref.ns12:TxInfAndSts.ns12:OrgnlTxRef.ns12:Cdtr.ns12:Id.ns12:OrgId.ns12:Othr.ns12:Id ;
+			--OrgnlTxRef.Cdtr.Id.OrgId.Othr.Id
+			--SET msgId = Pacs002Ref.ns12:GrpHdr.ns12:MsgId ;
+			SET msgId = Pacs002Ref.ns12:OrgnlGrpInfAndSts.ns12:OrgnlMsgId;
+			SET creDate = Pacs002Ref.ns12:GrpHdr.ns12:CreDtTm;
+
+			DECLARE Qry1 CHARACTER 'SELECT A.TRAN_REF_NO FROM '||SCHEMANAME||'.'||TABLENAME1||' A WHERE A.INCUTR = ? ';
+			SET DB_Info.A[] = PASSTHRU(Qry1 TO Database.{DSNNAME} VALUES(msgId));
+			
+			DECLARE bankDetailsRef REFERENCE TO DB_Info;
+	    	MOVE bankDetailsRef FIRSTCHILD;
+	    	DECLARE tempDbRef REFERENCE TO bankDetailsRef;
+			SET utr = TRIM(tempDbRef.TRAN_REF_NO)  ;
+		/*	
+			DECLARE timeStampToChar CHARACTER ;
+			SET timeStampToChar = CAST(creDate AS CHARACTER FORMAT 'yyyyMMdd-HHmmss');
+		*/	
+		/*	
+			SET bankName = SUBSTRING(msgId FROM 1 FOR 4);
+			SET seq = SUBSTRING(msgId FROM 17 FOR 6);
+			SET getYear = SUBSTRING(creDate FROM 3 FOR 2);
+			--SET doy = SUBSTRING(timeStampToChar FROM 3 FOR 6);
+			SET doy = REPLACE(SUBSTRING(creDate FROM 3 FOR 8),'-','');--REPLACE(SUBSTRING(source FROM 3 FOR 8),'-' , '');
+			DECLARE target DATE;
+			DECLARE pattern CHARACTER 'yyMMdd';
+			SET target = CAST(doy AS DATE FORMAT pattern);
+			SET doy = EXTRACT(DAYOFYEAR FROM target);
+			DECLARE len INTEGER ;
+			SET len = LENGTH(doy);
+			WHILE len < 3 DO
+				SET doy = '0'||doy ;
+				SET len = len + 1 ;
+			END WHILE;
+			SET utr = bankName||'H'||getYear||doy||seq;
+		*/	
+			--SET originateDate = SUBSTRING(timeStampToChar FROM 1 FOR 8);
+			--SET originateTime = SUBSTRING(timeStampToChar FROM 10 FOR 4);
+			--SET amount = originateDate||'INR'||REPLACE(amt , '.',',') ;
+			SET originateDate = REPLACE(SUBSTRING(creDate FROM 1 FOR 10),'-','');-- '2015-02-23T15:06:26Z';
+			SET originateTime = REPLACE(SUBSTRING(creDate FROM 12 FOR 5),':','');
+			
+			SET OutputRoot.MQRFH2.usr.BankDetails.UTR = utr ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.SdrIfsc = sdrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.RcvrIfsc = rcvrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateDate = originateDate ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateTime = originateTime ;
+			--SET OutputRoot.MQRFH2.usr.BankDetails.Amount = amount ;
+		ELSEIF msgType = 'admi.004.001.01' THEN
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Message Belogs To ADMI.004.001.01 Category') INTO rc;
+			DECLARE ackIndicator , reasonCode CHARACTER ;
+			DECLARE evtParam,evntDesc  CHARACTER '';
+			SET msgId = InputLocalEnvironment.BankDetails.BizMsgIdr ;
+			SET evtParam = InputLocalEnvironment.BankDetails.EvtParam ;
+			SET creDate = AdmiRef004.ns6:EvtInf.ns6:EvtTm ;
+			
+			--check for IFSC proliferation message by Pratik Prabhakaran 26/06/16
+			/*	Setting the flag true if it is a Proliferation message
+				and sending the message as a Cedge Bank message*/
+			SET IFSC_Prolifrtn_Flag = FALSE;
+			SET evntDesc = AdmiRef004.ns6:EvtInf.ns6:EvtDesc;
+			IF STARTSWITH(evntDesc,'*|') OR STARTSWITH(evntDesc,'+|') OR STARTSWITH(evntDesc,'-|') THEN
+				SET IFSC_Prolifrtn_Flag = TRUE;
+				DECLARE i INTEGER 1;
+				WHILE i <> 14 DO
+					SET Environment.evntDesc.data[i] = SUBSTRING(evntDesc BEFORE '|');
+					IF TRIM(Environment.evntDesc.data[i]) = '' THEN
+						SET Environment.evntDesc.data[i] = evntDesc;
+					END IF;
+					SET evntDesc = SUBSTRING(evntDesc AFTER '|');
+					SET i = i + 1;
+				END WHILE;
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','SENDER REF NUMBER : '||msgId) INTO rc;
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','The Message is an IFSC Proliferation Message') INTO rc;
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Belongs TO Cedge Bank') INTO rc;
+				SET OutputRoot.MRM = InputRoot.MRM;
+				PROPAGATE TO TERMINAL 'out4' DELETE NONE;
+				RETURN FALSE ;			
+			END IF;
+			
+			SET ackIndicator = SUBSTRING(evtParam FROM 1 FOR 2);
+			
+			--IF CONTAINS(evtParam , 'P') THEN
+			IF CONTAINS(ackIndicator , 'P') THEN
+				SET OutputRoot.MQRFH2.usr.BankDetails.EvtParam = 'Y' ;
+				SET OutputRoot.MQRFH2.usr.BankDetails.Xutr = 'H00' ;
+			ELSE
+				DECLARE len , len1 INTEGER;
+				SET len = LENGTH(evtParam);
+				SET len1 = (len - 3) + 1 ;
+				SET reasonCode = SUBSTRING(evtParam FROM len1 FOR 3);
+				SET OutputRoot.MQRFH2.usr.BankDetails.EvtParam = 'N' ;
+				SET OutputRoot.MQRFH2.usr.BankDetails.Xutr = reasonCode ;
+			END IF;
+			
+			SET originateDate = REPLACE(SUBSTRING(creDate FROM 1 FOR 10),'-','');-- '2015-02-23T15:06:26Z';
+			SET originateTime = REPLACE(SUBSTRING(creDate FROM 12 FOR 5),':','');
+			
+			DECLARE Qry1 CHARACTER 'SELECT A.TRAN_REF_NO , A.SENDER_CORRES , A.RECVR_CORRES FROM '||SCHEMANAME||'.'||TABLENAME1||' A WHERE A.INCUTR = ? ';
+			--SET DB_Info.A[] = PASSTHRU(Qry1 TO Database.{DSNNAME} VALUES(utr));
+			SET DB_Info.A[] = PASSTHRU(Qry1 TO Database.{DSNNAME} VALUES(msgId));
+			
+			DECLARE bankDetailsRef REFERENCE TO DB_Info;
+	    	MOVE bankDetailsRef FIRSTCHILD;
+	    	DECLARE tempDbRef REFERENCE TO bankDetailsRef;
+			SET utr = TRIM(tempDbRef.TRAN_REF_NO)  ;
+			SET sdrIfsc = TRIM(tempDbRef.RECVR_CORRES)  ;
+			SET rcvrIfsc = TRIM(tempDbRef.SENDER_CORRES) ;
+			
+						
+			SET OutputRoot.MQRFH2.usr.BankDetails.UTR = utr ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.SdrIfsc = sdrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.RcvrIfsc = rcvrIfsc ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateDate = originateDate ;
+			SET OutputRoot.MQRFH2.usr.BankDetails.OriginateTime = originateTime ;
+			--SET OutputRoot.MQRFH2.usr.BankDetails.Amount = amount ;
+
+		END IF;
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Generated UTR Number : '||utr) INTO rc;
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Sender IFSC : '||sdrIfsc) INTO rc;	
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Receiver IFSC :'||rcvrIfsc) INTO rc;
+		
+		SET newRecvrifsc = SUBSTRING(rcvrIfsc FROM 1 FOR 9)||'%';
+		
+		SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(newRecvrifsc));
+		
+		DECLARE bankDetailsRef REFERENCE TO DB_Details;
+    	MOVE bankDetailsRef FIRSTCHILD;
+    	DECLARE tempDbRef REFERENCE TO bankDetailsRef;
+		
+		SET bankName = TRIM(tempDbRef.BANKNAME) ;
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Bank Name'|| bankName) INTO rc;
+		
+		IF LENGTH(bankName) <> 0 THEN			
+			SET OutputRoot.MQRFH2.usr.BankDetails.BankName = bankName ;
+			SET OutputRoot.MRM = InputRoot.MRM ;	
+	
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Belogs TO Cedge Bank') INTO rc;
+				PROPAGATE TO TERMINAL 'out' DELETE NONE;
+				RETURN FALSE ;
+		ELSE
+			SET OutputRoot.MRM = InputRoot.MRM ;
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_RTGS_IN', 'WARN','Posting Message to WB.RTGS.IN.OTHER') INTO rc;
+			PROPAGATE TO TERMINAL 'out2' DELETE NONE;
+			RETURN FALSE ;		
+		END IF;
+		
+	END;
+END MODULE;

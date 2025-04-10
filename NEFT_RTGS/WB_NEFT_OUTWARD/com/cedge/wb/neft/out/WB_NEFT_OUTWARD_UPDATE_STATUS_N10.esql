@@ -1,0 +1,106 @@
+BROKER SCHEMA com.cedge.wb.neft.out
+
+
+CREATE DATABASE MODULE WB_NEFT_OUTWARD_UPDATE_STATUS_N10
+	DECLARE DSN EXTERNAL CHARACTER;
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE rc BOOLEAN;
+		CALL log4j_1_1('UPDATE_STATUS', 'WB_NEFT_OUTWARD_N10', 'INFO','file successfully writen to CBS') INTO rc;
+		CALL log4j_1_1('UPDATE_STATUS', 'WB_NEFT_OUTWARD_N10', 'INFO','Message successfully sent to SFMS') INTO rc;
+		CALL updateQStatus();
+		CALL updateStatus();
+		
+-- 		CALL log4j_1_1('UPDATE_STATUS', 'WB_NEFT_OUTWARD_N10', 'INFO','----------------------------------------------------END----------------------------------------------------') INTO rc;
+		RETURN TRUE;
+	END;
+			--- ISO CHANGES START ----
+		
+		
+	CREATE PROCEDURE updateQStatus ( )
+	BEGIN
+		DECLARE ref ROW;
+		DECLARE refNum , retunUtr CHARACTER;
+		SET refNum = Environment.TRAN_REF_NO;	
+		SET retunUtr= Environment.RELATED_REFERENCE_NUMBER;	
+		
+		DECLARE rc BOOLEAN;
+		DECLARE whiteSpace CONSTANT CHARACTER CAST( X'090D0A20' AS CHAR CCSID 1208);
+		IF Environment.msgtype = 'N07' THEN
+			DECLARE RecRef REFERENCE TO Root.DFDL.SFMS_N07.Body.record[1];
+			WHILE LASTMOVE(RecRef) DO
+				SET refNum = RecRef.RELATED_REFERENCE_NUMBER;
+				SET retunUtr = RecRef.TRANSACTIONREFERENCENUMBER;
+				SET refNum = TRIM(whiteSpace from refNum);
+				SET retunUtr = TRIM(whiteSpace from retunUtr);
+				DECLARE refNumLen INTEGER;
+				SET refNumLen = LENGTH(refNum);
+				WHILE refNumLen < 16 DO
+					SET refNum = refNum || ' ';
+					SET refNumLen = refNumLen + 1;
+				END WHILE;
+				DECLARE qry CHARACTER 'UPDATE NEFT_IN SET ACK_NACK_SEND_MQ = ''R'' ,TRAN_REF_RETURN_UTR=? WHERE TRAN_REF_NO = ?';
+				SET ref.A[] = PASSTHRU(qry TO Database.{DSN} VALUES(retunUtr,refNum));
+				SET refNum = RecRef.TRANSACTIONREFERENCENUMBER;
+				SET refNum = 'N07'||TRIM(whiteSpace from refNum);
+				SET qry = 'UPDATE NEFT_OUT SET OUT_MSG_SENT_SBI = ''Y'' WHERE TRIM(TRAN_REF_NO) = ?'; 
+				SET ref.A[] = PASSTHRU(qry TO Database.{DSN} VALUES(refNum));
+				MOVE RecRef NEXTSIBLING;
+			END WHILE;
+			CALL log4j_1_1('UPDATE_STATUS', 'WB_NEFT_OUTWARD_N10', 'INFO','Status Updated in NEFT_IN table') INTO rc;
+			CALL log4j_1_1('UPDATE_STATUS', 'WB_NEFT_OUTWARD_N10', 'INFO','Status Updated in NEFT_OUT table') INTO rc;
+			
+		ELSEIF Environment.msgtype = 'N10' THEN
+			DECLARE RecRef REFERENCE TO Root.DFDL.SFMS_N10.Body.record[1];
+			WHILE LASTMOVE(RecRef) DO
+				SET retunUtr = RecRef.TRANSACTONREFERENCENUMBER;
+				SET refNum = RecRef.RELATED_REFERENCE;
+				SET refNum = TRIM(whiteSpace from refNum);
+				
+				DECLARE refNumLen INTEGER;
+				SET refNumLen = LENGTH(refNum);
+				WHILE refNumLen < 16 DO
+					SET refNum = refNum || ' ';
+					SET refNumLen = refNumLen + 1;
+				END WHILE;
+				
+				DECLARE qry CHARACTER 'UPDATE NEFT_IN SET ACK_NACK_SEND_MQ = ''Y'' WHERE TRAN_REF_NO = ?';
+				SET ref.A[] = PASSTHRU(qry TO Database.{DSN} VALUES(refNum));
+				SET qry = 'UPDATE NEFT_OUT SET OUT_MSG_SENT_SBI = ''Y'' WHERE TRAN_REF_NO = ?';
+				SET ref.A[] = PASSTHRU(qry TO Database.{DSN} VALUES(retunUtr));
+				MOVE RecRef NEXTSIBLING;
+			END WHILE;
+			CALL log4j_1_1('UPDATE_STATUS', 'WB_NEFT_OUTWARD_N10', 'INFO','Status Updated in NEFT_IN table') INTO rc;
+			CALL log4j_1_1('UPDATE_STATUS', 'WB_NEFT_OUTWARD_N10', 'INFO','Status Updated in NEFT_OUT table') INTO rc;
+			
+		ELSEIF Environment.msgtype = 'N06' THEN 
+			DECLARE RecRef REFERENCE TO Root.DFDL.SFMS_N06.Body.record[1];
+			WHILE LASTMOVE(RecRef) DO  
+
+				SET refNum = RecRef.TRANSACTIONREFERENCENUMBER;
+				SET refNum = TRIM(whiteSpace from refNum);
+				DECLARE qry CHARACTER 'UPDATE NEFT_OUT SET OUT_MSG_SENT_SBI = ''Y'' WHERE TRIM(TRAN_REF_NO) = ?';
+				SET ref.A[] = PASSTHRU(qry TO Database.{DSN} VALUES(refNum));
+				MOVE RecRef NEXTSIBLING;
+			END WHILE;
+			CALL log4j_1_1('UPDATE_STATUS', 'WB_NEFT_OUTWARD_N10', 'INFO','Status Updated in NEFT_OUT table') INTO rc;
+		END IF;
+		
+	END;
+	--- ISO CHANGES END ----
+	CREATE PROCEDURE updateStatus ( )
+	BEGIN
+		DECLARE msgId CHARACTER Root.MQMD.MsgId;
+		DECLARE txnNum CHARACTER Root.DFDL.*.Body.TRANSACTIONREFERENCENUMBER;
+		DECLARE datechar CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyyMMdd');
+		SET txnNum = datechar||txnNum;
+		SET msgId = SUBSTRING(msgId FROM 3 FOR 48);
+		UPDATE Database.NEFT_OUT_PAYLOAD as T
+			SET
+			LAST_MOD_TIME = CURRENT_TIMESTAMP,
+			STATUS = 'S'
+			WHERE
+			T.TXN_REF_NUM = txnNum;
+	END;
+
+END MODULE;

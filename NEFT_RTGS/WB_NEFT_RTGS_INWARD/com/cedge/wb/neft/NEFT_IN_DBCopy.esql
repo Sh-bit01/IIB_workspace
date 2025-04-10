@@ -1,0 +1,45 @@
+BROKER SCHEMA com.cedge.wb.neft
+
+CREATE DATABASE MODULE NEFT_IN_DBCopy
+	DECLARE CONFIG EXTERNAL CHARACTER '';
+	DECLARE DSNNAME EXTERNAL CHARACTER '';
+	DECLARE SCHEMANAME EXTERNAL CHARACTER '';
+	DECLARE NEFT_IN_PAYLOAD_TABLE EXTERNAL CHARACTER '';
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE rc BOOLEAN ;
+		CALL initLog4j(CONFIG) INTO rc;
+		DECLARE msgId CHARACTER Root.MQMD.MsgId;
+		DECLARE count INTEGER ;
+		SET count = LENGTH(msgId)-3 ;
+		SET msgId = SUBSTRING(msgId FROM 3 FOR count);
+
+		DECLARE txnNum CHARACTER Root.XMLNSC.RequestPayload.*:AppHdr.*:BizMsgIdr;
+
+
+		DECLARE datechar CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyyMMdd');
+		SET txnNum = datechar||txnNum;	
+		CALL log4j_1_1('DB_COPY', 'WB_NEFT_IN', 'INFO','---------------------------- START -------------------------') INTO rc;
+		CALL log4j_1_1('DB_COPY', 'WB_NEFT_IN', 'INFO','Transaction Reference Number : '||txnNum) INTO rc;
+		DECLARE check ROW;
+		SET check.R[] = PASSTHRU('SELECT RETRY_COUNT FROM NEFT_IN_PAYLOAD WHERE TXN_REF_NUM = ?' TO Database.{DSNNAME} VALUES(txnNum));
+		IF check.R[1].RETRY_COUNT >= 0 THEN
+			DECLARE retryCount INTEGER ;
+			SET retryCount = check.R[1].RETRY_COUNT+1 ;
+			DECLARE DB_Details ROW;	
+			DECLARE Qry CHARACTER ;	
+			SET Qry =  'UPDATE '||SCHEMANAME||'.'||NEFT_IN_PAYLOAD_TABLE|| ' A SET A.LAST_MOD_TIME = ? , A.RETRY_COUNT = ? WHERE A.TXN_REF_NUM = ? ' ;
+			SET DB_Details.A[] = PASSTHRU (Qry TO Database.{DSNNAME} VALUES(CURRENT_TIMESTAMP ,retryCount ,txnNum));	
+			CALL log4j_1_1('DB_COPY', 'WB_NEFT_IN', 'INFO','Updating data in NEFT_IN-PAYLOAD') INTO rc;			
+		ELSE
+			DECLARE wholeMsgBlob BLOB ASBITSTREAM(Root.XMLNSC, Root.Properties.Encoding, Root.Properties.CodedCharSetId );
+	 		DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID Root.Properties.CodedCharSetId);
+	 		DECLARE fileName CHARACTER 'filename';
+	 		INSERT INTO Database.{DSNNAME}.{SCHEMANAME}.NEFT_IN_PAYLOAD (MSGID,PAYLOAD,CREATION_TIME,LAST_MOD_TIME,STATUS,RETRY_COUNT,FILE_NAME,TXN_REF_NUM) 
+	 		VALUES (msgId,wholeMsgChar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'F', '0',fileName,txnNum);	
+	 		CALL log4j_1_1('DB_COPY', 'WB_NEFT_IN', 'INFO','Data inserted to NEFT_IN-PAYLOAD') INTO rc;		
+		END IF;
+		RETURN TRUE;
+	END;
+
+END MODULE;

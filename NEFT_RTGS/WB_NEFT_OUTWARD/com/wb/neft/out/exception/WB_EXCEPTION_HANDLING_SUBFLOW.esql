@@ -1,0 +1,207 @@
+BROKER SCHEMA com.wb.neft.out.exception
+
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+   RETURNS BOOLEAN
+   LANGUAGE JAVA
+   EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j";
+--   CREATE FUNCTION log4j( IN COMPONENT_NAME CHARACTER,
+--   IN LEVEL CHARACTER,
+--   IN TEXT CHARACTER )
+--   RETURNS BOOLEAN
+--   LANGUAGE JAVA
+--   EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+   CREATE FUNCTION log4j_1_1( IN COMPONENT_NAME CHARACTER,
+   IN LOGGER_NAME CHARACTER,
+   IN LEVEL CHARACTER,
+   IN TEXT CHARACTER )
+   RETURNS BOOLEAN
+   LANGUAGE JAVA
+   EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+   
+   
+CREATE COMPUTE MODULE WB_EXCEPTION_HANDLING_SUBFLOW
+	DECLARE nodepath CHARACTER InputExceptionList.RecoverableException.Label;
+	DECLARE CONFIG EXTERNAL CHARACTER;
+	DECLARE DSN EXTERNAL CHARACTER;
+	DECLARE PROP_LOC EXTERNAL CHARACTER;
+    CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE rc BOOLEAN;
+		CALL initLog4j(CONFIG) INTO rc;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','---------------START---------------') INTO rc;
+		DECLARE TIMESTAMP_FORMAT CHARACTER 'yyyy-MM-dd''T''HH:mm:ss.SSSSSS';
+		DECLARE ccsid INTEGER 1208;
+		CALL getFlowDetails(InputRoot);
+		SET Environment.Variables.TraceFileExc.ExceptionDate=CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT TIMESTAMP_FORMAT);
+		CALL originalMsg(ccsid, InputRoot);
+		DECLARE excDesc CHARACTER getExceptionDesc(InputRoot, OutputRoot, InputExceptionList);
+		CALL storeException(excDesc);
+		SET Environment.excDesc = excDesc;
+		CALL setMailInfo();
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE originalMsg (IN ccsid INTEGER, IN InputRoot REFERENCE)
+	BEGIN
+		--If error occurs capture the original message
+		DECLARE domainFldName CHARACTER FIELDNAME(InputBody);
+		IF domainFldName='MRM' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=InputRoot.MRM;
+		ELSEIF domainFldName='XMLNSC' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=CAST(ASBITSTREAM(InputRoot.XMLNSC CCSID ccsid) AS CHARACTER CCSID ccsid);
+		ELSEIF domainFldName='SOAP' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=CAST(ASBITSTREAM(InputRoot.SOAP CCSID ccsid) AS CHARACTER CCSID ccsid);
+		ELSEIF domainFldName='BLOB' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=CAST(ASBITSTREAM(InputRoot.BLOB CCSID ccsid) AS CHARACTER CCSID ccsid);
+		ELSEIF domainFldName='DFDL' THEN
+			SET Environment.Variables.TraceFileExc.originalMessage=CAST(ASBITSTREAM(InputRoot.DFDL CCSID ccsid) AS CHARACTER CCSID ccsid);
+		END IF;
+	END;
+
+	CREATE PROCEDURE getFlowDetails(IN InputRoot REFERENCE)
+	BEGIN
+		--Taking messge flow details
+		--Taking message flow name , node name
+		DECLARE rc BOOLEAN ;
+		DECLARE nodeName CHARACTER;
+		DECLARE label CHARACTER;
+		DECLARE flowName, flowNameone,flowNametwo CHARACTER;
+		DECLARE fieldPosition INTEGER;
+		DECLARE excListRef REFERENCE TO InputExceptionList.*[1];
+		SET label = excListRef.Label;
+		SET flowNameone = excListRef.Name;
+		SET fieldPosition = POSITION('.' IN label);
+		SET flowNametwo=SUBSTRING(flowNameone AFTER '.');
+		IF flowNametwo='' THEN
+			SET flowName=SUBSTRING(flowNameone BEFORE '#');
+		ELSE
+			SET flowName=SUBSTRING(flowNametwo BEFORE '#');
+		END IF;
+		SET nodeName=SUBSTRING(label FROM (fieldPosition+1));
+		SET Environment.Variables.TraceFileExc.FlowName=flowName;
+		SET Environment.Variables.TraceFileExc.NodeName=nodeName;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','Flow Name :'||flowName) INTO rc;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','Node Name :'||nodeName) INTO rc;
+	END;
+	
+	CREATE PROCEDURE getExceptionDesc (IN InputRoot REFERENCE, IN OutputRoot REFERENCE, IN InputExceptionList REFERENCE)
+    RETURNS CHAR
+    BEGIN
+	--Copy the exception description
+	DECLARE rc BOOLEAN;
+	DECLARE continueLoop BOOLEAN;
+	DECLARE inRef REFERENCE TO InputRoot;
+	DECLARE outRef REFERENCE TO OutputRoot;
+	DECLARE inRefName,inRefValue CHARACTER;
+	DECLARE exceptionData CHAR;
+	SET continueLoop = TRUE;
+	MOVE inRef TO InputExceptionList;
+	WHILE continueLoop DO
+		IF CARDINALITY(inRef.RecoverableException[]) = 0 THEN
+			SET continueLoop = FALSE;
+		ELSE
+			MOVE inRef TO inRef.RecoverableException[1];
+		END IF;
+	END WHILE;
+	--
+	DECLARE messageText CHARACTER;
+    DECLARE inRef2 REFERENCE TO InputExceptionList;
+    DECLARE insertRef REFERENCE TO InputExceptionList;
+    WHILE lastmove(inRef2) DO
+    IF inRef2.Number is not null THEN
+          SET messageText  =  inRef2.Text;
+          MOVE insertRef TO inRef2.Insert[>];
+          WHILE LASTMOVE(insertRef) DO    --- fetch description from Insert[] 
+           SET messageText = messageText ||'  '||insertRef.Text;
+              MOVE insertRef NEXTSIBLING;
+          END WHILE;
+    END IF;
+   move inRef2 lastchild;
+   END WHILE;
+  -- SET messageText = messageText||'    ' || inRef2;
+	--
+	CREATE LASTCHILD OF OutputRoot AS outRef DOMAIN 'XMLNS';
+	CREATE LASTCHILD OF OutputRoot.XMLNS AS outRef NAME 'ExceptionText';
+	
+	
+	IF (LENGTH(inRef.[<].Text)=0) THEN
+		SET inRefName= FIELDNAME(inRef);
+		SET inRefValue= FIELDVALUE(inRef.Text);
+		SET outRef.ExceptionText = FIELDNAME(inRef)||'  :'||'  '||FIELDVALUE(inRef.Text);
+	ELSE
+		SET inRefName= FIELDNAME(inRef);
+		SET inRefValue= FIELDVALUE(inRef.Text);
+		SET outRef.ExceptionText = FIELDNAME(inRef.[<])||'  :'||'  '||FIELDVALUE(inRef.[<].Text);
+	END IF;
+	SET exceptionData=inRefName||'  '||inRefValue||'  '||messageText;
+	SET OutputRoot.XMLNS = NULL;
+	CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','Exception Description :  '||exceptionData) INTO rc;
+	RETURN exceptionData;
+  END;
+
+   CREATE PROCEDURE storeException (IN exc CHARACTER )
+	BEGIN
+		DECLARE rc BOOLEAN ;
+		DECLARE msgId CHARACTER InputRoot.MQMD.MsgId;
+		SET msgId = SUBSTRING(msgId FROM 3 FOR 48);
+		DECLARE check ROW;
+	--	DECLARE TXNNUM CHARACTER;
+		DECLARE txnNum CHARACTER InputRoot.DFDL.*.Body.record.TRANSACTIONREFERENCENUMBER;
+		DECLARE datechar CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyyMMdd');
+		SET txnNum = datechar||txnNum;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','Transaction Reference Number :'||txnNum) INTO rc;
+		SET check.R[] = PASSTHRU('SELECT RETRY_COUNT FROM NEFT_OUT_PAYLOAD WHERE TXN_REF_NUM = ?' TO Database.{DSN} VALUES(txnNum));
+		IF check.R[1].RETRY_COUNT >= 0 THEN
+			UPDATE Database.NEFT_OUT_PAYLOAD as T
+			SET
+			RETRY_COUNT = check.R[1].RETRY_COUNT+1,
+			LAST_MOD_TIME = CURRENT_TIMESTAMP,
+			EXCEPTION_DESCRIPTION = exc
+			WHERE
+			T.TXN_REF_NUM = txnNum;
+			CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','Retry Count is Updated successfully with Transaction Reference Number :'||txnNum) INTO rc;
+		ELSE
+			DECLARE wholeMsgBlob BLOB ASBITSTREAM(InputRoot.DFDL, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+	 		DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+	 		DECLARE fileName CHARACTER 'filename';
+	 		SET fileName = Environment.filename;
+	 		INSERT INTO Database.NEFT_OUT_PAYLOAD (MSGID,PAYLOAD,CREATION_TIME,LAST_MOD_TIME,STATUS,RETRY_COUNT,FILE_NAME,EXCEPTION_DESCRIPTION,TXN_REF_NUM ) 
+	 		VALUES (msgId,wholeMsgChar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'F', '1',fileName,exc,txnNum);			
+		END IF;
+		
+		
+	END;
+    CREATE PROCEDURE setMailInfo ( )
+	BEGIN
+		DECLARE rc BOOLEAN ;
+		DECLARE toEmail,ccEmail,fromEmail,smtpServer CHARACTER '';
+		CALL getMailProp(PROP_LOC,toEmail,ccEmail,fromEmail,smtpServer);
+
+		SET Environment.toEmail = toEmail;
+		SET Environment.ccEmail = ccEmail;
+		SET Environment.fromEmail = fromEmail;
+		SET Environment.mailSubject = 'Warning Regarding WB NEFT OUTWARD'; 
+		SET Environment.smtpServer = smtpServer;
+		DECLARE transRefNo CHARACTER InputRoot.DFDL.*.Body.TRANSACTIONREFERENCENUMBER;
+		DECLARE CR CHARACTER CAST(CAST('X''0A''' AS BLOB) AS CHARACTER CCSID 1208);
+		
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','Email Configuration Details ') INTO rc;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','TO Mail :'||toEmail) INTO rc;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','CC Mail :'||ccEmail) INTO rc;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','From Mail :'||fromEmail) INTO rc;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','Smtp Server :'||smtpServer) INTO rc;
+		
+		SET Environment.mailSubject = 'Warning Regarding WB NEFT outward Interface';
+--		SET Environment.mailBody = 'Message with transaction ID :'||InputRoot.DFDL.*.Body.TRANSACTIONREFERENCENUMBER ||',  processing failed because of this exception:'||Environment.excDesc;
+		IF LENGTH(transRefNo) <> 0 THEN						
+			SET Environment.mailBody = 'Dear Team,'||CR||'Message with transaction ID :'||transRefNo||', '||CR||CR||' processing failed because of this exception:'||Environment.excDesc;	
+		ELSE
+			SET Environment.mailBody = 'Dear Team,'||CR||'UTR no is blank ,  '||CR||CR||' processing failed because of this exception:'||Environment.excDesc;	
+		END IF;
+	    CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','Mail Body Description :  '||Environment.mailBody) INTO rc;
+		CALL log4j_1_1(nodepath, 'WB_NEFT_OUT_EXEC', 'WARN','----------------END----------------') INTO rc;
+	END;
+	CREATE FUNCTION getMailProp( IN P1 CHARACTER, OUT P2 CHARACTER,OUT P3 CHARACTER, OUT P4 CHARACTER,OUT P5 CHARACTER)
+	LANGUAGE JAVA 
+ 	EXTERNAL NAME "com.cedge.wb.neft.out.WB_NEFT_OUTWARD_JavaCompute.getMailProp";
+ END MODULE;

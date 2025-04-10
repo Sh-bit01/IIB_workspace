@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.rrb.inward.map.neft" version="8.0.5.0" xmlns:map="com.cedge.rrb.inward.map.neft">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">       
+    <xsd:element name="BankDetails">       
+    <xsd:complexType>       
+      <xsd:sequence>       
+        <xsd:element name="HO_RECEIVER_IFCS" type="xsd:string"/>       
+        <xsd:element name="HO_SENDER_IFCS" type="xsd:string"/>       
+        <xsd:element name="UTR" type="xsd:string"/>       
+        <xsd:element name="cDate" type="xsd:string"/>       
+        <xsd:element name="cTime" type="xsd:string"/>       
+                      <xsd:element name="DBIT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+                <xsd:element name="RJTDBIT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+                <xsd:element name="CRDT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+                <xsd:element name="RTNCRDT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+                <xsd:element name="RJTCRDT">    
+          <xsd:complexType>    
+            <xsd:sequence>    
+              <xsd:element name="Amt" type="xsd:string"/>    
+              <xsd:element name="Ustrd" type="xsd:string"/>    
+            </xsd:sequence>    
+          </xsd:complexType>    
+        </xsd:element>    
+            </xsd:sequence>       
+    </xsd:complexType>       
+  </xsd:element>       
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/ISO/camt.054.001.08.xsd" var="var"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var1"/>
+    <output path="/N06/INWARD.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="urn:iso:std:iso:20022:tech:xsd:camt.054.001.08"/>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="Camt054_TO_N04">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:camt.054.001.08" path="$var/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)" var="ComIbmMessageAssembly_Document">
+            <cast castType="userDefined" path="$ComIbmMessageAssembly_Document/MQRFH2/usr/any" qualifier="BankDetails" ref="var1"/>
+        </input>
+        <output path="mb:msg(N04,assembly,DFDL,Properties)" var="ComIbmMessageAssembly_N04"/>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Properties"/>
+            <output path="$ComIbmMessageAssembly_N04/Properties"/>
+            <override>
+                <assign value="{}:N04">
+                    <output path="$ComIbmMessageAssembly_N04/Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cDate"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Value_Date"/>
+        </move>
+        <function ref="fn:substring-after">
+            <input path="$ComIbmMessageAssembly_Document/Document/BkToCstmrDbtCdtNtfctn/GrpHdr/AddtlInf" var="AddtlInf2"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Batch_Time"/>
+            <param name="string1" value="$AddtlInf2"/>
+            <param name="string2" value="&quot;Id:&quot;"/>
+        </function>
+        <assign value="XXX">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/BankApp_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Message_Identifier"/>
+        </assign>
+        <assign value="I">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/IO_Identifier"/>
+        </assign>
+        <assign value="298">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Message_Type"/>
+        </assign>
+        <assign value="N04">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/SubMessage_Type"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <assign value="000">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Obsolescence_Period"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="RTG">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Service_Identifier"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Testing_Training_Flag"/>
+        </assign>
+        <assign value="000000000">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Sequence_Number"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Filler"/>
+        </assign>
+        <assign value="00">
+            <output path="$ComIbmMessageAssembly_N04/N04/header/RTGS_Priority"/>
+        </assign>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/HO_SENDER_IFCS"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/HO_RECEIVER_IFCS"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Receiver_IFSC"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Unique_Transaction_Number"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/header/MUR"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cDate"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cTime"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/header/Originate_Time"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/DBIT/Ustrd"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Out_Debit_Txn_Accepted"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/DBIT/Amt"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Amt_Out_Debit_Txn_Accepted"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/RJTDBIT/Amt"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Amt_Out_Debit_Txn_Rejected"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/RJTDBIT/Ustrd"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Out_Debit_Txn_Rejected"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/CRDT/Amt"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Amt_In_Credits_Received"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/CRDT/Ustrd"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_In_Credits_Received_For_Bank"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/RJTCRDT/Amt"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Amt_Return_Txn_Received"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/RJTCRDT/Ustrd"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Return_Txn_Received_For_Bank"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/DBIT/Amt"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Amt_Out_Debit_Txn"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/DBIT/Ustrd"/>
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Total_Out_Debit_Txn"/>
+        </move>
+        <assign value="{4:">
+            <output path="$ComIbmMessageAssembly_N04/N04/body/Block_4_Initiator"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

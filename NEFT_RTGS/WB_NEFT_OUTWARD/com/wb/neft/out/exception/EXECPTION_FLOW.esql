@@ -1,0 +1,30 @@
+BROKER SCHEMA com.wb.neft.out.exception
+
+
+
+
+CREATE COMPUTE MODULE EXECPTION_FLOW_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE chDate CHARACTER;
+		SET chDate = CAST(CURRENT_DATE as CHARACTER FORMAT 'yyyyMMdd');
+		DECLARE ExcRef REFERENCE TO InputExceptionList.*;
+	--	DECLARE Chartxt CHARACTER CAST(ASBITSTREAM (InputBody CCSID ))
+		DECLARE wholeMsgBlob BLOB ASBITSTREAM(InputRoot.DFDL, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+	 	DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);	
+		IF LASTMOVE(ExcRef) THEN
+			SET OutputRoot.XMLNSC.ExceptionDetail.whole_msg= wholeMsgChar;
+			SET OutputRoot.XMLNSC.ExceptionDetail.exection=InputExceptionList;
+			SET OutputRoot.XMLNSC.ExceptionDetail.MSGTYPE=InputRoot.DFDL.*.Header.SUBMESSAGETYPE;
+			SET OutputRoot.XMLNSC.ExceptionDetail.UTR=InputRoot.DFDL.*.Header.UNIQUETRANSACTIONREF;
+			SET OutputRoot.XMLNSC.ExceptionDetail.TXN_REF_NUM = chDate||InputRoot.DFDL.*.Header.UNIQUETRANSACTIONREF;
+			SET OutputRoot.XMLNSC.ExceptionDetail.FILE_NAME =InputRoot.MQRFH2.usr.UFM_FileName;
+			IF InputRoot.DFDL.*.Header.SUBMESSAGETYPE='N10' THEN
+				SET OutputRoot.XMLNSC.ExceptionDetail.UTR=COALESCE(InputRoot.DFDL.*.Body.record.RELATED_REFERENCE,InputRoot.DFDL.*.Header.UNIQUETRANSACTIONREF);
+			END IF;	
+
+		END IF;
+		RETURN TRUE;
+	END;
+
+END MODULE;

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.wb.rtgs" version="8.0.4.0" xmlns:map="com.cedge.wb.rtgs">
+    <input path="/RTGS_XML/iso/std/iso/_20022/tech/xsd/pacs00800103/pacs.008.001.03.mxsd" var="var1"/>
+    <input path="/RTGS_XML/BankDetails.mxsd" var="var"/>
+    <input path="/RTGS_XML/BankDetails.mxsd" var="var2"/>
+    <output path="/N06/INWARD.xsd"/>
+    <namespaces>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="PACS00800103_TO_R41">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.03" path="$var1/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)">
+            <cast path="MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(R41,assembly,DFDL,Properties)"/>
+        <move>
+            <input path="Properties"/>
+            <output path="Properties"/>
+            <override>
+                <assign value="{}:R41">
+                    <output path="Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <assign value="RTG">
+            <output path="R41/header/BankApp_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="R41/header/Message_Identifier"/>
+        </assign>
+        <assign value="I">
+            <output path="R41/header/IO_Identifier"/>
+        </assign>
+        <assign value="298">
+            <output path="R41/header/Message_Type"/>
+        </assign>
+        <assign value="R41">
+            <output path="R41/header/SubMessage_Type"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/SdrIfsc"/>
+            <output path="R41/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/RcvrIfsc"/>
+            <output path="R41/header/Receiver_IFSC"/>
+        </move>
+        <assign value="2">
+            <output path="R41/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="R41/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="R41/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <assign value="000">
+            <output path="R41/header/Obsolescence_Period"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R41/header/MUR"/>
+        </move>
+        <assign value="2">
+            <output path="R41/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="RTG">
+            <output path="R41/header/Service_Identifier"/>
+        </assign>
+        <assign value="00">
+            <output path="R41/header/RTGS_Priority"/>
+        </assign>
+        <assign value="2">
+            <output path="R41/header/Testing_Training_Flag"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="R41/header/Filler"/>
+        </assign>
+        <assign value="000000000">
+            <output path="R41/header/Sequence_Number"/>
+        </assign>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R41/header/Unique_Transaction_Number"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/UTR"/>
+            <output path="R41/body/Transaction_Reference_Number"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/DbtrAcct/Id/Othr/Id"/>
+            <output path="R41/body/Ordering_Customer/Line1"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/PstlAdr/AdrLine[1]"/>
+            <output path="R41/body/Ordering_Customer/Line3"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/PstlAdr/AdrLine[2]"/>
+            <output path="R41/body/Ordering_Customer/Line4"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/SdrIfsc"/>
+            <output path="R41/body/Ordering_Institution"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/RcvrIfsc"/>
+            <output path="R41/body/Account_With_Institution"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/CdtrAcct/Id/Othr/Id"/>
+            <output path="R41/body/Beneficiary_Customer1/Line1"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/Nm"/>
+            <output path="R41/body/Beneficiary_Customer1/Line2"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/PstlAdr/AdrLine[1]"/>
+            <output path="R41/body/Beneficiary_Customer1/Line3"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/PstlAdr/AdrLine[2]"/>
+            <output path="R41/body/Beneficiary_Customer1/Line4"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf/Ustrd[1]"/>
+            <output path="R41/body/Sender_Receiver_Info/Line1"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf/Ustrd[2]"/>
+            <output path="R41/body/Sender_Receiver_Info/Line2"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf/Ustrd[3]"/>
+            <output path="R41/body/Sender_Receiver_Info/Line3"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf/Ustrd[4]"/>
+            <output path="R41/body/Sender_Receiver_Info/Line4"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf/Ustrd[5]"/>
+            <output path="R41/body/Sender_Receiver_Info/Line5"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateDate"/>
+            <output path="R41/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/OriginateTime"/>
+            <output path="R41/header/Originate_Time"/>
+        </move>
+        <move>
+            <input path="MQRFH2/usr/BankDetails/Amount"/>
+            <output path="R41/body/ValueDate_Currency_Amount"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/Nm"/>
+            <output path="R41/body/Ordering_Customer/Line2"/>
+        </move>
+        <move>
+            <input path="Document/FIToFICstmrCdtTrf/GrpHdr/MsgId"/>
+            <output path="R41/body/MsgId"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

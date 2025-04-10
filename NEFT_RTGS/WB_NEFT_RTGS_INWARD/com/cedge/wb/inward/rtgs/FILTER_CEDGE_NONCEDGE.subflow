@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmFlowOrder.msgnode="ComIbmFlowOrder.msgnode" xmlns:ComIbmJavaCompute.msgnode="ComIbmJavaCompute.msgnode" xmlns:ComIbmMQGet.msgnode="ComIbmMQGet.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ComIbmResetContentDescriptor.msgnode="ComIbmResetContentDescriptor.msgnode" xmlns:ComIbmRoute.msgnode="ComIbmRoute.msgnode" xmlns:com_cedge_wb_inward_rtgs_WB_RTGS_IN_BACKUP.subflow="com/cedge/wb/inward/rtgs/WB_RTGS_IN_BACKUP.subflow"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE.subflow" nsPrefix="com_cedge_wb_inward_rtgs_FILTER_CEDGE_NONCEDGE.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.DSNNAME" name="DSNNAME" defaultValueLiteral="WBPROD">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.SCHEMANAME" name="SCHEMANAME" defaultValueLiteral="wbneft">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.TABLENAME" name="TABLENAME" defaultValueLiteral="BANKNAME">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.TABLENAME1" name="TABLENAME1" defaultValueLiteral="RTGS_OUT">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.RTGS_OUT_TABLENAME" name="RTGS_OUT_TABLENAME" defaultValueLiteral="RTGS_OUT">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.CONFIG" name="CONFIG" defaultValueLiteral="/var/iib/interface/wb/neft/inward/properties/log4j/wb_neft_inward.xml">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="FILTER_CEDGE_NONCEDGE" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_RTGS_INWARD/icons/full/obj16/FILTER_CEDGE_NONCEDGE.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_RTGS_INWARD/icons/full/obj30/FILTER_CEDGE_NONCEDGE.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmFlowOrder.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="218,291">
+        <translation xmi:type="utility:ConstantString" string="Flow Order"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJavaCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="216,202" javaClass="com.cedge.wb.rtgs.FORM_XML">
+        <translation xmi:type="utility:ConstantString" string="FORM_XML"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Cedge" location="988,300">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Cedge" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Failure" location="453,414">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Failure" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="588,77" messageDomain="MRM" resetMessageDomain="true" messageSet="RTGS_XML" resetMessageSet="true" messageType="{urn:iso:std:iso:20022:tech:xsd:pacs.009.001.03}:Document" resetMessageType="true" messageFormat="XML1" resetMessageFormat="true" validateTiming="immediate">
+        <translation xmi:type="utility:ConstantString" string="PACS.009.001.03"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="808,208" dataSource="WBPROD" computeExpression="esql://routine/com.cedge.wb.rtgs#IDENTIFY_BANK.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="IDENTIFY_BANK"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="947,153" queueName="WB.RTGS.IN.PARSE.FAIL" transactionMode="no">
+        <translation xmi:type="utility:ConstantString" string="WB.RTGS.IN.PARSE.FAIL"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="322,354" queueName="WB.RTGS.IN.FAIL" transactionMode="no">
+        <translation xmi:type="utility:ConstantString" string="WB.RTGS.IN.FAIL"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="587,149" messageDomain="MRM" resetMessageDomain="true" messageSet="RTGS_XML" resetMessageSet="true" messageType="{urn:iso:std:iso:20022:tech:xsd:pacs.004.001.03}:Document" resetMessageType="true" messageFormat="XML1" resetMessageFormat="true" validateTiming="immediate">
+        <translation xmi:type="utility:ConstantString" string="PACS.004.001.03"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="17,190">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="963,376" queueName="WB.RTGS.IN.OTHER" transactionMode="no">
+        <translation xmi:type="utility:ConstantString" string="WB.RTGS.IN.OTHER"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="583,12" messageDomain="MRM" resetMessageDomain="true" messageSet="RTGS_XML" resetMessageSet="true" messageType="{urn:iso:std:iso:20022:tech:xsd:pacs.008.001.03}:Document" resetMessageType="true" messageFormat="XML1" resetMessageFormat="true" validateTiming="immediate" validateMaster="contentAndValue">
+        <translation xmi:type="utility:ConstantString" string="PACS.008.001.03"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJavaCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_11" location="53,102" javaClass="com.cedge.wb.rtgs.GET_MSGID">
+        <translation xmi:type="utility:ConstantString" string="GET_MSGID"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_12" location="945,225" queueName="WB.RTGS.IN.NONCEDGE" transactionMode="no">
+        <translation xmi:type="utility:ConstantString" string="WB.RTGS.IN.NONCEDGE"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_13" location="202,129" queueName="WB.RTGS.IN.COPY" transactionMode="no">
+        <translation xmi:type="utility:ConstantString" string="WB.RTGS.IN.COPY"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFlowOrder.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_14" location="816,145">
+        <translation xmi:type="utility:ConstantString" string="Flow Order1"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQGet.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_15" location="1085,292" queueName="WB.RTGS.IN.COPY" getWithMessageID="true">
+        <translation xmi:type="utility:ConstantString" string="WB.RTGS.IN.COPY.GET"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Failure1" location="1086,56">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Failure1" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRoute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_16" location="365,202">
+        <outTerminals terminalNodeID="Match" dynamic="true" label="Match"/>
+        <outTerminals terminalNodeID="PACS008" dynamic="true" label="PACS008"/>
+        <outTerminals terminalNodeID="PACS009" dynamic="true" label="PACS009"/>
+        <outTerminals terminalNodeID="PACS004" dynamic="true" label="PACS004"/>
+        <outTerminals terminalNodeID="CAMT054" dynamic="true" label="CAMT054"/>
+        <outTerminals terminalNodeID="PACS002" dynamic="true" label="PACS002"/>
+        <outTerminals terminalNodeID="ADMI004" dynamic="true" label="ADMI004"/>
+        <outTerminals terminalNodeID="CAMT059" dynamic="true" label="CAMT059"/>
+        <translation xmi:type="utility:ConstantString" string="Route"/>
+        <filterTable filterPattern="$LocalEnvironment/BankDetails/MsgType = 'pacs.008.001.03'" routingOutputTerminal="PACS008"/>
+        <filterTable filterPattern="$LocalEnvironment/BankDetails/MsgType = 'pacs.009.001.03'" routingOutputTerminal="PACS009"/>
+        <filterTable filterPattern="$LocalEnvironment/BankDetails/MsgType = 'pacs.004.001.03'" routingOutputTerminal="PACS004"/>
+        <filterTable filterPattern="$LocalEnvironment/BankDetails/MsgType = 'camt.054.001.03'" routingOutputTerminal="CAMT054"/>
+        <filterTable filterPattern="$LocalEnvironment/BankDetails/MsgType = 'pacs.002.001.04'" routingOutputTerminal="PACS002"/>
+        <filterTable filterPattern="$LocalEnvironment/BankDetails/MsgType = 'admi.004.001.01'" routingOutputTerminal="ADMI004"/>
+        <filterTable filterPattern="$LocalEnvironment/BankDetails/MsgType = 'camt.059.001.04'" routingOutputTerminal="CAMT059"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_17" location="590,270" messageDomain="MRM" resetMessageDomain="true" messageSet="RTGS_XML" resetMessageSet="true" messageType="{urn:iso:std:iso:20022:tech:xsd:pacs.002.001.04}:Document" resetMessageType="true" messageFormat="XML1" resetMessageFormat="true" validateTiming="immediate">
+        <translation xmi:type="utility:ConstantString" string="PACS.002.001.03"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_18" location="591,348" messageDomain="MRM" resetMessageDomain="true" messageSet="RTGS_XML" resetMessageSet="true" messageType="{urn:iso:std:iso:20022:tech:xsd:admi.004.001.01}:Document" resetMessageType="true" messageFormat="XML1" resetMessageFormat="true" validateTiming="immediate">
+        <translation xmi:type="utility:ConstantString" string="ADMI.004.001.01"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_19" location="582,203" messageDomain="MRM" resetMessageDomain="true" messageSet="RTGS_XML" resetMessageSet="true" messageType="{urn:iso:std:iso:20022:tech:xsd:camt.054.001.03}:Document" resetMessageType="true" messageFormat="XML1" resetMessageFormat="true" validateTiming="immediate">
+        <translation xmi:type="utility:ConstantString" string="CAMT.054.001.03"/>
+      </nodes>
+      <nodes xmi:type="com_cedge_wb_inward_rtgs_WB_RTGS_IN_BACKUP.subflow:FCMComposite_1" xmi:id="FCMComposite_1_8" location="76,194">
+        <translation xmi:type="utility:ConstantString" string="WB_RTGS_IN_BACKUP"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_20" location="199,53" queueName="WB.NEFT.IN.OTHER" transactionMode="no">
+        <translation xmi:type="utility:ConstantString" string="WB.NEFT.IN.OTHER"/>
+      </nodes>
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_21" location="593,416" messageDomain="MRM" resetMessageDomain="true" messageSet="RTGS_XML" resetMessageSet="true" messageType="{urn:iso:std:iso:20022:tech:xsd:camt.059.001.04}:Document" resetMessageType="true" messageFormat="XML1" resetMessageFormat="true">
+        <translation xmi:type="utility:ConstantString" string="CAMT.059.001.04"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="904,64">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.SODEOD" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_22" location="842,328" queueName="WB_IFSC_IN">
+        <translation xmi:type="utility:ConstantString" string="WB_IFSC_IN"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_17" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_18" sourceNode="FCMComposite_1_16" sourceTerminalName="ADMI004" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out2" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_18" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.second" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="OutTerminal.Failure1" sourceNode="FCMComposite_1_14" sourceTerminalName="OutTerminal.first" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="OutTerminal.Failure" sourceNode="FCMComposite_1_13" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="OutTerminal.Failure" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.alternate" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="OutTerminal.Failure1" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_14" targetNode="FCMComposite_1_19" sourceNode="FCMComposite_1_16" sourceTerminalName="CAMT054" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_16" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_16" sourceTerminalName="PACS009" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_17" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_18" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_14" sourceTerminalName="OutTerminal.second" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_19" targetNode="FCMComposite_1_16" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_20" targetNode="OutTerminal.Failure" sourceNode="FCMComposite_1_16" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_21" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_19" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_22" targetNode="OutTerminal.Failure" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_23" targetNode="OutTerminal.Failure" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.first" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_24" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_25" targetNode="FCMComposite_1_15" sourceNode="FCMComposite_1_12" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_27" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_19" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_28" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_18" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_29" targetNode="FCMComposite_1_12" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_31" targetNode="OutTerminal.Cedge" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_32" targetNode="OutTerminal.Failure" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_33" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_34" targetNode="OutTerminal.Failure1" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_35" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_16" sourceTerminalName="PACS004" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_36" targetNode="OutTerminal.Failure1" sourceNode="FCMComposite_1_14" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_37" targetNode="OutTerminal.Failure1" sourceNode="FCMComposite_1_12" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_38" targetNode="FCMComposite_1_11" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_39" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_16" sourceTerminalName="PACS008" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_40" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_17" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_41" targetNode="FCMComposite_1_17" sourceNode="FCMComposite_1_16" sourceTerminalName="PACS002" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_15" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_26" targetNode="FCMComposite_1_20" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_46" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.KBL_FAIL" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_47" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_48" targetNode="FCMComposite_1_13" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.KBL_COPY" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_49" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_42" targetNode="FCMComposite_1_21" sourceNode="FCMComposite_1_16" sourceTerminalName="CAMT059" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_43" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_21" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_44" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_21" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_15" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out3" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_45" targetNode="OutTerminal.Failure1" sourceNode="FCMComposite_1_22" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_50" targetNode="FCMComposite_1_22" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out4" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_30" targetNode="OutTerminal.Failure1" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.DSNNAME">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.DSNNAME" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+        <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.SCHEMANAME">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.SCHEMANAME" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+          <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.TABLENAME">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.TABLENAME" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+            <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.TABLENAME1">
+              <propertyName xmi:type="utility:TranslatableString" key="Property.TABLENAME1" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+              <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.RTGS_OUT_TABLENAME">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.RTGS_OUT_TABLENAME" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+                <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.CONFIG">
+                  <propertyName xmi:type="utility:TranslatableString" key="Property.CONFIG" bundleName="com/cedge/wb/inward/rtgs/FILTER_CEDGE_NONCEDGE" pluginId="WB_NEFT_RTGS_INWARD"/>
+                </propertyDescriptor>
+              </propertyDescriptor>
+            </propertyDescriptor>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

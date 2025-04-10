@@ -1,0 +1,1223 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="RequestPayload">
+    	<xsd:sequence>
+    		<xsd:element name="AppHdr">
+    			<xsd:complexType>
+    				<xsd:sequence>
+    					<xsd:element name="Fr">
+    						<xsd:complexType>
+    							<xsd:sequence>
+    								<xsd:element name="FIId">
+                                        <xsd:complexType>
+                                        	<xsd:sequence>
+                                        		<xsd:element name="FinInstnId">
+                                                    <xsd:complexType>
+                                                    	<xsd:sequence>
+                                                    		<xsd:element name="ClrSysMmbId">
+                                                                <xsd:complexType>
+                                                                	<xsd:sequence>
+                                                                		<xsd:element name="MmbId" type="xsd:string">
+                                                                		</xsd:element>
+                                                                	</xsd:sequence>
+                                                                </xsd:complexType>
+                                                    		</xsd:element>
+                                                    	</xsd:sequence>
+                                                    </xsd:complexType>
+                                        		</xsd:element>
+                                        	</xsd:sequence>
+                                        </xsd:complexType>
+    								</xsd:element>
+    							</xsd:sequence>
+    						</xsd:complexType>
+    					</xsd:element>
+    					<xsd:element name="To">
+    						<xsd:complexType>
+    							<xsd:sequence>
+    								<xsd:element name="FIId">
+                                        <xsd:complexType>
+                                        	<xsd:sequence>
+                                        		<xsd:element name="FinInstnId">
+                                                    <xsd:complexType>
+                                                    	<xsd:sequence>
+                                                    		<xsd:element name="ClrSysMmbId">
+                                                                <xsd:complexType>
+                                                                	<xsd:sequence>
+                                                                		<xsd:element name="MmbId" type="xsd:string">
+                                                                		</xsd:element>
+                                                                	</xsd:sequence>
+                                                                </xsd:complexType>
+                                                    		</xsd:element>
+                                                    	</xsd:sequence>
+                                                    </xsd:complexType>
+                                        		</xsd:element>
+                                        	</xsd:sequence>
+                                        </xsd:complexType>
+    								</xsd:element>
+    							</xsd:sequence>
+    						</xsd:complexType>
+    					</xsd:element>
+    					<xsd:element name="BizMsgIdr" type="xsd:string">
+    					</xsd:element>
+    					<xsd:element name="MsgDefIdr" type="xsd:string">
+    					</xsd:element>
+    					<xsd:element name="BizSvc" type="xsd:string">
+    					</xsd:element>
+    					<xsd:element name="CreDt" type="xsd:string">
+    					</xsd:element>
+    					<xsd:element name="Sgntr">
+    						<xsd:complexType>
+    							<xsd:sequence>
+    								<xsd:element name="XMLSgntrs">  
+    									<xsd:complexType>
+    										<xsd:simpleContent>
+    											<xsd:extension base="xsd:string">
+    												<xsd:attribute name="Sgntrs1" type="xsd:string">
+    												</xsd:attribute>
+    											</xsd:extension>
+    										</xsd:simpleContent>
+    									</xsd:complexType>
+    								</xsd:element>      								  								
+    							</xsd:sequence>    							    							
+    						</xsd:complexType>
+    					</xsd:element>    	
+    				</xsd:sequence>
+    				<xsd:attribute fixed="urn:iso:std:iso:20022:tech:xsd:head.001.001.01" name="AppHdr1" type="xsd:string">
+    				</xsd:attribute>
+    				<xsd:attribute fixed="urn:iso:std:iso:20022:tech:xsd:head.001.001.01" name="AppHdr2" type="xsd:string">
+    				</xsd:attribute>
+    				<xsd:attribute fixed="urn:iso:std:iso:20022:tech:xsd:Header" name="AppHdr3" type="xsd:string">
+    				</xsd:attribute>
+    			</xsd:complexType>
+    		</xsd:element>
+    		<xsd:element name="Document">
+    			<xsd:complexType>
+    				<xsd:sequence>
+    					<xsd:element name="FIToFICstmrCdtTrf">
+    						<xsd:complexType>
+    							<xsd:sequence>
+    								<xsd:element name="GrpHdr">
+    									<xsd:complexType>
+    										<xsd:sequence>
+    											<xsd:element name="MsgId" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="CreDtTm" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="NbOfTxs" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="TtlIntrBkSttlmAmt">
+    												<xsd:complexType>
+    													<xsd:simpleContent>
+    														<xsd:extension base="xsd:string">
+    															<xsd:attribute name="Ccy" type="xsd:string"/>
+    														</xsd:extension>
+    													</xsd:simpleContent>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="IntrBkSttlmDt" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="SttlmInf">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="SttlmMtd" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="InstgAgt" type="FIIdType">
+    											</xsd:element>
+    											<xsd:element name="InstdAgt" type="FIIdType">
+    											</xsd:element>
+    										</xsd:sequence>
+    									</xsd:complexType>
+    								</xsd:element>
+    								<xsd:element name="CdtTrfTxInf">
+    									<xsd:complexType>
+    										<xsd:sequence>
+    											<xsd:element name="PmtId">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="EndToEndId" type="xsd:string">
+    														</xsd:element>
+    														<xsd:element name="TxId" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="PmtTpInf">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="InstrPrty" type="xsd:string">
+    														</xsd:element>
+    														<xsd:element maxOccurs="1" minOccurs="0" name="SvcLvl">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Cd" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element name="LclInstrm">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Cd" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element name="CtgyPurp">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Cd" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="IntrBkSttlmAmt">
+    												<xsd:complexType>
+    													<xsd:simpleContent>
+    														<xsd:extension base="xsd:string">
+    															<xsd:attribute name="Ccy" type="xsd:string"/>
+    														</xsd:extension>
+    													</xsd:simpleContent>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="ChrgBr" type="xsd:string">
+    											</xsd:element>
+    											
+    											<xsd:element name="Dbtr">
+    												<xsd:complexType>
+    													<xsd:sequence>
+														    <xsd:element name="Nm" type="xsd:string">
+    														</xsd:element>
+    														<xsd:element maxOccurs="1" minOccurs="0" name="PstlAdr">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element maxOccurs="7" minOccurs="0" name="AdrLine" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+															<xsd:element maxOccurs="1" minOccurs="0" name="Id">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="OrgId">
+																			<xsd:complexType>
+																				<xsd:sequence>
+																					<xsd:element maxOccurs="1" minOccurs="0" name="LEI" type="xsd:string">																			
+																					</xsd:element>
+																				</xsd:sequence>
+																			</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+															<xsd:element maxOccurs="1" minOccurs="0" name="CtctDtls">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element maxOccurs="1" minOccurs="0" name="MobNb" type="xsd:string">
+    																	</xsd:element>
+																		<xsd:element maxOccurs="1" minOccurs="0" name="EmailAdr" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											
+    											<xsd:element name="DbtrAcct">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="Id">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Othr">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="Id" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element maxOccurs="1" minOccurs="0" name="Tp">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Cd" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>    															
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="DbtrAgt">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="FinInstnId">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="ClrSysMmbId">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="MmbId" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="CdtrAgt">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="FinInstnId">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="ClrSysMmbId">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="MmbId" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											
+    											<xsd:element name="Cdtr">
+    												<xsd:complexType>
+    													<xsd:sequence>
+															<xsd:element name="Nm" type="xsd:string">
+    														</xsd:element>
+															<xsd:element maxOccurs="1" minOccurs="0" name="PstlAdr">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element maxOccurs="7" minOccurs="0" name="AdrLine" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element maxOccurs="1" minOccurs="0" name="Id">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="OrgId">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element maxOccurs="1" minOccurs="0" name="LEI" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											
+    											<xsd:element name="CdtrAcct">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="Id">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Othr">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="Id" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element maxOccurs="1" minOccurs="0" name="Tp">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Cd" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>    															
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="InstrForCdtrAgt">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="InstrInf" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element maxOccurs="1" minOccurs="0" name="RmtInf">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element maxOccurs="6" minOccurs="0" name="Ustrd" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    										</xsd:sequence>
+    									</xsd:complexType>
+    								</xsd:element>
+    							</xsd:sequence>
+    						</xsd:complexType>
+    					</xsd:element>
+    					<xsd:element name="FinInstnCdtTrf">
+    						<xsd:complexType>
+    							<xsd:sequence>
+    								<xsd:element name="GrpHdr">
+    									<xsd:complexType>
+    										<xsd:sequence>
+    											<xsd:element name="MsgId" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="CreDtTm" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="NbOfTxs" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="TtlIntrBkSttlmAmt">
+    												<xsd:complexType>
+    													<xsd:simpleContent>
+    														<xsd:extension base="xsd:string">
+    															<xsd:attribute name="Ccy" type="xsd:string"/>
+    														</xsd:extension>
+    													</xsd:simpleContent>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="IntrBkSttlmDt" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="SttlmInf">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="SttlmMtd" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="InstgAgt" type="FIIdType">
+    											</xsd:element>
+    											<xsd:element name="InstdAgt" type="FIIdType">
+    											</xsd:element>
+    										</xsd:sequence>
+    									</xsd:complexType>
+    								</xsd:element>
+    								<xsd:element name="CdtTrfTxInf">
+    									<xsd:complexType>
+    										<xsd:sequence>
+    											<xsd:element name="PmtId">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="InstrId" type="xsd:string">
+    														</xsd:element>
+    														<xsd:element name="EndToEndId" type="xsd:string">
+    														</xsd:element>
+    														<xsd:element name="TxId" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="PmtTpInf">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="InstrPrty" type="xsd:string">
+    														</xsd:element>
+    														<xsd:element name="SvcLvl">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Prtry" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element name="LclInstrm">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Prtry" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element name="CtgyPurp">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Cd" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="IntrBkSttlmAmt">
+    												<xsd:complexType>
+    													<xsd:simpleContent>
+    														<xsd:extension base="xsd:string">
+    															<xsd:attribute name="Ccy" type="xsd:string"/>
+    														</xsd:extension>
+    													</xsd:simpleContent>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="ChrgBr" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="Dbtr">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="FinInstnId">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="ClrSysMmbId">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="MmbId" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																	<xsd:element name="Nm" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element name="Nm" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="DbtrAcct">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="Id">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Othr">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="Id" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element name="Ccy" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="DbtrAgt">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="FinInstnId">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="ClrSysMmbId">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="MmbId" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																	<xsd:element name="Nm" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="CdtrAgt">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="FinInstnId">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="ClrSysMmbId">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="MmbId" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																	<xsd:element name="Nm" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="Cdtr">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="FinInstnId">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="ClrSysMmbId">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="MmbId" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																	<xsd:element name="Nm" type="xsd:string">
+    																	</xsd:element>
+    																	<xsd:element name="Othr">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="Id" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element name="Nm" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="CdtrAcct">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="Id">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Othr">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="Id" type="xsd:string">
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														<xsd:element name="Ccy" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="InstrForCdtrAgt">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="Cd" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="RmtInf">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element maxOccurs="6" minOccurs="0" name="Ustrd" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    										</xsd:sequence>
+    									</xsd:complexType>
+    								</xsd:element>
+    							</xsd:sequence>
+    						</xsd:complexType>
+    					</xsd:element>
+    					<xsd:element name="PmtRtr">
+    						<xsd:complexType>
+    							<xsd:sequence>
+    							
+    								<xsd:element name="GrpHdr">
+    									<xsd:complexType>
+    										<xsd:sequence>
+    											<xsd:element name="MsgId" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="CreDtTm" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="NbOfTxs" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="TtlRtrdIntrBkSttlmAmt">
+    												<xsd:complexType>
+    													<xsd:simpleContent>
+    														<xsd:extension base="xsd:string">
+    															<xsd:attribute name="Ccy" type="xsd:string"/>
+    														</xsd:extension>
+    													</xsd:simpleContent>
+    												</xsd:complexType>
+    											</xsd:element>
+    											<xsd:element name="IntrBkSttlmDt" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="SttlmInf">
+    												<xsd:complexType>
+    													<xsd:sequence>
+    														<xsd:element name="SttlmMtd" type="xsd:string">
+    														</xsd:element>
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+												<xsd:element name="InstgAgt">
+													<xsd:complexType>
+														<xsd:sequence>
+															<xsd:element name="FinInstnId">
+																<xsd:complexType>
+																	<xsd:sequence>
+																		<xsd:element name="ClrSysMmbId">
+																			<xsd:complexType>
+																				<xsd:sequence>
+																					<xsd:element name="MmbId" type="xsd:string"/>
+																				</xsd:sequence>
+																			</xsd:complexType>
+																		</xsd:element>
+																	</xsd:sequence>
+																</xsd:complexType>
+															</xsd:element>
+														</xsd:sequence>
+													</xsd:complexType>
+												</xsd:element>
+											<xsd:element name="InstdAgt">
+												<xsd:complexType>
+													<xsd:sequence>
+														<xsd:element name="FinInstnId">
+															<xsd:complexType>
+																<xsd:sequence>
+																	<xsd:element name="ClrSysMmbId">
+																		<xsd:complexType>
+																			<xsd:sequence>
+																				<xsd:element name="MmbId" type="xsd:string"/>
+																			</xsd:sequence>
+																		</xsd:complexType>
+																	</xsd:element>
+																</xsd:sequence>
+															</xsd:complexType>
+														</xsd:element>
+													</xsd:sequence>
+												</xsd:complexType>
+											</xsd:element>    											
+    										</xsd:sequence>
+    									</xsd:complexType>
+    								</xsd:element>
+    								
+
+    								<xsd:element name="TxInf">
+    									<xsd:complexType>
+    										<xsd:sequence>
+    											<xsd:element name="RtrId" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="OrgnlEndToEndId" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="OrgnlTxId" type="xsd:string">
+    											</xsd:element>
+    											<xsd:element name="RtrdIntrBkSttlmAmt">
+    												<xsd:complexType>
+    													<xsd:simpleContent>
+    														<xsd:extension base="xsd:string">
+    															<xsd:attribute name="Ccy" type="xsd:string"/>
+    														</xsd:extension>
+    													</xsd:simpleContent>
+    												</xsd:complexType>
+    											</xsd:element>
+                                                <xsd:element name="RtrRsnInf">
+    												<xsd:complexType>
+    													<xsd:sequence>
+                                                            <xsd:element name="Rsn">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="Cd" type="xsd:string">
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+  <xsd:element maxOccurs="1" minOccurs="0" name="OrgnlTxRef">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="UndrlygCstmrCdtTrf">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="Dbtr">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="Nm" type="xsd:string"/>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="PstlAdr">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element maxOccurs="6" minOccurs="0" name="AdrLine" type="xsd:string"/>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="Id">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="OrgId">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element maxOccurs="1" minOccurs="0" name="LEI" type="xsd:string"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="DbtrAcct">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="Id">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="Othr">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element name="Id" type="xsd:unsignedLong"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="Tp">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="Cd" type="xsd:unsignedByte"/>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="DbtrAgt">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="FinInstnId">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="ClrSysMmbId">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element name="MmbId" type="xsd:string"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="CdtrAgt">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="FinInstnId">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="ClrSysMmbId">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element name="MmbId" type="xsd:string"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="Cdtr">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="Nm" type="xsd:string"/>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="PstlAdr">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element maxOccurs="6" minOccurs="0" name="AdrLine" type="xsd:string"/>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="Id">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="OrgId">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element maxOccurs="1" minOccurs="0" name="LEI" type="xsd:string"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="CdtrAcct">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="Id">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="Othr">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element name="Id" type="xsd:unsignedLong"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="Tp">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="Cd" type="xsd:unsignedByte"/>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="InstrForCdtrAgt">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="InstrInf" type="xsd:string"/>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element maxOccurs="1" minOccurs="0" name="RmtInf">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element maxOccurs="6" minOccurs="0" name="Ustrd" type="xsd:string"/>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														
+
+    													</xsd:sequence>
+    												</xsd:complexType>
+    											</xsd:element>
+    											
+    											
+                                                <xsd:element maxOccurs="1" minOccurs="0" name="OrgnlTxRef">
+    															<xsd:complexType>
+    																<xsd:sequence>
+    																	<xsd:element name="UndrlygCstmrCdtTrf">
+    																		<xsd:complexType>
+    																			<xsd:sequence>
+    																				<xsd:element name="Dbtr">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="Nm" type="xsd:string"/>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="PstlAdr">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element maxOccurs="6" minOccurs="0" name="AdrLine" type="xsd:string"/>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="Id">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="OrgId">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element maxOccurs="1" minOccurs="0" name="LEI" type="xsd:string"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="DbtrAcct">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="Id">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="Othr">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element name="Id" type="xsd:unsignedLong"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="Tp">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="Cd" type="xsd:unsignedByte"/>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="DbtrAgt">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="FinInstnId">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="ClrSysMmbId">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element name="MmbId" type="xsd:string"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="CdtrAgt">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="FinInstnId">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="ClrSysMmbId">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element name="MmbId" type="xsd:string"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="Cdtr">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="Nm" type="xsd:string"/>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="PstlAdr">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element maxOccurs="6" minOccurs="0" name="AdrLine" type="xsd:string"/>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="Id">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="OrgId">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element maxOccurs="1" minOccurs="0" name="LEI" type="xsd:string"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="CdtrAcct">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="Id">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="Othr">
+    																											<xsd:complexType>
+    																												<xsd:sequence>
+    																													<xsd:element name="Id" type="xsd:unsignedLong"/>
+    																												</xsd:sequence>
+    																											</xsd:complexType>
+    																										</xsd:element>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																							<xsd:element maxOccurs="1" minOccurs="0" name="Tp">
+    																								<xsd:complexType>
+    																									<xsd:sequence>
+    																										<xsd:element name="Cd" type="xsd:unsignedByte"/>
+    																									</xsd:sequence>
+    																								</xsd:complexType>
+    																							</xsd:element>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element name="InstrForCdtrAgt">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element name="InstrInf" type="xsd:string"/>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																				<xsd:element maxOccurs="1" minOccurs="0" name="RmtInf">
+    																					<xsd:complexType>
+    																						<xsd:sequence>
+    																							<xsd:element maxOccurs="6" minOccurs="0" name="Ustrd" type="xsd:string"/>
+    																						</xsd:sequence>
+    																					</xsd:complexType>
+    																				</xsd:element>
+    																			</xsd:sequence>
+    																		</xsd:complexType>
+    																	</xsd:element>
+    																</xsd:sequence>
+    															</xsd:complexType>
+    														</xsd:element>
+    														
+    														
+    														
+    														
+    														
+    														
+                                            </xsd:sequence>
+    									</xsd:complexType>
+    								</xsd:element>
+    							</xsd:sequence>
+    						</xsd:complexType>
+    					</xsd:element>
+    					<xsd:element name="NtfctnToRcvStsRpt">
+                            <xsd:complexType>
+                            	<xsd:sequence>
+                            		<xsd:element name="GrpHdr">
+                            			<xsd:complexType>
+                            				<xsd:sequence>
+                            					<xsd:element name="MsgId" type="xsd:string">
+                            					</xsd:element>
+                            					<xsd:element name="CreDtTm" type="xsd:string">
+                            					</xsd:element>
+                            				</xsd:sequence>
+                            			</xsd:complexType>
+                            		</xsd:element>
+                            		<xsd:element name="OrgnlNtfctnAndSts">
+                                        <xsd:complexType>
+                                        	<xsd:sequence>
+                                        		<xsd:element name="OrgnlNtfctnRef">
+                                                    <xsd:complexType>
+                                                    	<xsd:sequence>
+                                                    		<xsd:element name="DbtrAgt">
+                                                                <xsd:complexType>
+                                                                	<xsd:sequence>
+                                                                		<xsd:element name="FinInstnId">
+                                                                            <xsd:complexType>
+                                                                            	<xsd:sequence>
+                                                                            		<xsd:element name="ClrSysMmbId">
+                                                                                        <xsd:complexType>
+                                                                                        	<xsd:sequence>
+                                                                                        		<xsd:element name="MmbId" type="xsd:string">
+                                                                                        		</xsd:element>
+                                                                                        	</xsd:sequence>
+                                                                                        </xsd:complexType>
+                                                                            		</xsd:element>
+                                                                            	</xsd:sequence>
+                                                                            </xsd:complexType>
+                                                                		</xsd:element>
+                                                                	</xsd:sequence>
+                                                                </xsd:complexType>
+                                                    		</xsd:element>
+                                                    		<xsd:element name="OrgnlItmAndSts">
+                                                                <xsd:complexType>
+                                                                	<xsd:sequence>
+                                                                		<xsd:element name="OrgnlItmId" type="xsd:string">
+                                                                		</xsd:element>
+                                                                		<xsd:element name="OrgnlEndToEndId" type="xsd:string">
+                                                                		</xsd:element>
+                                                                		<xsd:element name="Amt">
+                                                                           <xsd:complexType>
+    																			<xsd:simpleContent>
+    																				<xsd:extension base="xsd:string">
+    																				<xsd:attribute name="Ccy" type="xsd:string"/>
+    																				</xsd:extension>
+    																			</xsd:simpleContent>
+    																		</xsd:complexType>
+                                                                		</xsd:element>
+                                                                		<xsd:element name="XpctdValDt" type="xsd:string">
+                                                                		</xsd:element>
+                                                                		<xsd:element name="ItmSts" type="xsd:string">
+                                                                		</xsd:element>
+                                                                	</xsd:sequence>
+                                                                </xsd:complexType>
+                                                    		</xsd:element>
+                                                    	</xsd:sequence>
+                                                    </xsd:complexType>
+                                        		</xsd:element>
+                                        	</xsd:sequence>
+                                        </xsd:complexType>
+                            		</xsd:element>
+                            	</xsd:sequence>
+                            </xsd:complexType>
+    					</xsd:element>
+    				</xsd:sequence>
+    				<xsd:attribute default="urn:iso:std:iso:20022:tech:xsd:pacs.009.001.03" name="Document1" type="xsd:string">
+    				</xsd:attribute>
+    				<xsd:attribute default="urn:iso:std:iso:20022:tech:xsd:R42" name="Document2" type="xsd:string">
+    				</xsd:attribute>
+    			</xsd:complexType>
+      </xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="RequestPayload" type="RequestPayload"/>
+
+
+
+
+
+
+    
+
+
+    
+    
+    
+    
+
+
+    <xsd:complexType name="DbtrAgtType"/>
+
+    <xsd:complexType name="FIIdType">
+    	<xsd:sequence>
+    		<xsd:element name="FinInstnId">
+    			<xsd:complexType>
+    				<xsd:sequence>
+    					<xsd:element name="ClrSysMmbId">
+                            <xsd:complexType>
+                            	<xsd:sequence>
+                            		<xsd:element name="MmbId" type="xsd:string">
+                            		</xsd:element>
+                            	</xsd:sequence>
+                            </xsd:complexType>
+    					</xsd:element>
+    				</xsd:sequence>
+    			</xsd:complexType>
+      </xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

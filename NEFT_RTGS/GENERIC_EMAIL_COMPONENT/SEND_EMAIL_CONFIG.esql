@@ -1,0 +1,42 @@
+
+
+CREATE COMPUTE MODULE SEND_EMAIL_CONFIG
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL CopyMessageHeaders();
+		
+		-- Add recipient information to the EmailOutputHeader
+		SET OutputRoot.EmailOutputHeader.To = Environment.toEmail;
+		SET OutputRoot.EmailOutputHeader.Cc = Environment.ccEmail;
+		--SET OutputRoot.EmailOutputHeader.Bcc = '<email address>';
+
+		-- Add sender information to EmailOutputHeader
+		SET OutputRoot.EmailOutputHeader.From = Environment.fromEmail;
+		--SET OutputRoot.EmailOutputHeader."Reply-To" = '<email address>'
+
+		-- Add subject to EmailOutputHeader
+		SET OutputRoot.EmailOutputHeader.Subject = Environment.mailSubject;
+
+		-- Add SMTP server information to the LocalEnvironment
+		SET OutputLocalEnvironment.Destination.Email.SMTPServer = Environment.smtpServer;
+
+		-- Create a new message body, which will be sent as the main text of the email.
+		-- DECLARE text CHARACTER CAST(InputRoot.BLOB.BLOB AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId);
+		SET OutputRoot.BLOB.BLOB = CAST(Environment.mailBody AS BLOB CCSID 1208);  		
+		RETURN TRUE; 
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

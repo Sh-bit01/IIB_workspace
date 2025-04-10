@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.wb.neft.out" version="8.0.4.0" xmlns:map="com.cedge.wb.neft.out">
+    <input path="/N06/OUTWARD.xsd"/>
+    <output path="/N06/OUTWARD.xsd"/>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="WB_NEFT_OUTWARD_Mapping">
+        <input path="mb:msg(N29DRS,assembly,DFDL,Properties)"/>
+        <output path="mb:msg(SFMS_N29,assembly,DFDL,Properties)"/>
+        <move>
+            <input path="Properties"/>
+            <output path="Properties"/>
+            <override>
+                <assign value="{}:SFMS_N29">
+                    <output path="Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <move>
+            <input path="N29DRS/Body_N29/BLOCK4INITIATOR"/>
+            <output path="SFMS_N29/Body_N29/BLOCK4INITIATOR"/>
+        </move>
+        <move>
+            <input path="N29DRS/Header"/>
+            <output path="SFMS_N29/Header"/>
+        </move>
+        <move>
+            <input path="N29DRS/Body_N29/TRANSACTIONREFERENCENUMBER"/>
+            <output path="SFMS_N29/Body_N29/TRANSACTIONREFERENCENUMBER"/>
+        </move>
+        <move>
+            <input path="N29DRS/Body_N29/RELATED_REFERENCE"/>
+            <output path="SFMS_N29/Body_N29/RELATED_REFERENCE"/>
+        </move>
+        <move>
+            <input path="N29DRS/Body_N29/RESPONSE_CODE"/>
+            <output path="SFMS_N29/Body_N29/RESPONSE_CODE"/>
+        </move>
+        <move>
+            <input path="N29DRS/Body_N29/REJECTION_REASON"/>
+            <output path="SFMS_N29/Body_N29/REJECTION_REASON"/>
+        </move>
+    </mappingDeclaration>
+</mappingRoot>

@@ -1,0 +1,851 @@
+BROKER SCHEMA com.cedge.wb.neft
+
+CREATE COMPUTE MODULE DatabaseInsertion
+	DECLARE DSNNAME EXTERNAL CHARACTER '';
+	DECLARE SCHEMANAME EXTERNAL CHARACTER '';
+	DECLARE BANKCOUNT_TABLENAME EXTERNAL CHARACTER '';
+	DECLARE NEFT_IN_TABLENAME EXTERNAL CHARACTER '';
+	DECLARE NEFT_MSG_IN_TABLENAME EXTERNAL CHARACTER '';
+	DECLARE NEFT_OUT_TABLENAME EXTERNAL CHARACTER '';
+	DECLARE NEFT_IN_PAYLOAD_TABLENAME EXTERNAL CHARACTER '';
+--	DECLARE NEFT_IN_PAYLOAD_TABLE EXTERNAL CHARACTER;
+	DECLARE BANKNAME EXTERNAL CHARACTER '';        --- Confused
+	DECLARE PROP_LOC EXTERNAL CHARACTER '';
+	DECLARE F27_TABLENAME EXTERNAL CHARACTER '';
+--	DECLARE NEFT_OUT_TABLENAME EXTERNAL CHARACTER;
+--	DECLARE DB_CACHE_SWITCH SHARED CHARACTER TRUE;
+	DECLARE temprelatedRefNo, relatedRefNo CHARACTER; 
+	
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 DECLARE bool BOOLEAN;
+		 CALL CopyMessageHeaders();
+		 SET bool = CopyEntireMessage();
+		RETURN bool;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() RETURNS BOOLEAN 
+	BEGIN
+		DECLARE bankName , msgType , msgtype , msg_Type , msgIdentifier , bankIdentifier , refNo , fileName , seqNo,resCodeID,trans_date,batchTime, fileDate, fileLoc,ftpProvider , key, batchBankIFSC , batchBank , newBatchBankIFSC CHARACTER ;
+		DECLARE count , count1 INTEGER 0;
+--		DECLARE fileLoc,ftpProvider , key  CHARACTER;
+--		DECLARE batchBankIFSC , batchBank , newBatchBankIFSC CHARACTER;		
+		DECLARE dbCount INTEGER 0 ;
+		DECLARE i INTEGER 1 ;
+		DECLARE rc BOOLEAN ;
+		DECLARE found BOOLEAN TRUE;  
+		DECLARE inMsgDetailsref REFERENCE TO InputRoot.DFDL ;
+		DECLARE msg CHARACTER FIELDNAME(inMsgDetailsref.*);
+		DECLARE outMsgDetailsRef REFERENCE TO OutputRoot;
+		DECLARE headerRef REFERENCE TO inMsgDetailsref.*.header;
+		DECLARE bodyRef REFERENCE TO inMsgDetailsref.*.body;
+		DECLARE recordRef REFERENCE TO inMsgDetailsref.*.body.record[>];
+		DECLARE mqRfh2Ref REFERENCE TO InputRoot.MQRFH2.usr.BankDetails ;
+		DECLARE ref ROW;
+		DECLARE rescode1 CHARACTER;
+		DECLARE DESCRIP1 CHARACTER;
+		SET Environment.Type = 'NEFT_IN';
+		SET bankName = mqRfh2Ref.BankName ;
+		
+		set trans_date=headerRef.Date_Time;
+		Declare transDate  CHARACTER;
+		set transDate =SUBSTRING(trans_date  from 1 for 8);
+		SET Environment.transDate = transDate; -- changes added for N04 and 972
+		SET fileDate = headerRef.Originate_Date; -- changes added for N04 and 972
+		DECLARE SOD_Date CHARACTER; --changed by prabhakar
+		SET SOD_Date =SUBSTRING(bodyRef.Opening_Balance FROM 2 FOR 8); --changed by prabhakar
+--		SET SOD_Date = '20'||SOD_Date;
+--		SET SOD_Date = SUBSTRING(bodyRef.Opening_Balance FROM 2 FOR 8);
+		SET msgType = headerRef.SubMessage_Type ;
+--		SET fileDate = headerRef.Originate_Date ;
+		set msg_Type = msgType;
+		SET msgtype = headerRef.Message_Type; -- changes added for N04 and 972
+		SET msgIdentifier = headerRef.Message_Identifier ;
+		SET bankIdentifier = headerRef.BankApp_Identifier ;
+--		SET msgtype = headerRef.Message_Type ;
+   ----------------------- changes for N04 and 972 -------------------------------------------------------
+		SET batchTime = bodyRef.Batch_Time;
+		IF batchTime IS NULL OR batchTime = '' THEN
+			SET batchTime = '9999' ;
+		END IF;
+		DECLARE DB_Det ROW;
+		IF msgType = 'N04' THEN
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Batch Time : '||batchTime) INTO rc;
+		DECLARE Qrybtime CHARACTER 'UPDATE '||SCHEMANAME||'.NEFT_24X7'||' A SET A.BATCH_TIME = ? ' ;
+		SET DB_Det.T[] = PASSTHRU (Qrybtime TO Database.{DSNNAME} VALUES(batchTime));
+		END IF; 
+	---------------------------------------------------------------------
+	----------------------- changes for 972 ------------------------------
+--		IF msgtype = '972' THEN
+--		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','SOD Date : '||SOD_Date) INTO rc;
+--		DECLARE Qrysdate CHARACTER 'UPDATE '||SCHEMANAME||'.NEFT_24X7'||' A SET A.SOD_DATE = ? ' ;
+--		SET DB_Det.S[] = PASSTHRU (Qrysdate TO Database.{DSNNAME} VALUES(SOD_Date));
+--		END IF; 
+		-----------------------------------------------------------------------
+--		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Generated Batch Time : '||batchTime) INTO rc;
+--			IF msgType = 'N04' OR msgtype = '972' THEN
+--				SET Environment.SeqCheckQry = 'select sequence_name from user_sequences where sequence_name=?';
+--				SET Environment.SeqCheck.SeqName[] = PASSTHRU(Environment.SeqCheckQry TO Database.{DSNNAME} VALUES('SEQ_IFSCBANKNAME'));
+--				SET Environment.seqCheckNum = CARDINALITY(Environment.SeqCheck.SeqName[]);
+--				IF Environment.seqCheckNum = 0 THEN
+--					PASSTHRU('CREATE SEQUENCE SEQ_IFSCBANKNAME MINVALUE 1 CACHE 15');
+--				END IF;
+--			END IF;
+--		--End of DB Cache
+--		SET Environment.WBRTGSINCOPY_Disable = FALSE; --To avoid MQGet node from extracting the same message twice 
+	-------------------------------changes for N04 and 972--------------------------------------------------
+	
+		DECLARE DB_Details , DB_Count , DB_Count_IN , DB_Count_MSG_IN , DB_Bank_Details , Desc_Details ROW;
+		DECLARE sysDate CHARACTER CAST(CURRENT_DATE AS CHARACTER FORMAT 'ddMMyyyy');
+		DECLARE sysDateForFile CHARACTER CAST(CURRENT_DATE AS CHARACTER FORMAT 'yyyyMMdd');
+		
+
+-- 		DECLARE Qry CHARACTER 'SELECT INWARDCOUNT FROM '||SCHEMANAME||'.'||BANKCOUNT_TABLENAME ||' A WHERE A.BANKNAME = ?';
+--		SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(bankName));
+
+		DECLARE Qry CHARACTER 'SELECT NEFTCOUNT FROM '||SCHEMANAME||'.'||BANKCOUNT_TABLENAME ||' A WHERE A.BANKNAME = ?';
+		SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(bankName));
+		
+		
+--		DECLARE dbDetailsRef REFERENCE TO DB_Details;
+--		MOVE dbDetailsRef FIRSTCHILD;
+--		DECLARE tempDbRef REFERENCE TO dbDetailsRef;
+--		SET count = tempDbRef.INWARDCOUNT;
+--		
+--		SET count1 = count + 1 ;
+--		
+--		IF count1 > 99999 THEN
+--			SET count1 = '0';
+--		END IF;
+
+		DECLARE dbDetailsRef REFERENCE TO DB_Details;
+		MOVE dbDetailsRef FIRSTCHILD;
+		DECLARE tempDbRef REFERENCE TO dbDetailsRef;
+		SET count = tempDbRef.NEFTCOUNT;
+
+		SET count1 = count + 1 ;
+
+		IF count1 > 99999 THEN
+			SET count1 = '0';
+		END IF;
+--		
+		
+		DECLARE flag CHARACTER CAST(count AS CHARACTER);
+		DECLARE len INTEGER ;
+		SET len = LENGTH(flag);
+		-- WHILE len < 5 DO
+		-- SET flag = '0'||flag ;
+		-- SET len =len + 1 ;
+		-- END WHILE;
+		IF len < 5 THEN
+			SET len = (5 -len);
+			SET flag = REPLICATE('0',len)||flag ;
+		END IF;
+		
+--		UPDATE Database.{DSNNAME}.{SCHEMANAME}.{BANKCOUNT_TABLENAME} as A SET NEFTCOUNT = count1 WHERE A.BANKNAME = bankName ;
+--		SET Qry =  'UPDATE '||SCHEMANAME||'.'||BANKCOUNT_TABLENAME|| ' A SET A.INWARDCOUNT = ? WHERE A.BANKNAME = bankName' ;
+--		SET DB_Details.A[] = PASSTHRU (Qry TO Database.{DSNNAME} VALUES(count1));
+		
+		DECLARE seqInHeader CHARACTER ;
+		SET seqInHeader = flag;
+		DECLARE seqLen INTEGER;
+		SET seqLen = LENGTH(seqInHeader);
+		-- WHILE seqLen < 7 DO
+		-- SET seqInHeader = '0'||seqInHeader;
+		-- SET seqLen = seqLen + 1;
+		-- END WHILE;
+		IF seqLen < 7 THEN
+			SET seqLen = (7 - seqLen);
+			SET seqInHeader =REPLICATE( '0',seqLen)||seqInHeader;
+		END IF;
+		
+		SET refNo = sysDate||'_'||SUBSTRING(bankName FROM 1 FOR 4)||'_'||flag ;
+	
+		SET OutputRoot.MQRFH2.usr.BankDetails.RefNo = refNo ;
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Generated Reference Number : '||COALESCE(refNo,'refNo Not found')) INTO rc;
+		
+
+		DECLARE F27UTR ,lastModTime , lastUpdStamp CHARACTER '';
+		SET F27UTR = InputRoot.MQRFH2.usr.BankDetails.INC_UTR;
+		SET lastUpdStamp = CURRENT_TIMESTAMP ;
+		SET lastModTime = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+			IF STARTSWITH(headerRef.BankAPI_Response_Code , 'F') THEN
+				UPDATE Database.{DSNNAME}.{SCHEMANAME}.{NEFT_OUT_TABLENAME} as A SET ACK_NACK = 'F' ,LAST_MOD_TIME = lastModTime ,LAST_UPD_STAMP = lastUpdStamp WHERE A.OUT_MSG_SENT_SBI= 'Y' AND A.INC_UTR = F27UTR;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data Updated to NEFT_OUT Table for INC_UTR '||F27UTR ||' as F') INTO rc;
+			ELSEIF STARTSWITH(headerRef.BankAPI_Response_Code , 'P') THEN
+				UPDATE Database.{DSNNAME}.{SCHEMANAME}.{NEFT_OUT_TABLENAME} as A SET ACK_NACK = 'P' ,LAST_MOD_TIME = lastModTime ,LAST_UPD_STAMP = lastUpdStamp WHERE A.OUT_MSG_SENT_SBI= 'Y' AND A.INC_UTR = F27UTR;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data Updated to NEFT_OUT Table for INC_UTR '||F27UTR ||' as P') INTO rc; 
+			END IF;
+
+			IF msgType = 'N09' THEN
+				UPDATE Database.{DSNNAME}.{SCHEMANAME}.{NEFT_OUT_TABLENAME} as A SET ACK_NACK = 'F' ,LAST_MOD_TIME = lastModTime ,LAST_UPD_STAMP = lastUpdStamp WHERE A.OUT_MSG_SENT_SBI= 'Y' AND A.INC_UTR = F27UTR;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data Updated to NEFT_OUT Table for INC_UTR '||F27UTR ||' as F') INTO rc; -- NEED TO DO CAHANGES IN CODE
+			END IF;
+			
+		IF msg_Type = 'DRQ' THEN--INTEROPERABILITY
+			DECLARE N29TRAN_REF_NO CHARACTER bodyRef.Related_RefNumber;
+			DECLARE N29headerRef REFERENCE TO headerRef;
+			DECLARE N29recordRef REFERENCE TO bodyRef;
+			DECLARE remitterInfo CHARACTER;
+			DECLARE sequenceNum CHARACTER N29headerRef.Sequence_Number;
+			DECLARE cTime CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+			
+			SET remitterInfo = COALESCE(N29recordRef.Remittance_information.Line1,'')||COALESCE(N29recordRef.Remittance_information.Line2,'')||COALESCE(N29recordRef.Remittance_information.Line3,'')||
+							   COALESCE(N29recordRef.Remittance_information.Line4,'')||COALESCE(N29recordRef.Remittance_information.Line5,'')||COALESCE(N29recordRef.Remittance_information.Line6,'');	
+			SET Qry = 'SELECT Count(*) as count FROM '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME||' A WHERE TRIM(A.TRAN_REF_NO) = ?';
+			SET DB_Count.C[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(N29TRAN_REF_NO));
+			
+			DECLARE DbCountRef REFERENCE TO DB_Count;
+			
+			MOVE DbCountRef FIRSTCHILD;			
+			SET dbCount = DbCountRef.COUNT ;
+			
+			IF dbCount = 0 THEN
+					INSERT INTO Database.{DSNNAME}.{SCHEMANAME}.{NEFT_OUT_TABLENAME} (
+						TRAN_REF_NO,
+						TRAN_DATE,
+						AMOUNT,
+						IFSC_SENDER,
+						SENDER_ACCT_NO,
+						SENDER_ACCT_NAME,
+						IFSC_RECVR,
+						RECVR_ACCT_NO,
+						RECVR_ACCT_NAME,
+						ACK_NACK,
+						CREATION_TIME,
+						LAST_MOD_TIME,
+						OUT_MSG_SENT_SBI,
+						BANKNAME,
+						TRAN_BRANCH,
+						ACK_NACKOUT_SEND_CBS,
+						SUB_MSG_TYPE,
+						ACK_NACK_TIME,
+						RET_ORG_ERR,
+						DUP_ORG_OUT,
+						N10_ACKNACK,
+						SEQINHEADER,
+						TRAN_REF_RETURN_UTR,
+						LAST_UPD_STAMP,	
+						CREATION_TIME_STAMP ) VALUES (
+							N29recordRef.Related_RefNumber,
+							N29recordRef.Value_Date,
+							N29recordRef.Amount,
+							N29recordRef.Sending_Branch_IFSC,
+							N29recordRef.Customer_Acc,
+							N29recordRef.Customer_AccName,
+							N29recordRef.BenfBranch_IFSC,
+							N29recordRef.BenfCustomer_Acc,
+							N29recordRef.BenfCustomer_AccName,
+							'0',
+							cTime,
+							cTime,
+							'0',
+							bankName,
+							'00000',
+							'0',
+							'N06',
+							'0',
+							'0',
+							'0',
+							'0',
+							sequenceNum,
+							N29recordRef.Transaction_RefNumber,
+							CURRENT_TIMESTAMP,
+							CURRENT_TIMESTAMP 
+							);		
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data inserted to NEFT_OUT Table') INTO rc;						
+			
+			
+			SET key = bankName||'_'||msg_Type;
+			CALL getProp(PROP_LOC, key, fileLoc, ftpProvider , bankName);
+						
+		--	SET Environment.SeqHeader = PASSTHRU('select seq_bankName.nextval FROM dual' TO Database.{DSNNAME});
+		--	SET Environment.SeqHeader_Char = CAST(CAST(Environment.SeqHeader.NEXTVAL AS INTEGER) AS CHARACTER);
+			
+			SET fileName = 'RTGSSTAT_'||fileDate||'_'||sequenceNum||'.TXT';
+			--CHANGES FOR MQ START--
+--MQ--			SET OutputLocalEnvironment.Destination.File.Remote.Server = ftpProvider;	 	
+--MQ--			SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = fileLoc;
+			SET OutputLocalEnvironment.Destination.File.Directory = fileLoc;
+			SET OutputLocalEnvironment.Destination.File.Name = fileName;			
+			--CHANGES FOR MQ END-- 		
+			SET OutputRoot = InputRoot;
+			SET OutputRoot.DFDL.N29.body.Original_RTGS_RefNumber = Environment.N29_Current_Tran_Ref_No;
+			
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','FileName : '||fileName) INTO rc;					
+-- 			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','FTP Provider Name : '||ftpProvider) INTO rc;
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Location Diretory Name : '||fileLoc) INTO rc;
+					
+			PROPAGATE TO TERMINAL 'out' DELETE NONE;
+			RETURN FALSE;			
+		  END IF;
+		  
+		  IF dbCount <> 0 THEN 
+		  	RETURN FALSE;
+		  END IF;
+		  
+		END IF;
+		
+		IF msg_Type <> 'DRQ' THEN
+			WHILE LASTMOVE(recordRef) DO
+				
+				DECLARE tranRefNo , tranRefReturnUtr,batchTime ,ifscSender,senderAcctType,senderAcctNo ,senderAcctName,remitterDetail ,remitterDetail1  ,remitterDetail2  ,remitterDetail3  , remitterDetail4  ,ifscRecvr ,recvrAcctType ,recvrAcctNo ,recvrAcctName ,benefAddrs ,benefAddrs1 ,benefAddrs2 ,benefAddrs3 ,benefAddrs4 ,remitInfo ,remitInfo1 ,remitInfo2 ,remitInfo3 ,remitInfo4 ,remitInfo5 ,remitInfo6 ,rejectCode ,rejectReason ,amount ,orgTranDate ,tranDate CHARACTER '';
+				DECLARE creationTime , creationTimeStamp , lastModTime, tranBranch , refNum , lastUpdStamp  CHARACTER '';
+				DECLARE ackNack,ackNackFromCbs,retAcknackErr,dupAcknackOut,flagFileCreated,ackNackMsg,ackNackSendMq CHARACTER '';
+				SET tranRefNo = recordRef.Transaction_RefNumber ;
+--				SET tranRefNo = recordRef.Transaction_Reference_Number ;
+				SET OutputRoot.MQRFH2.usr.BankDetails.tranRefNo = tranRefNo ;			
+				SET msg_Type = msgType;
+				
+				IF msgType = 'N02' THEN
+					DECLARE batchBankQry CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.'||BANKNAME||' A WHERE A.IFSC_CODE like ? ';				
+					SET batchBankIFSC = recordRef.BenfBranch_IFSC;
+					SET newBatchBankIFSC = SUBSTRING(batchBankIFSC FROM 1 FOR 9)||'%';
+									
+					SET DB_Bank_Details.A[] = PASSTHRU(batchBankQry TO Database.{DSNNAME} VALUES(newBatchBankIFSC));	
+					
+					DECLARE dbbankDetailsRef REFERENCE TO DB_Bank_Details;
+					MOVE dbbankDetailsRef FIRSTCHILD;
+					DECLARE tempDbRef REFERENCE TO dbbankDetailsRef;
+					SET batchBank = TRIM(tempDbRef.BANKNAME) ;	
+					IF LENGTH(batchBank) = 0 OR batchBank IS NULL THEN
+						
+						SET OutputRoot.DFDL.N02.header = InputRoot.DFDL.N02.header ;
+						SET OutputRoot.DFDL.N02.body.Block_4_Initiator = InputRoot.DFDL.N02.body.Block_4_Initiator;
+						SET OutputRoot.DFDL.N02.body.Transaction_Reference_Number = InputRoot.DFDL.N02.body.Transaction_Reference_Number;
+						SET OutputRoot.DFDL.N02.body.Batch_Time = InputRoot.DFDL.N02.body.Batch_Time;
+						SET OutputRoot.DFDL.N02.body.Total_No_of_transactions = InputRoot.DFDL.N02.body.Total_No_of_transactions;
+						SET OutputRoot.DFDL.N02.body.Total_amount = InputRoot.DFDL.N02.body.Total_amount;
+						SET OutputRoot.DFDL.N02.body.record[1] = InputRoot.DFDL.N02.body.record[i];															
+						PROPAGATE TO TERMINAL 'out2' DELETE NONE;
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','Transaction Reference Number :'||tranRefNo) INTO rc;
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','Message belongs to other bank') INTO rc;
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','---------------------------------------------------') INTO rc;
+						SET found = FALSE;
+						
+					END IF;		
+				END IF;
+			IF msgType = 'N02' AND found = TRUE THEN
+					
+					SET refNo = sysDate||'_'||SUBSTRING(batchBank FROM 1 FOR 4)||'_'||flag ;
+					SET OutputRoot.MQRFH2.usr.BankDetails.RefNo = refNo ;
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','Generated Reference Number : '||refNo) INTO rc;
+					
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','Transaction Reference Number :'||tranRefNo) INTO rc;								
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','Bank Name for FTP :'|| batchBank) INTO rc;
+				SET tranRefReturnUtr = recordRef.Related_RefNumber ;
+				SET batchTime = bodyRef.Batch_Time ;
+				SET ifscSender = recordRef.Sending_Branch_IFSC;
+				SET senderAcctType = recordRef.Sending_Customer_AccType ;
+				SET senderAcctNo = recordRef.Customer_Acc ;
+				SET senderAcctName = recordRef.Customer_AccName ;
+				SET remitterDetail = COALESCE(recordRef.Originator_of_Remittance.Line1,' ')||COALESCE(recordRef.Originator_of_Remittance.Line2,' ')||COALESCE(recordRef.Originator_of_Remittance.Line3,' ')||COALESCE(recordRef.Originator_of_Remittance.Line4,' ');
+				-- SET remitterDetail1 = recordRef.Originator_of_Remittance.Line1 ;
+				-- SET remitterDetail2 = recordRef.Originator_of_Remittance.Line2 ;
+				-- SET remitterDetail3 = recordRef.Originator_of_Remittance.Line3 ;
+				-- SET remitterDetail4 = recordRef.Originator_of_Remittance.Line4 ;
+				-- IF LENGTH(remitterDetail1) <> 0 THEN
+				-- SET remitterDetail = remitterDetail1 ;
+				-- IF LENGTH(remitterDetail2) <> 0 THEN
+				-- SET remitterDetail = remitterDetail || remitterDetail2 ;
+				-- END IF;
+				-- IF LENGTH(remitterDetail3) <> 0 THEN
+				-- SET remitterDetail = remitterDetail || remitterDetail3 ;
+				-- END IF;
+				-- IF LENGTH(remitterDetail4) <> 0 THEN
+				-- SET remitterDetail = remitterDetail || remitterDetail4 ;
+				-- END IF;
+				-- END IF;
+					
+				SET ifscRecvr = recordRef.BenfBranch_IFSC ;
+				SET recvrAcctType = recordRef.BenfCustomer_AccType ;
+				SET recvrAcctNo = recordRef.BenfCustomer_Acc ;
+				SET recvrAcctName = recordRef.BenfCustomer_AccName ;
+				SET benefAddrs = COALESCE(recordRef.BenfCustomer_Address.Line1,' ')||COALESCE(recordRef.BenfCustomer_Address.Line2,' ')||COALESCE(recordRef.BenfCustomer_Address.Line3,' ')||COALESCE(recordRef.BenfCustomer_Address.Line4,' ');
+				-- SET benefAddrs1 = recordRef.BenfCustomer_Address.Line1 ;
+				-- SET benefAddrs2 = recordRef.BenfCustomer_Address.Line2 ;
+				-- SET benefAddrs3 = recordRef.BenfCustomer_Address.Line3 ;
+				-- SET benefAddrs4 = recordRef.BenfCustomer_Address.Line4 ;
+				-- IF LENGTH(benefAddrs1) <> 0 THEN
+				-- SET benefAddrs = benefAddrs1 ;
+				-- IF LENGTH(benefAddrs2) <> 0 THEN
+				-- SET benefAddrs = benefAddrs || benefAddrs2 ;
+				-- END IF;
+				-- IF LENGTH(benefAddrs3) <> 0 THEN
+				-- SET benefAddrs = benefAddrs || benefAddrs3 ;
+				-- END IF;
+				-- IF LENGTH(benefAddrs4) <> 0 THEN
+				-- SET benefAddrs = benefAddrs || benefAddrs4 ;
+				-- END IF;
+				-- END IF;
+
+				SET remitInfo = COALESCE(recordRef.Remittance_information.Line1,' ')||COALESCE(recordRef.Remittance_information.Line2,' ')||COALESCE(recordRef.Remittance_information.Line3,' ')||COALESCE(recordRef.Remittance_information.Line4,' ')||COALESCE(recordRef.Remittance_information.Line5,' ')||COALESCE(recordRef.Remittance_information.Line6,' ');
+				-- SET remitInfo1 = recordRef.Remittance_information.Line1 ;
+				-- SET remitInfo2 = recordRef.Remittance_information.Line2 ;
+				-- SET remitInfo3 = recordRef.Remittance_information.Line3 ;
+				-- SET remitInfo4 = recordRef.Remittance_information.Line4 ;
+				-- SET remitInfo5 = recordRef.Remittance_information.Line5 ;
+				-- SET remitInfo6 = recordRef.Remittance_information.Line6 ;
+				-- IF LENGTH(remitInfo1) <> 0 THEN
+				-- SET remitInfo = remitInfo1 ;
+				-- END IF;
+				-- IF LENGTH(remitInfo1) <> 0 THEN
+				-- SET remitInfo = remitInfo1 ;
+				-- IF LENGTH(remitInfo2) <> 0 THEN
+				-- SET remitInfo = remitInfo || remitInfo2 ;
+				-- END IF;
+				-- IF LENGTH(remitInfo3) <> 0 THEN
+				-- SET remitInfo = remitInfo || remitInfo3 ;
+				-- END IF;
+				-- IF LENGTH(remitInfo4) <> 0 THEN
+				-- SET remitInfo = remitInfo || remitInfo4 ;
+				-- END IF;
+				-- IF LENGTH(remitInfo5) <> 0 THEN
+				-- SET remitInfo = remitInfo || remitInfo5 ;
+				-- END IF;
+				-- IF LENGTH(remitInfo6) <> 0 THEN
+				-- SET remitInfo = remitInfo || remitInfo6 ;
+				-- END IF;
+				-- END IF;
+
+				SET rejectCode = recordRef.Reason_Code ;
+				SET rejectReason = recordRef.Rejection_Reason ;
+				SET amount = recordRef.Amount ;
+				SET orgTranDate = recordRef.Value_Date ;
+				SET tranDate = recordRef.Remittance_Date ;
+				SET creationTime = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+				SET lastModTime = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+				SET tranBranch = '99922' ;
+				SET refNum = refNo ;
+
+				IF LENGTH(tranRefReturnUtr) <> 0 THEN
+
+					DECLARE temptranRefReturnUtr CHARACTER;
+					DECLARE temptranRefReturnUtrLen INTEGER;
+					set temptranRefReturnUtr = tranRefReturnUtr;
+					set temptranRefReturnUtrLen = LENGTH(temptranRefReturnUtr);
+					-- WHILE temptranRefReturnUtrLen < 20 DO
+					-- set temptranRefReturnUtr = temptranRefReturnUtr || ' ';
+					-- set temptranRefReturnUtrLen = temptranRefReturnUtrLen + 1;
+					-- END WHILE;
+					IF temptranRefReturnUtrLen < 20 THEN
+						SET temptranRefReturnUtrLen = (20 - temptranRefReturnUtrLen);
+						set temptranRefReturnUtr = temptranRefReturnUtr || REPLICATE(' ',temptranRefReturnUtrLen);
+					END IF;
+						SET msg_Type = 'N2R';
+--						SET Qry =  'UPDATE '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME|| ' A SET A.OUT_MSG_SENT_SBI=''R'' , A.ACK_NACK= ''N'' , A.TRAN_REF_RETURN_UTR = ? WHERE A.TRAN_REF_NO = ?';			
+--						SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(tranRefNo , tranRefReturnUtr));
+					UPDATE Database.{DSNNAME}.{SCHEMANAME}.{NEFT_OUT_TABLENAME} as A SET OUT_MSG_SENT_SBI = 'R',ACK_NACK = 'N',TRAN_REF_RETURN_UTR = tranRefNo WHERE A.TRAN_REF_NO = temptranRefReturnUtr ;
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data Updated to NEFT_OUT Table with R in OUT_MSG_SENT_SBI') INTO rc;
+				END IF;
+					
+				DECLARE tempTranRefNo CHARACTER;
+				DECLARE tempTranRefNoLen, i INTEGER;
+				set tempTranRefNo = tranRefNo;
+				set tempTranRefNoLen = LENGTH(tempTranRefNo);
+				-- WHILE tempTranRefNoLen < 16 DO
+				-- set tempTranRefNo = tempTranRefNo || ' ';
+				-- set tempTranRefNoLen = tempTranRefNoLen + 1;
+				-- END WHILE;
+				IF tempTranRefNoLen < 16 THEN
+					SET tempTranRefNoLen = (16-tempTranRefNoLen);
+					set tempTranRefNo = tempTranRefNo || REPLICATE(' ',tempTranRefNoLen);
+				END IF;
+					
+				SET Qry = 'SELECT Count(*) as count FROM '||SCHEMANAME||'.'||NEFT_IN_TABLENAME||' A WHERE A.TRAN_REF_NO = ?';
+				SET DB_Count.C[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(tempTranRefNo));
+				DECLARE DbCountRef REFERENCE TO DB_Count;
+				MOVE DbCountRef FIRSTCHILD;
+				DECLARE TempDbCountRef REFERENCE TO DbCountRef;
+				DECLARE msgId CHARACTER COALESCE(OutputRoot.MQRFH2.usr.BankDetails.MsgId,'0');
+				DECLARE txnId CHARACTER COALESCE(recordRef.Remittance_information.Line1,'0');
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Transaction Identification : '||txnId) INTO rc;
+				SET dbCount = TempDbCountRef.COUNT ;
+					
+				DECLARE fileName2 CHARACTER;
+					DECLARE flag2 CHARACTER CAST(count1 AS CHARACTER);
+					SET fileName2 = 'NEFT_'||fileDate||'_'||flag2||'_'||batchBank||'_'||batchTime||'.TXT';
+					
+				IF dbCount = 0 THEN
+					INSERT INTO Database.{DSNNAME}.{SCHEMANAME}.{NEFT_IN_TABLENAME} (
+					TRAN_REF_NO ,
+					TRAN_REF_RETURN_UTR ,
+					BATCH_TIME ,
+					IFSC_SENDER,
+					SENDER_ACCT_TYPE,
+					SENDER_ACCT_NO,
+					SENDER_ACCT_NAME,
+					REMITTER_DETAIL,
+					IFSC_RECVR,
+					RECVR_ACCT_TYPE,
+					RECVR_ACCT_NO,
+					RECVR_ACCT_NAME,
+					BENEF_ADDRS,
+					REMIT_INFO,
+					REJECT_CODE,
+					REJECT_REASON,
+					AMOUNT,
+					ORG_TRAN_DATE,
+					TRAN_DATE,
+					ACK_NACK,
+					ACK_NACK_FROM_CBS,
+					BANKNAME,
+					RET_ACKNACK_ERR,
+					DUP_ACKNACK_OUT,
+					FLAG_FILE_CREATED,
+					CREATION_TIME,
+					LAST_MOD_TIME,
+					ACK_NACK_MSG,
+					ACK_NACK_SEND_MQ,
+					TRAN_BRANCH,
+					REF_NO,
+					SEQINHEADER,
+					MSG_TYPE,
+					LAST_UPD_STAMP,
+					CREATION_TIME_STAMP,
+					ORG_TXN_ID,
+					ORG_MSG_ID,
+					FILENAME  ) VALUES (
+					tranRefNo ,
+					tranRefReturnUtr,
+					batchTime ,
+					ifscSender,
+					senderAcctType,
+					senderAcctNo ,
+					senderAcctName,
+					remitterDetail ,
+					ifscRecvr ,
+					recvrAcctType ,
+					recvrAcctNo ,
+					recvrAcctName ,
+					benefAddrs ,
+					remitInfo ,
+					rejectCode ,
+					rejectReason ,
+					amount ,
+					orgTranDate ,
+					tranDate ,
+					'0',
+					'0',
+					batchBank,
+					'0',
+					'0',
+					flagFileCreated,
+					creationTime ,
+					lastModTime,
+					'0',
+					'0',
+					tranBranch ,
+					refNum ,
+					seqInHeader ,
+					msg_Type ,
+					CURRENT_TIMESTAMP ,
+					CURRENT_TIMESTAMP,
+					txnId,
+					msgId,
+					fileName2 );
+						
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data inserted to NEFT_IN Table') INTO rc;						
+				END IF;
+							
+			ELSEIF msgType = 'N10' THEN
+				DECLARE tranRefNo , tranRefReturnUtr , lastModTime , relatedRefNo CHARACTER ;
+					DECLARE lastUpdStamp TIMESTAMP ;
+					SET tranRefNo = recordRef.Transaction_Reference_Number ;
+					SET tranRefReturnUtr = recordRef.Related_RefNumber ;	
+					SET relatedRefNo = recordRef.Related_RefNumber;
+				SET OutputRoot.MQRFH2.usr.BankDetails.tranRefNo = relatedRefNo;
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Transaction Reference Number :'||tranRefNo) INTO rc;					
+				SET lastModTime = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+				SET temprelatedRefNo = relatedRefNo;
+				-- CALL log4j_1_1('FILTER_CEDGE_NONCEDGE', 'WB_NEFT_IN', 'INFO','Transaction Reference Number :'||tranRefNo) INTO rc;				
+				SET Qry = 'UPDATE '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME|| ' A SET A.N10_ACKNACK = ''Y'' , A.ACK_NACK= ''Y'' , A.OUT_MSG_SENT_SBI= ''Y'' ,A.LAST_MOD_TIME= ? ,A.LAST_UPD_STAMP= ? WHERE TRIM(A.TRAN_REF_NO) = ? OR TRIM(A.TRAN_REF_NO) = ? ';
+				SET DB_Details.A[] = PASSTHRU (Qry TO Database.{DSNNAME} VALUES(lastModTime,CURRENT_TIMESTAMP ,temprelatedRefNo,'N07'||temprelatedRefNo));
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data Updated to NEFT_OUT Table') INTO rc;	
+			
+			ELSEIF msgType = 'N09' THEN
+				
+				DECLARE relatedRefNo,rejectCode,rejectReason CHARACTER;
+				SET tranRefNo = bodyRef.Transaction_Reference_Number;
+				SET relatedRefNo = recordRef.Related_RefNumber;
+				SET rejectCode = recordRef.Reason_Code;
+				SET rejectReason = recordRef.Rejection_Reason;				
+				DECLARE temprelatedRefNo CHARACTER;
+				DECLARE temprelatedRefNoLen INTEGER;
+				SET temprelatedRefNo = relatedRefNo;
+				SET temprelatedRefNoLen = LENGTH(temprelatedRefNo);
+				WHILE temprelatedRefNoLen < 19 DO
+					set temprelatedRefNo = temprelatedRefNo || ' ';
+					set temprelatedRefNoLen = temprelatedRefNoLen + 1;
+				END WHILE;
+
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Transaction Reference Number :'||tranRefNo) INTO rc;
+				SET Qry = 'UPDATE '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME|| ' A SET A.OUT_MSG_SENT_SBI=''R'' , A.ACK_NACK= ''N'' WHERE A.TRAN_REF_NO = ?';
+				SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(tranRefNo));
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data Updated to NEFT_OUT Table') INTO rc;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data Updated to NEFT_OUT Table') INTO rc;	
+			END IF;
+
+
+
+				
+				IF msgType = 'N02' AND found = TRUE THEN
+					DECLARE msg BLOB ;
+					SET OutputRoot.DFDL.N02.header = InputRoot.DFDL.N02.header ;
+					SET OutputRoot.DFDL.N02.body.Block_4_Initiator = InputRoot.DFDL.N02.body.Block_4_Initiator;
+					SET OutputRoot.DFDL.N02.body.Transaction_Reference_Number = InputRoot.DFDL.N02.body.Transaction_Reference_Number;
+					SET OutputRoot.DFDL.N02.body.Batch_Time = InputRoot.DFDL.N02.body.Batch_Time;
+					SET OutputRoot.DFDL.N02.body.Total_No_of_transactions = InputRoot.DFDL.N02.body.Total_No_of_transactions;
+					SET OutputRoot.DFDL.N02.body.Total_amount = InputRoot.DFDL.N02.body.Total_amount;
+					SET OutputRoot.DFDL.N02.body.record[1] = InputRoot.DFDL.N02.body.record[i];
+--					SET i = i + 1;
+					SET msg = ASBITSTREAM(OutputRoot.DFDL, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+					DECLARE test CHARACTER ;
+					SET test = CAST(msg AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId);
+					SET creationTime = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'dd-MMM-yyyy HH:mm:ss');
+							
+					SET Qry = 'SELECT Count(*) as count FROM '||SCHEMANAME||'.'||NEFT_MSG_IN_TABLENAME||' A WHERE A.REF_NO = ?';
+					SET DB_Count.C[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(tranRefNo));
+					DECLARE DbCountRef REFERENCE TO DB_Count;
+					MOVE DbCountRef FIRSTCHILD;
+					DECLARE TempDbCountRef REFERENCE TO DbCountRef;
+					
+					SET dbCount = TempDbCountRef.COUNT ;
+					
+					IF dbCount = 0 THEN
+					
+						INSERT INTO Database.{DSNNAME}.{SCHEMANAME}.{NEFT_MSG_IN_TABLENAME} ( 
+									REF_NO,
+									MSG,
+									BANKNAME,
+									CREATION_TIME,
+									CREATION_TIME_STAMP) VALUES (
+									tranRefNo,
+									test,
+									batchBank ,
+									creationTime , 
+									CURRENT_TIMESTAMP );
+									CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Data Insertedb to NEFT_MSG_IN Table') INTO rc;
+									
+						DECLARE flag1 CHARACTER CAST(count1 AS CHARACTER);
+						SET fileName = 'NEFT_'||fileDate||'_'||flag1||'_'||batchBank||'_'||batchTime||'.TXT';
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','FileName : '||fileName) INTO rc;	
+						SET OutputLocalEnvironment.Destination.File.Name = fileName;
+						
+						SET key = batchBank||'_'||msgType;
+						CALL getProp(PROP_LOC, key, fileLoc, ftpProvider , batchBank);
+--						--CHANGES FOR MQ START--
+--MQ--						SET OutputLocalEnvironment.Destination.File.Remote.Server = ftpProvider;		
+--MQ-- 						SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = fileLoc;		
+						SET OutputLocalEnvironment.Destination.File.Directory = fileLoc;	
+						SET OutputLocalEnvironment.Destination.File.Name = fileName;
+--						--CHANGES FOR MQ END-- 
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','FTP Provider Name : '||ftpProvider) INTO rc;
+						CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','Remote Location Diretory Name : '||fileLoc) INTO rc;
+						PROPAGATE TO TERMINAL 'out' DELETE NONE;
+						SET count1 = count1 + 1;
+					ELSE
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'ERROR','Duplicate Transaction Occured with Transaction Reference Number as : '||tranRefNo) INTO rc;
+					CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','---------------------------END--------------------------') INTO rc;
+					propagate to  TERMINAL 'out1';	
+					END IF;
+				END IF;
+				SET i = i + 1;
+				SET msg_Type = NULL ;
+				SET found = TRUE;
+	    		MOVE recordRef NEXTSIBLING;
+	    		
+			END WHILE;
+			
+		END IF;	
+	
+				UPDATE Database.{DSNNAME}.{SCHEMANAME}.{BANKCOUNT_TABLENAME} as A SET NEFTCOUNT = count1 WHERE A.BANKNAME = bankName ;
+				
+		IF msgType = 'N02' THEN
+			RETURN FALSE;	
+		END IF;		
+					
+	
+		DECLARE flag1 CHARACTER CAST(count AS CHARACTER);
+		SET fileName = 'NEFT_'||fileDate||'_'||flag1||'_'||bankName||'.TXT';
+		IF msgType = 'N09' THEN
+			SET fileName = 'RTGSRBI_NEFT_'||fileDate||'_'||flag1||'_'||bankName||'.TXT';
+			SET key =bankName||'_N09';
+		END IF;
+	
+--		IF Environment.MsgType = 'pacs.002.001.11' THEN
+--			SET key = bankName||'_'||'N03_N09';
+--			SET fileName = 'RTGSRBI_NEFT_N09_'||fileDate||'_'||flag1||'_'||bankName||'.TXT';
+--		END IF;
+		
+--		IF msgType = 'N02' THEN
+--			SET fileName = 'NEFT_'||fileDate||'_'||flag1||'_'||bankName||'_'||batchTime||'.TXT';
+--			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','FileName : '||fileName) INTO rc;
+--		END IF;
+
+	
+		IF msgType = 'N04' THEN
+			SET fileDate = InputRoot.DFDL.N04.body.Value_Date;
+			SET fileName = 'NEFT_'||bankName||'_'||fileDate||'_'||batchTime||'.TXT';
+		END IF;
+	
+		SET key = bankName||'_'||msgType;
+
+		IF msgIdentifier = 'F27' THEN
+--			SET key = bankName||'_'||msgIdentifier||'_IN';
+			SET key = bankName||'_'||msgIdentifier;
+			SET fileName = 'NEFT_'||transDate||'_'||flag1||'.TXT';
+		END IF;
+		----------------------- changes for 972 START ------------------------------
+--		IF msgtype = '972' THEN
+----			SET key = bankName||'_'||msgtype||'_IN';
+--			SET key = bankName||'_'||msgtype;
+--			SET fileName = 'SOD_'||SOD_Date||'_'||bankName||'.TXT';
+--		END IF;
+
+	
+	
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','FileName : '||COALESCE(fileName,'File name not found due to Bank name not found ')) INTO rc;
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Property File Key : '||COALESCE(key,'KEY NOT FOUND')) INTO rc;
+		SET OutputLocalEnvironment.Destination.File.Name = fileName;
+		CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','FileName : '||COALESCE(fileName,'File name not found due to Bank name not found ')) INTO rc;
+		CALL getProp(PROP_LOC, key, fileLoc, ftpProvider , bankName);			
+--CHANGES FOR MQ START--		
+--MQ--			SET OutputLocalEnvironment.Destination.File.Remote.Server = ftpProvider;
+--MQ--			SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = fileLoc; 
+
+			SET OutputLocalEnvironment.Destination.File.Directory = fileLoc;
+			SET OutputLocalEnvironment.Destination.File.Name = fileName;
+			--CHANGES FOR MQ END --
+--			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','FTP Provider Name : '||ftpProvider) INTO rc;
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','Location Diretory Name : '||COALESCE(fileLoc,'Location Not Found..')) INTO rc;
+			SET OutputRoot.DFDL = inMsgDetailsref ;
+
+
+		
+------------------------------------------N04---------------------------------------------------------------------------------------------------------------		
+					
+		IF msgType = 'N04' THEN
+			
+			DECLARE fileLoc,ftpProvider,key ,rcvrIfsc,newRecvrIfsc  CHARACTER;
+			DECLARE BankName_List ROW;
+--			DECLARE Bank_Name_Qry CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.BANKNAME A';
+			SET rcvrIfsc = headerRef.Receiver_IFSC ;
+			SET newRecvrIfsc= SUBSTRING(rcvrIfsc FROM 1 FOR 4)||'%';
+			DECLARE Qry CHARACTER 'SELECT DISTINCT A.BANKNAME FROM '||SCHEMANAME||'.'||BANKNAME||' A WHERE A.IFSC_CODE like ? ';
+	--		SELECT DISTINCT A.BANKNAME FROM  BANKNAME A WHERE A.IFSC_CODE like 'WBSC%';
+--			SET BankName_List.List[] = PASSTHRU(Bank_Name_Qry TO Database.{DSNNAME});			
+			SET BankName_List.List[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(newRecvrIfsc));
+			DECLARE BankName_Cursor REFERENCE TO BankName_List;
+			MOVE BankName_Cursor FIRSTCHILD;
+			DECLARE CurDate CHARACTER CAST(CURRENT_DATE AS CHAR format 'YYYYMMdd');
+				DECLARE S INTEGER 1;
+			WHILE LASTMOVE(BankName_Cursor) DO
+				SET bankName = TRIM(FIELDVALUE(BankName_Cursor.BANKNAME));
+				SET key = bankName||'_'||msgType;
+				CALL getProp(PROP_LOC, key, fileLoc, ftpProvider , bankName);
+			
+-- 				SET OutputLocalEnvironment.Destination.File[S].Directory = fileLoc;
+
+				SET OutputLocalEnvironment.Destination.File.Directory = fileLoc;
+				
+				SET fileDate = InputRoot.DFDL.N04.body.Value_Date; 						--Changed for body_date
+-- 				SET OutputLocalEnvironment.Destination.File[S].Name = 'NEFT_'||bankName||'_'||fileDate||'_'||batchTime||'.TXT';
+				SET OutputLocalEnvironment.Destination.File.Name = 'NEFT_'||bankName||'_'||fileDate||'_'||batchTime||'.TXT';
+				
+				SET S = S+1;
+-- 				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','FileName : '||OutputLocalEnvironment.Destination.File[S].Name || 'DIR :' || OutputLocalEnvironment.Destination.File[S].Directory) INTO rc;
+				SET OutputRoot.DFDL = inMsgDetailsref ;
+				PROPAGATE TO TERMINAL 'out' DELETE NONE;
+				MOVE BankName_Cursor NEXTSIBLING;
+			END WHILE;
+			RETURN FALSE;
+			
+		ELSEIF msgtype = '972' THEN
+			
+			DECLARE fileLoc,ftpProvider,key ,rcvrIfsc,newRecvrIfsc CHARACTER;
+			DECLARE BankName_List ROW;
+			
+			CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','SOD Date : '||SOD_Date) INTO rc;
+			DECLARE Qrysdate CHARACTER 'UPDATE '||SCHEMANAME||'.NEFT_24X7'||' A SET A.SOD_DATE = ? ' ;
+			SET DB_Det.S[] = PASSTHRU (Qrysdate TO Database.{DSNNAME} VALUES(SOD_Date));
+		
+-- 			DECLARE Bank_Name_Qry CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.BANKNAME A';
+--			SET BankName_List.List[] = PASSTHRU(Bank_Name_Qry TO Database.{DSNNAME});
+			
+			SET rcvrIfsc = headerRef.Receiver_IFSC ;
+			SET newRecvrIfsc= SUBSTRING(rcvrIfsc FROM 1 FOR 4)||'%';
+			DECLARE Qry CHARACTER 'SELECT DISTINCT A.BANKNAME FROM '||SCHEMANAME||'.'||BANKNAME||' A WHERE A.IFSC_CODE like ? ';			
+			SET BankName_List.List[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(newRecvrIfsc));	
+					
+			DECLARE BankName_Cursor REFERENCE TO BankName_List;
+			MOVE BankName_Cursor FIRSTCHILD;
+			DECLARE CurDate CHARACTER CAST(CURRENT_DATE AS CHAR format 'YYYYMMdd');
+			
+			WHILE LASTMOVE(BankName_Cursor) DO
+				SET bankName = TRIM(FIELDVALUE(BankName_Cursor.BANKNAME));
+				SET key = bankName||'_'||msgtype;
+				CALL getProp(PROP_LOC, key, fileLoc, ftpProvider , bankName);
+				
+				SET Environment.SeqHeader = PASSTHRU('select SEQ_IFSCBANKNAME.nextval FROM dual' TO Database.{DSNNAME});
+				SET Environment.SeqHeader_Char = CAST(CAST(Environment.SeqHeader.NEXTVAL AS INTEGER) AS CHARACTER);
+				--CHANGES FOR MQ START--
+--MQ--					SET OutputLocalEnvironment.Destination.File.Remote.Server = ftpProvider;
+--MQ--					SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = fileLoc;
+
+				SET OutputLocalEnvironment.Destination.File.Directory = fileLoc;
+				SET OutputLocalEnvironment.Destination.File.Name = 'SOD_'||SOD_Date||'_'||bankName||'.TXT'; 
+				
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','FTP Details for :'||bankName) INTO rc;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','FileName : '||OutputLocalEnvironment.Destination.File.Name) INTO rc;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','FTP Provider Name : '||ftpProvider) INTO rc;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'WARN','Remote Location Diretory Name : '||fileLoc) INTO rc;
+				SET OutputRoot.DFDL = inMsgDetailsref ;
+				PROPAGATE TO TERMINAL 0 DELETE NONE;	
+				SET Environment.WBRTGSINCOPY_Disable = TRUE;
+				
+				MOVE BankName_Cursor NEXTSIBLING;
+			END WHILE;
+			RETURN FALSE;
+			
+			
+		END IF;
+		
+
+			
+		IF dbCount <> 0 THEN
+			DECLARE DB_Duplicate ROW;
+			DECLARE flagFileCreated CHARACTER ;
+			DECLARE transactionRefNo CHARACTER InputRoot.DFDL.*.body.record.Transaction_RefNumber;
+			DECLARE Qry CHARACTER 'SELECT A.FLAG_FILE_CREATED FROM '||SCHEMANAME||'.'||NEFT_IN_TABLENAME||' A WHERE A.TRAN_REF_NO = ? ';
+			SET DB_Duplicate.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(transactionRefNo));
+			
+			SET flagFileCreated = DB_Duplicate.A[1].FLAG_FILE_CREATED ;
+			IF flagFileCreated <> 'Y' OR flagFileCreated IS NULL OR flagFileCreated = '' THEN
+					RETURN TRUE ;
+				ELSE
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'ERROR','Duplicate Transaction Occured with Transaction Reference Number as : '||transactionRefNo) INTO rc;
+				CALL log4j_1_1('DB_INSERT', 'WB_NEFT_IN', 'INFO','---------------------------END--------------------------') INTO rc;
+				propagate to  TERMINAL 'out1';
+				RETURN FALSE ;	
+				END IF;
+		ELSE
+			RETURN TRUE ;
+		END IF;
+	END;
+
+	CREATE PROCEDURE  getProp( IN P1 CHARACTER, IN P2 CHARACTER, INOUT P3 CHARACTER,INOUT P4 CHARACTER , IN P5 CHARACTER)
+ 	LANGUAGE JAVA 
+ 	EXTERNAL NAME "com.cedge.wb.rtgs.WB_NEFT_INWARD_LoadProperties.getProperties";
+	
+END MODULE;

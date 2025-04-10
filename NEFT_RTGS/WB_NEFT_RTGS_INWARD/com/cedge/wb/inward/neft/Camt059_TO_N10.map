@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.rrb.inward.map.neft" version="8.0.5.0" xmlns:map="com.cedge.rrb.inward.map.neft">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">   
+    <xsd:element name="BankDetails">   
+    <xsd:complexType>   
+      <xsd:sequence>   
+        <xsd:element name="UTR" type="xsd:string"/>   
+        <xsd:element name="cDate" type="xsd:string"/>   
+        <xsd:element name="cTime" type="xsd:string"/>   
+        <xsd:element name="HO_RECEIVER_IFCS" type="xsd:string"/>   
+        <xsd:element name="HO_SENDER_IFCS" type="xsd:string"/>   
+      </xsd:sequence>   
+    </xsd:complexType>   
+  </xsd:element>   
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/ISO/camt.059.001.06.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/N06/INWARD.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="urn:iso:std:iso:20022:tech:xsd:camt.059.001.06"/>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="Camt059_TO_N10">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:camt.059.001.06" path="$var1/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)" var="ComIbmMessageAssembly_Document">
+            <cast castType="userDefined" path="$ComIbmMessageAssembly_Document/MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(N10,assembly,DFDL,Properties)" var="ComIbmMessageAssembly_N10"/>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Properties"/>
+            <output path="$ComIbmMessageAssembly_N10/Properties"/>
+            <override>
+                <assign value="{}:N10">
+                    <output path="$ComIbmMessageAssembly_N10/Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <foreach>
+            <input path="$ComIbmMessageAssembly_Document/Document/NtfctnToRcvStsRpt/OrgnlNtfctnAndSts/OrgnlNtfctnRef" var="OrgnlNtfctnRef"/>
+            <input auxiliary="true" path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cDate" var="cDate"/>
+            <output path="$ComIbmMessageAssembly_N10/N10/body/record"/>
+            <move>
+                <input path="$OrgnlNtfctnRef/DbtrAgt/FinInstnId/ClrSysMmbId/MmbId" var="MmbId"/>
+                <output path="IFSC_of_Originator_of_Remittance"/>
+            </move>
+            <function ref="fn:substring-after">
+                <input path="$OrgnlNtfctnRef/OrgnlItmAndSts/OrgnlEndToEndId" var="OrgnlEndToEndId"/>
+                <output path="Related_RefNumber"/>
+                <param name="string1" value="$OrgnlEndToEndId"/>
+                <param name="string2" value="&quot;XUTR/&quot;"/>
+            </function>
+            <move>
+                <input path="$OrgnlNtfctnRef/OrgnlItmAndSts/OrgnlItmId"/>
+                <output path="Transaction_Reference_Number"/>
+            </move>
+            <move>
+                <input path="$OrgnlNtfctnRef/OrgnlItmAndSts/Amt/text()"/>
+                <output path="Amt_Credited_Time/Line2"/>
+            </move>
+            <move>
+                <input path="$cDate/." var="cDate"/>
+                <output path="Amt_Credited_Time/Line1"/>
+            </move>
+        </foreach>
+        <assign value="XXX">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/BankApp_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Message_Identifier"/>
+        </assign>
+        <assign value="I">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/IO_Identifier"/>
+        </assign>
+        <assign value="298">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Message_Type"/>
+        </assign>
+        <assign value="N10">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/SubMessage_Type"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <assign value="000">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Obsolescence_Period"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="RTG">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Service_Identifier"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Testing_Training_Flag"/>
+        </assign>
+        <assign value="000000000">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Sequence_Number"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Filler"/>
+        </assign>
+        <assign value="00">
+            <output path="$ComIbmMessageAssembly_N10/N10/header/RTGS_Priority"/>
+        </assign>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cDate"/>
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cTime"/>
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Originate_Time"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Unique_Transaction_Number"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$ComIbmMessageAssembly_N10/N10/header/MUR"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$ComIbmMessageAssembly_N10/N10/body/Transaction_Reference_Number"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/HO_SENDER_IFCS"/>
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/HO_RECEIVER_IFCS"/>
+            <output path="$ComIbmMessageAssembly_N10/N10/header/Receiver_IFSC"/>
+        </move>
+        <assign value="{4:">
+            <output path="$ComIbmMessageAssembly_N10/N10/body/Block_4_Initiator"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

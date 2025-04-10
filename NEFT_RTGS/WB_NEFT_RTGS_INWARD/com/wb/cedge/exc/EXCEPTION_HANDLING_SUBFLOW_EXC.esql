@@ -1,0 +1,54 @@
+BROKER SCHEMA com.wb.cedge.exc
+
+
+
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j";
+
+CREATE FUNCTION log4j_1_1( IN COMPONENT_NAME CHARACTER,
+IN LOGGER_NAME CHARACTER,
+IN LEVEL CHARACTER,
+IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+
+CREATE COMPUTE MODULE EXCEPTION_HANDLING_SUBFLOW_EXC
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+ 
+		DECLARE rc BOOLEAN;
+		DECLARE inMsgDetailsref REFERENCE TO InputRoot.XMLNSC.RequestPayload ;
+		DECLARE outMsgDetailsRef REFERENCE TO OutputRoot.XMLNSC;
+		DECLARE chDate, wholeMsgChar CHARACTER;
+		DECLARE msgChar , delChar, tranCategory, msgType, bizMsgId, reqPayloadChar CHARACTER ;
+		DECLARE wholeMsgBlob BLOB;
+		SET chDate = CAST(CURRENT_DATE as CHARACTER FORMAT 'yyyyMMdd');
+		IF FIELDNAME(InputBody) = 'BLOB' THEN
+			DECLARE delChar CHARACTER '';
+			SET wholeMsgChar = CAST(InputRoot.BLOB.BLOB AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId);
+			SET delChar = SUBSTRING(wholeMsgChar BEFORE '<RequestPayload>');
+			SET wholeMsgChar = REPLACE(wholeMsgChar,delChar,'');
+--			SET tranCategory = SUBSTRING(msgChar AFTER '<BizSvc>' FOR 4);
+			SET msgType = SUBSTRING(msgChar AFTER '<MsgDefIdr>' FOR 15);
+			SET bizMsgId = SUBSTRING(msgChar AFTER '<BizMsgIdr>' FOR 22);
+			CALL log4j_1_1('EXCEPTION', 'WB_INWARD_GATEWAY', 'ERROR','Failed to Process. Kindly check Exception log..') INTO rc;
+			CALL log4j_1_1('EXCEPTION', 'WB_INWARD_GATEWAY', 'ERROR','---------------------------END--------------------------') INTO rc;
+		ELSE
+			SET wholeMsgBlob = ASBITSTREAM(InputRoot.XMLNSC, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId );
+			SET wholeMsgChar = CAST(wholeMsgBlob AS CHAR CCSID InputRoot.Properties.CodedCharSetId);
+			CALL log4j_1_1('EXCEPTION', 'WB_NEFT_IN', 'ERROR','Failed to Process. Kindly check Exception log..') INTO rc;
+			CALL log4j_1_1('EXCEPTION', 'WB_NEFT_IN', 'ERROR','---------------------------END--------------------------') INTO rc;
+		END IF;
+		
+		SET OutputRoot.XMLNSC.ExceptionDetail.whole_msg= wholeMsgChar;
+		SET OutputRoot.XMLNSC.ExceptionDetail.exection=InputExceptionList;
+		SET OutputRoot.XMLNSC.ExceptionDetail.MSGTYPE= COALESCE(inMsgDetailsref.*:AppHdr.*:MsgDefIdr,msgType,'NOT FOUND');
+		SET OutputRoot.XMLNSC.ExceptionDetail.UTR=COALESCE(inMsgDetailsref.*:AppHdr.*:BizMsgIdr,bizMsgId,'NOT FOUND');
+		SET OutputRoot.XMLNSC.ExceptionDetail.TXN_REF_NUM = chDate||COALESCE(inMsgDetailsref.*:AppHdr.*:BizMsgIdr,bizMsgId,'NOT FOUND');
+		SET OutputRoot.XMLNSC.ExceptionDetail.FILE_NAME =COALESCE(InputLocalEnvironment.Destination.File.Name,InputRoot.MQRFH2.usr.UFM_FileName,'NOT FOUND');
+		RETURN TRUE;
+END;
+END MODULE;

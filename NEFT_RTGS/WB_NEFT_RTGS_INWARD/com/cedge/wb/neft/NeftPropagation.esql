@@ -1,0 +1,186 @@
+
+
+BROKER SCHEMA com.cedge.wb.neft
+
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j";
+
+CREATE FUNCTION log4j_1_1( IN COMPONENT_NAME CHARACTER,
+IN LOGGER_NAME CHARACTER,
+IN LEVEL CHARACTER,
+IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+
+CREATE COMPUTE MODULE NeftPropagation
+	DECLARE CONFIG EXTERNAL CHARACTER;
+	DECLARE SCHEMANAME EXTERNAL CHARACTER;
+	DECLARE NEFT_OUT_TABLENAME  EXTERNAL CHARACTER;
+	DECLARE DSNNAME EXTERNAL CHARACTER;
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE rc BOOLEAN;
+		CALL initLog4j(CONFIG) INTO rc;
+		CALL log4j_1_1('MSG_FILTER', 'WB_NEFT_IN', 'WARN',' ---------------START---------------') INTO rc;
+		DECLARE bool BOOLEAN;
+		CALL CopyMessageHeaders();
+		SET bool = CopyEntireMessage();
+		RETURN bool;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+		CREATE PROCEDURE CopyEntireMessage() RETURNS BOOLEAN BEGIN
+		DECLARE rc BOOLEAN;
+		DECLARE msgType CHARACTER '';
+		DECLARE DB_Details , DB_Info ROW;
+
+		DECLARE headerRef REFERENCE TO InputRoot.XMLNSC.RequestPayload.[1];
+
+		SET msgType = headerRef.*:MsgDefIdr;
+
+		DECLARE bodyRef REFERENCE TO InputRoot.XMLNSC.RequestPayload.[2];
+		MOVE bodyRef LASTCHILD;
+
+		DECLARE outRef REFERENCE TO OutputRoot;
+		CREATE FIELD OutputRoot.MQRFH2.usr.BankDetails AS outRef;
+
+		SET outRef.MsgId = headerRef.*:BizMsgIdr;
+
+		SET Environment.MsgType = msgType;
+		CALL log4j_1_1('IDENTIFY_BANK', 'CEDGERRB_NEFT_IN', 'INFO','Message Belogs To '||msgType||' Category') INTO rc;
+		CALL log4j_1_1('IDENTIFY_BANK', 'CEDGERRB_NEFT_IN', 'INFO','Message Identification : '||COALESCE(bodyRef.*:GrpHdr.*:MsgId,headerRef.*:BizMsgIdr)) INTO rc;
+		CASE msgType
+		WHEN 'pacs.008.001.09' THEN
+			CALL GenerateUTR(bodyRef.*:GrpHdr.*:MsgId, bodyRef.*:GrpHdr.*:CreDtTm, outRef);
+		WHEN 'pacs.004.001.10' THEN
+			CALL GenerateUTR(bodyRef.*:GrpHdr.*:MsgId, bodyRef.*:GrpHdr.*:CreDtTm, outRef);
+		WHEN 'admi.004.001.02' THEN
+			-- SET outRef.CreDt = InputRoot.XMLNSC.RequestPayload.*:Document.*:SysEvtNtfn.*:EvtInf.*:EvtTm;
+			-- IF bodyRef.*:EvtInf.*:EvtCd='F27' THEN
+			CALL FetchData(headerRef.*:BizMsgIdr, headerRef, outRef);
+			CALL log4j_1_1('IDENTIFY_BANK', 'CEDGERRB_NEFT_IN', 'INFO','Response CODE : '||bodyRef.*:EvtInf.*:EvtParam) INTO rc;
+			CALL log4j_1_1('IDENTIFY_BANK', 'CEDGERRB_NEFT_IN', 'INFO','Response Description : '||bodyRef.*:EvtInf.*:EvtDesc) INTO rc;
+			IF EXISTS( outRef.BANKNAME[]) THEN
+				CALL log4j_1_1('IDENTIFY_BANK', 'CEDGERRB_NEFT_IN', 'INFO','Sub Message Type : '||outRef.SUB_MSG_TYPE) INTO rc;
+				SET outRef.cDate = REPLACE(SUBSTRING(headerRef.*:CreDt FROM 1 FOR 10) , '-','');
+				SET outRef.cTime = REPLACE(SUBSTRING (headerRef.*:CreDt AFTER 'T' for 5), ':','');
+					IF (STARTSWITH(bodyRef.*:EvtInf.*:EvtParam,'P')) OR ( outRef.SUB_MSG_TYPE = 'N07')THEN
+						SET Environment.MsgType = 'F27';
+						SET outRef.cDateTime = outRef.cDate||outRef.cTime;
+						-- SET OutputRoot.Properties.MessageType = '{}:F27_CBS';
+						-- SET OutputRoot.DFDL.F27_CBS.header.Sequence_Number = outRef.seqNo;
+						-- SET OutputRoot.DFDL.F27_CBS.header.Sender_IFSC = outRef.HO_RECEIVER_IFCS;
+						-- SET OutputRoot.DFDL.F27_CBS.header.Date_Time = outRef.cDate||outRef.cTime;
+						-- SET OutputRoot.DFDL.F27_CBS.header.Bank_Application_Identifier = bodyRef.*:EvtInf.*:EvtParam;
+						-- PROPAGATE TO TERMINAL 'out';
+						-- RETURN FALSE;
+						-- ELSEIF STARTSWITH(bodyRef.*:EvtInf.*:EvtParam,'F') AND outRef.SUB_MSG_TYPE = 'N07' THEN
+						-- SET Environment.MsgType = 'F27';
+						-- SET OutputRoot.Properties.MessageType = '{}:F27_CBS';
+						-- SET OutputRoot.DFDL.F27_CBS.header.Sequence_Number = outRef.seqNo;
+						-- SET OutputRoot.DFDL.F27_CBS.header.Sender_IFSC = outRef.HO_RECEIVER_IFCS;
+						-- SET OutputRoot.DFDL.F27_CBS.header.Date_Time = outRef.cDate||outRef.cTime;
+						-- SET OutputRoot.DFDL.F27_CBS.header.Bank_Application_Identifier = bodyRef.*:EvtInf.*:EvtParam;
+						-- PROPAGATE TO TERMINAL 'out';
+						-- RETURN FALSE;
+					END IF;
+				ELSE
+					CALL log4j_1_1('IDENTIFY_BANK', 'CEDGERRB_NEFT_IN', 'INFO','Propogating To Other As Bank Name Not Found...') INTO rc;
+					SET OutputRoot.XMLNSC =InputRoot.XMLNSC;
+					PROPAGATE TO LABEL 'OTHER_LABEL' DELETE NONE;
+					RETURN FALSE;
+				END IF;
+			WHEN 'pacs.002.001.11' THEN
+				CALL GenerateUTR(bodyRef.*:GrpHdr.*:MsgId, bodyRef.*:GrpHdr.*:CreDtTm, outRef);
+
+			WHEN 'camt.054.001.08' THEN
+				CALL GenerateUTR(bodyRef.*:GrpHdr.*:MsgId, bodyRef.*:GrpHdr.*:CreDtTm, outRef);
+				CALL CheckRemInformation(bodyRef.*:Ntfctn.*:Ntry.*:NtryDtls, headerRef, outRef);
+
+			WHEN 'camt.052.001.08' THEN
+				DECLARE cDate CHARACTER REPLACE(SUBSTRING(bodyRef.*:GrpHdr.*:CreDtTm FROM 3 FOR 8) , '-','');
+				SET outRef.cDate = REPLACE(SUBSTRING(bodyRef.*:GrpHdr.*:CreDtTm FROM 1 FOR 10) , '-','');
+				SET outRef.cTime = REPLACE(SUBSTRING (bodyRef.*:GrpHdr.*:CreDtTm AFTER 'T' for 5), ':','');
+					SET outRef.UTR = cDate||outRef.cTime||RIGHT(bodyRef.*:GrpHdr.*:MsgId,6);
+					CALL CheckRemInformation(bodyRef.*:Rpt.*:Ntry.*:NtryDtls, headerRef, outRef);
+
+				WHEN 'camt.059.001.06' THEN
+					CALL GenerateUTR(bodyRef.*:GrpHdr.*:MsgId, bodyRef.*:GrpHdr.*:CreDtTm, outRef);
+					SET outRef.HO_RECEIVER_IFCS = headerRef.*:To.*:FIId.*:FinInstnId.*:ClrSysMmbId.*:MmbId;
+					SET outRef.HO_SENDER_IFCS = headerRef.*:Fr.*:FIId.*:FinInstnId.*:ClrSysMmbId.*:MmbId;
+				ELSE
+				END CASE;
+				SET OutputRoot.XMLNSC = InputRoot.XMLNSC.RequestPayload;
+				DELETE FIRSTCHILD OF OutputRoot.XMLNSC ;
+				RETURN TRUE;
+			END;
+
+
+			CREATE PROCEDURE FetchData (IN utr CHARACTER,IN inref REFERENCE ,INOUT outreff REFERENCE )
+			BEGIN
+				DECLARE DB_Info ROW;
+				SET outreff.INC_UTR = utr;
+				DECLARE Qry1 CHARACTER 'SELECT A.TRAN_REF_NO, A.IFSC_SENDER, A.SUB_MSG_TYPE, A.IFSC_RECVR, A.SEQINHEADER, A.BANKNAME FROM '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME||' A WHERE A.INC_UTR = ? ';
+				SET DB_Info.A[] = PASSTHRU(Qry1 TO Database.{DSNNAME} VALUES(utr));
+				DECLARE bankDetailsRef REFERENCE TO DB_Info;
+				MOVE bankDetailsRef FIRSTCHILD;
+				DECLARE tempDbRef REFERENCE TO bankDetailsRef;
+				SET outreff.rcvrIfsc = TRIM(tempDbRef.IFSC_RECVR) ;
+				SET outreff.sdrIfsc = TRIM(tempDbRef.IFSC_SENDER);
+				SET outreff.UTR = TRIM(tempDbRef.TRAN_REF_NO);
+				SET outreff.seqNo = TRIM(tempDbRef.SEQINHEADER);
+				SET outreff.BANKNAME = TRIM(tempDbRef.BANKNAME);
+				SET outreff.SUB_MSG_TYPE = TRIM(tempDbRef.SUB_MSG_TYPE);
+--				SET outreff.HO_RECEIVER_IFCS = inref.*:To.*:FIId.*:FinInstnId.*:ClrSysMmbId.*:MmbId;
+--				SET outreff.HO_SENDER_IFCS = inref.*:Fr.*:FIId.*:FinInstnId.*:ClrSysMmbId.*:MmbId;
+				
+			END;
+		END MODULE;
+
+		CREATE PROCEDURE GenerateUTR(IN msgId CHARACTER, IN cDateTime CHARACTER, INOUT outref REFERENCE)
+		BEGIN
+			DECLARE jDate , getYear , doy , utr CHARACTER '';
+
+			SET getYear = SUBSTRING(cDateTime FROM 3 FOR 2);
+			DECLARE ctime CHARACTER SUBSTRING (cDateTime AFTER 'T' for 5);
+			SET doy = REPLACE(SUBSTRING(cDateTime FROM 3 FOR 8),'-','');
+			DECLARE target DATE;
+			SET target = CAST(doy AS DATE FORMAT 'yyMMdd');
+			SET doy = EXTRACT(DAYOFYEAR FROM target);
+			DECLARE len INTEGER (3 - (LENGTH(doy)));
+			IF len<3 THEN
+				SET jDate = REPLICATE('0' , len);
+				SET jDate = getYear||jDate||doy;
+			ELSE
+				SET jDate = getYear||doy;
+			END IF;
+
+			SET outref.UTR = OVERLAY(msgId PLACING jDate FROM 5 for 11);
+			SET outref.cDate = REPLACE(SUBSTRING(cDateTime FROM 1 FOR 10) , '-','');
+			SET outref.cTime = REPLACE(ctime , ':','');
+		END;
+
+		CREATE PROCEDURE CheckRemInformation (IN inRef REFERENCE,IN hRef REFERENCE, INOUT outReff REFERENCE )
+		BEGIN
+			SET outReff.HO_RECEIVER_IFCS = hRef.*:To.*:FIId.*:FinInstnId.*:ClrSysMmbId.*:MmbId;
+			SET outReff.HO_SENDER_IFCS = hRef.*:Fr.*:FIId.*:FinInstnId.*:ClrSysMmbId.*:MmbId;
+			DECLARE tranRef REFERENCE TO inRef.*:TxDtls[>];
+			WHILE LASTMOVE(tranRef) DO
+				SET outReff.{tranRef.*:CdtDbtInd}.Amt=REPLACE(tranRef.*:Amt,'.',',');
+				SET outReff.{tranRef.*:CdtDbtInd}.Ustrd=tranRef.*:RmtInf.*:Ustrd;
+				MOVE tranRef NEXTSIBLING;
+			END WHILE;
+
+		END;

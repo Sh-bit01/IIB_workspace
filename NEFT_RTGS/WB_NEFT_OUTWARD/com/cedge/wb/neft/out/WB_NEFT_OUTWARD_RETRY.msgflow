@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ComIbmTimeoutNotification.msgnode="ComIbmTimeoutNotification.msgnode" xmlns:SEND_EMAIL.subflow="SEND_EMAIL.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="com/cedge/wb/neft/out/WB_NEFT_OUTWARD_RETRY.msgflow" nsPrefix="com_cedge_wb_neft_out_WB_NEFT_OUTWARD_RETRY.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.DSN" name="DSN" defaultValueLiteral="WBPROD">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.PROP_LOC" name="PROP_LOC" defaultValueLiteral="/var/iib/interface/wb/neft/inward/properties/WBInward.properties">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.NEFT_OUT_PAYLOAD" name="NEFT_OUT_PAYLOAD" defaultValueLiteral="NEFT_OUT_PAYLOAD">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.CONFIG" name="CONFIG" defaultValueLiteral="/var/iib/interface/wb/neft/inward/properties/log4j/wb_neft_inward.xml">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="WB_NEFT_OUTWARD_RETRY" bundleName="com/cedge/wb/neft/out/WB_NEFT_OUTWARD_RETRY" pluginId="WB_NEFT_OUTWARD"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_OUTWARD/icons/full/obj16/WB_NEFT_OUTWARD_RETRY.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/WB_NEFT_OUTWARD/icons/full/obj30/WB_NEFT_OUTWARD_RETRY.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmTimeoutNotification.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="50,131" uniqueIdentifier="NEFT" operationMode="controlled">
+        <translation xmi:type="utility:ConstantString" string="Timeout Notification"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="222,131" dataSource="WBPROD" computeExpression="esql://routine/com.cedge.wb.neft.out#WB_NEFT_OUTWARD_RETRY.Main">
+        <translation xmi:type="utility:ConstantString" string="DB_RETRY"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="383,132" queueName="WB.NEFT.OUT.GATEWAY" transactionMode="no">
+        <translation xmi:type="utility:ConstantString" string="WB.NEFT.OUT.GATEWAY"/>
+      </nodes>
+      <nodes xmi:type="SEND_EMAIL.subflow:FCMComposite_1" xmi:id="FCMComposite_1_4" location="418,27">
+        <translation xmi:type="utility:ConstantString" string="SEND_EMAIL"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out1" targetTerminalName="InTerminal.Input"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.DSN">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.DSN" bundleName="com/cedge/wb/neft/out/WB_NEFT_OUTWARD_RETRY" pluginId="WB_NEFT_OUTWARD"/>
+        <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.PROP_LOC">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.PROP_LOC" bundleName="com/cedge/wb/neft/out/WB_NEFT_OUTWARD_RETRY" pluginId="WB_NEFT_OUTWARD"/>
+          <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.NEFT_OUT_PAYLOAD">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.NEFT_OUT_PAYLOAD" bundleName="com/cedge/wb/neft/out/WB_NEFT_OUTWARD_RETRY" pluginId="WB_NEFT_OUTWARD"/>
+            <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.CONFIG">
+              <propertyName xmi:type="utility:TranslatableString" key="Property.CONFIG" bundleName="com/cedge/wb/neft/out/WB_NEFT_OUTWARD_RETRY" pluginId="WB_NEFT_OUTWARD"/>
+            </propertyDescriptor>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

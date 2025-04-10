@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="com.cedge.rrb.inward.map.neft" version="8.0.5.0" xmlns:map="com.cedge.rrb.inward.map.neft">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">              
+    <xsd:element name="BankDetails">              
+    <xsd:complexType>              
+      <xsd:sequence>              
+        <xsd:element name="UTR" type="xsd:string"/>              
+        <xsd:element name="cDate" type="xsd:string"/>              
+        <xsd:element name="cTime" type="xsd:string"/>              
+      </xsd:sequence>              
+    </xsd:complexType>              
+  </xsd:element>              
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="/ISO/pacs.008.001.09.xsd" var="var1"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var"/>
+    <output path="/N06/INWARD.xsd"/>
+    <imports>
+        <import kind="esql" namespace="/com/cedge/wb/inward/neft/mapping/MAPPING_USING_ESQL.esql"/>
+    </imports>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.09"/>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+        <namespace kind="extension" prefix="MAPPING_USING_ESQL" uri="/com/cedge/wb/inward/neft/mapping/MAPPING_USING_ESQL.esql"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="Pacs008_TO_N02">
+        <input namespace="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.09" path="$var1/mb:msg(Document,assembly,,Properties,MQMD,MQRFH2)" var="ComIbmMessageAssembly_Document">
+            <cast castType="userDefined" path="$ComIbmMessageAssembly_Document/MQRFH2/usr/any" qualifier="BankDetails" ref="var"/>
+        </input>
+        <output path="mb:msg(N02,assembly,DFDL,Properties)" var="ComIbmMessageAssembly_N02"/>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Properties"/>
+            <output path="$ComIbmMessageAssembly_N02/Properties"/>
+            <override>
+                <assign value="{}:N02">
+                    <output path="$ComIbmMessageAssembly_N02/Properties/MessageType"/>
+                </assign>
+            </override>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Document/FIToFICstmrCdtTrf/GrpHdr/InstgAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Sender_IFSC"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Document/FIToFICstmrCdtTrf/GrpHdr/InstdAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Receiver_IFSC"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/Document/FIToFICstmrCdtTrf/GrpHdr/NbOfTxs"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/body/Total_No_of_transactions"/>
+        </move>
+        <customFunction lang="esql" ref="MAPPING_USING_ESQL:AmtDotChange">
+            <input path="$ComIbmMessageAssembly_Document/Document/FIToFICstmrCdtTrf/GrpHdr/TtlIntrBkSttlmAmt/text()" var="value1"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/body/Total_amount"/>
+            <param name="Val" value="$value1"/>
+        </customFunction>
+        <foreach>
+            <input path="$ComIbmMessageAssembly_Document/Document/FIToFICstmrCdtTrf/CdtTrfTxInf" var="CdtTrfTxInf"/>
+            <input auxiliary="true" path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cDate" var="cDate"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/body/record"/>
+            <customFunction lang="esql" ref="MAPPING_USING_ESQL:AmtDotChange">
+                <input path="$CdtTrfTxInf/IntrBkSttlmAmt/text()" var="value"/>
+                <output path="Amount"/>
+                <param name="Val" value="$value"/>
+            </customFunction>
+            <function ref="fn:substring">
+                <input path="$CdtTrfTxInf/Dbtr/Nm" var="Nm"/>
+                <output path="Customer_AccName"/>
+                <param name="sourceString" value="$Nm"/>
+                <param name="startLocation" value="1"/>
+                <param name="length" value="50"/>
+            </function>
+            <move>
+                <input path="$CdtTrfTxInf/Dbtr/CtctDtls/MobNb"/>
+                <output path="Customer_Mobile_Email"/>
+            </move>
+            <move>
+                <input path="$CdtTrfTxInf/Dbtr/CtctDtls/EmailAdr"/>
+                <output path="Customer_Mobile_Email"/>
+            </move>
+            <move>
+                <input path="$CdtTrfTxInf/DbtrAcct/Id/Othr/Id" var="Id"/>
+                <output path="Customer_Acc"/>
+            </move>
+            <expression>
+                <input path="$CdtTrfTxInf/PmtId/EndToEndId" var="EndToEndId"/>
+                <output path="Transaction_RefNumber"/>
+                <code lang="xpath">fn:replace( $EndToEndId,'/XUTR/', '')</code>
+            </expression>
+            <condition>
+                <if>
+                    <input path="$CdtTrfTxInf/PmtTpInf/CtgyPurp/Cd" var="Cd"/>
+                    <output path="Sending_Customer_AccType"/>
+                    <test lang="xpath">$Cd='FCRA'</test>
+                    <assign value="41">
+                        <output path="."/>
+                    </assign>
+                </if>
+                <elseif>
+                    <input path="$CdtTrfTxInf/PmtTpInf/CtgyPurp/Cd" var="Cd1"/>
+                    <output path="Sending_Customer_AccType"/>
+                    <test lang="xpath">$Cd1='INDNPL'</test>
+                    <assign value="51">
+                        <output path="."/>
+                    </assign>
+                </elseif>
+                <else>
+                    <input path="$CdtTrfTxInf/DbtrAcct/Tp/Cd" var="Cd2"/>
+                    <output path="Sending_Customer_AccType"/>
+                    <move>
+                        <input path="$Cd2/."/>
+                        <output path="."/>
+                    </move>
+                </else>
+            </condition>
+            <move>
+                <input path="$CdtTrfTxInf/DbtrAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+                <output path="Sending_Branch_IFSC"/>
+            </move>
+            <move>
+                <input path="$CdtTrfTxInf/CdtrAgt/FinInstnId/ClrSysMmbId/MmbId"/>
+                <output path="BenfBranch_IFSC"/>
+            </move>
+            <function ref="fn:substring">
+                <input path="$CdtTrfTxInf/Cdtr/Nm" var="Nm1"/>
+                <output path="BenfCustomer_AccName"/>
+                <param name="sourceString" value="$Nm1"/>
+                <param name="startLocation" value="1"/>
+                <param name="length" value="50"/>
+            </function>
+            <local>
+                <input path="$CdtTrfTxInf/Cdtr/PstlAdr"/>
+                <output path="BenfCustomer_Address"/>
+                <function ref="fn:substring">
+                    <input path="AdrLine[1]" var="AdrLine2"/>
+                    <output path="Line1"/>
+                    <param name="sourceString" value="$AdrLine2"/>
+                    <param name="startLocation" value="1"/>
+                    <param name="length" value="8"/>
+                </function>
+                <function ref="fn:substring">
+                    <input path="AdrLine[2]" var="AdrLine"/>
+                    <output path="Line2"/>
+                    <param name="sourceString" value="$AdrLine"/>
+                    <param name="startLocation" value="9"/>
+                    <param name="length" value="16"/>
+                </function>
+                <function ref="fn:substring">
+                    <input path="AdrLine[3]" var="AdrLine3"/>
+                    <output path="Line3"/>
+                    <param name="sourceString" value="$AdrLine3"/>
+                    <param name="startLocation" value="17"/>
+                    <param name="length" value="24"/>
+                </function>
+                <function ref="fn:substring">
+                    <input path="AdrLine[4]" var="AdrLine1"/>
+                    <output path="Line4"/>
+                    <param name="sourceString" value="$AdrLine1"/>
+                    <param name="startLocation" value="25"/>
+                    <param name="length" value="32"/>
+                </function>
+            </local>
+            <move>
+                <input path="$CdtTrfTxInf/CdtrAcct/Id/Othr/Id"/>
+                <output path="BenfCustomer_Acc"/>
+            </move>
+            <move>
+                <input path="$CdtTrfTxInf/CdtrAcct/Tp/Cd"/>
+                <output path="BenfCustomer_AccType"/>
+            </move>
+            <local>
+                <input path="$CdtTrfTxInf/RmtInf" var="RmtInf"/>
+                <input auxiliary="true" path="$CdtTrfTxInf/PmtId/TxId" var="TxId"/>
+                <input auxiliary="true" path="$CdtTrfTxInf/Dbtr/Id/OrgId/LEI" var="LEI1"/>
+                <output path="Remittance_information"/>
+                <function ref="fn:substring">
+                    <input path="$RmtInf/Ustrd[2]" var="Ustrd1"/>
+                    <output path="Line2"/>
+                    <param name="sourceString" value="$Ustrd1"/>
+                    <param name="startLocation" value="1"/>
+                    <param name="length" value="8"/>
+                </function>
+                <function ref="fn:substring">
+                    <input path="$RmtInf/Ustrd[2]" var="Ustrd2"/>
+                    <output path="Line3"/>
+                    <param name="sourceString" value="$Ustrd2"/>
+                    <param name="startLocation" value="9"/>
+                    <param name="length" value="16"/>
+                </function>
+                <function ref="fn:substring">
+                    <input path="$RmtInf/Ustrd[4]" var="Ustrd3"/>
+                    <output path="Line4"/>
+                    <param name="sourceString" value="$Ustrd3"/>
+                    <param name="startLocation" value="17"/>
+                    <param name="length" value="24"/>
+                </function>
+                <move>
+                    <input path="$TxId/." var="TxId1"/>
+                    <output path="Line1"/>
+                </move>
+                <if>
+                    <input path="$LEI1/." var="LEI"/>
+                    <output path="Line5"/>
+                    <test lang="xpath">$LEI != ''</test>
+                    <function ref="fn:concat">
+                        <input path="$LEI/." var="LEI2"/>
+                        <output path="."/>
+                        <param name="string1" value="&quot;SL/&quot;"/>
+                        <param name="string2" value="$LEI2"/>
+                    </function>
+                </if>
+            </local>
+            <move>
+                <input path="$cDate/." var="cDate"/>
+                <output path="Value_Date"/>
+            </move>
+            <move>
+                <input path="$cDate/." var="cDate"/>
+                <output path="Remittance_Date"/>
+            </move>
+            <move>
+                <input path="$CdtTrfTxInf/InstrForCdtrAgt/InstrInf"/>
+                <output path="Originator_of_Remittance/Line1"/>
+            </move>
+        </foreach>
+        <function ref="fn:substring-after">
+            <input path="$ComIbmMessageAssembly_Document/Document/FIToFICstmrCdtTrf/CdtTrfTxInf[1]/RmtInf/Ustrd[1]" var="Ustrd"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/body/Batch_Time"/>
+            <param name="string1" value="$Ustrd"/>
+            <param name="string2" value="'BatchId:'"/>
+        </function>
+        <assign value="XXX">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/BankApp_Identifier"/>
+        </assign>
+        <assign value="F01">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Message_Identifier"/>
+        </assign>
+        <assign value="I">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/IO_Identifier"/>
+        </assign>
+        <assign value="298">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Message_Type"/>
+        </assign>
+        <assign value="N02">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/SubMessage_Type"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Possible_Duplicate_Flag"/>
+        </assign>
+        <assign value="RTG">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Service_Identifier"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Testing_Training_Flag"/>
+        </assign>
+        <assign value="000000000">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Sequence_Number"/>
+        </assign>
+        <assign value="XXXXXXXXX">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Filler"/>
+        </assign>
+        <assign value="00">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/RTGS_Priority"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Delivery_Monitoring_Flag"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Open_Notification_Number"/>
+        </assign>
+        <assign value="2">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/NonDelivery_Warning_Flag"/>
+        </assign>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2[1]/usr[1]/BankDetails[1]/UTR"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/header/MUR"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Unique_Transaction_Number"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/UTR"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/body/Transaction_Reference_Number"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cDate"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Originate_Date"/>
+        </move>
+        <move>
+            <input path="$ComIbmMessageAssembly_Document/MQRFH2/usr/BankDetails/cTime"/>
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Originate_Time"/>
+        </move>
+        <assign value="000">
+            <output path="$ComIbmMessageAssembly_N02/N02/header/Obsolescence_Period"/>
+        </assign>
+        <assign value="{4:">
+            <output path="$ComIbmMessageAssembly_N02/N02/body/Block_4_Initiator"/>
+        </assign>
+    </mappingDeclaration>
+</mappingRoot>

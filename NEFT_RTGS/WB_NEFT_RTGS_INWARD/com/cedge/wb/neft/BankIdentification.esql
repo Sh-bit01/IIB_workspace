@@ -1,0 +1,187 @@
+BROKER SCHEMA com.cedge.wb.neft
+
+CREATE COMPUTE MODULE BankIdentification
+	DECLARE DSNNAME EXTERNAL CHARACTER '';
+	DECLARE SCHEMANAME EXTERNAL CHARACTER '';
+	DECLARE TABLENAME EXTERNAL CHARACTER '';
+	DECLARE NEFT_OUT_TABLENAME EXTERNAL CHARACTER '';
+	
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 DECLARE bool BOOLEAN;
+		 CALL CopyMessageHeaders();
+		 SET bool = CopyEntireMessage();
+		RETURN bool;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() RETURNS BOOLEAN  
+	BEGIN
+		DECLARE rc BOOLEAN;
+		DECLARE msgType , msgIdentifier ,sdrIfsc , rcvrIfsc , bankName , bankType , curStatus , relatedRefNo ,newRecvrIfsc , newSdrIfsc , seqNo , transDate , newTrandate ,newTrandate1, transRefNoForN09, msgtype CHARACTER ;
+		DECLARE DB_Details ROW;
+		DECLARE inMsgDetailsref REFERENCE TO InputRoot.DFDL ;
+		DECLARE outMsgDetailsRef REFERENCE TO OutputRoot;
+		DECLARE headerRef REFERENCE TO inMsgDetailsref.*.header;
+		SET msgType = headerRef.SubMessage_Type ;
+		SET msgtype = headerRef.Message_Type ; --N04
+		SET msgIdentifier = headerRef.Message_Identifier ;
+		SET sdrIfsc = headerRef.Sender_IFSC ;
+--		SET rcvrIfsc = headerRef.Receiver_IFSC ;
+		SET rcvrIfsc = COALESCE (inMsgDetailsref.*.body.record.BenfBranch_IFSC ,headerRef.Receiver_IFSC) ;
+		DECLARE bodyRef REFERENCE TO inMsgDetailsref.*.body;
+		DECLARE i INTEGER 1 ;
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','IFN MSG TYPE : '||InputRoot.Properties.MessageType) INTO rc;
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Sender IFSC : '||sdrIfsc) INTO rc;
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Receiver IFSC :'||COALESCE(rcvrIfsc,'NOT APPLICABLE')) INTO rc;
+
+
+		SET newRecvrIfsc= rcvrIfsc||'%';
+--		SET newRecvrIfsc=SUBSTRING(rcvrIfsc FROM 1 FOR 4)||'%';
+		SET newSdrIfsc=SUBSTRING(sdrIfsc from 1 for 4)||'%';
+		
+		DECLARE Qry CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.'||TABLENAME||' A WHERE A.IFSC_CODE like ? ';
+		-- IF msgType = 'N02' OR msgType = 'N09' THEN
+		-- SET rcvrIfsc = InputRoot.DFDL.N02.body.record.BenfBranch_IFSC ;
+		-- END IF;
+		-- IF msgType = 'N09' THEN
+		-- SET transRefNoForN09 =bodyRef.Transaction_Reference_Number;
+		-- DECLARE Qry4 CHARACTER 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME||' A WHERE A.TRAN_REF_NO = ?';
+		-- SET DB_Details.A[] = PASSTHRU(Qry4 TO Database.{DSNNAME} VALUES(transRefNoForN09));
+		-- END IF;
+
+--		 SET newRecvrIfsc=SUBSTRING(rcvrIfsc FROM 1 FOR 4)||'%';
+--		 SET newSdrIfsc=SUBSTRING(sdrIfsc from 1 for 4)||'%';
+		-- N04 changes --
+--		IF msgtype = '972' THEN
+--			CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','972 Statement No. : ' || InputRoot.DFDL.INF972.body.Statement_Number) INTO rc;
+--		END IF;
+		IF msgType = 'N02' OR msgType = 'N03' OR msgType='N10' OR msgType = 'N09' OR msgType = 'N04' OR ((msgtype = '972') AND (InputRoot.DFDL.INF972.body.Statement_Number = '1')) THEN --N03
+			-- N04 changes end --
+			SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(newRecvrIfsc));
+		ELSEIF msgType = 'N10' THEN
+			SET relatedRefNo = InputRoot.DFDL.N10.body.record.Related_RefNumber ;
+			CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Related refrence Number :'||relatedRefNo) INTO rc;
+			SET Qry = 'SELECT A.BANKNAME FROM '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME||' A WHERE TRIM(A.TRAN_REF_NO) = ?';
+			SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(relatedRefNo));
+		END IF;
+			DECLARE bankDetailsRef REFERENCE TO DB_Details;
+			MOVE bankDetailsRef FIRSTCHILD;
+			DECLARE tempDbRef REFERENCE TO bankDetailsRef;
+			SET bankName = TRIM(tempDbRef.BANKNAME) ;
+			
+		IF msgIdentifier = 'F27' THEN
+			-- SET seqNo = headerRef.Sequence_Number ;
+			-- SET transDate=headerRef.Date_Time;
+			-- SET newTrandate1 = SUBSTRING(transDate from 1 for 8);
+			--
+			-- set newTrandate=SUBSTRING(transDate from 1 for 8);
+			-- ------------------------------------------------SOD DATE CHECK----------------------------------------------
+			-- DECLARE sod_date CHARACTER;
+			-- DECLARE sodcheck ROW;
+			-- SET sodcheck.R[] = PASSTHRU('SELECT * FROM NEFT_24X7 ' TO Database.{DSNNAME} );
+			-- SET sod_date = sodcheck.R[1].SOD_DATE;
+			-- IF (sod_date <> '00000000') AND (sod_date <> newTrandate) THEN
+			-- SET newTrandate = sod_date;
+			-- END IF;
+			-- SET Environment.newTrandate = newTrandate;
+			-- ------------------------------------------------------------------------------------------------------------
+			-- DECLARE countlen INTEGER 0 ;
+			-- SET countlen = LENGTH(seqNo);
+			-- WHILE countlen < 9 DO
+			-- SET seqNo = '0' || seqNo ;
+			-- SET countlen = countlen + 1 ;
+			-- END WHILE;
+			-- SET Qry = 'SELECT BANKNAME FROM '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME||' A WHERE A.seqinheader = ? and A.TRAN_DATE= ? and A.IFSC_SENDER like ?';
+			-- SET DB_Details.A[] = PASSTHRU(Qry TO Database.{DSNNAME} VALUES(seqNo,Environment.newTrandate,newSdrIfsc));
+			SET bankName = TRIM(OutputRoot.MQRFH2.usr.BankDetails.BANKNAME) ;
+		END IF;
+		--
+
+
+
+		CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Bank Name: '||COALESCE(bankName,'NOT FOUND.')) INTO rc;
+		-----------------------------------N03-----------------------------ROHAN---------------------
+		IF msgType = 'N03' THEN
+			DECLARE recordRef REFERENCE TO inMsgDetailsref.*.body.record[>];
+			WHILE LASTMOVE(recordRef) DO
+
+				DECLARE qry2 CHARACTER 'SELECT IFSC_SENDER,IFSC_RECVR,INC_UTR FROM '||SCHEMANAME||'.'||NEFT_OUT_TABLENAME|| ' B WHERE  TRIM(B.TRAN_REF_NO)= ?';
+				SET DB_Details.B[] =PASSTHRU(qry2 TO Database.{DSNNAME} VALUES(recordRef.Related_Reference_Number));
+				DECLARE recordReff REFERENCE TO DB_Details.B[1];
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Sender IFSC : '||COALESCE(recordReff.IFSC_RECVR,'Unable To Fetch Data..')) INTO rc;
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Receiver IFSC :'||COALESCE(recordReff.IFSC_SENDER,'Unable To Fetch Data..')) INTO rc;
+				
+				SET OutputRoot.MQRFH2.usr.BankDetails.INC_UTR = recordReff.INC_UTR;
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Transaction Id : '||COALESCE(recordReff.INC_UTR,'Unable To Fetch Data..')) INTO rc;
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Transaction Number : '||recordRef.Related_Reference_Number) INTO rc;
+				CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Reasion code : '||recordRef.Reason_Code) INTO rc;
+				IF recordRef.Reason_Code IN ('RJ07','RJ08') THEN
+					CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Holding N03 transaction record at IIB end') INTO rc;
+					CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','---------------------------END--------------------------') INTO rc;
+				ELSE
+					SET OutputRoot.MQRFH2.usr.BankDetails.BankName = bankName;
+					SET OutputRoot.DFDL.N09.header = InputRoot.DFDL.N_03.header ;
+					SET OutputRoot.DFDL.N09.header.Sender_IFSC = TRIM(recordReff.IFSC_RECVR);
+					SET OutputRoot.DFDL.N09.header.Receiver_IFSC = TRIM(recordReff.IFSC_SENDER);
+					SET OutputRoot.DFDL.N09.header.MUR = recordRef.Related_Reference_Number;
+					SET OutputRoot.DFDL.N09.header.Unique_Transaction_Number = recordRef.Related_Reference_Number;
+					SET OutputRoot.DFDL.N09.header.SubMessage_Type = 'N09';
+					SET OutputRoot.DFDL.N09.body.Block_4_Initiator = InputRoot.DFDL.N_03.body.Block_4_Initiator;
+					SET OutputRoot.DFDL.N09.body.Transaction_Reference_Number = recordRef.Related_Reference_Number;
+					SET OutputRoot.DFDL.N09.body.Status = 'N';
+					SET OutputRoot.DFDL.N09.body.Reason = recordRef.Reason_Code;
+					SET OutputRoot.DFDL.N09.body.Description = 'Rejected BY RBI N03 MSG';
+					-- SET OutputRoot.DFDL.N_03.body.record[1] = recordRef;
+					-- SET i = i + 1;
+					CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Converting to N09 Msg') INTO rc;
+					CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Belogs TO Cedge Bank') INTO rc;
+					-- SET OutputRoot.MQRFH2.usr.BankDetails.BankName = bankName ;
+					-- SET OutputRoot.DFDL = inMsgDetailsref ;
+					-- SET OutputRoot.DFDL = OutputRoot.DFDL.N_03;
+					-- SET OutputRoot.DFDL.*.Optional = NULL;
+					PROPAGATE TO TERMINAL 'out' DELETE NONE;
+				END IF;
+				-- END IF;
+				MOVE recordRef NEXTSIBLING;
+				SET OutputRoot.DFDL.*.Optional = NULL;
+			END WHILE;
+
+			RETURN FALSE;
+			----------------------------------------------N03------------------------ROHAN----------------
+		ELSE
+			IF LENGTH(bankName) <> 0 THEN
+				SET OutputRoot.MQRFH2.usr.BankDetails.BankName = bankName ;
+				SET OutputRoot.DFDL = inMsgDetailsref ;
+				SET OutputRoot.DFDL.*.Optional = NULL;
+				PROPAGATE TO TERMINAL 'out' DELETE NONE;
+				RETURN FALSE ;
+			ELSE
+--				IF msgType = 'N02' OR msgType = 'N03' OR msgType ='N04' OR ((msgtype = '972') AND (InputRoot.DFDL.INF972.body.Statement_Number = '1')) THEN --N04 --N03
+--				IF msgType IN ('N02','N04') OR (InputRoot.DFDL.INF972.body.Statement_Number = '1') THEN
+				IF  ((msgtype = '972') AND (InputRoot.DFDL.INF972.body.Statement_Number = '1')) THEN  
+					SET OutputRoot.DFDL = inMsgDetailsref ;
+					SET OutputRoot.DFDL.*.Optional = NULL;
+					PROPAGATE TO TERMINAL 'out' DELETE NONE;
+					RETURN FALSE ;
+				ELSE
+					CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','Posting Message to WB.NEFT.IN.OTHER') INTO rc;
+					CALL log4j_1_1('IDENTIFY_BANK', 'WB_NEFT_IN', 'INFO','---------------------------END--------------------------') INTO rc;
+					SET OutputRoot.DFDL = inMsgDetailsref ;
+					SET OutputRoot.DFDL.*.Optional = NULL;
+					PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+					RETURN FALSE ;
+				END IF;
+			END IF;
+		END IF;
+	END;
+END MODULE;
