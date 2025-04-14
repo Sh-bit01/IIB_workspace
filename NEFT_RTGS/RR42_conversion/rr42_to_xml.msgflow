@@ -6,16 +6,16 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/RR42_conversion/icons/full/obj16/rr42_to_xml.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/RR42_conversion/icons/full/obj30/rr42_to_xml.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="82,54" URLSpecifier="/rr42" messageDomainProperty="BLOB" parserXmlnscMixedContentRetainMode="all" faultFormat="JSON">
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="75,46" URLSpecifier="/rr42" messageDomainProperty="BLOB" parserXmlnscMixedContentRetainMode="all" faultFormat="JSON">
         <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="655,61">
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="636,36">
         <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="353,192" computeExpression="esql://routine/#rr42_to_xml_Compute.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="350,109" computeExpression="esql://routine/#rr42_to_xml_Compute.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
-      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="351,274" rotation="RIGHT_TO_LEFT" messageDomain="DFDL" resetMessageDomain="true" resetMessageSet="true" messageType="{}:RR42" resetMessageType="true" resetMessageFormat="true">
+      <nodes xmi:type="ComIbmResetContentDescriptor.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="348,191" rotation="RIGHT_TO_LEFT" messageDomain="DFDL" resetMessageDomain="true" resetMessageSet="true" messageType="{}:RR42" resetMessageType="true" resetMessageFormat="true">
         <translation xmi:type="utility:ConstantString" string="Reset Content Descriptor"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
