@@ -1,6 +1,4 @@
 
-
-
 CREATE COMPUTE MODULE XLXS_attachement_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -20,10 +18,13 @@ CREATE COMPUTE MODULE XLXS_attachement_Compute1
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		
+		throw USER EXCEPTION VALUES('hi');
+		
 		SET OutputRoot.EmailOutputHeader.To = 'gabriel@test.com';
 		SET OutputRoot.EmailOutputHeader.From = 'shreyash@test.com';
 		SET OutputRoot.EmailOutputHeader.Subject = 'test mime1212';
-		SET OutputLocalEnvironment.Destination.Email.SMTPServer ='192.168.2.78:25';
+		SET OutputLocalEnvironment.Destination.Email.SMTPServer ='192.168.3.59:25';
 
 		CREATE FIELD OutputRoot.MIME TYPE Name;
 		DECLARE M REFERENCE TO OutputRoot.MIME;

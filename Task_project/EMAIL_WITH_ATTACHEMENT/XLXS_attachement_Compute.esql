@@ -21,7 +21,7 @@ CREATE COMPUTE MODULE XLXS_attachement_Compute
 		SET OutputRoot.EmailOutputHeader.To = 'gabriel@test.com';
 		SET OutputRoot.EmailOutputHeader.From = 'shreyash@test.com';
 		SET OutputRoot.EmailOutputHeader.Subject = 'test mime';
-		SET OutputLocalEnvironment.Destination.Email.SMTPServer ='192.168.2.78:25';
+		SET OutputLocalEnvironment.Destination.Email.SMTPServer ='192.168.3.59:25';
 		SET OutputRoot.BLOB.BLOB = CAST('DATA' AS BLOB CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
 		SET Environment.BLOB = InputRoot.BLOB.BLOB;
 		
