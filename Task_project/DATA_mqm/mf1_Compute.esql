@@ -1,9 +1,11 @@
 
 DECLARE config EXTERNAL CHARACTER;
+DECLARE var1 BOOLEAN;
 CREATE COMPUTE MODULE mf1_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
+		CALL initLog4j(config)INTO var1;
 		CALL CopyEntireMessage();
 		RETURN TRUE;
 	END;
@@ -27,8 +29,17 @@ CREATE COMPUTE MODULE mf1_Compute
 		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'Logger2','INFO', in_data) INTO var1;	
 	
 		DECLARE time1 TIMESTAMP CURRENT_TIMESTAMP;
-		DECLARE data CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER);
-		SET OutputRoot.BLOB.BLOB = CAST(CAST(InputRoot.BLOB.BLOB as CHARACTER CCSID ccsid ENCODING enc) );
+		DECLARE tdata CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER);
+		SET in_data = in_data ||' '|| tdata;
+		SET OutputRoot.BLOB.BLOB = CAST(in_data as CHARACTER CCSID ccsid ENCODING enc);
+		
+		
+		----------------------------------------------------------------------------------------------------------------
+		DECLARE data CHARACTER;
+		SET data = CAST(OutputRoot.BLOB.BLOB as CHARACTER CCSID ccsid ENCODING enc);
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'Logger2','INFO', ' ---------------------------END---------------------------') INTO var1;
+		----------------------------------------------------------------------------------------------------------------
 	END;
 END MODULE;
 

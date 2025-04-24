@@ -1,0 +1,73 @@
+BROKER SCHEMA ExceptionHandling
+DECLARE config EXTERNAL CHARACTER;
+DECLARE logger EXTERNAL CHARACTER;
+DECLARE var1 BOOLEAN;
+CREATE COMPUTE MODULE Task_AccountAggrator_restInputCatchHandler_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL initLog4j(config)INTO var1;
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		DECLARE ccsid INTEGER InputRoot.Properties.CodedCharSetId;
+		DECLARE enc INTEGER InputRoot.Properties.Encoding;
+		----------------------------------------------------------------------------------------------------------------
+		DECLARE in_data CHARACTER;
+		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType, logger ,'ERROR', '---------------------------Start---------------------------') INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType, logger ,'ERROR', in_data) INTO var1;
+		----------------------------------------------------------------------------------------------------------------
+
+		--SET OutputRoot = InputRoot;
+		DECLARE ref REFERENCE TO InputExceptionList.*[>];
+		DECLARE Text CHARACTER;
+		DECLARE Itm ROW;
+
+		WHILE LASTMOVE(ref) DO
+			MOVE ref LASTCHILD;
+			IF ref.Number IS NOT NULL THEN
+				SET Text = ref.Text;
+				SET Itm.item[] = ref.Insert[];
+			END IF;
+		END WHILE;
+
+
+		SET OutputRoot.JSON.Data.error.error_desc = Text;
+		--SET OutputRoot.JSON.Data.error.messagId = 563214785965219762;
+
+		DECLARE refI REFERENCE TO Itm.item[1];
+		DECLARE text CHARACTER '';
+		WHILE LASTMOVE(refI) DO
+			SET text = text ||'  ' ||refI.Text;
+			MOVE refI NEXTSIBLING;
+		END WHILE;
+		SET OutputRoot.JSON.Data.error.additionalData.Error.esb_error_desc = text;
+		--DECLARE data CHARACTER;
+		--SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+		--DECLARE exp REFERENCE TO InputExceptionList.[1];
+		--CALL WriteLogFile(exp.Label ||' '||exp.Type,'Logger1','ERROR', data) INTO var1;
+		------------------------------------------------------------------------------------------------------------------
+		DECLARE data CHARACTER;
+		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType, logger ,'ERROR', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType, logger ,'ERROR', '---------------------------END---------------------------') INTO var1;
+		------------------------------------------------------------------------------------------------------------------
+
+	END;
+END MODULE;
+
+
+
+
+
+CREATE FUNCTION WriteLogFile( IN COMPONENT_NAME CHARACTER,IN LOGGER_NAME CHARACTER, IN LEVEL CHARACTER, IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA --Indicates that this function is implemented in Java.
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log"; --Specifies the fully qualified Java class and method used for logging.
+-- Define a Java function named initLog4j for initializing Log4j with the provided configuration file.
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j"; -- Specifies the fully qualified Java class and method used for initialization.
