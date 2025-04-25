@@ -15,19 +15,23 @@
       <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="382,32" computeExpression="esql://routine/#mf1_Compute.Main">
         <translation xmi:type="utility:ConstantString" string="Compute"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="82,66" queueName="IN" destinationQueueManagerName="MAIN">
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="82,66" queueName="IN" connection="CLIENT" destinationQueueManagerName="MAIN" queueManagerHostname="192.168.2.245" listenerPortNumber="1519" channelName="APP.SVRCONN">
         <translation xmi:type="utility:ConstantString" string="MQ Input"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="665,37" queueName="RQD" destinationQueueManagerName="MAIN">
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="665,37" queueName="RQD" connection="CLIENT" destinationQueueManagerName="MAIN" queueManagerHostname="192.168.2.245" listenerPortNumber="1519" channelName="APP.SVRCONN">
         <translation xmi:type="utility:ConstantString" string="MQ Output"/>
       </nodes>
-      <nodes xmi:type="ExceptionHandling_exp.subflow:FCMComposite_1" xmi:id="FCMComposite_1_5" location="418,152">
+      <nodes xmi:type="ExceptionHandling_exp.subflow:FCMComposite_1" xmi:id="FCMComposite_1_5" location="384,152">
         <translation xmi:type="utility:ConstantString" string="exp"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="633,154" queueName="err" connection="CLIENT" destinationQueueManagerName="MAIN" queueManagerHostname="192.168.2.245" listenerPortNumber="1519" channelName="APP.SVRCONN">
+        <translation xmi:type="utility:ConstantString" string="MQ Output1"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.Input"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
     </composition>
     <propertyOrganizer>
       <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.config">

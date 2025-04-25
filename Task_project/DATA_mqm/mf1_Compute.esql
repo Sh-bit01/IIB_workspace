@@ -31,7 +31,7 @@ CREATE COMPUTE MODULE mf1_Compute
 		DECLARE time1 TIMESTAMP CURRENT_TIMESTAMP;
 		DECLARE tdata CHARACTER CAST(CURRENT_TIMESTAMP AS CHARACTER);
 		SET in_data = in_data ||' '|| tdata;
-		SET OutputRoot.BLOB.BLOB = CAST(in_data as CHARACTER CCSID ccsid ENCODING enc);
+		SET OutputRoot.BLOB.BLOB = CAST(in_data as BLOB CCSID ccsid ENCODING enc);
 		
 		
 		----------------------------------------------------------------------------------------------------------------
