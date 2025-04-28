@@ -20,6 +20,8 @@ CREATE COMPUTE MODULE pdf_write_data_Compute
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		
+		
+		
 		SET OutputRoot.Properties = InputRoot.Properties;
 		SET OutputRoot.Properties.ContentType = 'application/pdf';
 		SET OutputRoot.HTTPInputHeader = InputRoot.HTTPInputHeader;
