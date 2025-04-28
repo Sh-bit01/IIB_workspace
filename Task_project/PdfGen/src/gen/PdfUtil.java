@@ -1,16 +1,13 @@
 package gen;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
+//import java.net.URL;
 
-import java.io.ByteArrayOutputStream;
+import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.layout.*;
+import com.itextpdf.layout.element.*;
+import com.itextpdf.io.image.*;
 
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
-import java.io.InputStream;
-import java.net.URL;
+import java.io.*;
 
 public class PdfUtil {
 

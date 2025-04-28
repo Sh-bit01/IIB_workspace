@@ -26,9 +26,15 @@ CREATE COMPUTE MODULE pdf_write_data_Compute
 		SET OutputRoot.Properties.ContentType = 'application/pdf';
 		SET OutputRoot.HTTPInputHeader = InputRoot.HTTPInputHeader;
 		SET OutputRoot.HTTPInputHeader."Content-Type" = 'application/pdf';
-		DECLARE data CHARACTER CAST(InputRoot.BLOB.BLOB AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+		--DECLARE data CHARACTER CAST(InputRoot.BLOB.BLOB AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
 		DECLARE blo BLOB;
-		SET blo = pdf(data);
+		DECLARE img CHARACTER;
+		
+		DECLARE In_url CHARACTER InputRoot.JSON.Data.url;
+		SET img = 'https://picsum.photos/seed/'||UUIDASCHAR||'/400/400';
+		
+		SET blo = pdfI(InputRoot.JSON.Data.data, COALESCE(In_url, img));
+		
 		SET OutputRoot.BLOB.BLOB = blo;
 		
 		
@@ -41,6 +47,12 @@ END MODULE;
 CREATE PROCEDURE pdf(in data CHARACTER) RETURNS BLOB
 LANGUAGE JAVA
 EXTERNAL NAME "gen.PdfUtil.generatePdfAsBytes";
+
+
+
+CREATE PROCEDURE pdfI(in data CHARACTER, in img CHARACTER) RETURNS BLOB
+LANGUAGE JAVA
+EXTERNAL NAME "gen.PdfUtil.generatePdfWithTextAndImage";
 
 
 
