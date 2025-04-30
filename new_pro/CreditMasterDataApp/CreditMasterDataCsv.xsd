@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:csv="http://www.ibm.com/dfdl/CommaSeparatedFormat" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://www.ibm.com/dfdl/CommaSeparatedFormat" schemaLocation="IBMdefined/CommaSeparatedFormat.xsd"/>
+    <xsd:annotation>
+        <xsd:appinfo source="http://www.ogf.org/dfdl/">
+            <dfdl:format documentFinalTerminatorCanBeMissing="yes" encoding="{$dfdl:encoding}" escapeSchemeRef="csv:CSVEscapeScheme" ref="csv:CommaSeparatedFormat"/>
+        </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:element ibmSchExtn:docRoot="true" name="CreditMasterDataCsv">
+        <xsd:complexType>
+            <xsd:sequence dfdl:separator="">
+                <xsd:element dfdl:occursCountKind="implicit" dfdl:terminator="%CR;%LF;%WSP*;" maxOccurs="unbounded" name="record">
+                    <xsd:complexType>
+                        <xsd:sequence dfdl:separatorSuppressionPolicy="trailingEmpty">
+                            <xsd:element ibmDfdlExtn:sampleValue="BANK130112023123045120001" name="MSG_ID" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="160000000298942" name="CRED_MAST_NUIB" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="XXXXXXXXXMMAABB" name="CRED_MAST_COUNTERCD" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="202100000017602" name="CRED_MAST_REFERENCE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="N" name="CRED_MAST_CLIE_TYPE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="1" name="CRED_MAST_SCOPE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="C" name="CRED_MAST_CLIE_ENTITY" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="TEXTO TEXTO" name="CRED_MAST_PRODUCT" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="SLA" name="CRED_MAST_AMORT_TYP" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="103" name="CRED_MAST_TYPE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="102" name="CRED_MAST_PURP" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="20.651,00" name="CRED_MAST_AMTREQ" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="20.651,00" name="CRED_MAST_AMTAPPR" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="MZN" name="CRED_MAST_CUR" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="2023-11-10" name="CRED_MAST_HIRE_DATE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="2023-11-10" name="CRED_MAST_DISB_DATE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="2023-11-10" name="CRED_MAST_PYMT_DATE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="1" name="CRED_MAST_ACCP_PRD" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="2026.12.20" name="CRED_MAST_MAT_DATE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="36" name="CRED_MAST_NO_INSTMT" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="3" name="CRED_MAST_REFUND_FREQ" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="1" name="CRED_MAST_INTRATE_TYPE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="10.000,00" name="CRED_MAST_SUBC_COMM" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="1" name="CRED_MAST_REF_INTRATE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue=" " name="CRED_MAST_TRF_OPR" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="N" name="CRED_MAST_LINK_OPR" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="10000000" name="CRED_MAST_PLACE_USE" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue="P" name="CRED_MAST_SRC_FUND" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue=" " name="CRED_MAST_RESRC_PERC" type="xsd:string"/>
+                            <xsd:element ibmDfdlExtn:sampleValue=" " name="CRED_MAST_INITCONT_REF" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
