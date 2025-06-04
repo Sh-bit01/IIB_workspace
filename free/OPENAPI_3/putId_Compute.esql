@@ -1,0 +1,36 @@
+
+
+
+
+CREATE COMPUTE MODULE putId_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		DECLARE id CHARACTER;
+		SET id = InputLocalEnvironment.REST.Input.Parameters.id;
+		DECLARE inref REFERENCE TO InputRoot.JSON.Data;
+
+		--DECLARE query CHARACTER 'UPDATE users1181 SET name ='||inref.name ||', email ='|| inref.email ||' WHERE id ='||id||'';
+		DECLARE data ROW;
+--		SET data.res[] = PASSTHRU(query);
+		UPDATE Database.users1181 AS t SET name = inref.name WHERE t.id = id;
+		SET OutputRoot.JSON.Data.Status = 'responce from put data updated';
+
+	END;
+END MODULE;

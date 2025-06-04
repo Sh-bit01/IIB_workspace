@@ -1,0 +1,10 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "APiC",
+    "version" : "1.0.0",
+    "description" : "APiC"
+  },
+  "paths" : { },
+  "basePath" : "/apic/v1"
+}

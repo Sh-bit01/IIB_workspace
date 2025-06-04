@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<palette:CategoryCmp xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:palette="http://www.ibm.com/wbi/2005/eflow_palette" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" xmi:id="cryptography" iconOpenName="platform:/resource/Cryptography/icons/small/Cryptography.png" iconClosedName="platform:/resource/Cryptography/icons/small/Cryptography.png">
+  <categoryLabel xsi:type="utility:TranslatableString" key="category.name" bundleName="palette" pluginId="Cryptography"/>
+  <cmpGroups xsi:type="palette:GroupCmp">
+    <cmpEntries xsi:type="palette:ToolEntry" xmi:id="Cryptography.enc" icon16Name="platform:/resource/Cryptography/icons/small/Cryptography/enc.png" icon32Name="platform:/resource/Cryptography/icons/large/Cryptography/enc.png" toolClassName="com.ibm.etools.mft.flow.editor.MFTNodeCreationTool" toolClassPluginId="com.ibm.etools.mft.flow" nodeURI="Cryptography:Cryptography/enc.subflow">
+      <entryLabel xsi:type="utility:TranslatableString" key="entry.Cryptography.enc" bundleName="palette" pluginId="Cryptography"/>
+      <entryShortDescription xsi:type="utility:TranslatableString" key="tooltip.Cryptography.enc" bundleName="palette" pluginId="Cryptography"/>
+    </cmpEntries>
+  </cmpGroups>
+</palette:CategoryCmp>

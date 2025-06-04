@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Java_compute_node_XML_to_JSON</name>
+	<name>sequence</name>
 	<comment></comment>
 	<projects>
-		<project>1212121212computeodeJava</project>
-		<project>Java_compute_node_XML_to_JSONJava</project>
+		<project>Cryptography</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
