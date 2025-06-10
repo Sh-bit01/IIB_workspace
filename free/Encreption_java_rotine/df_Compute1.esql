@@ -1,0 +1,41 @@
+
+
+CREATE COMPUTE MODULE df_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+		
+		DECLARE data CHARACTER InputRoot.JSON.Data.client.Encryption;
+		DECLARE result CHARACTER;
+		call Clinet_dec(data) INTO result;
+		SET OutputRoot.JSON.Data.client.Decrypted = result;
+		
+	END;
+END MODULE;
+
+
+CREATE PROCEDURE Clinet_enc ( in data CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "encdec.Esecurity.encryptPassword";
+
+CREATE PROCEDURE Clinet_dec (in data CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "encdec.Esecurity.decryptPassword";

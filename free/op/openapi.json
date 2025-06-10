@@ -1,1 +1,0 @@
-{ "openapi": "3.0.0", "info": { "title": "op", "version": "1.0.0", "description": "op" }, "servers": [ { "url": "/op/v1" } ] }

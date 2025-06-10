@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><ecore:EPackage xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" nsPrefix="Cryptography_encryption.subflow" nsURI="Cryptography/encryption.subflow" xmi:version="2.0" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" xmlns:xmi="http://www.omg.org/XMI">
+    <eClassifiers name="FCMComposite_1" nodeLayoutStyle="RECTANGLE" udpSupport="true" useDefaults="true" xmi:type="eflow:FCMComposite">
+        <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+        <translation bundleName="Cryptography/encryption" key="encryption" pluginId="Cryptography" xmi:type="utility:TranslatableString"/>
+        <colorGraphic16 resourceName="platform:/resource/Cryptography/icons/small/Cryptography/encryption.png" xmi:type="utility:GIFFileGraphic"/>
+        <colorGraphic32 resourceName="platform:/resource/Cryptography/icons/large/Cryptography/encryption.png" xmi:type="utility:GIFFileGraphic"/>
+        <composition>
+            <nodes location="620,103" xmi:id="OutTerminal.Failure" xmi:type="eflow:FCMSink">
+                <translation bundleName="Cryptography/encryption" key="OutTerminal.Failure" pluginId="Cryptography" xmi:type="utility:TranslatableString"/>
+            </nodes>
+            <nodes location="630,20" xmi:id="OutTerminal.Output" xmi:type="eflow:FCMSink">
+                <translation bundleName="Cryptography/encryption" key="OutTerminal.Output" pluginId="Cryptography" xmi:type="utility:TranslatableString"/>
+            </nodes>
+            <nodes computeExpression="esql://routine/Cryptography#enc_Compute.Main" location="360,20" xmi:id="FCMComposite_1_2" xmi:type="ComIbmCompute.msgnode:FCMComposite_1">
+                <translation string="Compute" xmi:type="utility:ConstantString"/>
+            </nodes>
+            <nodes location="130,20" xmi:id="InTerminal.Input" xmi:type="eflow:FCMSource">
+                <translation bundleName="Cryptography/encryption" key="InTerminal.Input" pluginId="Cryptography" xmi:type="utility:TranslatableString"/>
+            </nodes>
+            <connections sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetNode="OutTerminal.Output" targetTerminalName="InTerminal.in" xmi:id="FCMConnection_4" xmi:type="eflow:FCMConnection"/>
+            <connections sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.failure" targetNode="OutTerminal.Failure" targetTerminalName="InTerminal.in" xmi:id="FCMConnection_5" xmi:type="eflow:FCMConnection"/>
+            <connections sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetNode="FCMComposite_1_2" targetTerminalName="InTerminal.in" xmi:id="FCMConnection_6" xmi:type="eflow:FCMConnection"/>
+        </composition>
+        <propertyOrganizer/>
+        <stickyBoard/>
+    </eClassifiers>
+</ecore:EPackage>

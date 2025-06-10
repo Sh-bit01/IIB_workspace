@@ -1,0 +1,67 @@
+DECLARE external_var EXTERNAL CHARACTER '';
+
+DECLARE var1 BOOLEAN;
+
+
+CREATE COMPUTE MODULE IncomingRouterFlow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL initLog4j(external_var) INTO var1;
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+
+		DECLARE CID INTEGER InputRoot.Properties.CodedCharSetId;
+		DECLARE Encod INTEGER InputRoot.Properties.Encoding;
+
+		DECLARE in_data, out_data CHARACTER;
+		DECLARE Service_Url CHARACTER;
+		DECLARE Service_Code INTEGER;
+		DECLARE segmentIndex INTEGER 2;
+		DECLARE currentSegment CHAR;
+
+		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID CID) AS CHARACTER CCSID CID ENCODING Encod);
+		SET Service_Code = InputRoot.HTTPInputHeader.Service_code; ----Service_Code in http Header
+		set Environment.Ser_id = Service_Code;
+		CALL WriteLogFile(MessageFlowLabel, 'Logger2', 'INFO','Input_Data: ' || in_data) INTO var1; --log4j
+
+
+		DECLARE r ROW;
+		DECLARE query CHARACTER;
+		SET query = 'select SERVICE_URL, Parameter from SERVICES_TABLE where SERVICE_CODE=?';
+		set r.res[] = PASSTHRU(query, Service_Code);
+		--SET OutputRoot.JSON.Data.success = 'body';
+		SET OutputRoot.JSON.Data = InputRoot.JSON.Data;
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL = Service_Url ;
+
+		SET out_data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID CID) AS CHARACTER CCSID CID ENCODING Encod);
+		CALL WriteLogFile(MessageFlowLabel, 'Logger2', 'INFO','Input_Flow_Data: ' || in_data) INTO var1;
+
+	END;
+END MODULE;
+
+
+CREATE FUNCTION WriteLogFile( IN COMPONENT_NAME CHARACTER,IN LOGGER_NAME CHARACTER, IN LEVEL CHARACTER, IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA --Indicates that this function is implemented in Java.
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log"; --Specifies the fully qualified Java class and method used for logging.
+-- Define a Java function named initLog4j for initializing Log4j with the provided configuration file.
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j"; -- Specifies the fully qualified Java class and method used for initialization.
+
