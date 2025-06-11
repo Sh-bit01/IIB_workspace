@@ -82,7 +82,7 @@ CREATE COMPUTE MODULE postSend_Compute
 			SET OutputRoot.EmailOutputHeader.To = 'gabriel@test.com';
 			SET OutputRoot.EmailOutputHeader.Subject = 'OTP for Secure Login';
 			SET OutputRoot.BLOB.BLOB = CAST(text AS BLOB CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding) ;
-				PROPAGATE TO TERMINAL 'out1';
+				---PROPAGATE TO TERMINAL 'out1';
 
 				SET OutputRoot.JSON.Data = null;
 				SET OutputRoot.JSON.Data.status = 'success';

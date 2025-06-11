@@ -1,0 +1,118 @@
+CREATE TABLE AUDIT_LOG (
+    MSG_ID VARCHAR2(200) NOT NULL,
+    PAYLOAD_TYPE VARCHAR2(100) NOT NULL,
+    PAYLOAD CLOB NOT NULL,
+    PAYLOAD_FLOW VARCHAR2(100) NOT NULL,
+    CREATED_ON TIMESTAMP(6) NOT NULL,
+    CREATED_BY VARCHAR2(50) NOT NULL,
+    CONSTRAINT AUDIT_LOG_PK PRIMARY KEY (MSG_ID)
+);
+
+SELECT * FROM AUDIT_LOG;
+
+CREATE OR REPLACE PROCEDURE SYSTEM.INSERT_AUDIT_LOG (
+    p_msg_id         VARCHAR2,
+    p_payload_type  VARCHAR2,
+    p_payload       CLOB,
+    p_payload_flow VARCHAR2,
+    p_created_by     VARCHAR2,
+    p_created_on   TIMESTAMP DEFAULT SYSTIMESTAMP
+)
+IS
+BEGIN
+    -- Insert the audit log record
+    INSERT INTO AUDIT_LOG (
+        MSG_ID,
+        PAYLOAD_TYPE,
+        PAYLOAD,
+        PAYLOAD_FLOW,
+        CREATED_ON,
+        CREATED_BY
+    ) VALUES (
+        p_msg_id,
+        p_payload_type,
+        p_payload,
+        p_payload_flow,
+        p_created_on,
+        p_created_by
+    );
+    
+    COMMIT;
+END INSERT_AUDIT_LOG;
+
+
+CREATE TABLE ERROR_AUDIT_LOGGING (
+    MSGID VARCHAR2(1000) NOT NULL,
+    LOGGING_TIME TIMESTAMP(6) NOT NULL,
+    MESSAGE_DATA CLOB NOT NULL,
+    MESSAGE_TYPE VARCHAR2(1000) NOT NULL,
+    APPLICATION_NAME VARCHAR2(1000) NOT NULL,
+    SERVER_NAME VARCHAR2(1000) NOT NULL,
+    ERROR_TEXT VARCHAR2(1000) NOT NULL,
+    ERROR_DESCRIPTION VARCHAR2(4000) NOT NULL,
+    TIME_LOCAL_TRANSACTION VARCHAR2(1000) NOT NULL,
+    DATE_LOCAL_TRANSACTION VARCHAR2(1000) NOT NULL,
+    RETRIEVAL_REFERENCE_NUMBER VARCHAR2(1000) NOT NULL,
+    SERVER_ERROR_CODE VARCHAR2(1000) NOT NULL,
+    USER_DEFINE_ERROR_CODE VARCHAR2(1000) NOT NULL,
+    CONSTRAINT ERROR_AUDIT_LOGGING_PK PRIMARY KEY (MSGID)
+);
+
+
+SELECT * FROM ERROR_AUDIT_LOGGING;
+
+
+CREATE OR REPLACE PROCEDURE INSERT_ERROR_AUDIT_LOG (
+    p_msgid                      IN VARCHAR2,
+    p_logging_time               IN TIMESTAMP DEFAULT SYSTIMESTAMP,
+    p_message_data               IN CLOB,
+    p_message_type               IN VARCHAR2,
+    p_application_name           IN VARCHAR2,
+    p_server_name               IN VARCHAR2,
+    p_error_text                IN VARCHAR2,
+    p_error_description         IN VARCHAR2,
+    p_time_local_transaction    IN VARCHAR2,
+    p_date_local_transaction    IN VARCHAR2,
+    p_retrieval_reference_number IN VARCHAR2,
+    p_server_error_code         IN VARCHAR2,
+    p_user_define_error_code    IN VARCHAR2
+)
+IS
+BEGIN
+    -- Insert the error audit log record
+    INSERT INTO ERROR_AUDIT_LOGGING (
+        MSGID,
+        LOGGING_TIME,
+        MESSAGE_DATA,
+        MESSAGE_TYPE,
+        APPLICATION_NAME,
+        SERVER_NAME,
+        ERROR_TEXT,
+        ERROR_DESCRIPTION,
+        TIME_LOCAL_TRANSACTION,
+        DATE_LOCAL_TRANSACTION,
+        RETRIEVAL_REFERENCE_NUMBER,
+        SERVER_ERROR_CODE,
+        USER_DEFINE_ERROR_CODE
+    ) VALUES (
+        p_msgid,
+        p_logging_time,
+        p_message_data,
+        p_message_type,
+        p_application_name,
+        p_server_name,
+        p_error_text,
+        p_error_description,
+        p_time_local_transaction,
+        p_date_local_transaction,
+        p_retrieval_reference_number,
+        p_server_error_code,
+        p_user_define_error_code
+    );
+    
+    COMMIT;
+END INSERT_ERROR_AUDIT_LOG;
+
+
+
+
