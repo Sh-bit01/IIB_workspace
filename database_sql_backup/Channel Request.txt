@@ -1,0 +1,49 @@
+{
+  "CREATEMJRNLBOOK_IOPK_REQ": {
+    "FCUBS_HEADER": {
+      "SOURCE": "string_value",
+      "UBSCOMP": "string_value",
+      "MSGID": "string_value",
+      "CORRELID": "string_value",
+      "USERID": 12345,
+      "BRANCH": "string_value",
+      "MODULEID": "string_value",
+      "SERVICE": "string_value",
+      "OPERATION": "string_value",
+      "SOURCE_OPERATION": "string_value",
+      "MSGSTAT": "string_value"
+    },
+    "FCUBS_BODY": {
+      "Detbs-Jrnl-Txn-Master-IO": {
+        "BATCH_NO": "string_value",
+        "CURR_NO": "string_value",
+        "VALUE_DATE": "string_value",
+        "BRANCH_CODE": "string_value",
+        "CCY": "string_value",
+        "Detbs-Jrnl-Txn-Detail": [
+          {
+            "SERIAL_NO": "string_value",
+            "DR_CR": "string_value",
+            "BRANCH_CODE": "string_value",
+            "ACCORGL": "string_value",
+            "ACCOUNT": "string_value",
+            "CCY": "string_value",
+            "AMOUNT": "string_value",
+            "TXN_CODE": "string_value",
+            "LCY_AMOUNT": "string_value",
+            "ADDL_TEXT": "string_value",
+            "CUSTOMER": "string_value",
+            "EXCH_RATE": "string_value"
+          }
+        ]
+      },
+      "Devws-Batch-Master": {
+        "BATCH_NUMBER": "string_value",
+        "DESCRIPTION": "string_value",
+        "DEBIT": "string_value",
+        "CREDIT": "string_value",
+        "BALANCING": "string_value"
+      }
+    }
+  }
+}
