@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Switch.msgnode="Switch.msgnode" xmlns:Transform.msgnode="Transform.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="mailchimp.msgflow" nsPrefix="mailchimp.msgflow">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmWSInput.msgnode="ComIbmWSInput.msgnode" xmlns:ComIbmWSReply.msgnode="ComIbmWSReply.msgnode" xmlns:Cryptography_encryption.subflow="Cryptography/encryption.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="mailchimp.msgflow" nsPrefix="mailchimp.msgflow">
   <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
     <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
     <translation xmi:type="utility:TranslatableString" key="mailchimp" bundleName="mailchimp" pluginId="mailChimp"/>
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/mailChimp/icons/full/obj16/mailchimp.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/mailChimp/icons/full/obj30/mailchimp.gif"/>
     <composition>
-      <nodes xmi:type="Switch.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="281,64" nodeTraceSetting="0">
-        <translation xmi:type="utility:ConstantString" string="Switch"/>
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="20,20" URLSpecifier="/enc" messageDomainProperty="JSON">
+        <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
       </nodes>
-      <nodes xmi:type="Transform.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="277,123" nodeTraceSetting="0">
-        <translation xmi:type="utility:ConstantString" string="Transform"/>
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="486,25">
+        <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
       </nodes>
+      <nodes xmi:type="Cryptography_encryption.subflow:FCMComposite_1" xmi:id="FCMComposite_1_3" location="257,89">
+        <translation xmi:type="utility:ConstantString" string="encryption"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
     </composition>
     <propertyOrganizer/>
     <stickyBoard/>

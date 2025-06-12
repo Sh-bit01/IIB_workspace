@@ -5,6 +5,7 @@
 	<projects>
 		<project>1212121212computeodeJava</project>
 		<project>Java_compute_node_XML_to_JSONJava</project>
+		<project>Cryptography</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

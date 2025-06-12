@@ -20,6 +20,24 @@ CREATE COMPUTE MODULE enc_Compute
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		SET OutputRoot = InputRoot;
+		--SET OutputRoot = InputRoot;
+		
+		DECLARE data CHARACTER;
+		DECLARE encoding INTEGER InputRoot.Properties.Encoding;
+		DECLARE CCSID INTEGER InputRoot.Properties.CodedCharSetId;
+		SET data = CAST(ASBITSTREAM(InputRoot.JSON.Data ENCODING encoding CCSID CCSID) AS CHARACTER);
+		
+		DECLARE EncryptedData CHARACTER;
+		SET EncryptedData = Clinet_enc(data);
+		
+		SET OutputRoot.BLOB.BLOB = CAST(EncryptedData AS BLOB CCSID CCSID ENCODING encoding);
+		
 	END;
 END MODULE;
+
+CREATE PROCEDURE Clinet_enc ( in data CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "encdec.Esecurity.encrypt";
+
+

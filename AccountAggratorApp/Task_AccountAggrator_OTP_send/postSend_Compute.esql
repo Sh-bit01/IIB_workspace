@@ -1,3 +1,5 @@
+
+
 DECLARE schema_name EXTERNAL CHARACTER;
 DECLARE table_name EXTERNAL CHARACTER;
 DECLARE config EXTERNAL CHARACTER;
@@ -42,7 +44,7 @@ CREATE COMPUTE MODULE postSend_Compute
 		DECLARE enc INTEGER InputRoot.Properties.Encoding;
 		DECLARE in_data CHARACTER;
 		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'send','INFO', '---------------------------Start---------------------------') INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'send','INFO', ' ---------------------------Start---------------------------') INTO var1;
 		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'send','INFO', in_data) INTO var1;
 		----------------------------------------------------------------------------------------------------------------
 
@@ -71,8 +73,20 @@ CREATE COMPUTE MODULE postSend_Compute
 			DECLARE secondsFraction DECIMAL;
 			SET secondsFraction = EXTRACT(SECOND FROM ts) - CAST(EXTRACT(SECOND FROM ts) AS INTEGER);
 			SET otp = 100000 + CAST(secondsFraction * 900000 AS INTEGER);
-
-			DECLARE query_in CHARACTER 'INSERT INTO '||schema_name||'.'||'OTP_TABLE (referenceNo, OTP, created_at) VALUES (?, ?,?)';
+			--DECLARE query_in CHARACTER 'INSERT INTO '||schema_name||'.'||'OTP_TABLE (referenceNo, OTP, created_at) VALUES (?, ?,?)';
+			DECLARE query_in CHARACTER 'MERGE INTO '||schema_name||'.OTP_TABLE target
+			USING (
+			SELECT ? AS referenceNo, ? AS OTP, ? AS created_at FROM dual
+			) source
+			ON (target.referenceNo = source.referenceNo)
+		WHEN MATCHED THEN
+			UPDATE SET
+			target.OTP = source.OTP,
+			target.created_at = source.created_at
+		WHEN NOT MATCHED THEN
+			INSERT (referenceNo, OTP, created_at)
+			VALUES (source.referenceNo, source.OTP, source.created_at);
+			';
 			SET res.tmp[] =PASSTHRU(query_in TO Database.{dsn} VALUES( ref_no, otp, ts));
 
 			DECLARE text CHARACTER;
@@ -82,34 +96,34 @@ CREATE COMPUTE MODULE postSend_Compute
 			SET OutputRoot.EmailOutputHeader.To = 'gabriel@test.com';
 			SET OutputRoot.EmailOutputHeader.Subject = 'OTP for Secure Login';
 			SET OutputRoot.BLOB.BLOB = CAST(text AS BLOB CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding) ;
-				PROPAGATE TO TERMINAL 'out1';
+			PROPAGATE TO TERMINAL 'out1';
 
-				SET OutputRoot.JSON.Data = null;
-				SET OutputRoot.JSON.Data.status = 'success';
-				SET OutputRoot.JSON.Data.referenceId = ref_no;
-				SET OutputRoot.JSON.Data.otp = otp;
-				PROPAGATE TO TERMINAL 'out';
+			SET OutputRoot.JSON.Data = null;
+			SET OutputRoot.JSON.Data.status = 'success';
+			SET OutputRoot.JSON.Data.referenceId = ref_no;
+			SET OutputRoot.JSON.Data.otp = otp;
+			PROPAGATE TO TERMINAL 'out';
 
-			ELSE
-				SET OutputRoot.JSON.Data.status = 'failed';
-				SET OutputRoot.JSON.Data.error.message = 'Account is not associate with mobile no.......';
-				--SET OutputRoot.JSON.Data.error.message1 = randomSixDigit;
-				PROPAGATE TO TERMINAL 'out';
+		ELSE
+			SET OutputRoot.JSON.Data.status = 'failed';
+			SET OutputRoot.JSON.Data.error.message = 'Account is not associate with mobile no.......';
+			--SET OutputRoot.JSON.Data.error.message1 = randomSixDigit;
+			PROPAGATE TO TERMINAL 'out';
 
-			END IF;
-			----------------------------------------------------------------------------------------------------------------
-			DECLARE data CHARACTER;
-			SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
-			CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'send','INFO', data) INTO var1;
-			CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'send','INFO', '---------------------------END---------------------------') INTO var1;
-			----------------------------------------------------------------------------------------------------------------
-			----email:- gabriel@test.com
+		END IF;
+		----------------------------------------------------------------------------------------------------------------
+		DECLARE data CHARACTER;
+		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'send','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'send','INFO', ' ---------------------------END---------------------------') INTO var1;
+		----------------------------------------------------------------------------------------------------------------
+		----email:- gabriel@test.com
 
 
-		END;
-	END MODULE;
-	
-	
+	END;
+END MODULE;	
+
+
 CREATE FUNCTION WriteLogFile( IN COMPONENT_NAME CHARACTER,IN LOGGER_NAME CHARACTER, IN LEVEL CHARACTER, IN TEXT CHARACTER )
 RETURNS BOOLEAN
 LANGUAGE JAVA --Indicates that this function is implemented in Java.
