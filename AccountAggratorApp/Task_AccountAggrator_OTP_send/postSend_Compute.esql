@@ -1,0 +1,135 @@
+
+
+DECLARE schema_name EXTERNAL CHARACTER;
+DECLARE table_name EXTERNAL CHARACTER;
+DECLARE config EXTERNAL CHARACTER;
+DECLARE var1 BOOLEAN;
+DECLARE dsn EXTERNAL CHARACTER;
+DECLARE logger EXTERNAL CHARACTER;
+
+
+
+CREATE COMPUTE MODULE postSend_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL initLog4j(config)INTO var1;
+		DECLARE method_type CHARACTER;
+		SET method_type = SUBSTRING(InputRoot.HTTPInputHeader."X-Original-HTTP-Command" FROM 1 FOR 4);
+		IF method_type = 'POST' THEN
+			CALL CopyEntireMessage();
+		ELSE
+			THROW USER EXCEPTION CATALOG 'BIPmsgs' MESSAGE 2230 VALUES('Unsupported HTTP Method');
+			PROPAGATE TO TERMINAL 'Catch';
+		END IF;
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		--SET OutputRoot = InputRoot;
+		--{"status":"success","referenceId":"b82c3fd0-ddcb-11ec-a700-873dff98a18d"}
+		--{"mobileNo":"8501996633","accNo":"012345623456"}\
+		----------------------------------------------------------------------------------------------------------------
+		DECLARE ccsid INTEGER InputRoot.Properties.CodedCharSetId;
+		DECLARE enc INTEGER InputRoot.Properties.Encoding;
+		DECLARE in_data CHARACTER;
+		SET in_data = CAST(ASBITSTREAM(InputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'send','INFO', ' ---------------------------Start---------------------------') INTO var1;
+		CALL WriteLogFile('channel request:'||NodeLabel||' '||NodeType,'send','INFO', in_data) INTO var1;
+		----------------------------------------------------------------------------------------------------------------
+
+		DECLARE inref REFERENCE TO InputRoot.JSON.Data;
+		DECLARE res ROW;
+		DECLARE query_check CHARACTER 'SELECT
+		AD.ACCOUNT_NUMBER,
+		BT.BANK_CODE,
+		(SELECT COUNT(*)
+		FROM '||schema_name||'.'||'Account_Discovery
+		WHERE mobile_no = ? AND account_number = ?) AS record_count
+		FROM
+		'||schema_name||'.'||'Account_Discovery AD
+		JOIN
+		'||schema_name||'.'||'BANKS_DETAIL BT ON AD.BANK_ID = BT.BANK_ID
+		WHERE
+		AD.mobile_no = ?
+		AND AD.account_number = ?;
+		';
+		SET res.check[] = PASSTHRU(query_check TO Database.{dsn} VALUES(inref.mobileNo, inref.accNo, inref.mobileNo, inref.accNo));
+
+		IF res.check.RECORD_COUNT >0 THEN
+			DECLARE ref_no CHARACTER UUIDASCHAR;
+			DECLARE otp INTEGER;
+			DECLARE ts TIMESTAMP CURRENT_TIMESTAMP;
+			DECLARE secondsFraction DECIMAL;
+			SET secondsFraction = EXTRACT(SECOND FROM ts) - CAST(EXTRACT(SECOND FROM ts) AS INTEGER);
+			SET otp = 100000 + CAST(secondsFraction * 900000 AS INTEGER);
+			--DECLARE query_in CHARACTER 'INSERT INTO '||schema_name||'.'||'OTP_TABLE (referenceNo, OTP, created_at) VALUES (?, ?,?)';
+			DECLARE query_in CHARACTER 'MERGE INTO '||schema_name||'.OTP_TABLE target
+			USING (
+			SELECT ? AS referenceNo, ? AS OTP, ? AS created_at FROM dual
+			) source
+			ON (target.referenceNo = source.referenceNo)
+		WHEN MATCHED THEN
+			UPDATE SET
+			target.OTP = source.OTP,
+			target.created_at = source.created_at
+		WHEN NOT MATCHED THEN
+			INSERT (referenceNo, OTP, created_at)
+			VALUES (source.referenceNo, source.OTP, source.created_at);
+			';
+			SET res.tmp[] =PASSTHRU(query_in TO Database.{dsn} VALUES( ref_no, otp, ts));
+
+			DECLARE text CHARACTER;
+			SET text = 'Dear Customer, '||CAST(otp AS CHARACTER)||' is the OTP to link your '||res.check.BANK_CODE ||' Bank Accounts with Account Aggregator. Do not share it with anyone. Bank NEVER asks for OTP.';
+
+			SET OutputRoot.EmailOutputHeader.From = 'no-reply.AccountAggrator@test.com';
+			SET OutputRoot.EmailOutputHeader.To = 'gabriel@test.com';
+			SET OutputRoot.EmailOutputHeader.Subject = 'OTP for Secure Login';
+			SET OutputRoot.BLOB.BLOB = CAST(text AS BLOB CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding) ;
+			PROPAGATE TO TERMINAL 'out1';
+
+			SET OutputRoot.JSON.Data = null;
+			SET OutputRoot.JSON.Data.status = 'success';
+			SET OutputRoot.JSON.Data.referenceId = ref_no;
+			SET OutputRoot.JSON.Data.otp = otp;
+			PROPAGATE TO TERMINAL 'out';
+
+		ELSE
+			SET OutputRoot.JSON.Data.status = 'failed';
+			SET OutputRoot.JSON.Data.error.message = 'Account is not associate with mobile no.......';
+			--SET OutputRoot.JSON.Data.error.message1 = randomSixDigit;
+			PROPAGATE TO TERMINAL 'out';
+
+		END IF;
+		----------------------------------------------------------------------------------------------------------------
+		DECLARE data CHARACTER;
+		SET data = CAST(ASBITSTREAM(OutputRoot.JSON.Data CCSID ccsid ENCODING enc) as CHARACTER CCSID ccsid ENCODING enc);
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'send','INFO', data) INTO var1;
+		CALL WriteLogFile('channel responce:'||NodeLabel||' '||NodeType,'send','INFO', ' ---------------------------END---------------------------') INTO var1;
+		----------------------------------------------------------------------------------------------------------------
+		----email:- gabriel@test.com
+
+
+	END;
+END MODULE;	
+
+
+CREATE FUNCTION WriteLogFile( IN COMPONENT_NAME CHARACTER,IN LOGGER_NAME CHARACTER, IN LEVEL CHARACTER, IN TEXT CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA --Indicates that this function is implemented in Java.
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log"; --Specifies the fully qualified Java class and method used for logging.
+-- Define a Java function named initLog4j for initializing Log4j with the provided configuration file.
+CREATE FUNCTION initLog4j( IN CONFIG_FILE_NAME CHARACTER )
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j"; -- Specifies the fully qualified Java class and method used for initialization.
