@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="JWT/JWTGen.msgnode" nsPrefix="JWT_JWTGen.msgnode">
+  <eClassifiers xmi:type="eflow:PropertySet" name="claimsRow">
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.key" name="key">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.value" name="value">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <propertyOrganizer>
+      <propertyDescriptor describedAttribute="Property.key">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.key" bundleName="JWT/JWTGen" pluginId="JWT"/>
+        <propertyDescriptor describedAttribute="Property.value">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.value" bundleName="JWT/JWTGen" pluginId="JWT"/>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+  </eClassifiers>
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.algo" name="algo" eType="//%" defaultValueLiteral="RS256"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.sub" name="sub" lowerBound="1">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.iss" name="iss">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.keyFile" name="keyFile">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.expTime" name="expTime" lowerBound="1" defaultValueLiteral="43222222">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="Property.claims" name="claims" upperBound="-1" eType="//claimsRow" containment="true"/>
+    <translation xmi:type="utility:TranslatableString" key="JWTGen" bundleName="JWT/JWTGen" pluginId="JWT"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/JWT/icons/full/obj16/JWT/JWTGen.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/JWT/icons/full/obj30/JWT/JWTGen.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.in" location="100,20">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.in" bundleName="JWT/JWTGen" pluginId="JWT"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.out" location="200,40">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.out" bundleName="JWT/JWTGen" pluginId="JWT"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.failure" location="300,60">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.failure" bundleName="JWT/JWTGen" pluginId="JWT"/>
+      </nodes>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" describedAttribute="Property.algo">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.algo" bundleName="JWT/JWTGen" pluginId="JWT"/>
+        <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.sub">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.sub" bundleName="JWT/JWTGen" pluginId="JWT"/>
+          <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.iss">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.iss" bundleName="JWT/JWTGen" pluginId="JWT"/>
+            <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.keyFile">
+              <propertyName xmi:type="utility:TranslatableString" key="Property.keyFile" bundleName="JWT/JWTGen" pluginId="JWT"/>
+              <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.expTime">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.expTime" bundleName="JWT/JWTGen" pluginId="JWT"/>
+                <propertyDescriptor groupName="Group.Claims" describedReference="Property.claims">
+                  <propertyName xmi:type="utility:TranslatableString" key="Property.claims" bundleName="JWT/JWTGen" pluginId="JWT"/>
+                </propertyDescriptor>
+              </propertyDescriptor>
+            </propertyDescriptor>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+  </eClassifiers>
+  <eClassifiers xmi:type="ecore:EEnum">
+    <eLiterals xmi:id="algo.RS256" name="RS256"/>
+    <eLiterals xmi:id="algo.HS256" name="HS256" value="1"/>
+    <eLiterals xmi:id="algo.ES256" name="ES256" value="2"/>
+  </eClassifiers>
+</ecore:EPackage>

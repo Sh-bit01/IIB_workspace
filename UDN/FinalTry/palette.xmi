@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<palette:CategoryCmp xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:palette="http://www.ibm.com/wbi/2005/eflow_palette" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" xmi:id="FinalTry">
+  <categoryLabel xsi:type="utility:TranslatableString" key="category.name" bundleName="palette" pluginId="FinalTry"/>
+  <cmpGroups xsi:type="palette:GroupCmp">
+    <cmpEntries xsi:type="palette:ToolEntry" xmi:id="Try32.enc" icon16Name="platform:/plugin/FinalTry/icons/full/clcl16/Try32/enc.gif" icon32Name="platform:/plugin/FinalTry/icons/full/obj32/Try32/enc.gif" toolClassName="com.ibm.etools.mft.flow.editor.MFTNodeCreationTool" toolClassPluginId="com.ibm.etools.mft.flow" nodeURI="Try32/enc.msgnode">
+      <entryLabel xsi:type="utility:TranslatableString" key="entry.Try32.enc" bundleName="palette" pluginId="FinalTry"/>
+      <entryShortDescription xsi:type="utility:TranslatableString" key="tooltip.Try32.enc" bundleName="palette" pluginId="FinalTry"/>
+    </cmpEntries>
+  </cmpGroups>
+</palette:CategoryCmp>

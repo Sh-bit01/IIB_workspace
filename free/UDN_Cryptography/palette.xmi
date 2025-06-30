@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<palette:CategoryCmp xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:palette="http://www.ibm.com/wbi/2005/eflow_palette" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" xmi:id="Cryptography">
-  <categoryLabel xmi:type="utility:TranslatableString" key="category.name" bundleName="palette" pluginId="Cryptography"/>
-  <cmpGroups xmi:type="palette:GroupCmp"/>
-</palette:CategoryCmp>

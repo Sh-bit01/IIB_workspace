@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<palette:CategoryCmp xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:palette="http://www.ibm.com/wbi/2005/eflow_palette" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" xmi:id="ibm_security">
+  <categoryLabel xsi:type="utility:TranslatableString" key="category.name" bundleName="palette" pluginId="JWT"/>
+  <cmpGroups xsi:type="palette:GroupCmp">
+    <cmpEntries xsi:type="palette:ToolEntry" xmi:id="JWT.JWTGen" icon16Name="platform:/plugin/JWT/icons/full/clcl16/JWT/JWTGen.gif" icon32Name="platform:/plugin/JWT/icons/full/obj32/JWT/JWTGen.gif" toolClassName="com.ibm.etools.mft.flow.editor.MFTNodeCreationTool" toolClassPluginId="com.ibm.etools.mft.flow" nodeURI="JWT/JWTGen.msgnode">
+      <entryLabel xsi:type="utility:TranslatableString" key="entry.JWT.JWTGen" bundleName="palette" pluginId="JWT"/>
+      <entryShortDescription xsi:type="utility:TranslatableString" key="tooltip.JWT.JWTGen" bundleName="palette" pluginId="JWT"/>
+    </cmpEntries>
+  </cmpGroups>
+</palette:CategoryCmp>
